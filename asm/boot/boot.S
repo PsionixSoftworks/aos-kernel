@@ -13,6 +13,9 @@
 #include "crti.S"
 #include "crtn.S"
 
+#ifdef KBOOT
+#endif
+
 /* The .multiboot section is used to initalize GRUB and start the kernel. */
 .section .multiboot
 .align 4
