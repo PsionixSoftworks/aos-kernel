@@ -1,10 +1,20 @@
+/*
+ *  File: balloon.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef ADAMANTINE_BALLOON
 #define ADAMANTINE_BALLOON
 
 // Include files here:
 #include "types.h"
-
-#if KERNEL32
 
 // Define the "balloon" memory sizes:
 #define BALLOON_SIZE_1			1024							// 1KB
@@ -34,7 +44,5 @@ struct aos_balloon
 	bool valid;
 } __attribute__((packed));
 typedef struct aos_balloon balloon_t;
-
-#endif
 
 #endif	// !ADAMANTINE_BALLOON

@@ -1,3 +1,15 @@
+/*
+ *  File: aos-defs.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF ITS AUTHOR(S).
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef ADAMANTINE_STANDARD_DEFINITIONS
 #define ADAMANTINE_STANDARD_DEFINITIONS
 
@@ -17,7 +29,6 @@
 #ifndef TRUE
 #define TRUE								1
 #endif
-
 #endif
 
 // Define Adamantine API macros:
@@ -27,6 +38,7 @@
 #define FAILURE								(void *)FALSE
 #define SUCCESS								(void *)TRUE
 #define AOS_BASE_CNTRL                      0xCE0
+#define PVOID                               void *
 #endif
 
 // Define the module naming system for later use:

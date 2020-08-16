@@ -1,3 +1,15 @@
+/*
+ *  File: cpuid.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef _CPUID_
 #define _CPUID_
 
@@ -91,7 +103,5 @@ enum cpuid_features
 #define CPUID_VENDOR_RISE			"RiseRiseRise"
 #define CPUID_VORTEX				"Vortex86 SoC"
 #define CPUID_VENDOR_VIA			"VIA VIA VIA "
-
-
 
 #endif

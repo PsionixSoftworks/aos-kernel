@@ -1,10 +1,20 @@
-#define KERNEL32	1
+/*
+ *  File: gdt.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
 #include "../include/x86/gdt.h"
 #include "../include/tss.h"
 #include "../include/terminal.h"
 #include "../include/aos-defs.h"
-#include "../include/mem_util.h"
+#include "../include/mem-util.h"
 
 MODULE("global-descriptor-table", "0.01a");
 

@@ -2,11 +2,11 @@
  *  File: boot.S
  *  Author: Vincent Cupo
  *  
- *  This file is the initial startup point of the bootloader.
- *  It is responsible for calling on GRUB and the kernel for boot.
- *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF ITS AUTHOR(S).
+ * 
  *  PROPERTY OF PSIONIX SOFTWORKS LLC.
- *  Copyright (c) 2020, Psionix Softworks LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
  *
  */
 

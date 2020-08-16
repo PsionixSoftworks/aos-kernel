@@ -1,10 +1,20 @@
-#define KERNEL32	1
+/*
+ *  File: keyboard.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
 /* Includes go here: */
 #include "../include/keyboard.h"
 #include "../include/keys.h"
 #include "../include/terminal.h"
-#include "../include/mem_util.h"
+#include "../include/mem-util.h"
 #include "../include/x86/idt.h"
 #include "../include/isr.h"
 #include "../include/mutex.h"

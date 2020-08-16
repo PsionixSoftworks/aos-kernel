@@ -43,7 +43,7 @@ ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 
 C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(MAIN_PATH)/adamantine.c		\
-								$(KERNEL_PATH)/kernel.c			\
+								$(KERNEL_PATH)/kernel.cpp		\
 								$(KERNEL_PATH)/cmd.c			\
 								$(KERNEL_PATH)/cpu.c			\
 								$(KERNEL_PATH)/mutex.c			\
@@ -124,7 +124,7 @@ bootloader: $(ASM_FILES_IN)
 kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(MAIN_PATH)/main.c -o main.o $(C_FLAGS)
 	$(COMPILER_C) $(MAIN_PATH)/adamantine.c -o adamantine.o $(C_FLAGS)
-	$(COMPILER_C) $(KERNEL_PATH)/kernel.c -o kernel.o $(C_FLAGS)
+	$(COMPILER_CPP) $(KERNEL_PATH)/kernel.cpp -o kernel.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/cmd.c -o cmd.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)

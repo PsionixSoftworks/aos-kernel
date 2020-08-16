@@ -1,5 +1,5 @@
 /*
- *  File: adamantine.c
+ *  File: adamantine-x86.h
  *  Author: Vincent Cupo
  *  
  * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
@@ -10,7 +10,9 @@
  *
  */
 
-#include "../include/adamantine.h"
-#include "../include/aos-defs.h"
+#ifndef ADAMANTINE_X86
+#define ADAMANTINE_X86
 
-MODULE("adamantine", "0.01a");
+#include "types.h"
+
+#endif	// !ADAMANTINE_X86

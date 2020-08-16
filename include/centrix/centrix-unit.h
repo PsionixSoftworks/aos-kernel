@@ -1,5 +1,5 @@
 /*
- *  File: base32.h
+ *  File: centrix-unit.h
  *  Author: Vincent Cupo
  *  
  * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
@@ -10,24 +10,12 @@
  *
  */
 
-#ifndef _CENTRIX_BASE32_
-#define _CENTRIX_BASE32_
+#ifndef _CENTRIX_UNIT_
+#define _CENTRIX_UNIT_
 
+#include "base32.h"
 #include "../types.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
 
-struct _BASE32
-{
-    uint16_t start;
-    uint16_t end;
-    uint32_t *data;
-};
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif
