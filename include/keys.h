@@ -210,7 +210,7 @@ static string keys_normal[256] =
 	"",																	// <Scroll Lock>,
 	"", "", "",															// Numpad 7, Numpad 8, Numpad 9
 	"-", 																// Numpad -,
-	"", "", "",			// Numpad 4, Numpad 5, Numpad 6,
+	"", "", "",															// Numpad 4, Numpad 5, Numpad 6,
 	"+",																// Numpad +,
 	"", "", "",															// Numpad 1, Numpad 2, Numpad 3,
 	"", "",																// Numpad 0, Numpad Del,

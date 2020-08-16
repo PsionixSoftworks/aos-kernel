@@ -13,7 +13,7 @@ kmain(void)
 	KernelInstall(OS_NAME);
 	uint32_t status = Verify();
 	if (status == SUCCESS)
-		{
+	{
 		kernel_current_run_mode_start(KERNEL_MODE_NO_GUI);
 		while (kernel_is_running()) 
 		{

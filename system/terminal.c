@@ -150,7 +150,7 @@ terminal_putchar(char c)
 
 	if ((c == 0x08) && (terminal.x > 16)) 
 	{
-		terminal.x--;
+		terminal_move_cursor(-1, 0);
 		location = video_memory + (terminal.y * VGA_WIDTH + terminal.x);
 		*location = ' ' | attribute;
 	} else
@@ -226,6 +226,24 @@ terminal_gets(char *str)
 {
 	terminal_buffer = strcpy(str, terminal_buffer);
 	return (terminal_buffer);
+}
+
+void 
+terminal_move_cursor(uint32_t x, uint32_t y)
+{
+	terminal.x += x;
+	terminal.y += y;
+	move_cursor();
+}
+
+uint32_t terminal_get_cursor_x()
+{
+	return (terminal.x);
+}
+
+uint32_t terminal_get_cursor_y()
+{
+	return (terminal.y);
 }
 
 void 

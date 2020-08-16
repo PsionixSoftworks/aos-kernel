@@ -28,6 +28,8 @@
 #include "../include/aos-defs.h"
 #include "../include/centrix-core.h"
 #include "../include/centrix.h"
+#include "../include/aos-fs.h"
+#include "../include/drivers/pci/pci.h"
 
 /* Tell the kernel what module and version we are using. */
 MODULE("kernel", "0.02a");
@@ -75,7 +77,7 @@ static void check_keyboard(void)
 /* Handle normal mode. */
 static inline void __kernel_mode_run_normal(void)
 {
-	terminal_print("AdamantineOS (AOS) Kernel/Shell - Version: 0.04a\n");
+	terminal_printf("AdamantineOS (AOS) Kernel/Shell - Version: %s\n", OS_VERSION);
 
 	INFO("Starting modules...");
 
@@ -84,37 +86,47 @@ static inline void __kernel_mode_run_normal(void)
 	check_idt();
 
 	terminal_print("Done!\n\n");
+
+	aosfs_init(AOS_FILE_SYSTEM_NAME);
+
+	kernel.running = true;										/* This must be at the bottom of the function. */
 }
 
 /* Handle safe mode. */
 static inline void __kernel_mode_run_safe(void) 
 {
-	terminal_print("AdamantineOS (AOS) Kernel/Shell - Version: 0.04a\n");
+	terminal_printf("AdamantineOS (AOS) Kernel/Shell - Version: %s\n", OS_VERSION);
 	WARNING("Running in Safe Mode. Some functions will be disabled...\n");
+
+	mm_init(&kernel_end);
 	check_gdt();
 	check_idt();
-	mm_init(&kernel_end);
 
-	kernel.running = true;
+
+
+	kernel.running = true;										/* This must be at the bottom of the function. */
 }
 
 /* Handle no-gui mode. */
 static inline void __kernel_mode_run_nogui(void)
 {
-	terminal_print("AdamantineOS (AOS) Kernel/Shell - Version: 0.04a\n");
+	terminal_printf("AdamantineOS (AOS) Kernel/Shell - Version: %s\n", OS_VERSION);
 	INFO("Running in NoGUI Mode. This is for experts only.\n");
 	INFO("Starting modules...");
 
+	mm_init(&kernel_end);
 	check_gdt();
 	check_idt();
-	mm_init(&kernel_end);
+
+	/* Check if we have a default keyboard driver to use (For NoGUI Mode only!) */
 	check_keyboard();
 
 	terminal_print("Done!\n\n");
-
+	
+	terminal_printf("Result: %x.\n", PCIIOC_BASE);
 	terminal_print("For help type \"$(help) <command>\"\n");
 	terminal_print("$ AdamantineOS: ");
-	kernel.running = true;
+	kernel.running = true;										/* This must be at the bottom of the function. */
 }
 
 /* Initialize the kernel. */
@@ -122,12 +134,17 @@ void __initcall kernel_init(uint8_t mode)
 {
 	/* Check which mode we're using. */
 	if (mode == KERNEL_MODE_NORMAL)
+	{
 		goto Normal;
+	}
 	if (mode == KERNEL_MODE_SAFE)
+	{
 		goto Safe;
+	}
 	if (mode == KERNEL_MODE_NO_GUI)
+	{
 		goto NoGUI;
-
+	}
 Normal:
 	/* Jump to normal mode. */
 	__kernel_mode_run_normal();
@@ -152,6 +169,21 @@ void __initcall kernel_update(void)
 		{
 			/* Process command here...*/
 			terminal_print("$ AdamantineOS: ");
+		}
+
+		if (keylast == KEYBOARD_KEY_DOWN_NUMPAD_4)
+		{
+			if (terminal_get_cursor_x() > 16)
+			{
+				terminal_move_cursor(-1, 0);
+			}
+		}
+		if (keylast == KEYBOARD_KEY_DOWN_NUMPAD_6)
+		{
+			if (terminal_get_cursor_x() < VGA_WIDTH -1)
+			{
+				terminal_move_cursor(+1, 0);
+			}
 		}
 	}
 }

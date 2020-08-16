@@ -26,6 +26,7 @@
 #define NULL								(void *)0
 #define FAILURE								(void *)FALSE
 #define SUCCESS								(void *)TRUE
+#define AOS_BASE_CNTRL                      0xCE0
 #endif
 
 // Define the module naming system for later use:

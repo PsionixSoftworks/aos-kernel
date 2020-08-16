@@ -35,6 +35,9 @@ extern void terminal_println(void);
 extern void terminal_print_value(int32_t value, uint8_t base);
 extern char terminal_getchar(char c);
 extern char *terminal_gets(char *str);
+extern void terminal_move_cursor(uint32_t x, uint32_t y);
+extern uint32_t terminal_get_cursor_x();
+extern uint32_t terminal_get_cursor_y();
 
 extern void panic(const string msg, const string file, uint32_t line);
 extern void panic_assert(const char *file, uint32_t line, const char *desc);

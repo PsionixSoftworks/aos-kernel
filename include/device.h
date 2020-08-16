@@ -2,6 +2,7 @@
 #define _DEVICE_
 
 #include "driver.h"
+#include "aos-defs.h"
 #include "types.h"
 #include "string.h"
 
@@ -21,7 +22,8 @@ typedef struct aos_device
     struct aos_fs *fs;
     uint8_t (*read)(uint8_t *buffer, uint32_t offset, uint32_t len, void * device);
     uint8_t (*write)(uint8_t *buffer, uint32_t offset, uint32_t len, void * device);
-} __attribute__((packed)) device_t;
+
+} PACKED Device_t;
 
 enum device_type {
     DEVICE_UNKNOWN,
