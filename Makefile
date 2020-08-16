@@ -65,8 +65,10 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(SYSTEM_PATH)/system.c			\
 								$(SYSTEM_PATH)/terminal.c		\
 								$(X86_PATH)/gdt.c				\
+								$(X86_PATH)/ldt.c				\
 								$(X86_PATH)/idt.c				\
-								$(X86_PATH)/tss.c				
+								$(X86_PATH)/tss.c				\
+								$(X86_PATH)/syscall.c			
 
 # Put all input files here separated by a '\':
 OUTPUT_FILES 				:= 	boot.new.o		\
@@ -99,8 +101,10 @@ OUTPUT_FILES 				:= 	boot.new.o		\
 								system.o		\
 								terminal.o		\
 								gdt.o			\
+								ldt.o			\
 								idt.o			\
-								tss.o
+								tss.o			\
+								syscall.o		
 
 # Compile all of the files into the iso:
 .PHONY: all
@@ -142,8 +146,10 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(SYSTEM_PATH)/system.c -o system.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/terminal.c -o terminal.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/gdt.c -o gdt.o $(C_FLAGS)
+	$(COMPILER_C) $(X86_PATH)/ldt.c -o ldt.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/idt.c -o idt.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
+	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
  
 # Link all input files into one file:
 linker: linker.ld $(INPUT_FILES)

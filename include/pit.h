@@ -3,8 +3,6 @@
 
 #include "types.h"
 
-#if KERNEL32
-
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -15,5 +13,4 @@ extern void timer_init(uint32_t frequency);
 }
 #endif
 
-#endif
 #endif	// !SYSTEM_TIMER

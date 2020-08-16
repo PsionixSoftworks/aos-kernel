@@ -1,5 +1,3 @@
-#define KERNEL32	1
-
 #include "../include/main.h"
 #include "../include/kernel.h"
 #include "../include/aos-defs.h"
@@ -14,8 +12,8 @@ kmain(void)
 	uint32_t status = Verify();
 	if (status == SUCCESS)
 	{
-		kernel_current_run_mode_start(KERNEL_MODE_NO_GUI);
-		while (kernel_is_running()) 
+		kernel_init(0);
+		while (kernel_is_running())
 		{
 			kernel_update();
 		}

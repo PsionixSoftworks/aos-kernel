@@ -3,8 +3,6 @@
 
 #include "types.h"
 
-#if KERNEL32
-
 // Define the keys for down state:
 #ifndef KEYBOARD_KEY_DOWN
 #define KEYBOARD_KEY_DOWN_NONE									0x00
@@ -247,5 +245,4 @@ static string keys_caps[256] =
 }
 #endif
 
-#endif
 #endif 	// !ADAMANTINE_KEYS

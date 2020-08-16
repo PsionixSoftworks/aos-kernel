@@ -4,8 +4,6 @@
 // Includes go here:
 #include "../types.h"
 
-#if KERNEL32
-
 #ifndef INTERRUPT_DESCRIPTOR
 #define INTERRUPT_DESCRIPTOR
 #endif
@@ -93,5 +91,4 @@ extern void idt_free(void);
 }
 #endif
 
-#endif
 #endif	// !ADAMANTINE_INTERRUPT_DESCRIPTOR_TABLE

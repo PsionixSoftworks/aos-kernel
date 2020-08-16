@@ -1,18 +1,14 @@
 #ifndef ADAMANTINE_CPU
 #define ADAMANTINE_CPU
 
-#include "types.h"
-#include "cpuid.h"
-#include "device.h"
-
 #if KERNEL32
 
-struct aos_device;
+#include "types.h"
+#include "cpuid.h"
 
 struct cpu 
 {
 	uint32_t node_id;
-	struct aos_device dev;
 };
 
 // Declare function templates:

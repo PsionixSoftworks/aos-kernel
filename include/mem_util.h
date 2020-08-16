@@ -3,8 +3,6 @@
 
 #include "types.h"
 
-#if KERNEL32
-
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -32,5 +30,4 @@ extern void *memset16(void *ptr,  uint16_t value, size_t num);
 }
 #endif
 
-#endif
 #endif	// !ADAMANTINE_MEMORY_UTILITY

@@ -1,8 +1,6 @@
 #ifndef CENTRIX
 #define CENTRIX
 
-#define KERNEL32	1
-
 #include "centrix-core.h"
 #include "types.h"
 #include "mem_util.h"
@@ -27,6 +25,5 @@ FREE_PROC_ANALYZER(uint32_t *proc)
 	free(proc);
 }
 
-#endif
-
-#endif	// !CENTRIX
+#endif	/* !CENTRIX_VERSION */
+#endif	/* !CENTRIX */

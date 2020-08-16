@@ -7,8 +7,6 @@
 #include "input.h"
 #include "output.h"
 
-#if KERNEL32
-
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -20,5 +18,4 @@ extern void io_wait(void);
 }
 #endif
 
-#endif
 #endif	// !ADAMANTINE_IO

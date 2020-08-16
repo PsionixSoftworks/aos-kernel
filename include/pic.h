@@ -4,8 +4,6 @@
 // Includes go here:
 #include "types.h"
 
-#if KERNEL32
-
 // Check if the PIC devices have been defined:
 #ifndef PIC_DEVICE
 #define PIC1				0x20
@@ -50,5 +48,4 @@ uint16_t __pic_get_irq_register(int ocw3);				// Get the IRQ register.
 }
 #endif
 
-#endif
 #endif	// !ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER

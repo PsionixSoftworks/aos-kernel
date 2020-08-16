@@ -3,8 +3,6 @@
 
 #include "types.h"
 
-#if KERNEL32
-
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -41,5 +39,4 @@ void register_interrupt_handler(uint8_t n, isr_t handler);
 }
 #endif
 
-#endif
 #endif	// !ADAMANTINE_ISR

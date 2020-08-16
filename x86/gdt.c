@@ -4,6 +4,7 @@
 #include "../include/tss.h"
 #include "../include/terminal.h"
 #include "../include/aos-defs.h"
+#include "../include/mem_util.h"
 
 MODULE("global-descriptor-table", "0.01a");
 
@@ -12,7 +13,9 @@ extern void gdt_flush(uint32_t);
 gdt_entry_t gdt_entries[5];
 gdt_ptr_t gdt_ptr;
 
-static void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
+extern tss_t tss_entry;
+
+void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
 
 void 
 gdt_init(void) 
@@ -30,7 +33,7 @@ gdt_init(void)
 	INFO("GDT is initialized!");
 }
 
-static void 
+void 
 gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity) 
 {
 	gdt_entries[num].base_low 		= (base & 0xFFFF);

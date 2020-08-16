@@ -4,8 +4,6 @@
 // Includes go here:
 #include "../types.h"
 
-#if KERNEL32
-
 #ifndef GLOBAL_DESCRIPTOR
 #define GLOBAL_DESCRIPTOR
 #endif
@@ -13,6 +11,8 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
+extern void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity);
 
 struct gdt_entry_struct 
 {
@@ -41,5 +41,4 @@ void gdt_init(void);
 }
 #endif
 
-#endif
 #endif	// !ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE

@@ -3,8 +3,6 @@
 
 #include "types.h"
 
-#if KERNEL32
-
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -18,5 +16,4 @@ extern void clear_interrupts(void);
 }
 #endif
 
-#endif
 #endif

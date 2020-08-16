@@ -5,8 +5,6 @@
 #include "string.h"
 #include "cpu.h"
 
-#if KERNEL32
-
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -46,5 +44,4 @@ extern void panic_assert(const char *file, uint32_t line, const char *desc);
 }
 #endif
 
-#endif
 #endif

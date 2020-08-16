@@ -1,7 +1,11 @@
 #ifndef _AOS_TASK_STATE_SEGMENT_
 #define _AOS_TASK_STATE_SEGMENT_
 
+#define KERNEL32    1
+
 #include "types.h"
+#include "aos-defs.h"
+#include "x86/gdt.h"
 
 #ifndef TSS_REGISTERS
 #define TSS_LINK    0x00
@@ -58,13 +62,21 @@ typedef struct task_state_segment
     uint32_t tss_fs;
     uint32_t tss_gs;
     uint32_t tss_ldtr;
-    uint32_t tss_io_opt;
-} tss_t;
+    uint16_t tss_trap;
+    uint16_t tss_iomap_base;
+} tss_t PACKED;
 
+extern void switch_to_user_mode(void);
+extern void reenable_interrupts(void);
+//extern void write_tss(gdt_entry_t *g);
+extern void set_kernel_stack(uint32_t stack);
+
+/*
 extern void *tss_install(void);
 extern void tss_init(void *ptr);
 extern void tss_set_entry(tss_t *tss);
 extern int tss_create_task(void *ptr, char *name);
 extern void tss_kill_task(int id, char *name);
+*/
 
 #endif

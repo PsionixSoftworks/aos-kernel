@@ -1,8 +1,6 @@
 #ifndef _AOS_FILE_SYSTEM_
 #define _AOS_FILE_SYSTEM_
 
-#define KERNEL32    1
-
 #include "types.h"
 #include "string.h"
 #include "aos-defs.h"

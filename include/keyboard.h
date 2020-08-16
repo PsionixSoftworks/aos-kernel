@@ -6,8 +6,6 @@
 #include "string.h"
 #include "driver.h"
 
-#if KERNEL32
-
 #ifndef KEYBOARD_DRIVER
 #define KEYBOARD_DRIVER						(BASE_ADDR - 0x67)
 #define KEYBOARD_DATA						(KEYBOARD_DRIVER << 2)
@@ -46,5 +44,4 @@ typedef struct
 }
 #endif
 
-#endif
 #endif 	// !ADAMANTINE_KEYBOARD

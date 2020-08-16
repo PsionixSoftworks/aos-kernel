@@ -4,8 +4,6 @@
 #include "../types.h"
 #include "../string.h"
 
-#if KERNEL32
-
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -23,5 +21,4 @@ extern void parse_command(string cmd);
 }
 #endif
 
-#endif
 #endif

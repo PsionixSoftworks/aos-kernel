@@ -4,8 +4,6 @@
 #include "types.h"
 #include "aos-defs.h"
 
-#if KERNEL32
-
 #if !defined(VGA_MODE)
 #define VGA_GRAPHICS_MODE           0xA0000
 #define VGA_TEXT_MODE_MONOCHROME    0xB0000
@@ -35,5 +33,4 @@ enum vga_color
     SYSTEM_COLOR_WHITE
 };
 
-#endif
 #endif
