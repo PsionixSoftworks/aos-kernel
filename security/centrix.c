@@ -29,7 +29,7 @@ void *KernelInstall(string name) {
 int32_t 
 Verify(void)
 {
-    terminal_init(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_GRAY);
+    terminal_init(SYSTEM_COLOR_GREEN, SYSTEM_COLOR_WHITE);
 	terminal_clear_screen();
 
     size_t len = strlen(supported_oses);
@@ -39,14 +39,14 @@ Verify(void)
     {
         if (strcmp(os_name, supported_oses[i]) == 0)
         {
-            terminal_printf("[CENTRIX]: \"%s\" is a valid Operating System.\n", os_name);
-            terminal_printf("[CENTRIX]: Starting \"%s\" OS kernel...\n\n", os_name);
+            CENTRIX_INFO("\"%s\" is a valid Operating System.\n", os_name);
+            CENTRIX_INFO("Starting \"%s\" OS kernel...\n\n", os_name);
             return (SUCCESS);
         } else {
             i++;
             if (i >= len) 
             {
-                terminal_printf("[CENTRIX]: \"%s\" is not a valid Operating System...\n", os_name);
+                CENTRIX_INFO("\"%s\" is not a valid Operating System...\n", os_name);
                 return (FAILURE);
             }
         }

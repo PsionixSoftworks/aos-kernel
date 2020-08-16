@@ -10,6 +10,9 @@
 
 #if CENTRIX_VERSION <= 100
 
+#define CENTRIX_INFO(...)	terminal_print("[CENTRIX_INFO]: ");	\
+							terminal_printf( __VA_ARGS__ );
+
 static uint32_t *
 BEGIN_PROC_ANALYZER(void)
 {
