@@ -4,6 +4,7 @@
 #include "../include/kernel.h"
 #include "../include/aos-defs.h"
 #include "../include/terminal.h"
+#include "init.h"
 
 MODULE("main", "0.01a");
 
