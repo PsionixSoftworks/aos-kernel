@@ -1,5 +1,5 @@
 /*
- *  File: cmd.h
+ *  File: bus.h
  *  Author: Vincent Cupo
  *  
  * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
@@ -10,28 +10,26 @@
  *
  */
 
-#ifndef _COMMAND_
-#define _COMMAND_
+#ifndef _AOS_BUS_
+#define _AOS_BUS_
 
-#include "../aos-defs.h"
-#include "../types.h"
-#include "../string.h"
+#include "../../device.h"
+#include "../../aos-defs.h"
+
+#define BUS_ENABLE                          0x1C0000007FUL
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-struct CommandLine 
+typedef struct AOS_BusDriver
 {
-    STRING              *CMD_List;
-};
-typedef struct CommandLine Command_t;
+    UDWORD              BaseAddr;
+} PACKED BusDriver_t, *PBusDriver_t;
 
-EXTERN  SET_VOID(CommandLineInit(VOID));
-EXTERN  SET_UBYTE(ParseCommand(STRING CMD));
+EXTERN  SET_VOID(EnableBusDriver(VOID));
 
 #if defined(__cplusplus)
 }
 #endif
-
 #endif

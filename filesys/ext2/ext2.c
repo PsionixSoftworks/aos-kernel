@@ -1,10 +1,22 @@
-#define KERNEL32	1
+/*
+ *  File: ext2.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
 #include "../../include/ext2.h"
 #include "../../include/vfs.h"
 #include "../../include/terminal.h"
-#include "../../include/mem_util.h"
+#include "../../include/mem-util.h"
+#include "../../include/string.h"
 
+/*
 #define SIZE_OF_SINGLY (priv->blocksize * priv->blocksize / 4)
 
 static inode_t *inode = 0;
@@ -25,7 +37,7 @@ uint8_t ext2_read_root_directory(char *filename, device_t *device, ext2_priv_dat
 ext2_find_file_inode(char *ff, inode_t *inode_buf, device_t *device, ext2_priv_data *priv),
 ext2_read_singly_linked(uint32_t block_id, uint8_t *buf, device_t *device, ext2_priv_data *priv),
 ext2_read_doubly_linked(uint32_t block_id, uint8_t *buf, device_t *device, ext2_priv_data *priv),
-ext2_read_file(char *fn, char *buffer, device_t *device, ext2_priv_data *priv),
+ext2_read_file(char *fn, uint8_t buffer, device_t *device, ext2_priv_data *priv),
 ext2_touch(char *file, device_t *device __attribute__((unused)), ext2_priv_data *priv __attribute__((unused))),
 ext2_writefile(char *fn, char *buf, uint32_t len, device_t *device, ext2_priv_data *priv),
 ext2_exist(char *file, device_t *device, ext2_priv_data *priv);
@@ -307,12 +319,12 @@ ext2_list_directory(char *dd, char *buffer, device_t *device, ext2_priv_data *pr
 uint8_t 
 ext2_read_singly_linked(uint32_t blockid, uint8_t *buf, device_t *device, ext2_priv_data *priv) 
 {
-    uint32_t blockadded = 0;
+    //uint32_t blockadded = 0;
     uint32_t maxblocks = ((priv->blocksize) / (sizeof(uint32_t)));
 
     ext2_read_block(root_buf, blockid, device, priv);
     uint32_t *block = (uint32_t *)root_buf;
-    for (int i = 0; i < maxblocks; i++) 
+    for (uint32_t i = 0; i < maxblocks; i++) 
     {
         if (block[i] == 0) break;
         ext2_read_block(buf + i * priv->blocksize, block[i], device, priv);
@@ -323,14 +335,14 @@ ext2_read_singly_linked(uint32_t blockid, uint8_t *buf, device_t *device, ext2_p
 uint8_t 
 ext2_read_doubly_linked(uint32_t blockid, uint8_t *buf, device_t *device, ext2_priv_data *priv) 
 {
-    uint32_t blockadded = 0;
+    //uint32_t blockadded = 0;
     uint32_t maxblocks = ((priv->blocksize) / (sizeof(uint32_t)));
 
     ext2_read_block(block_buf, blockid, device, priv);
 
     uint32_t *block = (uint32_t *)block_buf;
     uint32_t s = SIZE_OF_SINGLY;
-    for (int i = 0; i < maxblocks; i++) 
+    for (uint32_t i = 0; i < maxblocks; i++) 
     {
         if (block[i] == 0) break;
         ext2_read_singly_linked(block[i], buf + 1 * s, device, priv);
@@ -339,7 +351,7 @@ ext2_read_doubly_linked(uint32_t blockid, uint8_t *buf, device_t *device, ext2_p
 }
 
 uint8_t 
-ext2_read_file(char *fn, char *buffer, device_t *device, ext2_priv_data *priv) 
+ext2_read_file(char *fn, uint8_t buffer, device_t *device, ext2_priv_data *priv) 
 {
     if (!minode) minode = (inode_t *)malloc(sizeof(inode_t));
     char *filename = fn;
@@ -577,3 +589,4 @@ uint8_t ext2_exist(char *file, device_t *device, ext2_priv_data *priv)
 {
     return (ext2_read_file(file, 0, device, priv));
 }
+*/

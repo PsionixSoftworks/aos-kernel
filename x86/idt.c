@@ -1,93 +1,105 @@
-#define KERNEL32	1
+/*
+ *  File: idt.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
 #include "../include/x86/idt.h"
 #include "../include/terminal.h"
 #include "../include/io.h"
-#include "../include/mem_util.h"
+#include "../include/mem-util.h"
 #include "../include/pic.h"
-#include "../include/aos-defs.h"
 
-MODULE("interrupt-descriptor-table", "0.01a");
+MODULE("InterruptDescriptorTable", "0.01a");
 
-idt_entry_t idt_entries[256];
-idt_ptr_t idt_ptr;
+IDT_Entry_t IDT_Entries[256];
+PIDT_t PIDT;
 
-static void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags) 
+static VOID
+IDT_SetGate(UBYTE Number, UDWORD Base, UWORD Selector, UBYTE Flags) 
 {
-	idt_entries[num].base_low = base & 0xFFFF;
-    idt_entries[num].base_high = (base >> 16) & 0xFFFF;
+	IDT_Entries[Number].BaseLo = Base & 0xFFFF;
+    IDT_Entries[Number].BaseHi = (Base >> 16) & 0xFFFF;
 	
-	idt_entries[num].selector = sel;
-	idt_entries[num].always0 = 0;
+	IDT_Entries[Number].Selector = Selector;
+	IDT_Entries[Number].AlwaysZero = 0;
 	
-	idt_entries[num].flags = flags | 0x60;
+	IDT_Entries[Number].Flags = Flags | 0x60;
 }
 
-void idt_init(void) 
+VOID
+IDT_Init(VOID)
 {
-	idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;
-	idt_ptr.base = (uint32_t)&idt_entries;
+	PIDT.Limit = sizeof(IDT_Entry_t) * 0x100 - 0x1;
+	PIDT.Base = (UDWORD)&IDT_Entries;
 	
-	memset(&idt_entries, 0, sizeof(idt_entry_t) *256);
+	MemSet(&IDT_Entries, 0, sizeof(IDT_Entry_t) * 0x100);
 	
-    pic_remap();
+    PIC_Remap();
 	
-	idt_set_gate( 0, (uint32_t)isr0 , 0x08, 0x8E);
-    idt_set_gate( 1, (uint32_t)isr1 , 0x08, 0x8E);
-    idt_set_gate( 2, (uint32_t)isr2 , 0x08, 0x8E);
-    idt_set_gate( 3, (uint32_t)isr3 , 0x08, 0x8E);
-    idt_set_gate( 4, (uint32_t)isr4 , 0x08, 0x8E);
-    idt_set_gate( 5, (uint32_t)isr5 , 0x08, 0x8E);
-    idt_set_gate( 6, (uint32_t)isr6 , 0x08, 0x8E);
-    idt_set_gate( 7, (uint32_t)isr7 , 0x08, 0x8E);
-    idt_set_gate( 8, (uint32_t)isr8 , 0x08, 0x8E);
-    idt_set_gate( 9, (uint32_t)isr9 , 0x08, 0x8E);
-    idt_set_gate(10, (uint32_t)isr10, 0x08, 0x8E);
-    idt_set_gate(11, (uint32_t)isr11, 0x08, 0x8E);
-    idt_set_gate(12, (uint32_t)isr12, 0x08, 0x8E);
-    idt_set_gate(13, (uint32_t)isr13, 0x08, 0x8E);
-    idt_set_gate(14, (uint32_t)isr14, 0x08, 0x8E);
-    idt_set_gate(15, (uint32_t)isr15, 0x08, 0x8E);
-    idt_set_gate(16, (uint32_t)isr16, 0x08, 0x8E);
-    idt_set_gate(17, (uint32_t)isr17, 0x08, 0x8E);
-    idt_set_gate(18, (uint32_t)isr18, 0x08, 0x8E);
-    idt_set_gate(19, (uint32_t)isr19, 0x08, 0x8E);
-    idt_set_gate(20, (uint32_t)isr20, 0x08, 0x8E);
-    idt_set_gate(21, (uint32_t)isr21, 0x08, 0x8E);
-    idt_set_gate(22, (uint32_t)isr22, 0x08, 0x8E);
-    idt_set_gate(23, (uint32_t)isr23, 0x08, 0x8E);
-    idt_set_gate(24, (uint32_t)isr24, 0x08, 0x8E);
-    idt_set_gate(25, (uint32_t)isr25, 0x08, 0x8E);
-    idt_set_gate(26, (uint32_t)isr26, 0x08, 0x8E);
-    idt_set_gate(27, (uint32_t)isr27, 0x08, 0x8E);
-    idt_set_gate(28, (uint32_t)isr28, 0x08, 0x8E);
-    idt_set_gate(29, (uint32_t)isr29, 0x08, 0x8E);
-    idt_set_gate(30, (uint32_t)isr30, 0x08, 0x8E);
-    idt_set_gate(31, (uint32_t)isr31, 0x08, 0x8E);
+	IDT_SetGate( 0, (UDWORD)ISR_0, 0x08, 0x8E);
+    IDT_SetGate( 1, (UDWORD)ISR_1, 0x08, 0x8E);
+    IDT_SetGate( 2, (UDWORD)ISR_2, 0x08, 0x8E);
+    IDT_SetGate( 3, (UDWORD)ISR_3, 0x08, 0x8E);
+    IDT_SetGate( 4, (UDWORD)ISR_4, 0x08, 0x8E);
+    IDT_SetGate( 5, (UDWORD)ISR_5, 0x08, 0x8E);
+    IDT_SetGate( 6, (UDWORD)ISR_6, 0x08, 0x8E);
+    IDT_SetGate( 7, (UDWORD)ISR_7, 0x08, 0x8E);
+    IDT_SetGate( 8, (UDWORD)ISR_8, 0x08, 0x8E);
+    IDT_SetGate( 9, (UDWORD)ISR_9, 0x08, 0x8E);
+    IDT_SetGate(10, (UDWORD)ISR_10, 0x08, 0x8E);
+    IDT_SetGate(11, (UDWORD)ISR_11, 0x08, 0x8E);
+    IDT_SetGate(12, (UDWORD)ISR_12, 0x08, 0x8E);
+    IDT_SetGate(13, (UDWORD)ISR_13, 0x08, 0x8E);
+    IDT_SetGate(14, (UDWORD)ISR_14, 0x08, 0x8E);
+    IDT_SetGate(15, (UDWORD)ISR_15, 0x08, 0x8E);
+    IDT_SetGate(16, (UDWORD)ISR_16, 0x08, 0x8E);
+    IDT_SetGate(17, (UDWORD)ISR_17, 0x08, 0x8E);
+    IDT_SetGate(18, (UDWORD)ISR_18, 0x08, 0x8E);
+    IDT_SetGate(19, (UDWORD)ISR_19, 0x08, 0x8E);
+    IDT_SetGate(20, (UDWORD)ISR_20, 0x08, 0x8E);
+    IDT_SetGate(21, (UDWORD)ISR_21, 0x08, 0x8E);
+    IDT_SetGate(22, (UDWORD)ISR_22, 0x08, 0x8E);
+    IDT_SetGate(23, (UDWORD)ISR_23, 0x08, 0x8E);
+    IDT_SetGate(24, (UDWORD)ISR_24, 0x08, 0x8E);
+    IDT_SetGate(25, (UDWORD)ISR_25, 0x08, 0x8E);
+    IDT_SetGate(26, (UDWORD)ISR_26, 0x08, 0x8E);
+    IDT_SetGate(27, (UDWORD)ISR_27, 0x08, 0x8E);
+    IDT_SetGate(28, (UDWORD)ISR_28, 0x08, 0x8E);
+    IDT_SetGate(29, (UDWORD)ISR_29, 0x08, 0x8E);
+    IDT_SetGate(30, (UDWORD)ISR_30, 0x08, 0x8E);
+    IDT_SetGate(31, (UDWORD)ISR_31, 0x08, 0x8E);
 	
-    idt_set_gate(32, (uint32_t)irq0, 0x08, 0x8E);
-    idt_set_gate(33, (uint32_t)irq1, 0x08, 0x8E);
-    idt_set_gate(34, (uint32_t)irq2, 0x08, 0x8E);
-    idt_set_gate(35, (uint32_t)irq3, 0x08, 0x8E);
-    idt_set_gate(36, (uint32_t)irq4, 0x08, 0x8E);
-    idt_set_gate(37, (uint32_t)irq5, 0x08, 0x8E);
-    idt_set_gate(38, (uint32_t)irq6, 0x08, 0x8E);
-    idt_set_gate(39, (uint32_t)irq7, 0x08, 0x8E);
-    idt_set_gate(40, (uint32_t)irq8, 0x08, 0x8E);
-    idt_set_gate(41, (uint32_t)irq9, 0x08, 0x8E);
-    idt_set_gate(42, (uint32_t)irq10, 0x08, 0x8E);
-    idt_set_gate(43, (uint32_t)irq11, 0x08, 0x8E);
-    idt_set_gate(44, (uint32_t)irq12, 0x08, 0x8E);
-    idt_set_gate(45, (uint32_t)irq13, 0x08, 0x8E);
-    idt_set_gate(46, (uint32_t)irq14, 0x08, 0x8E);
-    idt_set_gate(47, (uint32_t)irq15, 0x08, 0x8E);
+    IDT_SetGate(32, (UDWORD)IRQ_0, 0x08, 0x8E);
+    IDT_SetGate(33, (UDWORD)IRQ_1, 0x08, 0x8E);
+    IDT_SetGate(34, (UDWORD)IRQ_2, 0x08, 0x8E);
+    IDT_SetGate(35, (UDWORD)IRQ_3, 0x08, 0x8E);
+    IDT_SetGate(36, (UDWORD)IRQ_4, 0x08, 0x8E);
+    IDT_SetGate(37, (UDWORD)IRQ_5, 0x08, 0x8E);
+    IDT_SetGate(38, (UDWORD)IRQ_6, 0x08, 0x8E);
+    IDT_SetGate(39, (UDWORD)IRQ_7, 0x08, 0x8E);
+    IDT_SetGate(40, (UDWORD)IRQ_8, 0x08, 0x8E);
+    IDT_SetGate(41, (UDWORD)IRQ_9, 0x08, 0x8E);
+    IDT_SetGate(42, (UDWORD)IRQ_10, 0x08, 0x8E);
+    IDT_SetGate(43, (UDWORD)IRQ_11, 0x08, 0x8E);
+    IDT_SetGate(44, (UDWORD)IRQ_12, 0x08, 0x8E);
+    IDT_SetGate(45, (UDWORD)IRQ_13, 0x08, 0x8E);
+    IDT_SetGate(46, (UDWORD)IRQ_14, 0x08, 0x8E);
+    IDT_SetGate(47, (UDWORD)IRQ_15, 0x08, 0x8E);
 	
-	idt_load((uint32_t)&idt_ptr);
+	IDT_Load((UDWORD)&PIDT);
 
     INFO("IDT is initialized!");
 }
 
-void idt_free(void) 
+VOID
+IDT_Free(VOID) 
 {
-    free(idt_entries);
+    Free(IDT_Entries);
 }

@@ -1,5 +1,5 @@
 /*
- *  File: main.h
+ *  File: adamantine-x86.h
  *  Author: Vincent Cupo
  *  
  * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
@@ -10,20 +10,10 @@
  *
  */
 
-#ifndef ADAMANTINE_MAIN
-#define ADAMANTINE_MAIN
+#ifndef ADAMANTINE_X86
+#define ADAMANTINE_X86
 
 #include "aos-defs.h"
 #include "types.h"
-#include "adamantine.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-EXTERN SET_VOID(KNain(VOID));
-
-#if defined(__cplusplus)
-}
-#endif
-#endif	// !ADAMANTINE_MAIN
+#endif	// !ADAMANTINE_X86

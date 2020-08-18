@@ -1,13 +1,24 @@
-#define KERNEL32    1
+/*
+ *  File: vfs.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
 #include "../include/vfs.h"
 #include "../include/terminal.h"
-#include "../include/mem_util.h"
+#include "../include/mem-util.h"
 #include "../include/ext2.h"
 #include "../include/aos-defs.h"
 
-MODULE("virtual-filesystem", "0.01a");
+MODULE("VirtualFileSystem", "0.01a");
 
+/*
 #define MAX_MOUNTS      16
 
 uint8_t __init_vfs = 0;
@@ -15,7 +26,7 @@ uint8_t __init_vfs = 0;
 mount_info_t **mp = 0;
 int last_mount_id = 0;
 
-device_t *
+Device_t *
 check_mount(char *loc) 
 {
     for (int i = 0; i < last_mount_id; i++) 
@@ -41,14 +52,14 @@ list_mount(void)
 }
 
 uint8_t 
-device_try_to_mount(device_t *device, char *loc) 
+device_try_to_mount(Device_t *device, char *loc) 
 {
     if ((!device) || !(device->device_id)) 
         return (0);
     if (check_mount(loc)) 
         return (0);
     #ifdef EXT2_FILESYSTEM
-    if (ext2_probe(device)) 
+    /*if (ext2_probe(device)) 
     {
         if (ext2_mount(device, device->fs->priv_data)) 
         {
@@ -60,7 +71,7 @@ device_try_to_mount(device_t *device, char *loc)
             return (1);
         }
         return (0);
-    }
+    }*
     #endif
 
     #ifdef AOS32_FILESYSTEM
@@ -197,7 +208,7 @@ vfs_exists_in_dir(char *wd, char *fn)
                 return (rc);
             }
         }
-        if (strcmp(o, "/" == 0))
+        if (strcmp(o, "/") == 0)
             break;
         str_backspace(o, '/');
     }
@@ -212,3 +223,4 @@ void vfs_init(void)
     mp = (mount_info_t **)malloc(sizeof(uint32_t) * MAX_MOUNTS);
     __init_vfs = 1;
 }
+*/

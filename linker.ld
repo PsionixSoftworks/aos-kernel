@@ -7,6 +7,7 @@ SECTIONS
 	kernel_base = .;
 	.text BLOCK(4K) : ALIGN(4K)
 	{
+		*(.prereq)
 		*(.multiboot)
 		*(.text)
 	}

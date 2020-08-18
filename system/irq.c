@@ -1,44 +1,56 @@
+/*
+ *  File: irq.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #include "../include/irq.h"
-#include "../include/aos-defs.h"
 
-MODULE("interrupt-request", "0.01a");
+MODULE("InterruptRequest", "0.01a");
 
-bool 
-are_interrupts_enabled() 
+BYTE
+AreInterruptsEnabled(VOID) 
 {
-    unsigned long flags;
+    SET_ULONG(Flags);
     asm volatile 
     ( 
-        "pushf\n\t"
-        "pop %0"
-        : "=g"(flags) 
+        "PUSHF\n\t"
+        "POP %0"
+        : "=g"(Flags) 
     );
 
-    return flags & (1 << 9);
+    return Flags & (0x1 << 0x9);
 }
 
-unsigned long 
-save_irqdisable(void) 
+ULONG
+IRQ_Disable(VOID) 
 {
-    unsigned long flags;
+    SET_ULONG(Flags);
     asm volatile
     (
-        "pushf\n\tcli\n\tpop %0" : "=r"(flags) : : "memory"
+        "PUSHF\n\tcli\n\tPOP %0" : "=r"(Flags) : : "memory"
     );
 }
 
-void irq_restore(unsigned long flags) {
+VOID
+IRQ_Restore(ULONG Flags) {
     asm volatile
     (
-        "push %0\n\tpopf" : : "rm"(flags) : "memory", "cc"
+        "PUSH %0\n\tPOPF" : : "rm"(Flags) : "memory", "cc"
     );
 }
 
-void
-clear_interrupts(void) 
+VOID
+ClearInterrupts(VOID) 
 {
     asm volatile
     (
-        "cli\n\t"
+        "CLI\n\t"
     );
 }

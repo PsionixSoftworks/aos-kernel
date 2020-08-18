@@ -1,38 +1,70 @@
+/*
+ *  File: io.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 // Includes go here:
 #include "../include/io.h"
-#include "../include/aos-defs.h"
 
-MODULE("input-output", "0.01a");
+MODULE("Input-Output", "0.01a");
 
 // Write to the io port :
-void 
-write_portb(uint16_t port, uint8_t value) 
+VOID 
+WritePortB(UWORD Port, UBYTE Value) 
 {
-	asm volatile("outb %0, %1" : : "a"(value), "Nd"(port));
+	asm volatile("OUTB %0, %1" : : "a"(Value), "Nd"(Port));
+}
+
+VOID
+WritePortW(UWORD Port, UWORD Value)
+{
+	asm volatile("OUTW %0, %1" : : "a"(Value), "Nd"(Port));
+}
+
+VOID
+WritePortDW(UWORD Port, UDWORD Value)
+{
+	asm volatile("OUTL %0, %1" : : "a"(Value), "Nd"(Port));
 }
 
 // Read from the io port:
-uint8_t 
-read_portb(uint16_t port) 
+UBYTE 
+ReadPortB(UWORD Port)
 {
-	uint8_t ret;
-	asm volatile("inb %1, %0" : "=a"(ret) : "Nd"(port));
+	UBYTE Value = 0;
+	asm volatile("INB %1, %0" : "=a"(Value) : "dN"(Port));
 
-	return (ret);
+	return (Value);
 }
 
-uint16_t 
-read_portw(uint16_t port) 
+UWORD 
+ReadPortW(UWORD Port) 
 {
-	uint16_t ret;
-	asm volatile("inw %1, %0" : "=a" (ret) : "dN" (port));
+	UWORD Value = 0;
+	asm volatile("INW %1, %0" : "=a" (Value) : "dN" (Port));
 
-	return (ret);
+	return (Value);
+}
+
+UDWORD
+ReadPortDW(UWORD Port)
+{
+	UDWORD Value = 0;
+	asm volatile("INL %1, %0" : "=a"(Value) : "dN"(Port));
+
+	return (Value);
 }
 
 // Tell the io port to wait:
-void 
-io_wait(void) 
+VOID 
+IO_Wait(VOID) 
 {
-	asm volatile("jmp 1f\n\t" "1:jmp 2f\n\t" "2:");
+	asm volatile("JMP 1f\n\t" "1:JMP 2f\n\t" "2:");
 }

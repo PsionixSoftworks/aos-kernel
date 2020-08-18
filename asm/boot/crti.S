@@ -1,13 +1,25 @@
-.section .init
-.global _init
-.type _init, @function
-_init:
-    push %ebp
-    movl %esp, %ebp
+/*
+ *  File: crti.S
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF ITS AUTHOR(S).
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
-.section .fini
-.global _fini
-.type _fini, @function
+.SECTION .init
+.GLOBAL _init
+.TYPE _init, @function
+_init:
+    PUSH %EBP
+    MOVL %ESP, %EBP
+
+.SECTION .fini
+.GLOBAL _fini
+.TYPE _fini, @function
 _fini:
-    push %ebp
-    movl %esp, %ebp
+    PUSH %EBP
+    MOVL %ESP, %EBP

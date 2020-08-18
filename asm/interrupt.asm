@@ -1,29 +1,29 @@
 %macro ISR_NOERRCODE 1
-  global isr%1
-  isr%1:
-    cli                         ; Disable interrupts firstly.
-    push byte 0                 ; Push a dummy error code.
-    push byte %1                ; Push the interrupt number.
-    jmp isr_common_stub         ; Go to our common handler code.
+  GLOBAL ISR_%1
+  ISR_%1:
+    CLI                         ; Disable interrupts firstly.
+    PUSH BYTE 0                 ; Push a dummy error code.
+    PUSH %1                ; Push the interrupt number.
+    JMP ISR_CommonStub         ; Go to our common handler code.
 %endmacro
 
 ; This macro creates a stub for an ISR which passes it's own
 ; error code.
 %macro ISR_ERRCODE 1
-  global isr%1
-  isr%1:
-    cli                         ; Disable interrupts.
-    push byte %1                ; Push the interrupt number
-    jmp isr_common_stub
+  GLOBAL ISR_%1
+  ISR_%1:
+    CLI                         ; Disable interrupts.
+    PUSH %1                ; Push the interrupt number
+    JMP ISR_CommonStub
 %endmacro
 
 %macro IRQ 2
-global irq%1
-irq%1:
-	cli
-	push byte 0
-	push byte %2
-	jmp irq_common_stub
+GLOBAL IRQ_%1
+IRQ_%1:
+	CLI
+	PUSH BYTE 0
+	PUSH BYTE %2
+	JMP IRQ_CommonStub
 %endmacro
 
 ISR_NOERRCODE 	0
@@ -58,6 +58,7 @@ ISR_NOERRCODE 	28
 ISR_NOERRCODE	  29
 ISR_NOERRCODE 	30
 ISR_NOERRCODE 	31
+ISR_NOERRCODE   128
 
 IRQ	0, 32
 IRQ	1, 33
@@ -76,60 +77,59 @@ IRQ	13, 45
 IRQ	14, 46
 IRQ	15, 47
 
-; In isr.c
-extern isr_handler
-extern irq_handler
-
-extern fault_handler
+EXTERN FaultHandler ; No longer used??
 
 ; This is our common ISR stub. It saves the processor state, sets
 ; up for kernel mode segments, calls the C-level fault handler,
 ; and finally restores the stack frame.
-isr_common_stub:
-    pusha
-    push ds
-    push es
-    push fs
-    push gs
-    mov ax, 0x10
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    mov eax, esp
-    push eax
-    mov eax, fault_handler
-    call eax
-    pop eax
-    pop gs
-    pop fs
-    pop es
-    pop ds
-    popa
-    add esp, 8
-    iret
+EXTERN ISR_Handler  ; In isr.c
+ISR_CommonStub:
+    PUSHA
 
-irq_common_stub:
-	pusha
+    MOV AX, DS
+    PUSH EAX
+
+    MOV AX, 0x10
+    MOV DS, AX
+    MOV ES, AX
+    MOV FS, AX
+    MOV GS, AX
+
+    CALL ISR_Handler
+
+    POP EBX
+    MOV DS, BX
+    MOV ES, BX
+    MOV FS, BX
+    MOV GS, BX
+
+    POPA
+    ADD ESP, 8
+    STI
+    IRET
+
+EXTERN IRQ_Handler
+IRQ_CommonStub:
+	PUSHA
 	
-	mov ax, ds
-	push eax
+	MOV AX, DS
+	PUSH EAX
 	
-	mov ax, 0x10
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
+	MOV AX, 0x10
+	MOV DS, AX
+	MOV ES, AX
+	MOV FS, AX
+	MOV GS, AX
 	
-	call irq_handler
+	CALL IRQ_Handler
 	
-	pop ebx
-	mov ds, bx
-	mov es, bx
-	mov fs, bx
-	mov gs, bx
+	POP EBX
+	MOV DS, BX
+	MOV ES, BX
+	MOV FS, BX
+	MOV GS, BX
 	
-	popa
-	add esp, 8
-	sti
-	iret
+	POPA
+	ADD ESP, 8
+	STI
+	IRET

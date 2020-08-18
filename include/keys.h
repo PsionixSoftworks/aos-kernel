@@ -1,9 +1,20 @@
+/*
+ *  File: keys.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef ADAMANTINE_KEYS
 #define ADAMANTINE_KEYS
 
+#include "aos-defs.h"
 #include "types.h"
-
-#if KERNEL32
 
 // Define the keys for down state:
 #ifndef KEYBOARD_KEY_DOWN
@@ -194,7 +205,7 @@ extern "C" {
 #endif
 
 // Define for normal keys:
-static string keys_normal[256] = 
+static STRING KeysNormal[256] = 
 {
 	"", "", 															// <None>, <Escape>,
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
@@ -210,7 +221,7 @@ static string keys_normal[256] =
 	"",																	// <Scroll Lock>,
 	"", "", "",															// Numpad 7, Numpad 8, Numpad 9
 	"-", 																// Numpad -,
-	"", "", "",			// Numpad 4, Numpad 5, Numpad 6,
+	"", "", "",															// Numpad 4, Numpad 5, Numpad 6,
 	"+",																// Numpad +,
 	"", "", "",															// Numpad 1, Numpad 2, Numpad 3,
 	"", "",																// Numpad 0, Numpad Del,
@@ -218,6 +229,7 @@ static string keys_normal[256] =
 	"", "",																// <Windows Key>, <Windows Key>,
 };
 
+/*
 // Define for keys when shift is held:
 static string keys_caps[256] = 
 {
@@ -242,10 +254,9 @@ static string keys_caps[256] =
 	"", "", "",															// <NONE>, <NONE>, "<NONE>"
 	"<ADM>", "<ADM>",													// <Windows Key>, <Windows Key>,
 };
+*/
 
 #if defined(__cplusplus)
 }
-#endif
-
 #endif
 #endif 	// !ADAMANTINE_KEYS

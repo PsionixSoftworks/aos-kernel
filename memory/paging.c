@@ -1,45 +1,57 @@
-#include "../include/mem_util.h"
+/*
+ *  File: paging.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
+#include "../include/mem-util.h"
 #include "../include/aos-defs.h"
 
 MODULE("paging", "0.01a");
 
-static uint32_t *page_directory = 0;
-static uint32_t *page_dir_loc = 0;
-static uint32_t *last_page = 0;
+static UDWORD *PageDirectory    = 0;
+static UDWORD *PageDirLocation  = 0;
+static UDWORD *LastPage         = 0;
 
-void 
-paging_map_virtual_to_phys(uint32_t virt, uint32_t phys) 
+VOID 
+PagingMapVirtualToPhysical(UDWORD Virtual, UDWORD Physical)
 {
-    uint16_t id = virt >> 22;
-    for (int i = 0; i < 1024; i++) 
+    UWORD ID = Virtual >> 22;
+    for (DWORD i = 0; i < 1024; i++) 
     {
-        last_page[i] = phys | 3;
-        phys += 4096;
+        LastPage[i] = Physical | 3;
+        Physical += 4096;
     }
-    page_directory[id] = ((uint32_t)last_page) | 3;
-    last_page = (uint32_t *)(((uint32_t)last_page) + 4096);
+    PageDirectory[ID] = ((UDWORD)LastPage) | 3;
+    LastPage = (UDWORD *)(((UDWORD)LastPage) + 4096);
 }
 
-void 
-paging_enable(void) 
+VOID 
+PagingEnable(VOID)
 {
-    asm volatile("mov %%eax, %%cr3": :"a"(page_dir_loc));
-    asm volatile("mov %cr0, %eax");
-    asm volatile("orl $0x80000000, %eax");
-    asm volatile("mov %eax, %cr0");
+    asm volatile("MOV %%EAX, %%CR3": :"a"(PageDirLocation));
+    asm volatile("MOV %CR0, %EAX");
+    asm volatile("ORL $0x80000000, %EAX");
+    asm volatile("MOV %EAX, %CR0");
 }
 
-void 
-paging_init(void) 
+VOID 
+PagingInit(VOID) 
 {
-    page_directory = (uint32_t *)0x400000;
-    page_dir_loc = (uint32_t)page_directory;
-    last_page = (uint32_t *)0x404000;
-    for (int i = 0; i < 1024; i++) 
+    PageDirectory = (UDWORD *)0x400000;
+    PageDirLocation = (UDWORD)PageDirectory;
+    LastPage = (UDWORD *)0x404000;
+    for (DWORD i = 0; i < 1024; i++) 
     {
-        page_directory[i] = 0 | 2;
+        PageDirectory[i] = 0x00 | 0x02;
     }
-    paging_map_virtual_to_phys(0, 0);
-    paging_map_virtual_to_phys(0x400000, 0x400000);
-    paging_enable();
+    PagingMapVirtualToPhysical(0x00, 0x00);
+    PagingMapVirtualToPhysical(0x400000, 0x400000);
+    PagingEnable();
 }

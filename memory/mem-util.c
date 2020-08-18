@@ -1,190 +1,190 @@
-#define KERNEL32	1
+/*
+ *  File: mem-util.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
 // Includes go here:
-#include "../include/mem_util.h"
+#include "../include/mem-util.h"
 #include "../include/mutex.h"
 #include "../include/types.h"
 #include "../include/terminal.h"
 #include "../include/io.h"
-#include "../include/aos-defs.h"
 
-MODULE("mem-util", "0.01a");
+MODULE("MemoryUtility", "0.01a");
 
 #define MAX_PAGE_ALLOCS		32
 
 /* Define mutexes here. */
 DEFINE_MUTEX(m_memcpy);
 
-uint32_t last_alloc = 0;
-uint32_t heap_end = 0;
-uint32_t heap_begin = 0;
-uint32_t pheap_begin = 0;
-uint32_t pheap_end = 0;
-uint8_t *pheap_desc = 0;
-uint32_t memory_used = 0;
+UDWORD LastAlloc 	= 0;
+UDWORD HeapEnd 		= 0;
+UDWORD HeapBegin 	= 0;
+UDWORD PHeapBegin 	= 0;
+UDWORD PHeapEnd 	= 0;
+UDWORD MemoryUsed 	= 0;
+UBYTE *PHeapDesc 	= 0;
 
-void 
-mm_init(uint32_t *kernel_end) 
+VOID 
+MM_Init(UDWORD *kernel_end) 
 {
-	last_alloc = kernel_end + 0x1000;
-	heap_begin = last_alloc;
-	pheap_end = 0x400000;
-	pheap_begin = pheap_end - (MAX_PAGE_ALLOCS * 4096);
-	heap_end = pheap_begin;
-	memset((char *)heap_begin, 0, heap_end - heap_begin);
-	pheap_desc = (uint8_t *)malloc(MAX_PAGE_ALLOCS);
+	LastAlloc = kernel_end + 0x1000;
+	HeapBegin = LastAlloc;
+	PHeapEnd = 0x400000;
+	PHeapBegin = PHeapEnd - (MAX_PAGE_ALLOCS * 4096);
+	HeapEnd = PHeapBegin;
+	MemSet((STRING)HeapBegin, 0, HeapEnd - HeapBegin);
+	PHeapDesc = (UBYTE *)Malloc(MAX_PAGE_ALLOCS);
 
-	terminal_printf("Kernel heap begins at %x\n", last_alloc);
+	TerminalPrintf("Kernel heap begins at %x\n", LastAlloc);
 }
 
-void 
-mm_print_out(void) 
+VOID
+MM_PrintOut(VOID) 
 {
-	terminal_printf("Memory Used: %x bytes allocated.\n", memory_used);
+	TerminalPrintf("Memory Used: %x bytes allocated.\n", MemoryUsed);
 }
 
-void 
-free(void *mem) 
+VOID 
+Free(VOID *Mem) 
 {
-	alloc_t *alloc = (mem - sizeof(alloc_t));
-	memory_used -= alloc->size + sizeof(alloc_t);
-	alloc->status = 0;
+	Alloc_t *Alloc = (Mem - sizeof(Alloc_t));
+	MemoryUsed -= Alloc->Size + sizeof(Alloc_t);
+	Alloc->Status = 0;
 }
 
-void 
-pfree(void *mem) 
+VOID 
+PFree(VOID *Mem) 
 {
-	if ((mem < pheap_begin) || (mem > pheap_end)) 
+	if ((Mem < PHeapBegin) || (Mem > PHeapEnd)) 
 		return;
 
-	uint32_t ad = (uint32_t)mem;
-	ad -= pheap_begin;
+	UDWORD ad = (UDWORD)Mem;
+	ad -= PHeapBegin;
 	ad /= 4096;
 
-	pheap_desc[ad] = 0;
+	PHeapDesc[ad] = 0;
 
 	return;
 }
 
-char *
-pmalloc(size_t size) 
+VOID *
+PMalloc(SIZE Size) 
 {
-	for (int i = 0; i < MAX_PAGE_ALLOCS; i++) 
+	for (DWORD i = 0; i < MAX_PAGE_ALLOCS; i++) 
 	{
-		if (pheap_desc[i]) 
+		if (PHeapDesc[i]) 
 			continue;
-		pheap_desc[i] = 1;
-		terminal_print("PAllocated from ");
-		terminal_print_value(pheap_begin + i * 4096, 16);
-		terminal_print(" to ");
-		terminal_print_value(pheap_begin + (i + 1) * 4096, 16);
-		terminal_print("\n");
+		PHeapDesc[i] = 1;
+		TerminalPrintf("PAllocated from %X to %X.\n", PHeapBegin + i * 4096, PHeapBegin + (i + 1) * 4096);
 
-		return ((char *)(pheap_begin + i * 4096));
+		return ((STRING)(PHeapBegin + i * 4096));
 	}
-	terminal_print("pmalloc: FATAL: failure!\n");
-	return 0;
+	TerminalPrint("PMalloc: FATAL: failure!\n");
+	return (0);
 }
 
-char *
-malloc(size_t size) 
+VOID *
+Malloc(SIZE Size) 
 {
-	if (!size) return;
-	uint8_t *mem = (uint8_t *)heap_begin;
-	while ((uint32_t)mem < last_alloc) 
+	if (!Size) return;
+	UBYTE *Mem = (UBYTE *)HeapBegin;
+	while ((UDWORD)Mem < LastAlloc) 
 	{
-		alloc_t *a = (alloc_t *)mem;
-		if (!a->size)
+		Alloc_t *a = (Alloc_t *)Mem;
+		if (!a->Size)
 			goto nalloc;
-		if (a->status) 
+		if (a->Status) 
 		{
-			mem += a->size;
-			mem += sizeof(alloc_t);
-			mem += 4;
+			Mem += a->Size;
+			Mem += sizeof(Alloc_t);
+			Mem += 4;
 			continue;
 		}
 
-		if (a->size >= size) 
+		if (a->Size >= Size) 
 		{
-			a->status = 1;
+			a->Status = 1;
 
-			terminal_print("RE:Allocated ");
-			terminal_print_value(size, 10);
-			terminal_print(" bytes from ");
-			terminal_print_value(mem + sizeof(alloc_t), 16);
-			terminal_print(" to ");
-			terminal_print_value(mem + sizeof(alloc_t) + size, 16);
+			TerminalPrintf("RE:Allocated %d bytes from %d to %d...\n", Size, Mem + sizeof(Alloc_t), Mem + sizeof(Alloc_t) + Size);
 
-			memset(mem + sizeof(alloc_t), 0, size);
-			memory_used += size + sizeof(alloc_t);
-			return ((char *)(mem + sizeof(alloc_t)));
+			MemSet(Mem + sizeof(Alloc_t), 0, Size);
+			MemoryUsed += Size + sizeof(Alloc_t);
+			return ((VOID *)(Mem + sizeof(Alloc_t)));
 		}
-		mem += a->size;
-		mem += sizeof(alloc_t);
-		mem += 4;
+		Mem += a->Size;
+		Mem += sizeof(Alloc_t);
+		Mem += 4;
 	}
 
 	nalloc:;
-	if (last_alloc + size + sizeof(alloc_t) >= heap_end) 
+	if (LastAlloc + Size + sizeof(Alloc_t) >= HeapEnd) 
 	{
 		PANIC("Cannot allocate. Out of memory...", 0, 0);
 	}
-	alloc_t *alloc = (alloc_t *)last_alloc;
-	alloc->status = 1;
-	alloc->size = size;
+	Alloc_t *Alloc = (Alloc_t *)LastAlloc;
+	Alloc->Status = 1;
+	Alloc->Size = Size;
 
-	last_alloc += size;
-	last_alloc += sizeof(alloc_t);
-	last_alloc += 4;
+	LastAlloc += Size;
+	LastAlloc += sizeof(Alloc_t);
+	LastAlloc += 4;
 
-	memory_used += size + 4 + sizeof(alloc_t);
-	memset((char *)((uint32_t)alloc + sizeof(alloc_t)), 0, size);
-	mm_print_out();
+	MemoryUsed += Size + 4 + sizeof(Alloc_t);
+	MemSet((VOID *)((UDWORD)Alloc + sizeof(Alloc_t)), 0, Size);
+	MM_PrintOut();
 
-	return ((char *)((uint32_t)alloc + sizeof(alloc_t)));
+	return ((VOID *)((UDWORD)Alloc + sizeof(Alloc_t)));
 }
 
-void *
-memcpy(const void *dest, const void *src, size_t count) 
+VOID *
+MemCpy(const VOID *Destination, const VOID *Source, SIZE Count) 
 {
-	mutex_lock(&m_memcpy);
-	char *dst8 = (char *)dest;
-	char *src8 = (char *)src;
+	MutexLock(&m_memcpy);
+	STRING DST8 = (STRING)Destination;
+	STRING SRC8 = (STRING)Source;
 
-	if (count & 1) 
+	if (Count & 1) 
 	{
-		dst8[0] = src8[0];
-		dst8++;
-		src8++;
+		DST8[0] = SRC8[0];
+		DST8++;
+		SRC8++;
 	}
 
-	count /= 2;
-	while (count--) 
+	Count /= 2;
+	while (Count--) 
 	{
-		dst8[0] = src8[0];
-		dst8[1] = src8[1];
+		DST8[0] = SRC8[0];
+		DST8[1] = SRC8[1];
 
-		dst8 += 2;
-		src8 += 2;
+		DST8 += 2;
+		SRC8 += 2;
 	}
-	mutex_unlock(&m_memcpy);
-	return ((void *)dest);
+	MutexUnlock(&m_memcpy);
+	return ((VOID *)Destination);
 }
 
-void *
-memset16(void *ptr, uint16_t value, size_t num) 
+VOID *
+MemSet16(VOID *Pointer,  UDWORD Value, SIZE Size)
 {
-	uint16_t *p = ptr;
-	while (num--)
-		*p++ = value;
-	return (ptr);
+	UWORD *p = Pointer;
+	while (Size--)
+		*p++ = Value;
+	return (Pointer);
 }
 
-void *
-memset(void *ptr, int value, size_t num) 
+VOID *
+MemSet(VOID *Pointer, DWORD Value, SIZE Number) 
 {
-	unsigned char *p = ptr;
-	while (num--)
-		*p++ = (unsigned char)value;
-	return (ptr);
+	UBYTE *p = Pointer;
+	while (Number--)
+		*p++ = (UBYTE)Value;
+	return (Pointer);
 }

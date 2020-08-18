@@ -1,4 +1,26 @@
+/*
+ *  File: adamantine.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #include "../include/adamantine.h"
-#include "../include/aos-defs.h"
 
 MODULE("adamantine", "0.01a");
+
+static STRING
+    M_Name,
+    M_Version;
+
+VOID 
+ModuleCreate(STRING Name, STRING Version)
+{
+    M_Name      = Name;
+    M_Version   = Version;
+}

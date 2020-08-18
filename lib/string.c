@@ -1,3 +1,15 @@
+/*
+ *  File: string.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #include "../include/string.h"
 
 char *
@@ -44,7 +56,7 @@ itoa( int value, char * str, int base )
     return (rc);
 }
 
-int 
+int
 strcmp(string str1, string str2) 
 {
 	int i = 0;
@@ -65,36 +77,38 @@ strcmp(string str1, string str2)
 	return (failed);
 }
 
-string strcpy(char *src, char *dest) 
+string
+strcpy(string src, string dest) 
 {
-	do 
-    {
-		*dest++ = *src++;
-	} while (*src != 0);
+	unsigned i;
+    for (i = 0; src[i] != '\0'; ++i)
+        dest[i] = src[i];
+    dest[i] = '\0';
+
+    return (dest);
 }
 
-string strcat(char *src, char *dest) 
+string
+strcat(string dest, string src) 
 {
-	while (*dest == 0) 
-    {
-		*dest = *dest++;
-	}
-	
-	do 
-    {
-		*dest++ = *src++;
-	} while (*src != 0);
-	return (dest);
+	size_t i, j;
+    for (i = 0; dest[i] != '\0'; i++);
+    for (j = 0; src[j] != '\0'; j++)
+        dest[i + j] = src[j];
+    dest[i + j] = '\0';
+    return dest;
 }
 
-size_t strlen(const string s) 
+size_t
+strlen(const string s) 
 {
 	size_t i = 0;
 	while (s[i] != 0) i++;
 	return (i);
 }
 
-size_t str_backspace(string str, char c) 
+size_t
+str_backspace(string str, char c) 
 {
     size_t i = strlen(str);
     i--;
@@ -110,7 +124,7 @@ size_t str_backspace(string str, char c)
     return (0);
 }
 
-size_t strsplit(string str, char *delim) 
+size_t strsplit(string str, char delim) 
 {
     size_t n = 0;
     uint32_t i = 0;
@@ -125,4 +139,30 @@ size_t strsplit(string str, char *delim)
     }
     n++;
     return (n);
+}
+
+void 
+to_lower(string str)
+{
+    while(*str != '\0')
+    {
+        if(*str >= 65 && *str <= 90)
+        {
+            *str = *str + 32;
+        }
+        str++;
+    }
+}
+
+void
+to_upper(string str)
+{
+    while (*str != '\0')
+    {
+        if (*str >= 0x61 && *str <= 0x7A)
+        {
+            *str = *str - 32;
+        }
+        str++;
+    }
 }

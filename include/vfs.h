@@ -1,9 +1,22 @@
+/*
+ *  File: vfs.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef _VIRTUAL_FILESYS_
 #define _VIRTUAL_FILESYS_
 
 #include "types.h"
 #include "string.h"
 #include "device.h"
+#include "aos-defs.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -21,7 +34,7 @@ typedef struct aos_fs
     uint8_t (*write_file)(char *fn, char *buf, uint32_t len, struct aos_device *, void *);
     uint8_t (*exists)(char *filename, struct aos_device *, void *);
     uint8_t (*mount)(struct aos_device *, void *);
-    uint8_t *priv_data;
+    int8_t *priv_data;
 } filesystem_t;
 
 typedef struct mount_info 

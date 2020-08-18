@@ -1,10 +1,21 @@
+/*
+ *  File: pic.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER
 #define ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER
 
 // Includes go here:
+#include "aos-defs.h"
 #include "types.h"
-
-#if KERNEL32
 
 // Check if the PIC devices have been defined:
 #ifndef PIC_DEVICE
@@ -38,17 +49,15 @@ extern "C" {
 #endif
 
 // Declare global functions:
-extern void pic_send_eoi(uint8_t irq);					// Send the end of instruction to the PIC.
-extern void pic_remap(void);		                    // Remap PIC.
-extern void irq_set_mask(uint8_t irq_line);			    // Set the IRQ mask.
-extern void irq_clear_mask(uint8_t irq_line);			// Clear the IRQ mask.
-extern uint16_t pic_get_irr(void);						// Get (IRR?).
-extern uint16_t pic_get_isr(void);						// Get the interrupt service routine.
-uint16_t __pic_get_irq_register(int ocw3);				// Get the IRQ register.
+EXTERN  SET_VOID(PIC_SendEOI(UBYTE IRQ));					        // Send the end of instruction to the PIC.
+EXTERN  SET_VOID(PIC_Remap(VOID));		                            // Remap PIC.
+EXTERN  SET_VOID(IRQ_SetMask(UBYTE IRQ_Line));			            // Set the IRQ mask.
+EXTERN  SET_VOID(IRQ_ClearMask(UBYTE IRQ_Line));			            // Clear the IRQ mask.
+EXTERN  SET_UWORD(PIC_GetIRR(VOID));						        // Get (IRR?).
+EXTERN  SET_UWORD(PIC_GetISR(VOID));						        // Get the interrupt service routine.
+EXTERN  SET_UWORD(PIC_GetIRQRegister(DWORD OCW3));				    // Get the IRQ register.
 
 #if defined(__cplusplus)
 }
-#endif
-
 #endif
 #endif	// !ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER

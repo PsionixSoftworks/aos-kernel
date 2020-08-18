@@ -1,38 +1,48 @@
-#define KERNEL32	1
+/*
+ *  File: device.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
+#include "../include/aos-defs.h"
 #include "../include/device.h"
 #include "../include/driver.h"
-#include "../include/mem_util.h"
+#include "../include/mem-util.h"
 #include "../include/mutex.h"
 #include "../include/io.h"
 #include "../include/terminal.h"
-#include "../include/aos-defs.h"
 
-MODULE("device", "0.01a");
+MODULE("Device", "0.01a");
 
-typedef struct aos_device device_t;
-static device_t *device = 0;
+typedef struct AOS_Device Device_t;
+static Device_t *Device = 0;
 
-void 
-aos_device_init(uint32_t device_id, string device_name) 
+VOID 
+AOS_DeviceInit(UDWORD DeviceID, STRING DeviceName) 
 {
-    size_t size = 64 * sizeof(device_t);
+    SIZE Size = 64 * sizeof(Device_t);
 
-    device = (device_t *)malloc(size);
-    memset(device, 0, size);
+    Device = (Device_t *)Malloc(Size);
+    MemSet(Device, 0, Size);
 
-    device->device_id       = device_id;
-    device->device_name     = device_name;
-    device->device_status   = 1;
+    Device->DeviceID        = DeviceID;
+    Device->DeviceName      = DeviceName;
+    Device->DeviceStatus    = 1;
 
     INFO("Initialization of device complete: ");
-    terminal_print(device_name);
-    terminal_println();
+    TerminalPrint(DeviceName);
+    TerminalPrintln();
     return;
 }
 
-void 
-aos_device_free(void) 
+VOID
+AOS_DeviceFree(VOID) 
 {
-    free(device);
+    Free(Device);
 }

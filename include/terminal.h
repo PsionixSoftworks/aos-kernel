@@ -1,47 +1,62 @@
+/*
+ *  File: terminal.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef _AOS_TERMINAL_
 #define _AOS_TERMINAL_
 
+#include "aos-defs.h"
 #include "types.h"
 #include "string.h"
 #include "cpu.h"
-
-#if KERNEL32
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-#define INFO(msg)				terminal_printf("[INFO]: %s\n", msg);
-#define WARNING(msg)			terminal_printf("[WARNING]: %s\n", msg);
-#define ERROR(msg)				terminal_printf("[ERROR]: %s\n", msg); cpu_halt();
-#define PANIC(msg, i1, i2)		panic(msg, __FILE__, __LINE__);
-#define ASSERT(b) 				((b) ? (void)0 : panic_assert(__FILE__, __LINE__, #b))
+#define INFO(msg)				TerminalPrintf("[INFO]: %s\n", msg);
+#define WARNING(msg)			TerminalPrintf("[WARNING]: %s\n", msg);
+#define ERROR(msg)				TerminalPrintf("[ERROR]: %s\n", msg); CPU_Halt();
+#define PANIC(msg, i1, i2)		Panic(msg, __FILE__, __LINE__);
+#define ASSERT(b) 				((b) ? (void)0 : PanicAssert(__FILE__, __LINE__, #b))
 
-struct aos_terminal 
+typedef struct AOS_Terminal Terminal_t;
+
+struct AOS_Terminal 
 {
-	bool is_initialized;
-	uint32_t x;
-	uint32_t y;
-	uint8_t fore_color;
-	uint8_t back_color;
-} __attribute__((__packed__));
-typedef struct aos_terminal terminal_t;
+	BOOL IsInitialized;
+	UDWORD x;
+	UDWORD y;
+	UBYTE ForeColor;
+	UBYTE BackColor;
+} PACKED;
 
-extern void terminal_init(uint8_t back_color, uint8_t fore_color);
-extern void terminal_clear_screen(void);
-extern void terminal_print(const char *c);
-extern int terminal_printf(const char *format, ...);
-extern void terminal_println(void);
-extern void terminal_print_value(int32_t value, uint8_t base);
-extern char terminal_getchar(char c);
-extern char *terminal_gets(char *str);
-
-extern void panic(const string msg, const string file, uint32_t line);
-extern void panic_assert(const char *file, uint32_t line, const char *desc);
+EXTERN 	SET_VOID(TerminalInit(UBYTE BackColor, UBYTE ForeColor));
+EXTERN 	SET_VOID(TerminalClearScreen(VOID));
+EXTERN 	SET_VOID(TerminalPrint(const STRING c));
+EXTERN 	SET_VOID(TerminalPrintHex(UDWORD Value));
+EXTERN 	SET_VOID(TerminalPrintDec(DWORD Value));
+EXTERN 	SET_DWORD(TerminalPrintf(const STRING Format, ...));
+EXTERN 	SET_VOID(TerminalPrintln(VOID));
+EXTERN 	SET_VOID(TerminalPrintValue(DWORD Value, UBYTE Base));
+EXTERN 	SET_CHAR(Terminal_GetChar(CHAR c));
+EXTERN 	SET_STRING(TerminalGets(STRING str));
+EXTERN 	SET_VOID(TerminalMoveCursor(UDWORD x, UDWORD y));
+EXTERN 	SET_UDWORD(TerminalGetCursorX(VOID));
+EXTERN 	SET_UDWORD(TerminalGetCursorY(VOID));
+EXTERN 	SET_VOID(Panic(const STRING Message, const STRING File, UDWORD Line));
+EXTERN 	SET_VOID(PanicAssert(const STRING File, UDWORD Line, const STRING Descrition));
 
 #if defined(__cplusplus)
 }
 #endif
 
-#endif
 #endif

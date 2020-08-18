@@ -1,10 +1,21 @@
+/*
+ *  File: gdt.h
+ *  Author: Vincent Cupo
+ *  
+ *  THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ *  WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE
 #define ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE
 
 // Includes go here:
+#include "../aos-defs.h"
 #include "../types.h"
-
-#if KERNEL32
 
 #ifndef GLOBAL_DESCRIPTOR
 #define GLOBAL_DESCRIPTOR
@@ -14,32 +25,27 @@
 extern "C" {
 #endif
 
-struct gdt_entry_struct 
+struct GDT_Entry 
 {
-   uint16_t limit_low;           // The lower 16 bits of the limit.
-   uint16_t base_low;            // The lower 16 bits of the base.
-   uint8_t  base_middle;         // The next 8 bits of the base.
-   uint8_t  access;              // Access flags, determine what ring this segment can be used in.
-   uint8_t  granularity;
-   uint8_t  base_high;           // The last 8 bits of the base.
-} __attribute__((packed));
-typedef struct gdt_entry_struct gdt_entry_t;
+   UWORD                LimitLo;                                  // The lower 16 bits of the limit.
+   UWORD                BaseLo;                                   // The lower 16 bits of the base.
+   BYTE                 BaseMiddle;                               // The next 8 bits of the base.
+   BYTE                 Access;                                   // Access flags, determine what ring this segment can be used in.
+   BYTE                 Granularity;
+   BYTE                 BaseHi;                                   // The last 8 bits of the base.
+} PACKED;
+typedef struct GDT_Entry GDT_Entry_t;
 
-struct gdt_ptr_struct 
+struct PGDT 
 {
-   uint16_t limit;               // The upper 16 bits of all selector limits.
-   uint32_t base;                // The address of the first gdt_entry_t struct.
-}
- __attribute__((packed));
-typedef struct gdt_ptr_struct gdt_ptr_t;
+   UWORD Limit;                                                   // The upper 16 bits of all selector limits.
+   UDWORD Base;                                                   // The address of the first gdt_entry_t struct.
+} PACKED;
+typedef struct PGDT PGDT_t;
 
-//extern void load_gdt(void);
-void gdt_init(void);
-//void encode_gdt_entry(uint8_t *target, gdt_descriptor_t source);
+EXTERN   SET_VOID(GDT_Init(VOID));
 
 #if defined(__cplusplus)
 }
 #endif
-
-#endif
-#endif	// !ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE
+#endif	                                                         // !ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE

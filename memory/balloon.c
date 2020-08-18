@@ -1,30 +1,40 @@
-#define KERNEL32	1
+/*
+ *  File: balloon.c
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
 
 #include "../include/balloon.h"
+#include "../include/mem-util.h"
 #include "../include/mutex.h"
 #include "../include/terminal.h"
-#include "../include/mem_util.h"
-#include "../include/aos-defs.h"
 
-MODULE("balloon", "0.01a");
+MODULE("Balloon", "0.01a");
 
-static balloon_t balloon_mm;
-bool 
-balloon_init(size_t size) 
+static Balloon_t Balloon;
+
+BOOL
+BalloonInit(SIZE Size) 
 {
-	balloon_mm.valid = 	
+	Balloon.Valid = 	
 	(
-		(size >= BALLOON_SIZE_MIN)	||
-		(size == BALLOON_SIZE_1) 	||
-		(size == BALLOON_SIZE_2) 	||
-		(size == BALLOON_SIZE_4) 	||
-		(size == BALLOON_SIZE_8) 	||
-		(size == BALLOON_SIZE_16) 	||
-		(size == BALLOON_SIZE_32) 	||
-		(size == BALLOON_SIZE_64)	||
-		(size == BALLOON_SIZE_MAX)
+		(Size == BALLOON_SIZE_MIN)	||
+		(Size == BALLOON_SIZE_1) 	||
+		(Size == BALLOON_SIZE_2) 	||
+		(Size == BALLOON_SIZE_4) 	||
+		(Size == BALLOON_SIZE_8) 	||
+		(Size == BALLOON_SIZE_16) 	||
+		(Size == BALLOON_SIZE_32) 	||
+		(Size == BALLOON_SIZE_64)	||
+		(Size == BALLOON_SIZE_MAX)
 	);
-	if (!balloon_mm.valid) 
+	if (!Balloon.Valid) 
 	{
 		PANIC("Balloon memory size must be one of the supported values!", 0, 0);
 		return;
@@ -32,36 +42,45 @@ balloon_init(size_t size)
 
 	// Allocate a specified balloon size for the data structure.
 	// This code should only be reachable if the size is one of the macro's.
-	balloon_mm.bm_buffer = (uint32_t *)malloc(size);
-	balloon_mm.size = size;
+	Balloon.Buffer = (UDWORD *)Malloc(Size);
+	Balloon.Size = Size;
 }
 
-uint32_t *
-balloon_inflate(uint32_t amount, uint32_t value) 
+UDWORD *
+BalloonInflate(UDWORD Amount, UDWORD Value) 
 {
-	if (amount > balloon_mm.size) 
+	if (Amount > Balloon.Capacity) 
 	{
-		uint32_t *result = balloon_pop();
-		return (result);
+		UDWORD *Result = BalloonPop();
+		return (Result);
 	}
-	balloon_mm.data = memset(balloon_mm.bm_buffer, value, balloon_mm.size);
+	Balloon.Data = MemSet(Balloon.Buffer, Value, Balloon.Size);
 }
 
-void balloon_cleanup(void) 
+VOID
+BalloonCleanup(VOID) 
 {
-	if ((balloon_mm.size <= BALLOON_SIZE_MIN) || balloon_mm.size > BALLOON_SIZE_MAX)
+	if ((Balloon.Size <= BALLOON_SIZE_MIN) || Balloon.Size > BALLOON_SIZE_MAX)
 		return;
-	free(balloon_mm.bm_buffer);
+	Free(Balloon.Buffer);
 }
 
-uint32_t *balloon_pop(void) 
+UDWORD *
+BalloonPop(VOID) 
 {
-	return (balloon_mm.data);
+	return (Balloon.Data);
 }
 
-size_t balloon_size(void) 
+SIZE
+BalloonSize(VOID)
 {
-	return (balloon_mm.size);
+	return (Balloon.Size);
+}
+
+SIZE
+BalloonCapacity(VOID)
+{
+	return (Balloon.Capacity);
 }
 
 /*

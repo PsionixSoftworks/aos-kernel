@@ -1,10 +1,20 @@
+/*
+ *  File: vga.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef _VGA_
 #define _VGA_
 
-#include "types.h"
 #include "aos-defs.h"
-
-#if KERNEL32
+#include "types.h"
 
 #if !defined(VGA_MODE)
 #define VGA_GRAPHICS_MODE           0xA0000
@@ -15,7 +25,7 @@
 #define VGA_WIDTH                   80
 #define VGA_HEIGHT                  25
 
-enum vga_color 
+enum VgaColor 
 {
     SYSTEM_COLOR_BLACK,
     SYSTEM_COLOR_BLUE,
@@ -35,5 +45,4 @@ enum vga_color
     SYSTEM_COLOR_WHITE
 };
 
-#endif
 #endif

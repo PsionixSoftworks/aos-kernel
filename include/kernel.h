@@ -1,59 +1,49 @@
+/*
+ *  File: kernel.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef _AOS_KERNEL_
 #define _AOS_KERNEL_
 
 // Handle other includes here:
+#include "aos-defs.h"
 #include "types.h"
-#include "init.h"
 
-#if KERNEL32
-
-#define KERNEL_MODE_NORMAL		0x10
-#define KERNEL_MODE_SAFE		0x20
-#define KERNEL_MODE_NO_GUI		0x30
+#define KERNEL_MODE_NORMAL		0x0
+#define KERNEL_MODE_SAFE		0x1
+#define KERNEL_MODE_NO_GUI		0x2
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-typedef void(*kfunc_t)(uint8_t);
+typedef VOID(*KFunc_t)(BYTE);
 
 // Declare the global functions used by the kernel:
-extern void kernel_init(uint8_t mode);					// The kernel's init function for startup.
-extern void kernel_update(void);				// The kernel's update function to run the os in a constant loop.
-extern void kernel_quit(uint8_t status);					// Shuts down the kernel when execution stops.
-extern bool kernel_is_running(void);			// Checks to see if the kernel is running.
-extern void free_system_resources(uint8_t);
-extern void kernel_begin_mode(kfunc_t init_func, uint8_t mode);
-
-static __initcall void kernel_current_run_mode_start(uint8_t mode)
-{
-	switch (mode)
-	{
-		case KERNEL_MODE_NORMAL:
-			kernel_begin_mode(kernel_init, KERNEL_MODE_NORMAL);
-			break;
-		case KERNEL_MODE_SAFE:
-			kernel_begin_mode(kernel_init, KERNEL_MODE_SAFE);
-			break;
-		case KERNEL_MODE_NO_GUI:
-			kernel_begin_mode(kernel_init, KERNEL_MODE_NO_GUI);
-			break;
-		default:
-			kernel_begin_mode(kernel_init, KERNEL_MODE_NORMAL);
-			break;
-	}
-}
+EXTERN SET_VOID(KernelInit(UBYTE Mode));								// The kernel's init function for startup.
+EXTERN SET_VOID(KernelUpdate(VOID));								// The kernel's update function to run the os in a constant loop.
+EXTERN SET_VOID(KernelQuit(UBYTE Status));							// Shuts down the kernel when execution stops.
+EXTERN SET_VOID(FreeSystemResources(BYTE));
+EXTERN SET_VOID(KernelBeginMode(KFunc_t InitFunc, BYTE Mode));
+EXTERN SET_BOOL(KernelIsRunning(void));								// Checks to see if the kernel is running.
 
 // Define the kernel struct, it will control every aspect of the kernel:
-typedef struct 
+typedef struct AOS_Kernel
 {
-	bool running;										// This needs to be set to true in order to keep the kernel_update function running.
-	uint8_t exit_status;
-} kernel_t;			// Define the kernel type.
+	BOOL 				Running;									// This needs to be set to true in order to keep the kernel_update function running.
+	BYTE 				ExitStatus;
+} Kernel_t;			// Define the kernel type.
 
 #if defined(__cplusplus)
 }
 #endif
 
-#endif	// !KERNEL32
 #endif	// !ADAMANTINE_KERNEL

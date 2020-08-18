@@ -1,3 +1,15 @@
+/*
+ *  File: centrix-core.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef CENTRIX_CORE
 #define CENTRIX_CORE
 
@@ -5,9 +17,9 @@
 extern "C" {
 #endif
 
+#include "aos-defs.h"
 #include "types.h"
 #include "string.h"
-#include "aos-defs.h"
 
 #if !defined(CENTRIX_MODE1) || !defined(CENTRIX_ALPHA)
 /* We'll just ignore it for now. */
@@ -15,24 +27,17 @@ extern "C" {
 #include "centrix/centrix_unit.h"
 #include "centrix/base32.h"
 
-struct _BASE32;
-
-
-
 #endif
 
 #if defined(DEBUG_MODE)
 #include "centrix/debug.h"
-#pragma pack(2)
 #endif
 
-#define KERNEL_INSTALL(name)        KernelInstall(name);
-
-struct centrix_core 
+struct CentrixCore 
 {
-    uint32_t os_id;
-    uint32_t os_signature;
-    string os_name;
+    UDWORD              OS_ID;
+    UDWORD              OS_Signature;
+    STRING              OS_Name;
 };
 
 void *KernelInstall(string name);

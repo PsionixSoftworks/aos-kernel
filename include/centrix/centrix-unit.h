@@ -1,5 +1,5 @@
 /*
- *  File: cmd.h
+ *  File: centrix-unit.h
  *  Author: Vincent Cupo
  *  
  * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
@@ -10,25 +10,17 @@
  *
  */
 
-#ifndef _COMMAND_
-#define _COMMAND_
+#ifndef _CENTRIX_UNIT_
+#define _CENTRIX_UNIT_
 
-#include "../aos-defs.h"
+#include "base32.h"
 #include "../types.h"
-#include "../string.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-struct CommandLine 
-{
-    STRING              *CMD_List;
-};
-typedef struct CommandLine Command_t;
 
-EXTERN  SET_VOID(CommandLineInit(VOID));
-EXTERN  SET_UBYTE(ParseCommand(STRING CMD));
 
 #if defined(__cplusplus)
 }

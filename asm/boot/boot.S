@@ -2,56 +2,54 @@
  *  File: boot.S
  *  Author: Vincent Cupo
  *  
- *  This file is the initial startup point of the bootloader.
- *  It is responsible for calling on GRUB and the kernel for boot.
- *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF ITS AUTHOR(S).
+ * 
  *  PROPERTY OF PSIONIX SOFTWORKS LLC.
- *  Copyright (c) 2020, Psionix Softworks LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
  *
  */
 
 #include "crti.S"
 #include "crtn.S"
 
-#ifdef KBOOT
-#endif
-
+.CODE32
 /* The .multiboot section is used to initalize GRUB and start the kernel. */
-.section .multiboot
-.align 4
-.long MAGIC
-.long FLAGS
-.long CHECKSUM
+.SECTION .multiboot
+.ALIGN 4
+.LONG MAGIC
+.LONG FLAGS
+.LONG CHECKSUM
 
 /* Declare the .text section for the entry point and other functions. */
-.section .text
-.global _start
-.type _start @function
+.SECTION .text
+.GLOBAL _start
+.TYPE _start @function
 _start:
-    mov $stack_top, %esp
-    call kmain
-    cli
-1:  hlt
-    jmp 1b
-.size _start, . - _start
+    MOV $stack_top, %esp
+    CALL KMain
+    CLI
+1:  HLT
+    JMP 1b
+.SIZE _start, . - _start
 
 /* Initialize static functions that will not change during runtime. */
-.section .data
+.SECTION .data
 
 /* Special section for read-only data. */
-.section .special
+.SECTION .special
 
 /* Place the Multiboot stuff in read-only data because it'll never change. */
-.section .rodata
-.set ALIGN,      (1 << 0)
-.set MEMINFO,    (1 << 1)
-.set FLAGS,      (ALIGN | MEMINFO)
-.set MAGIC,      (0x1BADB002)
-.set CHECKSUM,   -(MAGIC + FLAGS)
+.SECTION .rodata
+.SET ALIGN,      (1 << 0)
+.SET MEMINFO,    (1 << 1)
+.SET FLAGS,      (ALIGN | MEMINFO)
+.SET MAGIC,      (0x1BADB002)
+.SET CHECKSUM,   -(MAGIC + FLAGS)
 
 /* Declare the stack pointer info. */
-.section .bss
-.align 16
+.SECTION .bss
+.ALIGN 16
 stack_bottom:
-    .skip 16384
+    .SKIP 16384
 stack_top:

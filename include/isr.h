@@ -1,9 +1,21 @@
+/*
+ *  File: isr.h
+ *  Author: Vincent Cupo
+ *  
+ * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
+ * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
+ * 
+ *  PROPERTY OF PSIONIX SOFTWORKS LLC.
+ *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ *
+ */
+
 #ifndef ADAMANTINE_ISR
 #define ADAMANTINE_ISR
 
+#include "aos-defs.h"
 #include "types.h"
-
-#if KERNEL32
+#include "string.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -26,20 +38,18 @@ extern "C" {
 #define IRQ14		46
 #define IRQ15		47
 
-typedef struct registers 
+typedef struct AOS_Registers 
 {
-	uint32_t gs, fs, es, ds;
-	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-	uint32_t int_no, err_code;
-	uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+	UDWORD GS, FS, ES, DS;
+	UDWORD EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX;
+	UDWORD INT_No, ERR_Code;
+	UDWORD EIP, CS, EFLAGS, USERESP, SS;
+} Registers_t;
 
-typedef void (*isr_t)(registers_t);
-void register_interrupt_handler(uint8_t n, isr_t handler);
+typedef VOID(*ISR_t)(Registers_t);
+EXTERN	SET_VOID(RegisterInterruptHandler(UBYTE N, ISR_t Handler));
 
 #if defined(__cplusplus)
 }
-#endif
-
 #endif
 #endif	// !ADAMANTINE_ISR
