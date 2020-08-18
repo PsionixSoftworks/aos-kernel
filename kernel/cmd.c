@@ -27,7 +27,7 @@ command_line_init(void)
 uint8_t 
 __parse_command(string cmd) 
 {
-    for (int i = 0; i < sizeof(uint8_t); i++) 
+    for (uint8_t i = 0; i < sizeof(uint8_t); i++) 
     {
         if (cmd == command.cmd_list[i]) 
         {

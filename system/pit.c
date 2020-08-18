@@ -23,9 +23,7 @@ static void
 timer_callback(registers_t regs) 
 {
 	tick++;
-	terminal_print("Tick: ");
-	terminal_print_value(tick, 10);
-	terminal_println();
+	terminal_printf("Tick: %d\n", tick);
 }
 
 void 
@@ -42,4 +40,3 @@ timer_init(uint32_t frequency)
 	write_portb(0x40, l);
 	write_portb(0x40, h);
 }
-

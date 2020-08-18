@@ -8,7 +8,8 @@ NASM						:=	nasm -f elf32
 ASM							:= 	i686-elf-as
 COMPILER_C					:= 	i686-elf-gcc -c
 COMPILER_CPP				:=	i686-elf-g++ -c
-C_FLAGS						:= 	-std=gnu99 -ffreestanding -nostdlib -Wall -Wextra
+CPP_FLAGS					:= 	-ffreestanding -nostdlib -Wall -Wextra
+C_FLAGS						:= 	-std=gnu99 $(CPP_FLAGS)
 
 # Set the basic paths and compilation:
 BIN 						:= 	aos32.bin
@@ -33,6 +34,8 @@ SYSTEM_PATH					:= 	system
 TOOL_PATH					:= 	tool
 USER_PATH					:= 	user
 X86_PATH					:=	x86
+
+AOS_DIR						:= 	AOS
 
 ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 								$(ASSEMB_PATH)/boot/crti.S		\
@@ -104,12 +107,17 @@ OUTPUT_FILES 				:= 	boot.new.o		\
 								ldt.o			\
 								idt.o			\
 								tss.o			\
-								syscall.o		
+								syscall.o		\
+								AOS/Adamantine.o	\
+								AOS/Registry.o
+
+AOS_OUTPUT					:= 	$(AOS_DIR)/Adamantine.o	\
+								$(AOS_DIR)/Registry.o	
 
 # Compile all of the files into the iso:
 .PHONY: all
 all: bootloader kernel linker iso
-	@echo Make has completed compilation of AdamantineOS.
+	@echo Make has completed compilation of AdamantineOS Kernel.
 
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
@@ -124,7 +132,7 @@ bootloader: $(ASM_FILES_IN)
 kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(MAIN_PATH)/main.c -o main.o $(C_FLAGS)
 	$(COMPILER_C) $(MAIN_PATH)/adamantine.c -o adamantine.o $(C_FLAGS)
-	$(COMPILER_CPP) $(KERNEL_PATH)/kernel.cpp -o kernel.o $(C_FLAGS)
+	$(COMPILER_CPP) $(KERNEL_PATH)/kernel.cpp -o kernel.o $(CPP_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/cmd.c -o cmd.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
@@ -150,9 +158,11 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(X86_PATH)/idt.c -o idt.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
+	$(COMPILER_CPP) AOS/Adamantine/Adamantine.cpp -o Adamantine.o $(CPP_FLAGS)
+	$(COMPILER_CPP) AOS/Adamantine/Registry.cpp -o Registry.o $(CPP_FLAGS)
  
 # Link all input files into one file:
-linker: linker.ld $(INPUT_FILES)
+linker: linker.ld $(OUTPUT_FILES) $(AOS_OUT)
 	$(LINKER) -o $(BIN) $(C_FLAGS) $(OUTPUT_FILES) -lgcc
 
 # Build the Kernel iso:

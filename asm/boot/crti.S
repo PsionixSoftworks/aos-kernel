@@ -10,16 +10,16 @@
  *
  */
 
-.section .init
-.global _init
-.type _init, @function
+.SECTION .init
+.GLOBAL _init
+.TYPE _init, @function
 _init:
-    push %ebp
-    movl %esp, %ebp
+    PUSH %EBP
+    MOVL %ESP, %EBP
 
-.section .fini
-.global _fini
-.type _fini, @function
+.SECTION .fini
+.GLOBAL _fini
+.TYPE _fini, @function
 _fini:
-    push %ebp
-    movl %esp, %ebp
+    PUSH %EBP
+    MOVL %ESP, %EBP

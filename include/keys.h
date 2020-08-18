@@ -228,6 +228,7 @@ static string keys_normal[256] =
 	"", "",																// <Windows Key>, <Windows Key>,
 };
 
+/*
 // Define for keys when shift is held:
 static string keys_caps[256] = 
 {
@@ -252,6 +253,7 @@ static string keys_caps[256] =
 	"", "", "",															// <NONE>, <NONE>, "<NONE>"
 	"<ADM>", "<ADM>",													// <Windows Key>, <Windows Key>,
 };
+*/
 
 #if defined(__cplusplus)
 }

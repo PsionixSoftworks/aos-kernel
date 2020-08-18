@@ -28,6 +28,13 @@
 extern "C" {
 #endif  /* !__cplusplus */
 
+static string OS_MODE[] =
+{
+    "Normal Mode",
+    "Safe Mode",
+    "NoGUI Mode",
+};
+
 /*
  * Function Name: init_all();
  * 
@@ -35,10 +42,10 @@ extern "C" {
  * and setup the pre-os loading.
  */
 static void __initcall
-init_all(void) 
+init_all(uint8_t mode)
 {
     /* Print the startup message. */
-    terminal_printf("%s - Version: %s, Running in 'NoGUI Mode'.\n", OS_NAME, OS_VERSION);
+    terminal_printf("%s - Version: %s, Running in '%s'.\n", OS_NAME, OS_VERSION, OS_MODE[mode]);
 
     /* Load up the kernel module's */
     INFO("Getting setup...");

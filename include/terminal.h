@@ -40,6 +40,8 @@ typedef struct aos_terminal terminal_t;
 extern void terminal_init(uint8_t back_color, uint8_t fore_color);
 extern void terminal_clear_screen(void);
 extern void terminal_print(const char *c);
+extern void terminal_print_hex(int32_t value);
+extern void terminal_print_dec(int32_t value);
 extern int terminal_printf(const char *format, ...);
 extern void terminal_println(void);
 extern void terminal_print_value(int32_t value, uint8_t base);

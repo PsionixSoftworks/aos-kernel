@@ -16,9 +16,9 @@
 // Handle other includes here:
 #include "types.h"
 
-#define KERNEL_MODE_NORMAL		0x10
-#define KERNEL_MODE_SAFE		0x20
-#define KERNEL_MODE_NO_GUI		0x30
+#define KERNEL_MODE_NORMAL		0x0
+#define KERNEL_MODE_SAFE		0x1
+#define KERNEL_MODE_NO_GUI		0x2
 
 #if defined(__cplusplus)
 extern "C" {

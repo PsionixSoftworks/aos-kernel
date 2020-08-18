@@ -21,8 +21,8 @@ are_interrupts_enabled()
     unsigned long flags;
     asm volatile 
     ( 
-        "pushf\n\t"
-        "pop %0"
+        "PUSHF\n\t"
+        "POP %0"
         : "=g"(flags) 
     );
 

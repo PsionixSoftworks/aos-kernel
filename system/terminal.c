@@ -69,6 +69,18 @@ terminal_print(const char *c)
 	}
 }
 
+void
+terminal_print_hex(int32_t value)
+{
+	terminal_print_value(value, 16);
+}
+
+void
+terminal_print_dec(int32_t value)
+{
+	terminal_print_value(value, 10);
+}
+
 static bool 
 print(const char *data, size_t length) 
 {
@@ -86,6 +98,7 @@ __printf(const char *str, va_list ap)
 {
 	mutex_lock(&m_mprintf);
 	char *s = 0;
+	char buffer[32768];
 	for (size_t i = 0; i < strlen((string)str); i++) 
 	{
 		if (str[i] == '%') 
@@ -97,15 +110,37 @@ __printf(const char *str, va_list ap)
 					terminal_print(s);
 					i++;
 					continue;
+				case 'b': {
+					int b = va_arg(ap, int);
+					terminal_print(itoa(b, buffer, 2));
+					i++;
+					continue;
+				}
+				case 'o': {
+					int o = va_arg(ap, int);
+					terminal_print(itoa(o, buffer, 8));
+					i++;
+					continue;
+				}
 				case 'd': {
 					int c = va_arg(ap, int);
-					terminal_print_value(c, 10);
+					terminal_print_dec(c);
 					i++;
 					continue;
 				}
 				case 'x': {
 					int c = va_arg(ap, int);
-					terminal_print_value(c, 16);
+					int final_value = itoa(c, buffer, 16);
+					to_lower(final_value);
+					terminal_print(final_value);
+					i++;
+					continue;
+				}
+				case 'X': {
+					int c = va_arg(ap, int);
+					int final_value = itoa(c, buffer, 16);
+					to_upper(final_value);
+					terminal_print(final_value);
 					i++;
 					continue;
 				}
@@ -142,10 +177,12 @@ terminal_println(void)
 void 
 terminal_print_value(int32_t value, uint8_t base) 
 {
-	char buffer[4096];
-	char *num_to_str = itoa(value, buffer, base);
+	char buffer[16];
+	string num_to_str = itoa(value, buffer, base);
 	if (base == 16)
 		terminal_print("0x");
+	if (base == 2)
+		terminal_print("0b");
 	terminal_print(num_to_str);
 }
 

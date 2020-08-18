@@ -24,7 +24,7 @@
 extern "C" {
 #endif
 
-extern void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity);
+//extern void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity);
 
 struct gdt_entry_struct 
 {
@@ -34,7 +34,7 @@ struct gdt_entry_struct
    uint8_t  access;              // Access flags, determine what ring this segment can be used in.
    uint8_t  granularity;
    uint8_t  base_high;           // The last 8 bits of the base.
-} __attribute__((packed));
+} PACKED;
 typedef struct gdt_entry_struct gdt_entry_t;
 
 struct gdt_ptr_struct 

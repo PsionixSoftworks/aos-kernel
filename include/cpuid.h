@@ -91,7 +91,7 @@ enum cpuid_features
 #define CPUID_VENDOR_OLD_AMD		"AMDisbetter!"
 #define CPUID_VENDOR_AMD			"AuthenticAMD"
 #define CPUID_VENDOR_INTEL			"GenuineIntel"
-#define CPUID_VENDOR_VIA			"CentaurHauls"
+#define CPUID_VENDOR_HAULS			"CentaurHauls"
 #define CPUID_VENDOR_OLDTRANSMETA	"TransmetaCPU"
 #define CPUID_VENDOR_TRANSMETA		"GenuineTMx86"
 #define CPUID_VENDOR_CYRIX			"CyrixInstead"
@@ -101,7 +101,7 @@ enum cpuid_features
 #define CPUID_VENDOR_SIS			"SiS SiS SiS "
 #define CPUID_VENDOR_NSC			"Geode by NSC"
 #define CPUID_VENDOR_RISE			"RiseRiseRise"
-#define CPUID_VORTEX				"Vortex86 SoC"
+#define CPUID_VENDOR_VORTEX 		"Vortex86 SoC"
 #define CPUID_VENDOR_VIA			"VIA VIA VIA "
 
 #endif

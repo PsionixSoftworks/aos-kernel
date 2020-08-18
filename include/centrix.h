@@ -20,22 +20,11 @@
 
 #if CENTRIX_VERSION <= 100
 
-static uint32_t *
-BEGIN_PROC_ANALYZER(void)
-{
-	uint32_t *proctest = (uint32_t *)malloc(256);
-	int x = (int)memset(proctest, 0xFF, 0xFF);
+#define KernelInstall(os)		kernel_install(os);
+#define Verify(void)			verify();
 
-	terminal_printf("Result of x: %x\n", x);
-
-	return (proctest);
-}
-
-static void 
-FREE_PROC_ANALYZER(uint32_t *proc)
-{
-	free(proc);
-}
+extern void *kernel_install(string name);
+extern int32_t verify(void);
 
 #endif	/* !CENTRIX_VERSION */
 #endif	/* !CENTRIX */

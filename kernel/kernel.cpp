@@ -17,7 +17,7 @@
 #include "../include/init.h"
 
 #if defined(ADAMANTINE_OS_READY)
-#include "../AdamantineOS/Include/Adamantine.h"
+#include "../AOS/Include/Adamantine.h"
 using namespace PsionixSoftworks;
 #endif
 
@@ -35,15 +35,15 @@ extern "C" void disk_service_init(void);
 
 /* Declare the kernel structure. */
 Kernel_t kernel;
-extern "C" AdamantineOS AOS;
+AdamantineOS *AOS;
 
 extern "C" void __initcall
 kernel_init(uint8_t mode)
 {
-	init_all();
-
+	init_all(mode);
 	/* After in user mode. */
-	AOS.SystemStartup();
+	
+	AOS->SystemStartup();
 	kernel.running = true;
 }
 

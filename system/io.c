@@ -25,7 +25,7 @@ write_portb(uint16_t port, uint8_t value)
 
 // Read from the io port:
 uint8_t 
-read_portb(uint16_t port) 
+read_portb(uint16_t port)
 {
 	uint8_t ret;
 	asm volatile("inb %1, %0" : "=a"(ret) : "Nd"(port));

@@ -21,7 +21,7 @@ static inline uint32_t processor_index(void)
 	return (0x00);
 }
 
-static inline void cpu_set_active(uint32_t index)
+static inline void cpu_set_active(void)
 {
 	asm volatile
 	(
@@ -33,12 +33,6 @@ __cpu_config_setup();
 __cpu_config_name();
 __cpu_config_get_name();
 #endif
-}
-
-struct cpu _TEXT
-cpu_init(void) {
-	uint32_t cpu_index = processor_index();
-	cpu_set_active(cpu_index);
 }
 
 void _TEXT
@@ -62,4 +56,5 @@ cpuid(void)
 		"mov $0x0, %eax\n\t"
 		"cpuid\n\t"
 	);
+	return (0);
 }

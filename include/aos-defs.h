@@ -35,8 +35,8 @@
 #ifndef ADAMANTINE_MACROS
 #define FAILSAFE
 #define NULL								(void *)0
-#define FAILURE								(void *)FALSE
-#define SUCCESS								(void *)TRUE
+#define FAILURE								FALSE
+#define SUCCESS								TRUE
 #define AOS_BASE_CNTRL                      0xCE0
 #define PVOID                               void *
 #endif
@@ -44,10 +44,7 @@
 // Define the module naming system for later use:
 #ifndef ADAMANTINE_MODULE
 #define ADAMANTINE_MODULE
-#define MODULE(name, version) 	static char *_name       = "MODULE("#name").name";    \
-                                static char *_version    = "MODULE("#version").version";
-#define MODULE_GET_NAME(void)   _name;
-#define MODULE_GET_VERS(void)   _version;
+#define MODULE(name, version) 	        
 #endif	// !MODULE_DESCRIPTOR
 
 #ifndef __STANDARD_ATTRIBUTES__

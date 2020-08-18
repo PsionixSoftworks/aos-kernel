@@ -14,3 +14,14 @@
 #include "../include/aos-defs.h"
 
 MODULE("adamantine", "0.01a");
+
+static string
+    m_name,
+    m_version;
+
+void 
+module_create(string name, string version)
+{
+    m_name      = name;
+    m_version   = version;
+}

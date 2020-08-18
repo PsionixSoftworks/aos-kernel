@@ -20,7 +20,7 @@ MODULE("aos-fs", "0.01a");
 static inline Directory_t *
 aos_set_root(string root) 
 {
-    Directory_t *directory;
+    Directory_t *directory = 0;
     directory->root_dir = root;
     return (directory);
 }

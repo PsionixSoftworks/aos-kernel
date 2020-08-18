@@ -21,6 +21,7 @@
 #include "../include/pic.h"
 #include "../include/irq.h"
 #include "../include/aos-defs.h"
+#include "../include/io.h"
 
 MODULE("keyboard", "0.01a");
 
@@ -32,13 +33,13 @@ static void keyboard_irq(void);						// Keyboard IRQ.
 static void keyboard_read(void);					// Read the keyboard on key press.
 
 /* Define all mutexes here. */
-DEFINE_MUTEX(m_get_key);
+//DEFINE_MUTEX(m_get_key);
 
 /* Initialize the keyboard */
 void 
 keyboard_init(void) 
 {
-	keyboard.keymap = (uint8_t *)malloc(256);
+	keyboard.keymap = (string)malloc(256);
 	memset(keyboard.keymap, 0, 256);
 	
 	register_interrupt_handler(33, (isr_t)keyboard_irq);
@@ -51,13 +52,6 @@ void
 keyboard_free(void) 
 {
 	free(keyboard.keymap);
-}
-
-// Keyboard wait:
-void 
-keyboard_wait(void) 
-{
-	io_wait();
 }
 
 /* Checks if the keyboard is initialized */
@@ -75,7 +69,6 @@ keyboard_get_key(void)
 	keyboard_read();
 	if ((keyboard.key_last != KEYBOARD_KEY_DOWN_NONE) || (keyboard.key_last != KEYBOARD_KEY_DOWN_ENTER)) 
 	{
-		keyboard.buffer += (uint8_t)keys_normal[keyboard.key_last];
 		return (keys_normal[keyboard.key_last]);
 	} else 
 	{
@@ -105,13 +98,7 @@ uint8_t keyboard_get_keylast(void)
 static void 
 keyboard_irq(void) 
 {
-	dword f = save_irqdisable();
-	for (int i = 0; i < MAX_ALLOC_SIZE; i++) 
-	{
-		keyboard.keymap[i] = keys_normal[i];	// Need to figure out why this doesn't work properly...
-	}
-	pic_send_eoi(0x14);
-	irq_restore(f);
+	
 }
 
 /* Read keys as they're pressed */

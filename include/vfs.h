@@ -33,7 +33,7 @@ typedef struct aos_fs
     uint8_t (*write_file)(char *fn, char *buf, uint32_t len, struct aos_device *, void *);
     uint8_t (*exists)(char *filename, struct aos_device *, void *);
     uint8_t (*mount)(struct aos_device *, void *);
-    uint8_t *priv_data;
+    int8_t *priv_data;
 } filesystem_t;
 
 typedef struct mount_info 

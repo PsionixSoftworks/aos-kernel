@@ -10,9 +10,9 @@
  *
  */
 
-.section .init
-    popl %ebp
-    ret
-.section .fini
-    popl %ebp
-    ret
+.SECTION .init
+    POPL %EBP
+    RET
+.SECTION .fini
+    POPL %EBP
+    RET

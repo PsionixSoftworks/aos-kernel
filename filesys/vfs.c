@@ -58,7 +58,7 @@ device_try_to_mount(device_t *device, char *loc)
     if (check_mount(loc)) 
         return (0);
     #ifdef EXT2_FILESYSTEM
-    if (ext2_probe(device)) 
+    /*if (ext2_probe(device)) 
     {
         if (ext2_mount(device, device->fs->priv_data)) 
         {
@@ -70,7 +70,7 @@ device_try_to_mount(device_t *device, char *loc)
             return (1);
         }
         return (0);
-    }
+    }*/
     #endif
 
     #ifdef AOS32_FILESYSTEM
@@ -207,7 +207,7 @@ vfs_exists_in_dir(char *wd, char *fn)
                 return (rc);
             }
         }
-        if (strcmp(o, "/" == 0))
+        if (strcmp(o, "/") == 0)
             break;
         str_backspace(o, '/');
     }

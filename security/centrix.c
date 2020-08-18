@@ -29,7 +29,7 @@ string supported_oses[] =
 };
 
 struct centrix_core core;
-void *KernelInstall(string name) {
+void *kernel_install(string name) {
     core.os_id = NULL;
     core.os_signature = NULL;
 
@@ -38,7 +38,7 @@ void *KernelInstall(string name) {
 }
 
 int32_t 
-Verify(void)
+verify(void)
 {
     terminal_init(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
 	terminal_clear_screen();
