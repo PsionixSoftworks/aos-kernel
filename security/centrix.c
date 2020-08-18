@@ -40,13 +40,8 @@ KernelInstall(STRING Name) {
 DWORD 
 Verify(VOID)
 {
-<<<<<<< HEAD
-    terminal_init(SYSTEM_COLOR_GREEN, SYSTEM_COLOR_WHITE);
-	terminal_clear_screen();
-=======
     TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
 	TerminalClearScreen();
->>>>>>> f17d39f86fcb43d487014e2a2e2af88ff7e7e48b
 
     SIZE Length = strlen(SupportedOS);
     SIZE i = 0;
@@ -55,23 +50,14 @@ Verify(VOID)
     {
         if (strcmp(OS_Name, SupportedOS[i]) == 0)
         {
-<<<<<<< HEAD
-            CENTRIX_INFO("\"%s\" is a valid Operating System.\n", os_name);
-            CENTRIX_INFO("Starting \"%s\" OS kernel...\n\n", os_name);
-=======
             TerminalPrintf("[CENTRIX]: \"%s\" is a valid Operating System.\n", OS_Name);
             TerminalPrintf("[CENTRIX]: Starting \"%s\" OS kernel...\n\n", OS_Name);
->>>>>>> f17d39f86fcb43d487014e2a2e2af88ff7e7e48b
             return (SUCCESS);
         } else {
             i++;
             if (i >= Length) 
             {
-<<<<<<< HEAD
-                CENTRIX_INFO("\"%s\" is not a valid Operating System...\n", os_name);
-=======
                 TerminalPrintf("[CENTRIX]: \"%s\" is not a valid Operating System...\n", OS_Name);
->>>>>>> f17d39f86fcb43d487014e2a2e2af88ff7e7e48b
                 return (FAILURE);
             }
         }

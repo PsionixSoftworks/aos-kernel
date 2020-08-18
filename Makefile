@@ -106,11 +106,11 @@ OUTPUT_FILES 				:= 	boot.new.o		\
 								idt.o			\
 								tss.o			\
 								syscall.o		\
-								AOS/Adamantine.o	\
-								AOS/Registry.o
+								#AOS/Adamantine.o	\
+								#AOS/Registry.o
 
-AOS_OUTPUT					:= 	$(AOS_DIR)/Adamantine.o	\
-								$(AOS_DIR)/Registry.o	
+# AOS_OUTPUT					:= 	$(AOS_DIR)/Adamantine.o	\
+# 								$(AOS_DIR)/Registry.o	
 
 # Compile all of the files into the iso:
 .PHONY: all
@@ -155,11 +155,11 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(X86_PATH)/idt.c -o idt.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
-	$(COMPILER_CPP) AOS/Adamantine/Adamantine.cpp -o Adamantine.o $(CPP_FLAGS)
-	$(COMPILER_CPP) AOS/Adamantine/Registry.cpp -o Registry.o $(CPP_FLAGS)
+	# $(COMPILER_CPP) AOS/Adamantine/Adamantine.cpp -o Adamantine.o $(CPP_FLAGS)
+	# $(COMPILER_CPP) AOS/Adamantine/Registry.cpp -o Registry.o $(CPP_FLAGS)
  
 # Link all input files into one file:
-linker: linker.ld $(OUTPUT_FILES) $(AOS_OUT)
+linker: linker.ld $(OUTPUT_FILES)
 	$(LINKER) -o $(BIN) $(C_FLAGS) $(OUTPUT_FILES) -lgcc
 
 # Build the Kernel iso:

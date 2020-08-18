@@ -14,12 +14,8 @@
 #include "../include/kernel.h"
 #include "../include/aos-defs.h"
 #include "../include/terminal.h"
-<<<<<<< HEAD
-#include "init.h"
-=======
 #include "../include/centrix.h"
 #include "../include/pit.h"
->>>>>>> f17d39f86fcb43d487014e2a2e2af88ff7e7e48b
 
 #include "../include/x86/gdt.h"
 #include "../include/x86/idt.h"

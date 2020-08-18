@@ -33,7 +33,7 @@ EXTERN "C" SET_UDWORD(kernel_base);
 
 /* Declare the kernel structure. */
 Kernel_t Kernel;
-AdamantineOS *AOS;
+//AdamantineOS *AOS;
 
 EXTERN "C" VOID _TEXT
 KernelInit(UBYTE Mode)
@@ -41,7 +41,7 @@ KernelInit(UBYTE Mode)
 	InitAll(Mode);
 	/* After in user mode. */
 	
-	AOS->SystemStartup();
+	//AOS->SystemStartup();
 	Kernel.Running = TRUE;
 }
 

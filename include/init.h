@@ -13,7 +13,7 @@
 #ifndef _INIT_
 #define _INIT_
 
-#define ADAMANTINE_OS_READY
+//#define ADAMANTINE_OS_READY
 
 #include "../include/aos-defs.h"
 #include "../include/types.h"
