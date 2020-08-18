@@ -13,6 +13,7 @@
 #ifndef ADAMANTINE_KEYS
 #define ADAMANTINE_KEYS
 
+#include "aos-defs.h"
 #include "types.h"
 
 // Define the keys for down state:
@@ -204,7 +205,7 @@ extern "C" {
 #endif
 
 // Define for normal keys:
-static string keys_normal[256] = 
+static STRING KeysNormal[256] = 
 {
 	"", "", 															// <None>, <Escape>,
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,

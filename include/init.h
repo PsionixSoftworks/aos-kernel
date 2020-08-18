@@ -15,20 +15,19 @@
 
 #define ADAMANTINE_OS_READY
 
-#include "../include/kernel.h"
 #include "../include/aos-defs.h"
+#include "../include/types.h"
+#include "../include/kernel.h"
 #include "../include/x86/gdt.h"
-#include "../include/x86/ldt.h"     /* WIP * */
 #include "../include/x86/idt.h"
-
-#define __initcall      _TEXT
+#include "../include/terminal.h"
 
 /* Check if we're using C++. If so, safeguard the code to C linkage. */
 #if defined(__cplusplus)
 extern "C" {
 #endif  /* !__cplusplus */
 
-static string OS_MODE[] =
+static string OS_Mode[] =
 {
     "Normal Mode",
     "Safe Mode",
@@ -41,23 +40,19 @@ static string OS_MODE[] =
  * Usage: To initialize all of the kernel modules
  * and setup the pre-os loading.
  */
-static void __initcall
-init_all(uint8_t mode)
+static void _TEXT
+InitAll(BYTE Mode)
 {
     /* Print the startup message. */
-    terminal_printf("%s - Version: %s, Running in '%s'.\n", OS_NAME, OS_VERSION, OS_MODE[mode]);
+    TerminalPrintf("%s - Version: %s, Running in '%s'.\n", OS_NAME, OS_VERSION, OS_Mode[Mode]);
 
     /* Load up the kernel module's */
     INFO("Getting setup...");
-    gdt_init();
-    ldt_init();
-    idt_init();
-
-    
+    GDT_Init();
+    IDT_Init();
 }
 
 #if defined(__cplusplus)
 }
 #endif  /* !__cplusplus */
-
 #endif  /* !__cplusplus */

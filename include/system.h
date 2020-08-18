@@ -14,15 +14,14 @@
 #define ADAMANTINE_SYSTEM
 
 // Includes go here:
+#include "aos-defs.h"
 #include "types.h"
-#include "io.h"
-#include "terminal.h"
 
 // Declare global functions:
-extern void enable_cursor(uint8_t cursor_start, uint8_t cursor_end);	// Enable the cursor in the terminal.
-extern void disable_cursor();															// Disable the terminal cursor.
-extern void update_cursor(uint32_t x, uint32_t y);								// Update the cursor position.
-extern uint16_t get_cursor_position(void);										// Get the cursor position.
-extern void set_cursor_type(uint8_t type);										// Set the cursor type (UNUSED).
+EXTERN SET_VOID(SystemEnableCursor(UBYTE CurStart, UBYTE CurEnd));  // Enable the cursor in the terminal.
+EXTERN SET_VOID(SystemDisableCursor(VOID));							// Disable the terminal cursor.
+EXTERN SET_VOID(SystemUpdateCursor(UDWORD x, UDWORD y));			// Update the cursor position.
+EXTERN SET_VOID(SystemSetCursorType(UBYTE Type));					// Set the cursor type (UNUSED).
+EXTERN SET_UWORD(SystemGetCursorPosition(VOID));					// Get the cursor position.
 
 #endif	// !ADAMANTINE_SYSTEM

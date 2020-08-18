@@ -16,8 +16,9 @@
 #include "../include/ext2.h"
 #include "../include/aos-defs.h"
 
-MODULE("virtual-filesystem", "0.01a");
+MODULE("VirtualFileSystem", "0.01a");
 
+/*
 #define MAX_MOUNTS      16
 
 uint8_t __init_vfs = 0;
@@ -25,7 +26,7 @@ uint8_t __init_vfs = 0;
 mount_info_t **mp = 0;
 int last_mount_id = 0;
 
-device_t *
+Device_t *
 check_mount(char *loc) 
 {
     for (int i = 0; i < last_mount_id; i++) 
@@ -51,7 +52,7 @@ list_mount(void)
 }
 
 uint8_t 
-device_try_to_mount(device_t *device, char *loc) 
+device_try_to_mount(Device_t *device, char *loc) 
 {
     if ((!device) || !(device->device_id)) 
         return (0);
@@ -70,7 +71,7 @@ device_try_to_mount(device_t *device, char *loc)
             return (1);
         }
         return (0);
-    }*/
+    }*
     #endif
 
     #ifdef AOS32_FILESYSTEM
@@ -222,3 +223,4 @@ void vfs_init(void)
     mp = (mount_info_t **)malloc(sizeof(uint32_t) * MAX_MOUNTS);
     __init_vfs = 1;
 }
+*/

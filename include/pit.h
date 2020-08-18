@@ -13,13 +13,14 @@
 #ifndef SYSTEM_TIMER
 #define SYSTEM_TIMER
 
+#include "aos-defs.h"
 #include "types.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-extern void timer_init(uint32_t frequency);
+EXTERN  SET_VOID(TimerInit(UDWORD Frequency));
 
 #if defined(__cplusplus)
 }

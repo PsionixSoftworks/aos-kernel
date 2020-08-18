@@ -13,6 +13,7 @@
 #ifndef _COMMAND_
 #define _COMMAND_
 
+#include "../aos-defs.h"
 #include "../types.h"
 #include "../string.h"
 
@@ -20,14 +21,14 @@
 extern "C" {
 #endif
 
-struct command_line 
+struct CommandLine 
 {
-    string *cmd_list;
+    STRING              *CMD_List;
 };
-typedef struct command_line command_t;
+typedef struct CommandLine Command_t;
 
-extern void command_line_init(void);
-extern void parse_command(string cmd);
+EXTERN  SET_VOID(CommandLineInit(VOID));
+EXTERN  SET_UBYTE(ParseCommand(STRING CMD));
 
 #if defined(__cplusplus)
 }

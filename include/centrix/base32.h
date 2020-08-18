@@ -13,17 +13,18 @@
 #ifndef _CENTRIX_BASE32_
 #define _CENTRIX_BASE32_
 
+#include "../aos-defs.h"
 #include "../types.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-struct _BASE32
+struct CentrixBase
 {
-    uint16_t start;
-    uint16_t end;
-    uint32_t *data;
+    UWORD               Start;
+    UWORD               End;
+    UDWORD              *Data;
 };
 
 #if defined(__cplusplus)

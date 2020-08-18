@@ -14,28 +14,29 @@
 #define AMAMANTINE_MAP
 
 // Includes go here:
+#include "aos-defs.h"
 #include "types.h"
 
 // Declare the map node struct:
-struct map_node 
+struct MapNode 
 {
-	int key;																				// The key for the map.
-	int value;																			// The value of the key fro the map.
-	struct map_node *next;														// Next index?
-} __attribute__((packed));
+	DWORD 				Key;										// The key for the map.
+	DWORD 				Value;										// The value of the key fro the map.
+	STRUCT 				MapNode *Next;								// Next index?
+} PACKED;
 
 // Declare the map struct:
-struct map 
+struct Map 
 {
-	size_t size;																		// Size of the map.
-	struct map_node **list;														// Um, next index also?
-} __attribute__((packed));
+	SIZE 				Size;										// Size of the map.
+	STRUCT 				MapNode **List;								// Um, next index also?
+} PACKED;
 
 // Declare global functions:
-extern struct map *map_create(size_t size);							// Create a map data structure.
-extern uint32_t map_hash_code(struct map *m, int key);					// Map hash code... Duh?
-extern void map_add(struct map *m, int key, uint32_t value);	// Add a value to the key.
-extern uint32_t map_get(struct map *m, int key);						// Get the value by key.
-extern void map_free();															// Free the memory created by the map.
+EXTERN SET_STRUCT(Map *MapCreate(SIZE Size));						// Create a map data structure.
+EXTERN SET_UDWORD(MapHashCode(STRUCT Map *M, DWORD Key));			// Map hash code... Duh?
+EXTERN SET_UDWORD(MapGet(STRUCT Map *M, DWORD Key));				// Get the value by key.
+EXTERN SET_VOID(MapAdd(STRUCT Map *M, DWORD Key, UDWORD Value));	// Add a value to the key.
+EXTERN SET_VOID(MapFree(VOID));										// Free the memory created by the map.
 
 #endif	// !AMAMANTINE_MAP

@@ -12,13 +12,12 @@
 
 #include "../include/isr.h"
 #include "../include/terminal.h"
-#include "../include/aos-defs.h"
 
 MODULE("interrupt-service-routine", "0.01a");
 
-isr_t interrupt_handlers[256];
+ISR_t InterruptHandlers[256];
 
-string exception_msgs[] = 
+STRING ExceptionMessages[] = 
 {
 	"AOS_INTERRUPT Raised! : [Debug Exception]",
 	"AOS_INTERRUPT Raised! : [Non-Maskable Interrupt Exception]",
@@ -41,47 +40,49 @@ string exception_msgs[] =
 	"AOS_INTERRUPT Raised! : [Machine Check Exception]",
 };
 
-void fault_handler(struct registers *r) 
+VOID
+FaultHandler(Registers_t *Register) 
 {
-	if (r->int_no < 32) 
+	if (Register->INT_No < 32) 
 	{
-		ERROR(exception_msgs[r->int_no]);
-		cpu_halt();
-		terminal_print("System halted!");
+		ERROR(ExceptionMessages[Register->INT_No]);
+		CPU_Halt();
+		TerminalPrint("System halted!");
 	}
 }
 
-void 
-register_interrupt_handler(uint8_t n, isr_t handler) 
+VOID 
+RegisterInterruptHandler(UBYTE n, ISR_t Handler) 
 {
-	interrupt_handlers[n] = handler;
+	InterruptHandlers[n] = Handler;
 }
 
-void isr_handler(registers_t regs) 
+VOID
+ISR_Handler(Registers_t Register) 
 {
-	if (interrupt_handlers[regs.int_no] != 0) 
+	if (InterruptHandlers[Register.INT_No] != 0) 
 	{
-		isr_t handler = interrupt_handlers[regs.int_no];
-		handler(regs);
+		ISR_t Handler = InterruptHandlers[Register.INT_No];
+		Handler(Register);
 	} 
 	else 
 	{
-		fault_handler(&regs);
+		FaultHandler(&Register);
 	}
 }
 
-void 
-irq_handler(registers_t regs) 
+VOID 
+IRQ_Handler(Registers_t Register) 
 {
-	if (regs.int_no >= 40) 
+	if (Register.INT_No >= 40) 
 	{
-		write_portb(0xA0, 0x20);
+		WritePortB(0xA0, 0x20);
 	}
-	write_portb(0x20, 0x20);
+	WritePortB(0x20, 0x20);
 	
-	if (interrupt_handlers[regs.int_no] != 0) 
+	if (InterruptHandlers[Register.INT_No] != 0) 
 	{
-		isr_t handler = interrupt_handlers[regs.int_no];
-		handler(regs);
+		ISR_t Handler = InterruptHandlers[Register.INT_No];
+		Handler(Register);
 	}
 }

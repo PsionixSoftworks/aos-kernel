@@ -12,39 +12,24 @@
 
 #include "../include/cmd/cmd.h"
 #include "../include/terminal.h"
-#include "../include/aos-defs.h"
 
-MODULE("command", "0.01a");
+MODULE("Command", "0.01a");
 
-command_t command;
+Command_t Command;
 
-void 
-command_line_init(void) 
+VOID 
+CommandLineInit(VOID) 
 {
-    command.cmd_list[0] = "test";
+    Command.CMD_List[0] = "test";
 }
 
-uint8_t 
-__parse_command(string cmd) 
+UBYTE
+ParseCommand(STRING CMD) 
 {
-    for (uint8_t i = 0; i < sizeof(uint8_t); i++) 
+    for (UBYTE i = 0; i < sizeof(UBYTE); i++) 
     {
-        if (cmd == command.cmd_list[i]) 
-        {
+        if (CMD == Command.CMD_List[i])
             return (1);
-        }
     }
     return (0);
-}
-
-void parse_command(string cmd) 
-{
-    if (!__parse_command(cmd)) 
-    {
-        terminal_printf("Unrecognized command: \"%s\"\n", cmd);
-    } 
-    else 
-    {
-        terminal_printf("Command \"%s\" exists!\n", cmd);
-    }
 }

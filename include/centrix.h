@@ -13,6 +13,7 @@
 #ifndef CENTRIX
 #define CENTRIX
 
+#include "aos-defs.h"
 #include "centrix-core.h"
 #include "types.h"
 #include "mem-util.h"
@@ -20,11 +21,8 @@
 
 #if CENTRIX_VERSION <= 100
 
-#define KernelInstall(os)		kernel_install(os);
-#define Verify(void)			verify();
-
-extern void *kernel_install(string name);
-extern int32_t verify(void);
+EXTERN  SET_VOID(*KernelInstall(STRING Name));
+EXTERN SET_DWORD(Verify(VOID));
 
 #endif	/* !CENTRIX_VERSION */
 #endif	/* !CENTRIX */

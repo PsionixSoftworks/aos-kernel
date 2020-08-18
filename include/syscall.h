@@ -13,9 +13,8 @@
 #ifndef _SYSCALL_
 #define _SYSCALL_
 
+#include "aos-defs.h"
 #include "types.h"
-
-extern void initialize_syscalls(void);
 
 #define DECL_SYSCALL0(fn)                       int syscall_##fn();
 #define DECL_SYSCALL1(fn, p1)                   int syscall_##fn(p1);
@@ -51,5 +50,7 @@ int syscall_##fn(P1 p1, P2 p2)                                                  
 DECL_SYSCALL1(terminal_print, string);
 DECL_SYSCALL1(terminal_print_hex, string);
 DECL_SYSCALL1(terminal_print_dec, string);
+
+EXTERN  SET_VOID(SysCallsInit(VOID));
 
 #endif

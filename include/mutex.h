@@ -2,15 +2,18 @@
 #ifndef _MUTEX_
 #define _MUTEX_
 
+#include "aos-defs.h"
 #include "types.h"
 
 typedef struct {
-	uint8_t locked;
-} mutex;
+	BYTE 				Locked;
+} Mutex;
 
-#define DEFINE_MUTEX(name) static mutex name = { .locked=0 };
+#define DEFINE_MUTEX(name) static Mutex name = { .Locked=0 };
 
-extern void mutex_lock(mutex* m);
-extern void mutex_unlock(mutex* m);
+EXTERN SET_VOID(MutexLock(Mutex	*M));
+EXTERN SET_VOID(MutexUnlock(Mutex* M));
+
+// TODO: Finish writing Mutex...
 
 #endif	// !_MUTEX_

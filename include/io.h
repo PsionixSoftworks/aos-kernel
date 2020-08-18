@@ -14,6 +14,7 @@
 #define ADAMANTINE_IO
 
 // Include files go here:
+#include "aos-defs.h"
 #include "types.h"
 #include "string.h"
 #include "input.h"
@@ -24,7 +25,7 @@ extern "C" {
 #endif
 
 // Declare io functions:
-extern void io_wait(void);
+EXTERN SET_VOID(IO_Wait(VOID));
 
 #if defined(__cplusplus)
 }

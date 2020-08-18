@@ -12,3 +12,4 @@
 
 #include "../../include/drivers/pci/pci.h"
 
+MODULE("PCI", "0.01a");

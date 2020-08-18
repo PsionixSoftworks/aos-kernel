@@ -18,11 +18,18 @@
 
 #define BUS_ENABLE                          0x1C0000007FUL
 
-typedef struct aos_bus_driver
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+typedef struct AOS_BusDriver
 {
-    uint32_t base_addr;
-} PACKED Bus_Driver_t, *pBus_Driver_t;
+    UDWORD              BaseAddr;
+} PACKED BusDriver_t, *PBusDriver_t;
 
-extern void enable_bus_driver(void);
+EXTERN  SET_VOID(EnableBusDriver(VOID));
 
+#if defined(__cplusplus)
+}
+#endif
 #endif

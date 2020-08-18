@@ -18,7 +18,6 @@
 #include "../include/io.h"
 #include "../include/keyboard.h"
 #include "../include/mutex.h"
-#include "../include/aos-defs.h"
 
 MODULE("terminal", "0.01a");
 
@@ -27,120 +26,120 @@ MODULE("terminal", "0.01a");
 /* Define mutexes here. */
 DEFINE_MUTEX(m_mprintf);
 
-static terminal_t terminal;
-static uint16_t *video_memory;
-static int terminal_putchar(char c);
-static void move_cursor(void);
-static void scroll(void);
+static Terminal_t Terminal;
+static UWORD *VideoMemory;
+static DWORD TerminalPutchar(CHAR c);
+static VOID MoveCursor(VOID);
+static VOID Scroll(VOID);
 
-void 
-terminal_init(uint8_t back_color, uint8_t fore_color) 
+VOID 
+TerminalInit(UBYTE BackColor, UBYTE ForeColor) 
 {
-	video_memory = (uint16_t *)VGA_TEXT_MODE_COLOR;
-	terminal.back_color = back_color;
-	terminal.fore_color = fore_color;
-	terminal.is_initialized = true;
+	VideoMemory = (UWORD *)VGA_TEXT_MODE_COLOR;
+	Terminal.BackColor = BackColor;
+	Terminal.ForeColor = ForeColor;
+	Terminal.IsInitialized = TRUE;
 
-	terminal_clear_screen();
+	TerminalClearScreen();
 }
 
-void 
-terminal_clear_screen(void) 
+VOID
+TerminalClearScreen(VOID)
 {
-	uint8_t attribute_byte = ((terminal.back_color << 4) | (terminal.fore_color & 0x0F));
-	uint16_t blank = 0x20 | (attribute_byte << 8);
+	UBYTE AttributeByte = ((Terminal.BackColor << 0x4) | (Terminal.ForeColor & 0x0F));
+	UWORD Blank = 0x20 | (AttributeByte << 0x8);
 
-	for (int i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
+	for (DWORD i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
 	{
-		video_memory[i] = blank;
+		VideoMemory[i] = Blank;
 	}
-	terminal.x = 0;
-	terminal.y = 0;
-	move_cursor();
+	Terminal.x = 0;
+	Terminal.y = 0;
+	MoveCursor();
 }
 
-void 
-terminal_print(const char *c) 
+VOID 
+TerminalPrint(const STRING Str) 
 {
-	int i = 0;
-	while (c[i]) 
+	DWORD i = 0;
+	while (Str[i]) 
 	{
-		terminal_putchar(c[i++]);
-	}
-}
-
-void
-terminal_print_hex(int32_t value)
-{
-	terminal_print_value(value, 16);
-}
-
-void
-terminal_print_dec(int32_t value)
-{
-	terminal_print_value(value, 10);
-}
-
-static bool 
-print(const char *data, size_t length) 
-{
-	const unsigned char *bytes = (const unsigned char *)data;
-	for (size_t i = 0; i < length; i++) 
-	{
-		if (terminal_putchar(bytes[i]) == EOF)
-			return (false);
-		return (true);
+		TerminalPutchar(Str[i++]);
 	}
 }
 
-static void 
-__printf(const char *str, va_list ap) 
+VOID
+TerminalPrintHex(UDWORD Value)
 {
-	mutex_lock(&m_mprintf);
-	char *s = 0;
-	char buffer[32768];
-	for (size_t i = 0; i < strlen((string)str); i++) 
+	TerminalPrintValue(Value, 0x10);
+}
+
+VOID
+TerminalPrintDec(DWORD Value)
+{
+	TerminalPrintValue(Value, 0x0A);
+}
+
+static BOOL 
+Print(const STRING Data, SIZE Length) 
+{
+	const UBYTE *Bytes = (const UBYTE *)Data;
+	for (SIZE i = 0; i < Length; i++) 
 	{
-		if (str[i] == '%') 
+		if (TerminalPutchar(Bytes[i]) == EOF)
+			return (FALSE);
+		return (TRUE);
+	}
+}
+
+static VOID 
+Printf(const STRING Str, va_list ap) 
+{
+	MutexLock(&m_mprintf);
+	STRING s = 0;
+	CHAR Buffer[32768];
+	for (SIZE i = 0; i < strlen((STRING)Str); i++) 
+	{
+		if (Str[i] == '%') 
 		{
-			switch (str[i + 1]) 
+			switch (Str[i + 1]) 
 			{
 				case 's':
-					s = va_arg(ap, const char *);
-					terminal_print(s);
+					s = va_arg(ap, const STRING);
+					TerminalPrint(s);
 					i++;
 					continue;
 				case 'b': {
-					int b = va_arg(ap, int);
-					terminal_print(itoa(b, buffer, 2));
+					DWORD b = va_arg(ap, DWORD);
+					TerminalPrint(itoa(b, Buffer, 0x2));
 					i++;
 					continue;
 				}
 				case 'o': {
-					int o = va_arg(ap, int);
-					terminal_print(itoa(o, buffer, 8));
+					DWORD o = va_arg(ap, DWORD);
+					TerminalPrint(itoa(o, Buffer, 0x8));
 					i++;
 					continue;
 				}
 				case 'd': {
-					int c = va_arg(ap, int);
-					terminal_print_dec(c);
+					DWORD c = va_arg(ap, DWORD);
+					TerminalPrintDec(c);
 					i++;
 					continue;
 				}
 				case 'x': {
-					int c = va_arg(ap, int);
-					int final_value = itoa(c, buffer, 16);
-					to_lower(final_value);
-					terminal_print(final_value);
+					DWORD c = va_arg(ap, DWORD);
+					DWORD FinalValue = itoa(c, Buffer, 0x10);
+					to_lower(FinalValue);
+					TerminalPrintHex(FinalValue);
 					i++;
 					continue;
 				}
 				case 'X': {
-					int c = va_arg(ap, int);
-					int final_value = itoa(c, buffer, 16);
-					to_upper(final_value);
-					terminal_print(final_value);
+					DWORD c = va_arg(ap, DWORD);
+					DWORD FinalValue = itoa(c, Buffer, 0x10);
+					to_upper(FinalValue);
+					TerminalPrintHex(FinalValue);
 					i++;
 					continue;
 				}
@@ -148,162 +147,167 @@ __printf(const char *str, va_list ap)
 		} 
 		else 
 		{
-			terminal_putchar(str[i]);
+			TerminalPutchar(Str[i]);
 		}
 	}
-	mutex_unlock(&m_mprintf);
+	MutexUnlock(&m_mprintf);
 	va_end(ap);
 }
 
-int 
-terminal_printf(const char *restrict format, ...) 
+DWORD 
+TerminalPrintf(const STRING restrict Format, ...) 
 {
 	// TODO: Implement the printf function...
-	if (!format)
+	if (!Format)
 		return 0;
 	va_list ap;
-	va_start(ap, format);
-	__printf((const char *)format, ap);
+	va_start(ap, Format);
+	Printf((const STRING)Format, ap);
 
 	return (1);
 }
 
-void 
-terminal_println(void) 
+VOID 
+TerminalPrintln(VOID) 
 {
-	terminal_print("\n");
+	TerminalPrint("\n");
 }
 
-void 
-terminal_print_value(int32_t value, uint8_t base) 
+VOID 
+TerminalPrintValue(DWORD Value, UBYTE Base) 
 {
-	char buffer[16];
-	string num_to_str = itoa(value, buffer, base);
-	if (base == 16)
-		terminal_print("0x");
-	if (base == 2)
-		terminal_print("0b");
-	terminal_print(num_to_str);
+	CHAR Buffer[16];
+	STRING NumberToString = itoa(Value, Buffer, Base);
+	if (Base == 0x10)
+		TerminalPrint("0x");
+	if (Base == 0x2)
+		TerminalPrint("0b");
+	TerminalPrint(NumberToString);
 }
 
-static int 
-terminal_putchar(char c) 
+static DWORD 
+TerminalPutchar(CHAR c) 
 {
 	//terminal.fore_color = SYSTEM_COLOR_WHITE;
 
-	uint8_t attribute_byte = ((terminal.back_color << 4) | (terminal.fore_color & 0x0F));
-	uint16_t attribute = attribute_byte << 8;
-	uint16_t *location;
+	UBYTE AttributeByte = ((Terminal.BackColor << 0x4) | (Terminal.ForeColor & 0x0F));
+	UWORD Attribute = AttributeByte << 0x8;
+	UWORD *Location;
 
-	if ((c == 0x08) && (terminal.x > 16)) 
+	if ((c == 0x08) && (Terminal.x > 0x10)) 
 	{
-		terminal_move_cursor(-1, 0);
-		location = video_memory + (terminal.y * VGA_WIDTH + terminal.x);
-		*location = ' ' | attribute;
-	} else
+		TerminalMoveCursor(-1, 0);
+		Location = VideoMemory + (Terminal.y * VGA_WIDTH + Terminal.x);
+		*Location = ' ' | Attribute;
+	} 
+	else
 	if (c == 0x09) 
 	{
-		terminal.x = (terminal.x + 4) & ~(4-1);
-	} else
+		Terminal.x = (Terminal.x + 0x4) & ~(0x4-0x1);
+	} 
+	else
 	if (c == '\r') 
 	{
-		terminal.x = 0;
-	} else
+		Terminal.x = 0;
+	} 
+	else
 	if (c == '\n') 
 	{
-		terminal.x = 0;
-		terminal.y++;
-	} else
+		Terminal.x = 0;
+		Terminal.y++;
+	} 
+	else
 	if (c >= ' ') 
 	{
-		location = video_memory + (terminal.y * VGA_WIDTH + terminal.x);
-		*location = c | attribute;
-		terminal.x++;
+		Location = VideoMemory + (Terminal.y * VGA_WIDTH + Terminal.x);
+		*Location = c | Attribute;
+		Terminal.x++;
 	}
 
-	if (terminal.x >= VGA_WIDTH) {
-		terminal.x = 0;
-		terminal.y++;
+	if (Terminal.x >= VGA_WIDTH) {
+		Terminal.x = 0;
+		Terminal.y++;
 	}
-	scroll();
-	move_cursor();
+	Scroll();
+	MoveCursor();
 }
 
-static void 
-move_cursor(void) 
+static VOID 
+MoveCursor(VOID) 
 {
-	uint16_t cursor_location = terminal.y * VGA_WIDTH + terminal.x;
-	write_portb(0x3D4, 14);
-	write_portb(0x3D5, cursor_location >> 8);
-	write_portb(0x3D4, 15);
-	write_portb(0x3D5, cursor_location);
+	UWORD CursorLocation = Terminal.y * VGA_WIDTH + Terminal.x;
+	WritePortB(0x3D4, 14);
+	WritePortB(0x3D5, CursorLocation >> 8);
+	WritePortB(0x3D4, 15);
+	WritePortB(0x3D5, CursorLocation);
 }
 
-static void 
-scroll(void) 
+static VOID 
+Scroll(VOID) 
 {
-	uint8_t atribute_byte = ((terminal.back_color << 4) | (terminal.fore_color & 0x0F));
-	uint16_t blank = 0x20 | (atribute_byte << 8);
+	UBYTE AtributeByte = ((Terminal.BackColor << 0x4) | (Terminal.ForeColor & 0x0F));
+	UWORD Blank = 0x20 | (AtributeByte << 0x8);
 
-	if (terminal.y >= VGA_HEIGHT) 
+	if (Terminal.y >= VGA_HEIGHT) 
 	{
-		int i;
+		DWORD i;
 		for (i = 0; i < (VGA_HEIGHT - 1) * VGA_WIDTH; i++) 
 		{
-			video_memory[i] = video_memory[i + VGA_WIDTH];
+			VideoMemory[i] = VideoMemory[i + VGA_WIDTH];
 		}
 
 		for (i = (VGA_HEIGHT - 1) * VGA_WIDTH; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
 		{
-			video_memory[i] = blank;
+			VideoMemory[i] = Blank;
 		}
-		terminal.y = VGA_HEIGHT - 1;
+		Terminal.y = VGA_HEIGHT - 1;
 	}
 }
 
-char 
-terminal_getchar(char c) 
+CHAR 
+terminal_getchar(CHAR c) 
 {
 	return (c);
 }
 
-char *terminal_buffer;
-char *
-terminal_gets(char *str) 
+STRING TerminalBuffer;
+STRING
+TerminalGets(STRING Str) 
 {
-	terminal_buffer = strcpy(str, terminal_buffer);
-	return (terminal_buffer);
+	TerminalBuffer = strcpy(Str, TerminalBuffer);
+	return (TerminalBuffer);
 }
 
-void 
-terminal_move_cursor(uint32_t x, uint32_t y)
+VOID 
+TerminalMoveCursor(UDWORD x, UDWORD y)
 {
-	terminal.x += x;
-	terminal.y += y;
-	move_cursor();
+	Terminal.x += x;
+	Terminal.y += y;
+	MoveCursor();
 }
 
-uint32_t terminal_get_cursor_x()
+UDWORD TerminalGetCursorX(VOID)
 {
-	return (terminal.x);
+	return (Terminal.x);
 }
 
-uint32_t terminal_get_cursor_y()
+UDWORD TerminalGetCursorY(VOID)
 {
-	return (terminal.y);
+	return (Terminal.y);
 }
 
-void 
-panic(const string message, const string file, uint32_t line) 
+VOID 
+Panic(const STRING Message, const STRING File, UDWORD Line) 
 {
-	__asm__ __volatile__("cli");
-	terminal_printf("!!! PANIC(%s) at %s : %d\n", message, file, line);
-	cpu_halt();
+	__asm__ __volatile__("CLI");
+	TerminalPrintf("!!! PANIC(%s) at %s : %d\n", Message, File, Line);
+	CPU_Halt();
 }
 
-void panic_assert(const char *file, uint32_t line, const char *desc) 
+VOID
+PanicAssert(const STRING File, UDWORD Line, const STRING Description) 
 {
-	__asm__ __volatile__("cli");
-	terminal_printf("!!! ASSERTION-FAILED(%s) at %s : %d.\n", desc, file, line);
-	cpu_halt();
+	__asm__ __volatile__("CLI");
+	TerminalPrintf("!!! ASSERTION-FAILED(%s) at %s : %d.\n", Description, File, Line);
+	CPU_Halt();
 }

@@ -22,47 +22,46 @@ using namespace PsionixSoftworks;
 #endif
 
 /* Tell the kernel what module and version we are using. */
-MODULE("kernel", "0.04-2a");
+MODULE("Kernel", "0.04-2a");
 
 /* Used for later when we enable 3D. */
 #define RUNNING_IN_3D_MODE		FALSE
 
 /* Locate external references here. */
-extern "C" uint32_t kernel_end;
-extern "C" uint32_t kernel_base;
-extern "C" void video_service_init(void);
-extern "C" void disk_service_init(void);
+EXTERN "C" SET_UDWORD(kernel_end);
+EXTERN "C" SET_UDWORD(kernel_base);
 
 /* Declare the kernel structure. */
-Kernel_t kernel;
+Kernel_t Kernel;
 AdamantineOS *AOS;
 
-extern "C" void __initcall
-kernel_init(uint8_t mode)
+EXTERN "C" VOID _TEXT
+KernelInit(UBYTE Mode)
 {
-	init_all(mode);
+	InitAll(Mode);
 	/* After in user mode. */
 	
 	AOS->SystemStartup();
-	kernel.running = true;
+	Kernel.Running = TRUE;
 }
 
 /* Update the kernel. */
-extern "C" void __initcall 
-kernel_update(void) 
+EXTERN "C" VOID _TEXT 
+KernelUpdate(void) 
 {
 	
 }
 
 /* Quit the kernel on shutdown. */
-extern "C" void __initcall kernel_quit(uint8_t status) 
+EXTERN "C" VOID _TEXT
+KernelQuit(UBYTE Status) 
 {
-	kernel.exit_status = status;
+	Kernel.ExitStatus = Status;
 }
 
 /* Check if the kernel is running. */
-extern "C" bool __initcall
-kernel_is_running(void) 
+EXTERN "C" BOOL _TEXT
+KernelIsRunning(void) 
 {
-	return (kernel.running);
+	return (Kernel.Running);
 }

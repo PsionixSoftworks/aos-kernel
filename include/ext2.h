@@ -16,6 +16,7 @@
 #include "device.h"
 #include "types.h"
 
+/*
 #ifndef EXT2_FILESYSTEM
 #define EXT2_FILESYSTEM
 #endif
@@ -125,5 +126,5 @@ extern uint8_t ext2_mount(device_t *device, void *priv);
 #if defined(__cplusplus)
 }
 #endif
-
+*/
 #endif

@@ -10,8 +10,8 @@
  *
  */
 
-#include "bus.h"
 #include "../../aos-defs.h"
+#include "bus.h"
 
 pBus_Driver_t bus;
 

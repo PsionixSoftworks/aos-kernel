@@ -14,48 +14,48 @@
 #include "../include/isr.h"
 #include "../include/terminal.h"
 
-static void syscall_handler(registers_t *regs);
+static VOID SyscallHandler(Registers_t *Register);
 
-DEFN_SYSCALL1(terminal_print, 0, string);
-DEFN_SYSCALL1(terminal_print_hex, 1, string);
-DEFN_SYSCALL1(terminal_print_dec, 2, string);
+DEFN_SYSCALL1(TerminalPrint, 0, STRING);
+DEFN_SYSCALL1(TerminalPrintHex, 1, STRING);
+DEFN_SYSCALL1(TerminalPrintDec, 2, STRING);
 
-static void *syscalls[3] =
+static VOID *Syscalls[3] =
 {
-    &terminal_print,
-    &terminal_print_hex,
-    &terminal_print_dec,
+    &TerminalPrint,
+    &TerminalPrintHex,
+    &TerminalPrintDec,
 };
-uint32_t num_syscalls = 3;
+UDWORD NumberOfSyscalls = 3;
 
-void 
-initialize_syscalls(void)
+VOID 
+SysCallsInit(VOID)
 {
-    register_interrupt_handler(0x80, &syscall_handler);
+    RegisterInterruptHandler(0x80, &SyscallHandler);
 }
 
-void
-syscall_handler(registers_t *regs)
+VOID
+SyscallHandler(Registers_t *Register)
 {
-    if (regs->eax >= num_syscalls)
+    if (Register->EAX >= NumberOfSyscalls)
         return;
     
-    void *location = syscalls[regs->eax];
+    VOID *Location = Syscalls[Register->EAX];
 
-    int ret;
+    DWORD Value = 0;
     asm volatile ("     \
-        push %1;        \
-        push %2;        \
-        push %3;        \
-        push %4;        \
-        push %5;        \
-        call *%6;       \
-        pop %%ebx;      \
-        pop %%ebx;      \
-        pop %%ebx;      \
-        pop %%ebx;      \
-        pop %%ebx;      \
-        " : "=a" (ret) : "r" (regs->edi), "r" (regs->esi), "r" (regs->edx), "r" (regs->ecx), "r" (regs->ebx), "r" (location)
+        PUSH %1;        \
+        PUSH %2;        \
+        PUSH %3;        \
+        PUSH %4;        \
+        PUSH %5;        \
+        CALL *%6;       \
+        POP %%EBX;      \
+        POP %%EBX;      \
+        POP %%EBX;      \
+        POP %%EBX;      \
+        POP %%EBX;      \
+        " : "=a" (Value) : "r" (Register->EDI), "r" (Register->ESI), "r" (Register->EDX), "r" (Register->ECX), "r" (Register->EBX), "r" (Location)
     );
-    regs->eax = ret;
+    Register->EAX = Value;
 }

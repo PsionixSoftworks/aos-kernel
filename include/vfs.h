@@ -16,6 +16,7 @@
 #include "types.h"
 #include "string.h"
 #include "device.h"
+#include "aos-defs.h"
 
 #if defined(__cplusplus)
 extern "C" {

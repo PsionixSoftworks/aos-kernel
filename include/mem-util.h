@@ -13,6 +13,7 @@
 #ifndef ADAMANTINE_MEMORY_UTILITY
 #define ADAMANTINE_MEMORY_UTILITY
 
+#include "aos-defs.h"
 #include "types.h"
 
 #if defined(__cplusplus)
@@ -22,21 +23,21 @@ extern "C" {
 // Declare the allocation type:
 typedef struct 
 {
-	uint8_t status;
-	size_t size;
-} alloc_t;
+	BYTE 				Status;
+	SIZE 				Size;
+} Alloc_t;
 
-extern void mm_init(uint32_t *kernel_end);
-extern void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys);
+EXTERN SET_VOID(MM_Init(UDWORD *kernel_end));
+EXTERN SET_VOID(PagingMapVirtualToPhysical(UDWORD Virtual, UDWORD Physical));
 
-extern char *pmalloc(size_t size);
-extern char *malloc(size_t size);
-extern void pfree(void *mem);
-extern void free(void *mem);
+EXTERN SET_VOID(*PMalloc(SIZE Size));
+EXTERN SET_VOID(*Malloc(SIZE Size));
+EXTERN SET_VOID(PFree(VOID *Mem));
+EXTERN SET_VOID(free(VOID *Mem));
 
-extern void *memcpy(const void *dest, const void *src, size_t num);
-extern void *memset(void *ptr, int value, size_t num);
-extern void *memset16(void *ptr,  uint16_t value, size_t num);
+EXTERN SET_VOID(*MemCpy(const VOID *Destination, const VOID *Source, SIZE Size));
+EXTERN SET_VOID(*MemSet(VOID *Pointer, DWORD Value, SIZE Size));
+EXTERN SET_VOID(*MemSet16(VOID *Pointer,  UDWORD Value, SIZE Size));
 
 #if defined(__cplusplus)
 }

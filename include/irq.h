@@ -13,19 +13,19 @@
 #ifndef _INTERRUPT_REQUESTS_
 #define _INTERRUPT_REQUESTS_
 
+#include "aos-defs.h"
 #include "types.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-extern bool are_interrupts_enabled(void);
-extern unsigned long save_irqdisable(void);
-extern void irq_restore(unsigned long flags);
-extern void clear_interrupts(void);
+EXTERN SET_BYTE(AreInterruptsEnabled(void));
+EXTERN SET_ULONG(IRQ_Disable(void));
+EXTERN SET_VOID(IRQ_Restore(unsigned long flags));
+EXTERN SET_VOID(ClearInterrupts(void));
 
 #if defined(__cplusplus)
 }
 #endif
-
 #endif

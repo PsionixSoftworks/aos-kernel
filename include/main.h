@@ -13,15 +13,15 @@
 #ifndef ADAMANTINE_MAIN
 #define ADAMANTINE_MAIN
 
-#include "types.h"
 #include "aos-defs.h"
+#include "types.h"
 #include "adamantine.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-extern void kmain(void);
+EXTERN SET_VOID(KNain(VOID));
 
 #if defined(__cplusplus)
 }

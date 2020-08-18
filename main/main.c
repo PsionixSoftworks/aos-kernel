@@ -18,25 +18,21 @@
 #include "../include/pit.h"
 
 #include "../include/x86/gdt.h"
-#include "../include/x86/ldt.h"
 #include "../include/x86/idt.h"
 #include "../include/syscall.h"
 #include "../include/tss.h"
 #include "../include/vga.h"
 
-MODULE("main", "0.01a");
+MODULE("Main", "0.01a");
 
-void _TEXT 
-kmain(void) 
+VOID _TEXT 
+KMain(VOID) 
 {
-	terminal_init(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
-	terminal_clear_screen();
+	TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
+	TerminalClearScreen();
 
-	gdt_init();
-	//ldt_init();
-	idt_init();
-
-	
+	GDT_Init();
+	IDT_Init();
 
 	//initialize_syscalls();
 	//switch_to_user_mode();

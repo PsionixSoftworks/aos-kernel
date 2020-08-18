@@ -14,6 +14,7 @@
 #define _AOS_KEYBOARD_
 
 // Include files here:
+#include "aos-defs.h"
 #include "types.h"
 #include "string.h"
 #include "driver.h"
@@ -32,28 +33,27 @@ extern "C" {
 #endif
 
 // Declare global functions:
-extern void set_key_code(uint8_t *key, byte code);				// Set keycodes for each key (UNUSED).
-extern void keyboard_init(void);								// Initialize the basic keyboard driver.
-extern void keyboard_free(void);								// Free memory associated with the keyboard driver.
-extern void keyboard_wait(void);								// Give the keyboard a wait instruction.
-extern bool keyboard_is_enabled(void);							// Checks whether the keyboard is initialized or not.
-extern string keyboard_get_key(void);							// Gets the value of a key pressed.
-extern int8_t keyboard_get_keycode(void);						// Gets the value of the keycode pressed.
-extern uint8_t keyboard_get_keylast(void);
-extern string keyboard_get_string(void);
+EXTERN 	SET_VOID(SetKeyCode(BYTE *Key, BYTE Code));					// Set keycodes for each key (UNUSED).
+EXTERN 	SET_VOID(KeyboardInit(void));								// Initialize the basic keyboard driver.
+EXTERN 	SET_VOID(KeyboardFree(void));								// Free memory associated with the keyboard driver.
+EXTERN 	SET_VOID(KeyboardWait(void));								// Give the keyboard a wait instruction.
+EXTERN 	SET_BOOL(KeyboardIsEnabled(void));							// Checks whether the keyboard is initialized or not.
+EXTERN 	SET_STRING(KeyboardGetKey(void));							// Gets the value of a key pressed.
+EXTERN 	SET_STRING(KeyboardGetString(void));
+EXTERN 	SET_UBYTE(KeyboardGetKeycode(void));						// Gets the value of the keycode pressed.
+EXTERN 	SET_UBYTE(KeyboardGetKeyLast(void));
 
 // Declare the keyboard type struct:
-typedef struct 
+typedef struct AOS_Keyboard_Basic
 {
-	uint8_t key_last;											// The last key pressed.
-	string keymap;												// Used to set a memory map of the keys (BROKEN).
-	uint8_t status;												// The status of the keyboard key.
-	bool initialized;											// The keyboard initializer.
-	string buffer;
-} __attribute__((packed)) keyboard_t;							// keyboard type.
+	BYTE 				KeyLast;									// The last key pressed.
+	BYTE 				Status;										// The status of the keyboard key.
+	STRING 				KeyMap;										// Used to set a memory map of the keys (BROKEN).
+	STRING 				Buffer;
+	BOOL 				Initialized;								// The keyboard initializer.
+} PACKED Keyboard_t;												// keyboard type.
 
 #if defined(__cplusplus)
 }
 #endif
-
 #endif 	// !ADAMANTINE_KEYBOARD

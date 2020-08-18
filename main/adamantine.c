@@ -11,17 +11,16 @@
  */
 
 #include "../include/adamantine.h"
-#include "../include/aos-defs.h"
 
 MODULE("adamantine", "0.01a");
 
-static string
-    m_name,
-    m_version;
+static STRING
+    M_Name,
+    M_Version;
 
-void 
-module_create(string name, string version)
+VOID 
+ModuleCreate(STRING Name, STRING Version)
 {
-    m_name      = name;
-    m_version   = version;
+    M_Name      = Name;
+    M_Version   = Version;
 }

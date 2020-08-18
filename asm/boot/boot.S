@@ -27,7 +27,7 @@
 .TYPE _start @function
 _start:
     MOV $stack_top, %esp
-    CALL kmain
+    CALL KMain
     CLI
 1:  HLT
     JMP 1b

@@ -13,30 +13,30 @@
 #include "../include/pit.h"
 #include "../include/isr.h"
 #include "../include/terminal.h"
-#include "../include/aos-defs.h"
+#include "../include/io.h"
 
-MODULE("programmable-interval-timer", "0.01a");
+MODULE("ProgrammableIntervalTimer", "0.01a");
 
-uint32_t tick;
+UDWORD Tick;
 
-static void 
-timer_callback(registers_t regs) 
+static VOID 
+TimerCallback(Registers_t Register) 
 {
-	tick++;
-	terminal_printf("Tick: %d\n", tick);
+	Tick++;
+	TerminalPrintf("Tick: %d\n", Tick);
 }
 
-void 
-timer_init(uint32_t frequency) 
+VOID 
+TimerInit(UDWORD Frequency) 
 {
-	register_interrupt_handler(IRQ0, &timer_callback);
+	RegisterInterruptHandler(IRQ0, &TimerCallback);
 	
-	uint32_t divisor = 1193180 / frequency;
-	write_portb(0x43, 0x36);
+	UDWORD Divisor = 0x1234DC / Frequency;
+	WritePortB(0x43, 0x36);
 	
-	uint8_t l = (uint8_t)(divisor & 0xFF);
-	uint8_t h = (uint8_t)((divisor >> 8) & 0xFF);
+	UBYTE l = (UBYTE)(Divisor & 0xFF);
+	UBYTE h = (UBYTE)((Divisor >> 0x8) & 0xFF);
 	
-	write_portb(0x40, l);
-	write_portb(0x40, h);
+	WritePortB(0x40, l);
+	WritePortB(0x40, h);
 }

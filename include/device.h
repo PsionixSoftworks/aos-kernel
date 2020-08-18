@@ -13,38 +13,37 @@
 #ifndef _DEVICE_
 #define _DEVICE_
 
-#include "driver.h"
 #include "aos-defs.h"
 #include "types.h"
 #include "string.h"
+#include "driver.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-struct aos_fs;
+struct AOS_FileSystem;
 
-typedef struct aos_device 
+typedef struct AOS_Device 
 {
-    uint32_t device_id;
-    uint8_t device_status;
-    string device_name;
-    struct aos_fs *fs;
-    uint8_t (*read)(uint8_t *buffer, uint32_t offset, uint32_t len, void * device);
-    uint8_t (*write)(uint8_t *buffer, uint32_t offset, uint32_t len, void * device);
+    UDWORD              DeviceID;
+    BYTE                DeviceStatus;
+    BYTE                (*Read)(BYTE *Buffer, UDWORD Offset, UDWORD Length, VOID *Device);
+    BYTE                (*Write)(BYTE *Buffer, UDWORD Offset, UDWORD Length, VOID *Device);
+    STRING              DeviceName;
+    STRUCT              AOS_FileSystem *FileSystem;
+} Device_t;
 
-} device_t;
-
-enum device_type {
+enum DeviceType {
     DEVICE_UNKNOWN,
     DEVICE_CHAR,
     DEVICE_BLOCK,
 };
 
-extern void aos_device_init(uint32_t, string);
-extern int aos_device_add(struct aos_device *);
-extern struct aos_device aos_device_get(uint32_t);
-extern void aos_device_free(void);
+EXTERN SET_VOID(AOS_DeviceInit(UDWORD, STRING));
+EXTERN SET_VOID(AOS_DeviceAdd(STRUCT AOS_Device *));
+EXTERN SET_VOID(AOS_DeviceFree(VOID));
+EXTERN SET_STRUCT(AOS_Device AOS_DeviceGet(UDWORD));
 
 #if defined(__cplusplus)
 }

@@ -70,23 +70,37 @@
 #define UBYTE                           uint8_t
 #define UWORD                           uint16_t
 #define UDWORD                          uint32_t
+#define ULONG                           unsigned long
+#define USHORT                          unsigned short
 #define BYTE                            int8_t
 #define WORD                            int16_t
 #define DWORD                           int32_t
+#define LONG                            signed long
+#define SHORT                           signed short
+#define SIZE                            size_t
 #define CHAR                            char
 #define STRING                          string
+#define STRUCT                          struct
+#define UNION                           union
 
 /* Setters for types. */
-#define SET_VOID(name)                  VOID name
-#define SET_BOOL(name)                  BOOL name
-#define SET_UBYTE(name)                 UBYTE name
-#define SET_UWORD(name)                 UWORD name
-#define SET_UDWORD(name)                UDWORD name
-#define SET_BYTE(name)                  BYTE name
-#define SET_WORD(name)                  WORD name
-#define SET_DWORD(name)                 DWORD name
-#define SET_CHAR(name)                  CHAR name
-#define SET_STRING(name)                STRING name
+#define SET_VOID(name)                  VOID    name
+#define SET_BOOL(name)                  BOOL    name
+#define SET_UBYTE(name)                 UBYTE   name
+#define SET_UWORD(name)                 UWORD   name
+#define SET_UDWORD(name)                UDWORD  name
+#define SET_ULONG(name)                 ULONG   name
+#define SET_USHORT(name)                USHORT  name
+#define SET_BYTE(name)                  BYTE    name
+#define SET_WORD(name)                  WORD    name
+#define SET_DWORD(name)                 DWORD   name
+#define SET_LONG(name)                  LONG    name
+#define SET_SHORT(name)                 SHORT   name
+#define SET_SIZE(name)                  SIZE    name
+#define SET_CHAR(name)                  CHAR    name
+#define SET_STRING(name)                STRING  name
+#define SET_STRUCT(name)                STRUCT  name
+#define SET_UNION(name)                 UNION   name
 
 #define EXTERN                          extern
 

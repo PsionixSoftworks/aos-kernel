@@ -22,26 +22,26 @@ tss_t tss_entry;
 
 /* 0x23 = 35: User Mode Data Selector. */
 /* 0x1B = 27: CS Selector Value. */
-void
-switch_to_user_mode(void)
+VOID
+SwitchToUserMode(VOID)
 {
     asm volatile
     (
         "               \
-        cli;            \
-        mov $0x23, %ax; \
-        mov %ax, %ds;   \
-        mov %ax, %es;   \
-        mov %ax, %fs;   \
-        mov %ax, %gs;   \
+        CLI;            \
+        MOV $0x23, %AX; \
+        MOV %ax, %DS;   \
+        MOV %ax, %ES;   \
+        MOV %ax, %FS;   \
+        MOV %ax, %GS;   \
                         \
-        mov %esp, %eax; \
+        MOV %ESP, %EAX; \
         pushl $0x23;    \
-        pushl %eax;     \
+        pushl %EAX;     \
         pushf;          \
         pushl $0x1B;    \
         push $1f;       \
-        iret;           \
+        IRET;           \
         1:              \
         "
     );

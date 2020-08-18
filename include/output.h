@@ -13,10 +13,11 @@
 #ifndef _OUTPUT_
 #define _OUTPUT_
 
+#include "aos-defs.h"
 #include "types.h"
 
-extern void write_portb(uint16_t port, uint8_t value);	        /* Writes to an 8-Bit port. */
-extern void write_portw(uint16_t port, uint16_t value);	        /* Writes to a 16-Bit port. */
-extern void write_portl(uint16_t port, uint32_t value);	        /* Writes to a 32-Bit port. */
+EXTERN  SET_VOID(WritePortB(UWORD Port, UBYTE Value));	            /* Writes to an 8-Bit port. */
+EXTERN  SET_VOID(WritePortW(UWORD Port, UWORD Value));	            /* Writes to a 16-Bit port. */
+EXTERN  SET_VOID(WritePortDW(UWORD Port, UDWORD Value));	        /* Writes to a 32-Bit port. */
 
 #endif

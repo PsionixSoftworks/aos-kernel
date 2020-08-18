@@ -27,20 +27,27 @@
 #define PCI_DEVICE_ENABLE_PARITY            (PCI_ENABLE << 0x06)
 #define PCI_DEVICE_ENABLE_WAIT              (PCI_ENABLE << 0x07)
 
-struct aos_pci_device
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+struct AOS_PCI_Device
 {
-    uint32_t vendor;
-    uint32_t device;
-    uint32_t subvendor;
-    uint32_t subdevice;
-    uint32_t class;
-    uint32_t class_mask;
+    UDWORD              Vendor;
+    UDWORD              Device;
+    UDWORD              SubVendor;
+    UDWORD              SubDevice;
+    UDWORD              Class;
+    UDWORD              ClassMask;
 } PACKED PCI_Device_t;
 
 /* define the pci struct. */
-typedef struct aos_pci
+typedef struct AOS_PCI
 {
-    struct aos_pci_device device_id;
+    struct AOS_PCI_Device DeviceID;
 } PACKED PCI_t;
 
+#if defined(__cplusplus)
+}
+#endif
 #endif

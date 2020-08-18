@@ -23,97 +23,89 @@
 #include "../include/aos-defs.h"
 #include "../include/io.h"
 
-MODULE("keyboard", "0.01a");
+MODULE("Keyboard", "0.01a");
 
 /* Define the keyboard. */
-keyboard_t keyboard;
+Keyboard_t Keyboard;
 
 // Declare local functions:
-static void keyboard_irq(void);						// Keyboard IRQ.
-static void keyboard_read(void);					// Read the keyboard on key press.
-
-/* Define all mutexes here. */
-//DEFINE_MUTEX(m_get_key);
+static SET_VOID(KeyboardIRQ(VOID));									// Keyboard IRQ.
+static SET_VOID(KeyboardRead(VOID));								// Read the keyboard on key press.
 
 /* Initialize the keyboard */
-void 
-keyboard_init(void) 
+VOID 
+KeyboardInit(VOID) 
 {
-	keyboard.keymap = (string)malloc(256);
-	memset(keyboard.keymap, 0, 256);
+	Keyboard.KeyMap = (STRING)Malloc(256);
+	MemSet(Keyboard.KeyMap, 0, 256);
 	
-	register_interrupt_handler(33, (isr_t)keyboard_irq);
-	keyboard.initialized = true;
+	RegisterInterruptHandler(33, (ISR_t)&KeyboardIRQ);
+	Keyboard.Initialized = TRUE;
 	INFO("Keyboard initialized!");
 }
 
 /* Free the keyboard. */
-void 
-keyboard_free(void) 
+VOID
+KeyboardFree(VOID) 
 {
-	free(keyboard.keymap);
+	Free(Keyboard.KeyMap);
 }
 
 /* Checks if the keyboard is initialized */
-bool 
-keyboard_is_enabled(void) 
+BOOL
+keyboard_is_enabled(VOID) 
 {
-	keyboard.key_last = KEYBOARD_KEY_DOWN_NONE;
-	return (keyboard.initialized);
+	Keyboard.KeyLast = KEYBOARD_KEY_DOWN_NONE;
+	return (Keyboard.Initialized);
 }
 
 /* Get the key as a character */
-string 
-keyboard_get_key(void) 
+STRING 
+KeyboardGetKey(VOID) 
 {
-	keyboard_read();
-	if ((keyboard.key_last != KEYBOARD_KEY_DOWN_NONE) || (keyboard.key_last != KEYBOARD_KEY_DOWN_ENTER)) 
-	{
-		return (keys_normal[keyboard.key_last]);
-	} else 
-	{
-		return (KEYBOARD_KEY_DOWN_NONE);
-	}
+	KeyboardRead();
+	if ((Keyboard.KeyLast != KEYBOARD_KEY_DOWN_NONE) || (Keyboard.KeyLast != KEYBOARD_KEY_DOWN_ENTER)) 
+		return (KeysNormal[Keyboard.KeyLast]);
+	return (KEYBOARD_KEY_DOWN_NONE);
 }
 
 /* Get the key code */
-int8_t
-keyboard_get_keycode(void) 
+UBYTE
+KeyboardGetKeycode(VOID) 
 {
-	keyboard_read();
-	if (keyboard.key_last == KEYBOARD_KEY_DOWN_NONE) 
-	{
-		return (keyboard.key_last);
-	}
+	KeyboardRead();
+	if (Keyboard.KeyLast == KEYBOARD_KEY_DOWN_NONE) 
+		return (Keyboard.KeyLast);
 	return (KEYBOARD_KEY_DOWN_NONE);
 }
 
 /* Get the numeric last key pressed. */
-uint8_t keyboard_get_keylast(void) 
+UBYTE 
+KeyboardGetKeyLast(void) 
 {
-	return (keyboard.key_last);
+	return (Keyboard.KeyLast);
 }
 
 /* Set the keyboard interrupt */
-static void 
-keyboard_irq(void) 
+static VOID 
+KeyboardIRQ(void) 
 {
-	
+	return;
 }
 
 /* Read keys as they're pressed */
-static void keyboard_read(void) 
+static VOID 
+KeyboardRead(VOID) 
 {
-	keyboard.status = read_portb(KEYBOARD_PORT);
-	keyboard.key_last = KEYBOARD_KEY_DOWN_NONE;
-	if ((keyboard.status & 0x01) == 1) 
-	{
-		keyboard.key_last = read_portb(KEYBOARD_DATA);
-	}
+	Keyboard.Status = ReadPortB(KEYBOARD_PORT);
+	Keyboard.KeyLast = KEYBOARD_KEY_DOWN_NONE;
+	if ((Keyboard.Status & 0x01) == 1) 
+		Keyboard.KeyLast = ReadPortB(KEYBOARD_DATA);
 }
 
 /* Get the keyboard string (last string of characters typed before <ENTER> key is pressed). */
-string keyboard_get_string(void) 
+STRING
+KeyboardGetString(void) 
 {
-	return (keyboard.buffer);
+	return (Keyboard.Buffer);
 }

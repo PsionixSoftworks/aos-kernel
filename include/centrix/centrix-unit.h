@@ -16,6 +16,14 @@
 #include "base32.h"
 #include "../types.h"
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
+
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

@@ -14,50 +14,50 @@
 
 #include "../include/centrix-core.h"
 #include "../include/centrix.h"
-#include "../include/aos-defs.h"
 #include "../include/terminal.h"
 #include "../include/cpu.h"
 #include "../include/vga.h"
 
-MODULE("centrix", "0.01a");
+MODULE("Centrix", "0.01a");
 
-string supported_oses[] =
+STRING SupportedOS[] =
 {
     "CentrixOS",
     "AdamantineOS",
     "SteelOS",
 };
 
-struct centrix_core core;
-void *kernel_install(string name) {
-    core.os_id = NULL;
-    core.os_signature = NULL;
+struct CentrixCore Core;
+VOID *
+KernelInstall(STRING Name) {
+    Core.OS_ID = NULL;
+    Core.OS_Signature = NULL;
 
-    core.os_name = name;
-    return (name);
+    Core.OS_Name = Name;
+    return (Name);
 }
 
-int32_t 
-verify(void)
+DWORD 
+Verify(VOID)
 {
-    terminal_init(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
-	terminal_clear_screen();
+    TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
+	TerminalClearScreen();
 
-    size_t len = strlen(supported_oses);
-    size_t i = 0;
-    string os_name = core.os_name;
-    while (i < len)
+    SIZE Length = strlen(SupportedOS);
+    SIZE i = 0;
+    STRING OS_Name = Core.OS_Name;
+    while (i < Length)
     {
-        if (strcmp(os_name, supported_oses[i]) == 0)
+        if (strcmp(OS_Name, SupportedOS[i]) == 0)
         {
-            terminal_printf("[CENTRIX]: \"%s\" is a valid Operating System.\n", os_name);
-            terminal_printf("[CENTRIX]: Starting \"%s\" OS kernel...\n\n", os_name);
+            TerminalPrintf("[CENTRIX]: \"%s\" is a valid Operating System.\n", OS_Name);
+            TerminalPrintf("[CENTRIX]: Starting \"%s\" OS kernel...\n\n", OS_Name);
             return (SUCCESS);
         } else {
             i++;
-            if (i >= len) 
+            if (i >= Length) 
             {
-                terminal_printf("[CENTRIX]: \"%s\" is not a valid Operating System...\n", os_name);
+                TerminalPrintf("[CENTRIX]: \"%s\" is not a valid Operating System...\n", OS_Name);
                 return (FAILURE);
             }
         }

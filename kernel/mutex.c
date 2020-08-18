@@ -14,35 +14,36 @@
 #include "../include/mutex.h"
 #include "../include/aos-defs.h"
 
-MODULE("mutex", "0.01a");
+MODULE("Mutex", "0.01a");
 
-uint8_t __enabled = 0;
+UBYTE Enabled = 0;
 
-static void schedule_noirq(void);
+static VOID 
+ScheduleNoIRQ(VOID);
 
-void 
-mutex_lock(mutex* m) 
+VOID 
+MutexLock(Mutex* m) 
 {
 	/* if the lock is locked, wait and set its locked state */
-	while(m->locked) schedule_noirq();
-	m->locked = 1;
+	while(m->Locked) ScheduleNoIRQ();
+	m->Locked = 1;
 }
 
-void 
-mutex_unlock(mutex* m) 
+VOID 
+MutexUnlock(Mutex* m) 
 {
 	/* this code can only be accessed by the holding thread, so unlock it */
-	m->locked = 0;
-	schedule_noirq();
+	m->Locked = 0;
+	ScheduleNoIRQ();
 }
 
-static void 
-schedule_noirq(void) 
+static VOID 
+ScheduleNoIRQ(VOID) 
 {
-	if(!__enabled)
+	if(!Enabled)
 		return;
 	
 	// Invoke system call to kernel interrupt:
-	asm volatile("int $0x2E");
+	asm volatile("INT $0x2E");
 	return;
 }

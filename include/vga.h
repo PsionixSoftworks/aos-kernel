@@ -13,8 +13,8 @@
 #ifndef _VGA_
 #define _VGA_
 
-#include "types.h"
 #include "aos-defs.h"
+#include "types.h"
 
 #if !defined(VGA_MODE)
 #define VGA_GRAPHICS_MODE           0xA0000
@@ -25,7 +25,7 @@
 #define VGA_WIDTH                   80
 #define VGA_HEIGHT                  25
 
-enum vga_color 
+enum VgaColor 
 {
     SYSTEM_COLOR_BLACK,
     SYSTEM_COLOR_BLUE,
