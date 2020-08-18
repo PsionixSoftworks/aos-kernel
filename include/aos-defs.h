@@ -13,7 +13,8 @@
 #ifndef ADAMANTINE_STANDARD_DEFINITIONS
 #define ADAMANTINE_STANDARD_DEFINITIONS
 
-#include "terminal.h"
+#include "types.h"
+#include "string.h"
 
 #define OS_NAME                             "AdamantineOS"
 #define OS_VERSION                          "0.04a"
@@ -38,7 +39,6 @@
 #define FAILURE								FALSE
 #define SUCCESS								TRUE
 #define AOS_BASE_CNTRL                      0xCE0
-#define PVOID                               void *
 #endif
 
 // Define the module naming system for later use:
@@ -63,5 +63,33 @@
 #define _BSS                            SECTION(".bss")
 #define ACCESS(mode)	                __attribute__((access(mode)))
 #endif	// !__STANDARD_ATTRIBUTES__
+
+/* Define common types. */
+#define VOID                            void
+#define BOOL                            bool
+#define UBYTE                           uint8_t
+#define UWORD                           uint16_t
+#define UDWORD                          uint32_t
+#define BYTE                            int8_t
+#define WORD                            int16_t
+#define DWORD                           int32_t
+#define CHAR                            char
+#define STRING                          string
+
+/* Setters for types. */
+#define SET_VOID(name)                  VOID name
+#define SET_BOOL(name)                  BOOL name
+#define SET_UBYTE(name)                 UBYTE name
+#define SET_UWORD(name)                 UWORD name
+#define SET_UDWORD(name)                UDWORD name
+#define SET_BYTE(name)                  BYTE name
+#define SET_WORD(name)                  WORD name
+#define SET_DWORD(name)                 DWORD name
+#define SET_CHAR(name)                  CHAR name
+#define SET_STRING(name)                STRING name
+
+#define EXTERN                          extern
+
+#define PACK(name)                      PACKED name
 
 #endif	// !ADAMANTINE_STANDARD_DEFINITIONS
