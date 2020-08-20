@@ -21,7 +21,7 @@
 extern "C" {
 #endif
 
-EXTERN SET_VOID(KNain(VOID));
+EXTERN VOID KNain(VOID);
 
 #if defined(__cplusplus)
 }

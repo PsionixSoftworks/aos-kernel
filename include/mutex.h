@@ -11,8 +11,8 @@ typedef struct {
 
 #define DEFINE_MUTEX(name) static Mutex name = { .Locked=0 };
 
-EXTERN SET_VOID(MutexLock(Mutex	*M));
-EXTERN SET_VOID(MutexUnlock(Mutex* M));
+EXTERN VOID (MutexLock(Mutex	*M));
+EXTERN VOID (MutexUnlock(Mutex* M));
 
 // TODO: Finish writing Mutex...
 

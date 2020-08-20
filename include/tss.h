@@ -48,8 +48,8 @@ typedef struct AOS_TSS_Entry
     UWORD               IOMapBase;
 } TSS_t PACKED;
 
-EXTERN SET_VOID(SwitchToUserMode(VOID));
-EXTERN SET_VOID(ReenableInterrupts(VOID));
-EXTERN SET_VOID(SetKernelStack(UDWORD Stack));
+EXTERN VOID (SwitchToUserMode(VOID));
+EXTERN VOID (ReenableInterrupts(VOID));
+EXTERN VOID (SetKernelStack(UDWORD Stack));
 
 #endif

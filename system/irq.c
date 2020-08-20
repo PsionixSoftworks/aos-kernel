@@ -14,10 +14,10 @@
 
 MODULE("InterruptRequest", "0.01a");
 
-BYTE
+BYTE 
 AreInterruptsEnabled(VOID) 
 {
-    SET_ULONG(Flags);
+    ULONG Flags;
     asm volatile 
     ( 
         "PUSHF\n\t"
@@ -25,20 +25,20 @@ AreInterruptsEnabled(VOID)
         : "=g"(Flags) 
     );
 
-    return Flags & (0x1 << 0x9);
+    return Flags & (1 << 9);
 }
 
 ULONG
 IRQ_Disable(VOID) 
 {
-    SET_ULONG(Flags);
+    ULONG Flags;
     asm volatile
     (
-        "PUSHF\n\tcli\n\tPOP %0" : "=r"(Flags) : : "memory"
+        "PUSHF\n\tCLI\n\tPOP %0" : "=r"(Flags) : : "memory"
     );
 }
 
-VOID
+VOID 
 IRQ_Restore(ULONG Flags) {
     asm volatile
     (

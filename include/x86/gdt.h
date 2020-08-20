@@ -43,7 +43,7 @@ struct PGDT
 } PACKED;
 typedef struct PGDT PGDT_t;
 
-EXTERN   SET_VOID(GDT_Init(VOID));
+EXTERN   VOID GDT_Init(VOID);
 
 #if defined(__cplusplus)
 }

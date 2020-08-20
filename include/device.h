@@ -40,10 +40,10 @@ enum DeviceType {
     DEVICE_BLOCK,
 };
 
-EXTERN SET_VOID(AOS_DeviceInit(UDWORD, STRING));
-EXTERN SET_VOID(AOS_DeviceAdd(STRUCT AOS_Device *));
-EXTERN SET_VOID(AOS_DeviceFree(VOID));
-EXTERN SET_STRUCT(AOS_Device AOS_DeviceGet(UDWORD));
+EXTERN VOID (AOS_DeviceInit(UDWORD, STRING));
+EXTERN VOID (AOS_DeviceAdd(STRUCT AOS_Device *));
+EXTERN VOID (AOS_DeviceFree(VOID));
+EXTERN STRUCT AOS_Device AOS_DeviceGet(UDWORD);
 
 #if defined(__cplusplus)
 }

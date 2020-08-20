@@ -16,8 +16,8 @@
 #include "aos-defs.h"
 #include "types.h"
 
-EXTERN SET_UBYTE(ReadPortB(UWORD Port));					        /* Read 8-bit port. */
-EXTERN SET_UWORD(ReadPortW(UWORD Port));					        /* Read 16-bit port. */
-EXTERN SET_UDWORD(ReadPortDW(UWORD Port));                          /* Read 32-bit port. */
+EXTERN UBYTE (ReadPortB(UWORD Port));					        /* Read 8-bit port. */
+EXTERN UWORD (ReadPortW(UWORD Port));					        /* Read 16-bit port. */
+EXTERN UDWORD (ReadPortDW(UWORD Port));                          /* Read 32-bit port. */
 
 #endif

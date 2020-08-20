@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-EXTERN  SET_VOID(TimerInit(UDWORD Frequency));
+EXTERN  VOID (TimerInit(UDWORD Frequency));
 
 #if defined(__cplusplus)
 }

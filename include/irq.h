@@ -20,10 +20,10 @@
 extern "C" {
 #endif
 
-EXTERN SET_BYTE(AreInterruptsEnabled(void));
-EXTERN SET_ULONG(IRQ_Disable(void));
-EXTERN SET_VOID(IRQ_Restore(unsigned long flags));
-EXTERN SET_VOID(ClearInterrupts(void));
+EXTERN BYTE (AreInterruptsEnabled(VOID));
+EXTERN ULONG (IRQ_Disable(VOID));
+EXTERN VOID (IRQ_Restore(ULONG Flags));
+EXTERN VOID (ClearInterrupts(VOID));
 
 #if defined(__cplusplus)
 }

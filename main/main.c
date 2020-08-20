@@ -34,5 +34,6 @@ KMain(VOID)
 	GDT_Init();
 	IDT_Init();
 
-	int a = 1 / 0;
+	asm volatile("INT $0x02");
+	//int a = 1 / 0;
 }

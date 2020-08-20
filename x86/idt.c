@@ -18,30 +18,22 @@
 
 MODULE("InterruptDescriptorTable", "0.01a");
 
+EXTERN VOID IDT_Flush(UDWORD);
+
 IDT_Entry_t IDT_Entries[256];
 PIDT_t PIDT;
 
-static VOID
-IDT_SetGate(UBYTE Number, UDWORD Base, UWORD Selector, UBYTE Flags) 
-{
-	IDT_Entries[Number].BaseLo = Base & 0xFFFF;
-    IDT_Entries[Number].BaseHi = (Base >> 16) & 0xFFFF;
-	
-	IDT_Entries[Number].Selector = Selector;
-	IDT_Entries[Number].AlwaysZero = 0;
-	
-	IDT_Entries[Number].Flags = Flags | 0x60;
-}
+static VOID IDT_SetGate(UBYTE Number, UDWORD Base, UWORD Selector, UBYTE Flags);
 
 VOID
 IDT_Init(VOID)
 {
-	PIDT.Limit = sizeof(IDT_Entry_t) * 0x100 - 0x1;
+	PIDT.Limit = sizeof(IDT_Entry_t) * 256 - 1;
 	PIDT.Base = (UDWORD)&IDT_Entries;
 	
-	MemSet(&IDT_Entries, 0, sizeof(IDT_Entry_t) * 0x100);
+	MemSet(&IDT_Entries, 0, sizeof(IDT_Entry_t) * 256);
 	
-    PIC_Remap();
+    //PIC_Remap();
 	
 	IDT_SetGate( 0, (UDWORD)ISR_0, 0x08, 0x8E);
     IDT_SetGate( 1, (UDWORD)ISR_1, 0x08, 0x8E);
@@ -93,9 +85,21 @@ IDT_Init(VOID)
     IDT_SetGate(46, (UDWORD)IRQ_14, 0x08, 0x8E);
     IDT_SetGate(47, (UDWORD)IRQ_15, 0x08, 0x8E);
 	
-	IDT_Load((UDWORD)&PIDT);
+	IDT_Flush((UDWORD)&PIDT);
 
     INFO("IDT is initialized!");
+}
+
+static VOID
+IDT_SetGate(UBYTE Number, UDWORD Base, UWORD Selector, UBYTE Flags)
+{
+	IDT_Entries[Number].BaseLo      = Base & 0xFFFF;
+    IDT_Entries[Number].BaseHi      = (Base >> 16) & 0xFFFF;
+	
+	IDT_Entries[Number].Selector    = Selector;
+	IDT_Entries[Number].AlwaysZero  = 0;
+	
+	IDT_Entries[Number].Flags       = Flags | 0x60;
 }
 
 VOID

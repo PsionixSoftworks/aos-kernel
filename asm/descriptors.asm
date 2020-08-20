@@ -15,17 +15,8 @@ GDT_Flush:
 	RET
 
 ; Load up the Interrupt Descriptor Table:
-[GLOBAL IDT_Load]
-IDT_Load:
+[GLOBAL IDT_Flush]
+IDT_Flush:
 	MOV EAX, [ESP + 4]
 	LIDT [EAX]
-	RET
-
-[GLOBAL TSS_Flush]
-TSS_Flush:
-	MOV AX, 0x2B
-
-
-	
-	LTR AX
 	RET

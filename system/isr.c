@@ -19,6 +19,7 @@ ISR_t InterruptHandlers[256];
 
 STRING ExceptionMessages[] = 
 {
+	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",
 	"AOS_INTERRUPT Raised! : [Debug Exception]",
 	"AOS_INTERRUPT Raised! : [Non-Maskable Interrupt Exception]",
 	"AOS_INTERRUPT Raised! : [Breakpoint Exception]",
@@ -27,7 +28,6 @@ STRING ExceptionMessages[] =
 	"AOS_INTERRUPT Raised! : [Invalid Opcode Exception]",
 	"AOS_INTERRUPT Raised! : [No Coprocessor exception]",
 	"AOS_INTERRUPT Raised! : [Double Fault Exception]",
-	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",
 	"AOS_INTERRUPT Raised! : [Coprocessor Segment Overrun Exception]",
 	"AOS_INTERRUPT Raised! : [Bad TSS Exception]",
 	"AOS_INTERRUPT Raised! : [Segment Not Present Exception]",
@@ -41,11 +41,11 @@ STRING ExceptionMessages[] =
 };
 
 VOID
-FaultHandler(Registers_t *Register) 
+FaultHandler(Registers_t Register) 
 {
-	if (Register->INT_No < 32) 
+	if (Register.INT_NO < 32) 
 	{
-		ERROR(ExceptionMessages[Register->INT_No]);
+		ERROR(ExceptionMessages[Register.INT_NO]);
 		CPU_Halt();
 		TerminalPrint("System halted!");
 	}
@@ -60,29 +60,30 @@ RegisterInterruptHandler(UBYTE n, ISR_t Handler)
 VOID
 ISR_Handler(Registers_t Register) 
 {
-	if (InterruptHandlers[Register.INT_No] != 0) 
+	//TerminalPrintf("%s , Int No: %d\n", ExceptionMessages[Register->INT_NO], Register->INT_NO);
+	if (InterruptHandlers[Register.INT_NO] != 0) 
 	{
-		ISR_t Handler = InterruptHandlers[Register.INT_No];
+		ISR_t Handler = InterruptHandlers[Register.INT_NO];
 		Handler(Register);
 	} 
 	else 
 	{
-		FaultHandler(&Register);
+		FaultHandler(Register);
 	}
 }
 
 VOID 
 IRQ_Handler(Registers_t Register) 
 {
-	if (Register.INT_No >= 40) 
+	if (Register.INT_NO >= 40) 
 	{
 		WritePortB(0xA0, 0x20);
 	}
 	WritePortB(0x20, 0x20);
 	
-	if (InterruptHandlers[Register.INT_No] != 0) 
+	if (InterruptHandlers[Register.INT_NO] != 0) 
 	{
-		ISR_t Handler = InterruptHandlers[Register.INT_No];
+		ISR_t Handler = InterruptHandlers[Register.INT_NO];
 		Handler(Register);
 	}
 }

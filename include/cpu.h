@@ -23,13 +23,13 @@ struct CPU
 };
 
 // Declare function templates:
-EXTERN SET_STRUCT(CPU CPU_Init(VOID));
-EXTERN SET_VOID(CPU_Register(struct CPU, DWORD ID));
-EXTERN SET_VOID(CPU_Halt(VOID));									// Halts the CPU from C.
-EXTERN SET_VOID(CPU_Suspend(VOID));									// Suspends the CPU from C.
-EXTERN SET_DWORD(CPU_BrokeASweat(VOID));
+EXTERN STRUCT CPU CPU_Init(VOID);
+EXTERN VOID (CPU_Register(struct CPU, DWORD ID));
+EXTERN VOID (CPU_Halt(VOID));									// Halts the CPU from C.
+EXTERN VOID (CPU_Suspend(VOID));									// Suspends the CPU from C.
+EXTERN DWORD (CPU_BrokeASweat(VOID));
 
-EXTERN SET_UDWORD(CPUID(VOID));
-EXTERN SET_STRING(CPUID_ISSupported(VOID));
+EXTERN UDWORD (CPUID(VOID));
+EXTERN STRING (CPUID_ISSupported(VOID));
 
 #endif	// !ADAMANTINE_CPU

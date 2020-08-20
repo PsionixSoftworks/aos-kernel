@@ -25,7 +25,7 @@ extern "C" {
 #endif
 
 // Declare io functions:
-EXTERN SET_VOID(IO_Wait(VOID));
+EXTERN VOID (IO_Wait(VOID));
 
 #if defined(__cplusplus)
 }

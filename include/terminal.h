@@ -39,21 +39,21 @@ struct AOS_Terminal
 	UBYTE BackColor;
 } PACKED;
 
-EXTERN 	SET_VOID(TerminalInit(UBYTE BackColor, UBYTE ForeColor));
-EXTERN 	SET_VOID(TerminalClearScreen(VOID));
-EXTERN 	SET_VOID(TerminalPrint(const STRING c));
-EXTERN 	SET_VOID(TerminalPrintHex(UDWORD Value));
-EXTERN 	SET_VOID(TerminalPrintDec(DWORD Value));
-EXTERN 	SET_DWORD(TerminalPrintf(const STRING Format, ...));
-EXTERN 	SET_VOID(TerminalPrintln(VOID));
-EXTERN 	SET_VOID(TerminalPrintValue(DWORD Value, UBYTE Base));
-EXTERN 	SET_CHAR(Terminal_GetChar(CHAR c));
-EXTERN 	SET_STRING(TerminalGets(STRING str));
-EXTERN 	SET_VOID(TerminalMoveCursor(UDWORD x, UDWORD y));
-EXTERN 	SET_UDWORD(TerminalGetCursorX(VOID));
-EXTERN 	SET_UDWORD(TerminalGetCursorY(VOID));
-EXTERN 	SET_VOID(Panic(const STRING Message, const STRING File, UDWORD Line));
-EXTERN 	SET_VOID(PanicAssert(const STRING File, UDWORD Line, const STRING Descrition));
+EXTERN 	VOID (TerminalInit(UBYTE BackColor, UBYTE ForeColor));
+EXTERN 	VOID (TerminalClearScreen(VOID));
+EXTERN 	VOID (TerminalPrint(const STRING c));
+EXTERN 	VOID (TerminalPrintHex(UDWORD Value));
+EXTERN 	VOID (TerminalPrintDec(DWORD Value));
+EXTERN 	DWORD (TerminalPrintf(const STRING Format, ...));
+EXTERN 	VOID (TerminalPrintln(VOID));
+EXTERN 	VOID (TerminalPrintValue(DWORD Value, UBYTE Base));
+EXTERN 	CHAR (Terminal_GetChar(CHAR c));
+EXTERN 	STRING(TerminalGets(STRING str));
+EXTERN 	VOID (TerminalMoveCursor(UDWORD x, UDWORD y));
+EXTERN 	UDWORD (TerminalGetCursorX(VOID));
+EXTERN 	UDWORD (TerminalGetCursorY(VOID));
+EXTERN 	VOID (Panic(const STRING Message, const STRING File, UDWORD Line));
+EXTERN 	VOID (PanicAssert(const STRING File, UDWORD Line, const STRING Descrition));
 
 #if defined(__cplusplus)
 }

@@ -27,8 +27,8 @@ struct CommandLine
 };
 typedef struct CommandLine Command_t;
 
-EXTERN  SET_VOID(CommandLineInit(VOID));
-EXTERN  SET_UBYTE(ParseCommand(STRING CMD));
+EXTERN  VOID (CommandLineInit(VOID));
+EXTERN  UBYTE (ParseCommand(STRING CMD));
 
 #if defined(__cplusplus)
 }

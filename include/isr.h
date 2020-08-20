@@ -40,14 +40,14 @@ extern "C" {
 
 typedef struct AOS_Registers 
 {
-	UDWORD GS, FS, ES, DS;
-	UDWORD EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX;
-	UDWORD INT_No, ERR_Code;
-	UDWORD EIP, CS, EFLAGS, USERESP, SS;
+	UDWORD DS;                  // Data segment selector
+   	UDWORD EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX; // Pushed by pusha.
+   	UDWORD INT_NO, ERR_CODE;    // Interrupt number and error code (if applicable)
+   	UDWORD EIP, CS, EFLAGS, USERESP, SS;
 } Registers_t;
 
 typedef VOID(*ISR_t)(Registers_t);
-EXTERN	SET_VOID(RegisterInterruptHandler(UBYTE N, ISR_t Handler));
+EXTERN	VOID RegisterInterruptHandler(UBYTE N, ISR_t Handler);
 
 #if defined(__cplusplus)
 }

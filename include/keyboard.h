@@ -33,15 +33,15 @@ extern "C" {
 #endif
 
 // Declare global functions:
-EXTERN 	SET_VOID(SetKeyCode(BYTE *Key, BYTE Code));					// Set keycodes for each key (UNUSED).
-EXTERN 	SET_VOID(KeyboardInit(void));								// Initialize the basic keyboard driver.
-EXTERN 	SET_VOID(KeyboardFree(void));								// Free memory associated with the keyboard driver.
-EXTERN 	SET_VOID(KeyboardWait(void));								// Give the keyboard a wait instruction.
-EXTERN 	SET_BOOL(KeyboardIsEnabled(void));							// Checks whether the keyboard is initialized or not.
-EXTERN 	SET_STRING(KeyboardGetKey(void));							// Gets the value of a key pressed.
-EXTERN 	SET_STRING(KeyboardGetString(void));
-EXTERN 	SET_UBYTE(KeyboardGetKeycode(void));						// Gets the value of the keycode pressed.
-EXTERN 	SET_UBYTE(KeyboardGetKeyLast(void));
+EXTERN 	VOID (SetKeyCode(BYTE *Key, BYTE Code));					// Set keycodes for each key (UNUSED).
+EXTERN 	VOID (KeyboardInit(void));								// Initialize the basic keyboard driver.
+EXTERN 	VOID (KeyboardFree(void));								// Free memory associated with the keyboard driver.
+EXTERN 	VOID (KeyboardWait(void));								// Give the keyboard a wait instruction.
+EXTERN 	BOOL (KeyboardIsEnabled(void));							// Checks whether the keyboard is initialized or not.
+EXTERN 	STRING (KeyboardGetKey(void));							// Gets the value of a key pressed.
+EXTERN 	STRING (KeyboardGetString(void));
+EXTERN 	UBYTE (KeyboardGetKeycode(void));						// Gets the value of the keycode pressed.
+EXTERN 	UBYTE (KeyboardGetKeyLast(void));
 
 // Declare the keyboard type struct:
 typedef struct AOS_Keyboard_Basic

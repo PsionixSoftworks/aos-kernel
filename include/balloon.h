@@ -41,11 +41,11 @@ struct AOS_Balloon
 } PACKED;
 
 // Declare global functions:
-EXTERN 	SET_BOOL(BalloonInit(SIZE Size));							// Initialize the balloon memory type.
-EXTERN 	SET_UDWORD(*BalloonInflate(UDWORD Amount, UDWORD Value));	// Inflate balloon data.
-EXTERN 	SET_UDWORD(*BalloonPop(VOID));								// Pop the balloon off the stack.
-EXTERN 	SET_VOID(BalloonCleanup(VOID));								// Cleanup when no longer needed.
-EXTERN 	SET_SIZE(BalloonSize(VOID));								// Get the balloon memory size.
-EXTERN 	SET_SIZE(BalloonCapacity(VOID));
+EXTERN 	BOOL (BalloonInit(SIZE Size));							// Initialize the balloon memory type.
+EXTERN 	UDWORD (*BalloonInflate(UDWORD Amount, UDWORD Value));	// Inflate balloon data.
+EXTERN 	UDWORD (*BalloonPop(VOID));								// Pop the balloon off the stack.
+EXTERN 	VOID (BalloonCleanup(VOID));								// Cleanup when no longer needed.
+EXTERN 	SIZE (BalloonSize(VOID));								// Get the balloon memory size.
+EXTERN 	SIZE (BalloonCapacity(VOID));
 
 #endif	// !ADAMANTINE_BALLOON

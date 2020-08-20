@@ -27,17 +27,17 @@ typedef struct
 	SIZE 				Size;
 } Alloc_t;
 
-EXTERN SET_VOID(MM_Init(UDWORD *kernel_end));
-EXTERN SET_VOID(PagingMapVirtualToPhysical(UDWORD Virtual, UDWORD Physical));
+EXTERN VOID (MM_Init(UDWORD *kernel_end));
+EXTERN VOID (PagingMapVirtualToPhysical(UDWORD Virtual, UDWORD Physical));
 
-EXTERN SET_VOID(*PMalloc(SIZE Size));
-EXTERN SET_VOID(*Malloc(SIZE Size));
-EXTERN SET_VOID(PFree(VOID *Mem));
-EXTERN SET_VOID(free(VOID *Mem));
+EXTERN VOID (*PMalloc(SIZE Size));
+EXTERN VOID (*Malloc(SIZE Size));
+EXTERN VOID (PFree(VOID *Mem));
+EXTERN VOID (free(VOID *Mem));
 
-EXTERN SET_VOID(*MemCpy(const VOID *Destination, const VOID *Source, SIZE Size));
-EXTERN SET_VOID(*MemSet(VOID *Pointer, DWORD Value, SIZE Size));
-EXTERN SET_VOID(*MemSet16(VOID *Pointer,  UDWORD Value, SIZE Size));
+EXTERN VOID (*MemCpy(const VOID *Destination, const VOID *Source, SIZE Size));
+EXTERN VOID (*MemSet(VOID *Pointer, DWORD Value, SIZE Size));
+EXTERN VOID (*MemSet16(VOID *Pointer,  UDWORD Value, SIZE Size));
 
 #if defined(__cplusplus)
 }

@@ -18,10 +18,10 @@
 #include "types.h"
 
 // Declare global functions:
-EXTERN SET_VOID(SystemEnableCursor(UBYTE CurStart, UBYTE CurEnd));  // Enable the cursor in the terminal.
-EXTERN SET_VOID(SystemDisableCursor(VOID));							// Disable the terminal cursor.
-EXTERN SET_VOID(SystemUpdateCursor(UDWORD x, UDWORD y));			// Update the cursor position.
-EXTERN SET_VOID(SystemSetCursorType(UBYTE Type));					// Set the cursor type (UNUSED).
-EXTERN SET_UWORD(SystemGetCursorPosition(VOID));					// Get the cursor position.
+EXTERN VOID (SystemEnableCursor(UBYTE CurStart, UBYTE CurEnd));  // Enable the cursor in the terminal.
+EXTERN VOID (SystemDisableCursor(VOID));							// Disable the terminal cursor.
+EXTERN VOID (SystemUpdateCursor(UDWORD x, UDWORD y));			// Update the cursor position.
+EXTERN VOID (SystemSetCursorType(UBYTE Type));					// Set the cursor type (UNUSED).
+EXTERN UWORD (SystemGetCursorPosition(VOID));					// Get the cursor position.
 
 #endif	// !ADAMANTINE_SYSTEM

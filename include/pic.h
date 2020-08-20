@@ -49,13 +49,13 @@ extern "C" {
 #endif
 
 // Declare global functions:
-EXTERN  SET_VOID(PIC_SendEOI(UBYTE IRQ));					        // Send the end of instruction to the PIC.
-EXTERN  SET_VOID(PIC_Remap(VOID));		                            // Remap PIC.
-EXTERN  SET_VOID(IRQ_SetMask(UBYTE IRQ_Line));			            // Set the IRQ mask.
-EXTERN  SET_VOID(IRQ_ClearMask(UBYTE IRQ_Line));			            // Clear the IRQ mask.
-EXTERN  SET_UWORD(PIC_GetIRR(VOID));						        // Get (IRR?).
-EXTERN  SET_UWORD(PIC_GetISR(VOID));						        // Get the interrupt service routine.
-EXTERN  SET_UWORD(PIC_GetIRQRegister(DWORD OCW3));				    // Get the IRQ register.
+EXTERN  VOID (PIC_SendEOI(UBYTE IRQ));					        // Send the end of instruction to the PIC.
+EXTERN  VOID (PIC_Remap(VOID));		                            // Remap PIC.
+EXTERN  VOID (IRQ_SetMask(UBYTE IRQ_Line));			            // Set the IRQ mask.
+EXTERN  VOID (IRQ_ClearMask(UBYTE IRQ_Line));			            // Clear the IRQ mask.
+EXTERN  UWORD (PIC_GetIRR(VOID));						        // Get (IRR?).
+EXTERN  UWORD (PIC_GetISR(VOID));						        // Get the interrupt service routine.
+EXTERN  UWORD (PIC_GetIRQRegister(DWORD OCW3));				    // Get the IRQ register.
 
 #if defined(__cplusplus)
 }

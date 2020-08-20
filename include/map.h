@@ -33,10 +33,10 @@ struct Map
 } PACKED;
 
 // Declare global functions:
-EXTERN SET_STRUCT(Map *MapCreate(SIZE Size));						// Create a map data structure.
-EXTERN SET_UDWORD(MapHashCode(STRUCT Map *M, DWORD Key));			// Map hash code... Duh?
-EXTERN SET_UDWORD(MapGet(STRUCT Map *M, DWORD Key));				// Get the value by key.
-EXTERN SET_VOID(MapAdd(STRUCT Map *M, DWORD Key, UDWORD Value));	// Add a value to the key.
-EXTERN SET_VOID(MapFree(VOID));										// Free the memory created by the map.
+EXTERN STRUCT Map *MapCreate(SIZE Size);						// Create a map data structure.
+EXTERN UDWORD (MapHashCode(STRUCT Map *M, DWORD Key));			// Map hash code... Duh?
+EXTERN UDWORD (MapGet(STRUCT Map *M, DWORD Key));				// Get the value by key.
+EXTERN VOID (MapAdd(STRUCT Map *M, DWORD Key, UDWORD Value));	// Add a value to the key.
+EXTERN VOID (MapFree(VOID));										// Free the memory created by the map.
 
 #endif	// !AMAMANTINE_MAP
