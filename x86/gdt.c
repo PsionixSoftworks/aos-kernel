@@ -39,10 +39,10 @@ GDT_Init(VOID)
 	GDT_SetGate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
 	GDT_SetGate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
 	GDT_SetGate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
-	WriteTSS(5, 0x10, 0x0);
+	//WriteTSS(5, 0x10, 0x0);
 
 	GDT_Flush((UDWORD)&PGDT);
-	TSS_Flush();
+	//TSS_Flush();
 
 	INFO("GDT is initialized!");
 }
