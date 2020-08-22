@@ -32,6 +32,9 @@ UDWORD PHeapEnd 	= 0;
 UDWORD MemoryUsed 	= 0;
 UBYTE *PHeapDesc 	= 0;
 
+EXTERN UDWORD kernel_end;
+UDWORD PlacementAddress = (UDWORD)&kernel_end;
+
 VOID 
 MM_Init(UDWORD *kernel_end) 
 {
@@ -127,7 +130,7 @@ Malloc(SIZE Size)
 	nalloc:;
 	if (LastAlloc + Size + sizeof(Alloc_t) >= HeapEnd) 
 	{
-		PANIC("Cannot allocate. Out of memory...", 0, 0);
+		PANIC("Cannot allocate. Out of memory...");
 	}
 	Alloc_t *Alloc = (Alloc_t *)LastAlloc;
 	Alloc->Status = 1;
@@ -187,4 +190,46 @@ MemSet(VOID *Pointer, DWORD Value, SIZE Number)
 	while (Number--)
 		*p++ = (UBYTE)Value;
 	return (Pointer);
+}
+
+/* James Molloy... */
+UDWORD
+kMalloc_int(UDWORD Size, int Align, UDWORD *PhysicalAddress)
+{
+	if ((Align == 1) && (PlacementAddress & 0xFFFFF000))
+	{
+		PlacementAddress &= 0xFFFFF000;
+		PlacementAddress += 0x1000;
+	}
+	if (PhysicalAddress)
+	{
+		*PhysicalAddress = PlacementAddress;
+	}
+	UDWORD Temp = PlacementAddress;
+	PlacementAddress += Size;
+	return (Temp);
+}
+
+UDWORD
+kMalloc_a(UDWORD Size)
+{
+	return (kMalloc_int(Size, 1, 0));
+}
+
+UDWORD
+kMalloc_p(UDWORD Size, UDWORD *PhysicalAddress)
+{
+	return (kMalloc_int(Size, 0, PhysicalAddress));
+}
+
+UDWORD
+kMalloc_ap(UDWORD Size, UDWORD *PhysicalAddress)
+{
+	return (kMalloc_int(Size, 1, PhysicalAddress));
+}
+
+UDWORD
+kMalloc(UDWORD Size)
+{
+	return (kMalloc_int(Size, 0, 0));
 }

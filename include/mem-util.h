@@ -39,6 +39,12 @@ EXTERN VOID (*MemCpy(const VOID *Destination, const VOID *Source, SIZE Size));
 EXTERN VOID (*MemSet(VOID *Pointer, DWORD Value, SIZE Size));
 EXTERN VOID (*MemSet16(VOID *Pointer,  UDWORD Value, SIZE Size));
 
+UDWORD kMalloc_int(UDWORD Size, int Align, UDWORD *PhysicalAddress);
+UDWORD kMalloc_a(UDWORD Size);
+UDWORD kMalloc_p(UDWORD SIZE, UDWORD *PhysicalAddress);
+UDWORD kMalloc_ap(UDWORD Size, UDWORD *PhysicalAddress);
+UDWORD kMalloc(UDWORD Size);
+
 #if defined(__cplusplus)
 }
 #endif

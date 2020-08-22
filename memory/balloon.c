@@ -36,7 +36,7 @@ BalloonInit(SIZE Size)
 	);
 	if (!Balloon.Valid) 
 	{
-		PANIC("Balloon memory size must be one of the supported values!", 0, 0);
+		PANIC("Balloon memory size must be one of the supported values!");
 		return;
 	}
 

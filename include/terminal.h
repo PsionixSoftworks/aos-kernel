@@ -25,7 +25,7 @@ extern "C" {
 #define INFO(msg)				TerminalPrintf("[INFO]: %s\n", msg);
 #define WARNING(msg)			TerminalPrintf("[WARNING]: %s\n", msg);
 #define ERROR(msg)				TerminalPrintf("[ERROR]: %s\n", msg); CPU_Halt();
-#define PANIC(msg, i1, i2)		Panic(msg, __FILE__, __LINE__);
+#define PANIC(msg)				Panic(msg, __FILE__, __LINE__);
 #define ASSERT(b) 				((b) ? (void)0 : PanicAssert(__FILE__, __LINE__, #b))
 
 typedef struct AOS_Terminal Terminal_t;

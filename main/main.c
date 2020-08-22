@@ -23,6 +23,8 @@
 #include "../include/tss.h"
 #include "../include/vga.h"
 
+#include "../include/paging.h"
+
 MODULE("Main", "0.01a");
 
 VOID _TEXT 
@@ -33,7 +35,7 @@ KMain(VOID)
 
 	GDT_Init();
 	IDT_Init();
+	PagingInit();
 
-	asm volatile("INT $0x02");
-	//int a = 1 / 0;
+	return;
 }
