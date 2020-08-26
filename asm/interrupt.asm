@@ -108,7 +108,7 @@ ISR_CommonStub:
     sti
     iret
 
-EXTERN IRQ_Handler
+[EXTERN IRQ_Handler]
 IRQ_CommonStub:
 	PUSHA
 	

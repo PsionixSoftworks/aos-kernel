@@ -80,6 +80,8 @@
 #define SIZE                            size_t
 #define CHAR                            char
 #define STRING                          string
+#define FLOAT                           float
+#define DOUBLE                          double
 #define STRUCT                          struct
 #define UNION                           union
 
@@ -99,6 +101,8 @@
 #define SET_SIZE(name)                  SIZE    name
 #define SET_CHAR(name)                  CHAR    name
 #define SET_STRING(name)                STRING  name
+#define SET_FLOAT(name)                 FLOAT   name
+#define SET_DOUBLE(name)                DOUBLE  name
 #define SET_STRUCT(name)                STRUCT  name
 #define SET_UNION(name)                 UNION   name
 

@@ -11,21 +11,20 @@
  */
 
 #include "../include/main.h"
-#include "../include/kernel.h"
-#include "../include/aos-defs.h"
-#include "../include/terminal.h"
-#include "../include/centrix.h"
-#include "../include/pit.h"
-
-#include "../include/x86/gdt.h"
-#include "../include/x86/idt.h"
-#include "../include/syscall.h"
-#include "../include/tss.h"
 #include "../include/vga.h"
-
-#include "../include/paging.h"
+#include "../include/kernel.h"
+#include "../include/terminal.h"
+#include "../include/math/math-util.h"
 
 MODULE("Main", "0.01a");
+
+struct Test
+{
+	uint32_t a;
+} PACKED;
+typedef struct Test Test_t;
+
+inline VOID CheckKernelSignature(VOID);
 
 VOID _TEXT 
 KMain(VOID) 
@@ -33,9 +32,10 @@ KMain(VOID)
 	TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
 	TerminalClearScreen();
 
-	GDT_Init();
-	IDT_Init();
-	PagingInit();
+	double a = 13.49;
+	int b = round(a);
+
+	TerminalPrintf("%d\n", b);
 
 	return;
 }

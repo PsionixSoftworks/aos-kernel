@@ -28,6 +28,10 @@
 #define BALLOON_SIZE_MIN		BALLOON_SIZE_1						// Minimum size is 1KB.
 #define BALLOON_SIZE_MAX		BALLOON_SIZE_64						// Maximum size is 64KB.
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 typedef struct AOS_Balloon Balloon_t;
 
 // Define the balloon type struct:
@@ -48,4 +52,7 @@ EXTERN 	VOID (BalloonCleanup(VOID));								// Cleanup when no longer needed.
 EXTERN 	SIZE (BalloonSize(VOID));								// Get the balloon memory size.
 EXTERN 	SIZE (BalloonCapacity(VOID));
 
+#if defined(__cplusplus)
+}
+#endif
 #endif	// !ADAMANTINE_BALLOON

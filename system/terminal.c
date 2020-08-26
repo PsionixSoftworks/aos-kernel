@@ -58,7 +58,7 @@ TerminalClearScreen(VOID)
 	MoveCursor();
 }
 
-VOID 
+VOID DEPRECATED
 TerminalPrint(const STRING Str) 
 {
 	DWORD i = 0;
@@ -93,11 +93,11 @@ Print(const STRING Data, SIZE Length)
 }
 
 static VOID 
-Printf(const STRING Str, va_list ap) 
+Printf(const STRING Str, va_list ap)
 {
 	MutexLock(&m_mprintf);
 	STRING s = 0;
-	CHAR Buffer[32768];
+	CHAR Buffer[512];
 	for (SIZE i = 0; i < strlen((STRING)Str); i++) 
 	{
 		if (Str[i] == '%') 
@@ -111,13 +111,13 @@ Printf(const STRING Str, va_list ap)
 					continue;
 				case 'b': {
 					DWORD b = va_arg(ap, DWORD);
-					TerminalPrint(itoa(b, Buffer, 0x2));
+					TerminalPrint(itoa(b, Buffer, 2));
 					i++;
 					continue;
 				}
 				case 'o': {
 					DWORD o = va_arg(ap, DWORD);
-					TerminalPrint(itoa(o, Buffer, 0x8));
+					TerminalPrint(itoa(o, Buffer, 8));
 					i++;
 					continue;
 				}
@@ -129,9 +129,8 @@ Printf(const STRING Str, va_list ap)
 				}
 				case 'x': {
 					DWORD c = va_arg(ap, DWORD);
-					DWORD FinalValue = itoa(c, Buffer, 0x10);
-					to_lower(FinalValue);
-					TerminalPrintHex(FinalValue);
+					DWORD FinalValue = itoa(c, Buffer, 16);
+					TerminalPrint(FinalValue);
 					i++;
 					continue;
 				}
@@ -139,7 +138,7 @@ Printf(const STRING Str, va_list ap)
 					DWORD c = va_arg(ap, DWORD);
 					DWORD FinalValue = itoa(c, Buffer, 0x10);
 					to_upper(FinalValue);
-					TerminalPrintHex(FinalValue);
+					TerminalPrint(FinalValue);
 					i++;
 					continue;
 				}
@@ -188,8 +187,6 @@ TerminalPrintValue(DWORD Value, UBYTE Base)
 static DWORD 
 TerminalPutchar(CHAR c) 
 {
-	//terminal.fore_color = SYSTEM_COLOR_WHITE;
-
 	UBYTE AttributeByte = ((Terminal.BackColor << 0x4) | (Terminal.ForeColor & 0x0F));
 	UWORD Attribute = AttributeByte << 0x8;
 	UWORD *Location;

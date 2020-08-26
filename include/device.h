@@ -19,7 +19,7 @@
 #include "driver.h"
 
 #if defined(__cplusplus)
-extern "C" {
+EXTERN "C" {
 #endif
 
 struct AOS_FileSystem;

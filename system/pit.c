@@ -39,4 +39,6 @@ TimerInit(UDWORD Frequency)
 	
 	WritePortB(0x40, l);
 	WritePortB(0x40, h);
+
+	INFO("PIT is initialized!");
 }

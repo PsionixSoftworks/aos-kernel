@@ -17,6 +17,10 @@
 #include "types.h"
 #include "cpuid.h"
 
+#if defined(__cplusplus)
+EXTERN "C" {
+#endif
+
 struct CPU 
 {
 	UDWORD 				NodeID;
@@ -32,4 +36,7 @@ EXTERN DWORD (CPU_BrokeASweat(VOID));
 EXTERN UDWORD (CPUID(VOID));
 EXTERN STRING (CPUID_ISSupported(VOID));
 
+#if defined(__cplusplus)
+}
+#endif
 #endif	// !ADAMANTINE_CPU

@@ -13,11 +13,48 @@
 #ifndef _LIMITS_
 #define _LIMITS_
 
-#define UINT8_MIN   -(0x0000007F - 1)
-#define UINT16_MIN  -(0x00007FFF - 1)
-#define UINT32_MIN  -(0x7FFFFFFF - 1)
-#define INT8_MAX    0x0000007F
-#define INT16_MAX   0x00007FFF
-#define INT32_MAX   0x7FFFFFFF
+/* Size of "char" type. */
+#define SIGNED_CHAR_SIZE_MIN                0x7F - 0xFF
+#define SIGNED_CHAR_SIZE_MAX                SIGNED_CHAR_SIZE_MIN + 0xFF
+#define UNSIGNED_CHAR_SIZE_MIN              (SIGNED_CHAR_SIZE_MIN + 0x7F) + 1
+#define UNSIGNED_CHAR_SIZE_MAX              (SIGNED_CHAR_SIZE_MAX + 0x7F) + 1
+
+/* Size of "short" type. */
+#define SIGNED_SHORT_SIZE_MIN               0x7FFF - 0xFFFF
+#define SIGNED_SHORT_SIZE_MAX               SIGNED_SHORT_SIZE_MIN + 0xFFFF
+#define UNSIGNED_SHORT_SIZE_MIN             (SIGNED_SHORT_SIZE_MIN + 0x7FFF) + 1
+#define UNSIGNED_SHORT_SIZE_MAX             (SIGNED_SHORT_SIZE_MAX + 0x7FFF) + 1
+
+/* Size of "int" type. */
+#define SIGNED_INT_SIZE_MIN                 0x7FFFFFFF - 0xFFFFFFFF
+#define SIGNED_INT_SIZE_MAX                 SIGNED_INT_SIZE_MIN + 0xFFFFFFFF
+#define UNSIGNED_INT_SIZE_MIN               (SIGNED_INT_SIZE_MIN + 0x7FFFFFFF) + 1
+#define UNSIGNED_INT_SIZE_MAX               (SIGNED_INT_SIZE_MAX + 0x7FFFFFFF) + 1 
+
+/* Size of "long long" type. */
+#if (x86_64_SUPPORTED)
+#define SIGNED_LONG_LONG_SIZE_MIN           -0x7FFFFFFFFFFFFFFF - 0xFFFFFFFFFFFFFFFF
+#define SIGNED_LONG_LONG_SIZE_MAX           SIGNED_LONG_LONG_SIZE_MIN + 0xFFFFFFFFFFFFFFFF
+#define UNSIGNED_LONG_LONG_SIZE_MIN         (SIGNED_LONG_LONG_SIZE_MIN + 0x7FFFFFFFFFFFFFFF) + 1
+#define UNSIGNED_LONG_LONG_SIZE_MAX         (SIGNED_LONG_LONG_SIZE_MAX + 0x7FFFFFFFFFFFFFFF) + 1
+#endif
+
+/* Size of "int8_t" type. */
+#define INT8_SIZE_MIN                       SIGNED_CHAR_SIZE_MIN
+#define INT8_SIZE_MAX                       SIGNED_CHAR_SIZE_MAX
+#define UINT8_SIZE_MIN                      UNSIGNED_CHAR_SIZE_MIN
+#define UINT8_SIZE_MAX                      UNSIGNED_CHAR_SIZE_MAX
+
+/* Size of "int16_t" type. */
+#define INT16_SIZE_MIN                       SIGNED_SHORT_SIZE_MIN
+#define INT16_SIZE_MAX                       SIGNED_SHORT_SIZE_MAX
+#define UINT16_SIZE_MIN                      UNSIGNED_SHORT_SIZE_MIN
+#define UINT16_SIZE_MAX                      UNSIGNED_SHORT_SIZE_MAX
+
+/* Size of "int32_t" type. */
+#define INT32_SIZE_MIN                       SIGNED_INT_SIZE_MIN
+#define INT32_SIZE_MAX                       SIGNED_INT_SIZE_MAX
+#define UINT32_SIZE_MIN                      UNSIGNED_INT_SIZE_MIN  
+#define UINT32_SIZE_MAX                      UNSIGNED_INT_SIZE_MAX
 
 #endif

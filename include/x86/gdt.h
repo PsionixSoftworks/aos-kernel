@@ -22,7 +22,7 @@
 #endif
 
 #if defined(__cplusplus)
-extern "C" {
+EXTERN "C" {
 #endif
 
 struct GDT_Entry 

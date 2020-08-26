@@ -12,8 +12,8 @@
 
 #include "crti.S"
 #include "crtn.S"
+#include "../interrupt.asm"
 
-.CODE32
 /* The .multiboot section is used to initalize GRUB and start the kernel. */
 .SECTION .multiboot
 .ALIGN 4

@@ -28,17 +28,17 @@ extern "C" {
 typedef VOID(*KFunc_t)(BYTE);
 
 // Declare the global functions used by the kernel:
-EXTERN VOID (KernelInit(UBYTE Mode));								// The kernel's init function for startup.
+EXTERN VOID (KernelRun(VOID));									// The kernel's init function for startup.
 EXTERN VOID (KernelUpdate(VOID));								// The kernel's update function to run the os in a constant loop.
 EXTERN VOID (KernelQuit(UBYTE Status));							// Shuts down the kernel when execution stops.
 EXTERN VOID (FreeSystemResources(BYTE));
 EXTERN VOID (KernelBeginMode(KFunc_t InitFunc, BYTE Mode));
-EXTERN BOOL (KernelIsRunning(void));								// Checks to see if the kernel is running.
+EXTERN BOOL (KernelIsRunning(void));							// Checks to see if the kernel is running.
 
 // Define the kernel struct, it will control every aspect of the kernel:
 typedef struct AOS_Kernel
 {
-	BOOL 				Running;									// This needs to be set to true in order to keep the kernel_update function running.
+	BOOL 				Running;								// This needs to be set to true in order to keep the kernel_update function running.
 	BYTE 				ExitStatus;
 } Kernel_t;			// Define the kernel type.
 

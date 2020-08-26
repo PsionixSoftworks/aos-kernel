@@ -34,15 +34,16 @@ SYSTEM_PATH					:= 	system
 TOOL_PATH					:= 	tool
 USER_PATH					:= 	user
 X86_PATH					:=	x86
-
+MATH_PATH					:= 	math
 AOS_DIR						:= 	AOS
 
 ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 								$(ASSEMB_PATH)/boot/crti.S		\
 								$(ASSEMB_PATH)/boot/crtn.S		\
+								$(ASSEMB_PATH)/boot/test.S		\
 								$(ASSEMB_PATH)/descriptors.asm	\
 								$(ASSEMB_PATH)/interrupt.asm	\
-								$(ASSEMB_PATH)/boot/test.S										
+								$(ASSEMB_PATH)/setup.S
 
 C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(MAIN_PATH)/adamantine.c		\
@@ -70,15 +71,17 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(X86_PATH)/gdt.c				\
 								$(X86_PATH)/idt.c				\
 								$(X86_PATH)/tss.c				\
-								$(X86_PATH)/syscall.c			
+								$(X86_PATH)/syscall.c			\
+								$(MATH_PATH)/math-util.c		
 
 # Put all input files here separated by a '\':
 OUTPUT_FILES 				:= 	boot.new.o		\
 								crti.o			\
 								crtn.o			\
+								test.o			\
 								descriptors.o	\
 								interrupt.o		\
-								test.o			\
+								setup.o			\
 								main.o			\
 								adamantine.o	\
 								kernel.o		\
@@ -106,6 +109,7 @@ OUTPUT_FILES 				:= 	boot.new.o		\
 								idt.o			\
 								tss.o			\
 								syscall.o		\
+								math-util.o
 								#AOS/Adamantine.o	\
 								#AOS/Registry.o
 
@@ -122,9 +126,10 @@ bootloader: $(ASM_FILES_IN)
 	$(ASM) $(ASSEMB_PATH)/boot/boot.S				-o boot.new.o
 	$(ASM) $(ASSEMB_PATH)/boot/crti.S				-o crti.o
 	$(ASM) $(ASSEMB_PATH)/boot/crtn.S				-o crtn.o
+	$(COMPILER_C) $(ASSEMB_PATH)/boot/test.S		-o test.o
 	$(NASM) $(ASSEMB_PATH)/descriptors.asm			-o descriptors.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
-	$(COMPILER_C) $(ASSEMB_PATH)/boot/test.S		-o test.o
+	$(COMPILER_C) $(ASSEMB_PATH)/setup.S			-o setup.o
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)
@@ -155,6 +160,7 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(X86_PATH)/idt.c -o idt.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
+	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	# $(COMPILER_CPP) AOS/Adamantine/Adamantine.cpp -o Adamantine.o $(CPP_FLAGS)
 	# $(COMPILER_CPP) AOS/Adamantine/Registry.cpp -o Registry.o $(CPP_FLAGS)
  

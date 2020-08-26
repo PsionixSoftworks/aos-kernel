@@ -33,7 +33,7 @@ IDT_Init(VOID)
 	
 	MemSet(&IDT_Entries, 0, sizeof(IDT_Entry_t) * 256);
 	
-    //PIC_Remap();
+    PIC_Remap();
 	
 	IDT_SetGate( 0, (UDWORD)ISR_0, 0x08, 0x8E);
     IDT_SetGate( 1, (UDWORD)ISR_1, 0x08, 0x8E);

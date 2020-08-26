@@ -25,7 +25,7 @@ AreInterruptsEnabled(VOID)
         : "=g"(Flags) 
     );
 
-    return Flags & (1 << 9);
+    return Flags & (0x1 << 0x9);
 }
 
 ULONG

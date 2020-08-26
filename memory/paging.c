@@ -114,7 +114,7 @@ FrameFree(Page_t *Page)
 VOID
 PagingInit(VOID)
 {
-    UDWORD MemEndPage = PAGE_BLOCK_SIZE << 0x0E;
+    UDWORD MemEndPage = 0x1000000;
 
     nFrames = MemEndPage / PAGE_BLOCK_SIZE;
     Frames = (UDWORD *)kMalloc(INDEX_FROM_BIT(nFrames));
@@ -128,26 +128,28 @@ PagingInit(VOID)
     while (i < PlacementAddress)
     {
         FrameAlloc(GetPage(i, 1, KernelDirectory), 0, 0);
-        i += PAGE_BLOCK_SIZE;
+        i += 0x1000;
     }
     RegisterInterruptHandler(14, PageFault);
     SwitchPageDirectory(KernelDirectory);
+
+    INFO("Paging is initialized!");
 }
 
 VOID
 SwitchPageDirectory(PageDirectory_t *Directory)
 {
     CurrentDirectory = Directory;
-    asm volatile("MOV %0, %%CR3":: "r"(&Directory->TablesPhysical));
+    asm volatile("mov %0, %%cr3":: "r"(&Directory->TablesPhysical));
     UDWORD CR0;
-    asm volatile("MOV %%CR0, %0": "=r"(CR0));
+    asm volatile("mov %%cr0, %0": "=r"(CR0));
     CR0 |= 0x80000000;
-    asm volatile("MOV %0, %%CR0":: "r"(CR0));
+    asm volatile("mov %0, %%cr0":: "r"(CR0));
 }
 
 Page_t *GetPage(UDWORD Address, int Make, PageDirectory_t *Directory)
 {
-    Address /= PAGE_BLOCK_SIZE;
+    Address /= 0x1000;
 
     UDWORD TableIndex = Address / MAX_PAGE_TABLES;
     if (Directory->Tables[TableIndex])
@@ -172,7 +174,7 @@ VOID
 PageFault(Registers_t Register)
 {
     UDWORD FaultingAddress;
-    asm volatile("MOV %%CR2, %0" : "=r"(FaultingAddress));
+    asm("mov %%cr2, %0" : "=r" (FaultingAddress));
 
     UDWORD Present  = !(Register.ERR_CODE & 0x1);
     UDWORD RW       = Register.ERR_CODE & 0x2;
@@ -185,8 +187,8 @@ PageFault(Registers_t Register)
     if (RW)         {TerminalPrintf("Read-Only ");}
     if (US)         {TerminalPrintf("User-Mode ");}
     if (Reserved)   {TerminalPrintf("Reserved ");}
-    TerminalPrintf(") at 0x%X.\n", FaultingAddress);
-    PANIC("PAGE FAULT");
+    TerminalPrintf(") - at 0x%X.\n", FaultingAddress);
+    PANIC(" [AOS PAGE FAULT] ");
 }
 
 /* Me! */

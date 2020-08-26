@@ -15,6 +15,17 @@
 
 /* Include the initializer rather than all of the modules. */
 #include "../include/init.h"
+#include "../include/terminal.h"
+#include "../include/centrix.h"
+#include "../include/pit.h"
+
+#include "../include/x86/gdt.h"
+#include "../include/x86/idt.h"
+#include "../include/syscall.h"
+#include "../include/tss.h"
+#include "../include/vga.h"
+
+#include "../include/paging.h"
 
 #if defined(ADAMANTINE_OS_READY)
 #include "../AOS/Include/Adamantine.h"
@@ -27,41 +38,21 @@ MODULE("Kernel", "0.04-2a");
 /* Used for later when we enable 3D. */
 #define RUNNING_IN_3D_MODE		FALSE
 
-/* Locate external references here. */
-EXTERN "C" SET_UDWORD(kernel_end);
-EXTERN "C" SET_UDWORD(kernel_base);
-
-/* Declare the kernel structure. */
-Kernel_t Kernel;
-//AdamantineOS *AOS;
+EXTERN "C" VOID KMain(VOID);
 
 EXTERN "C" VOID _TEXT
-KernelInit(UBYTE Mode)
+KernelRun(VOID)
 {
-	InitAll(Mode);
-	/* After in user mode. */
-	
-	//AOS->SystemStartup();
-	Kernel.Running = TRUE;
-}
+	/*
+	TerminalPrintf("%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
+	INFO("Starting kernel modules...");
+	GDT_Init();
+	IDT_Init();
+	TimerInit(60);
 
-/* Update the kernel. */
-EXTERN "C" VOID _TEXT 
-KernelUpdate(void) 
-{
-	
-}
+	PagingInit();
 
-/* Quit the kernel on shutdown. */
-EXTERN "C" VOID _TEXT
-KernelQuit(UBYTE Status) 
-{
-	Kernel.ExitStatus = Status;
-}
-
-/* Check if the kernel is running. */
-EXTERN "C" BOOL _TEXT
-KernelIsRunning(void) 
-{
-	return (Kernel.Running);
+	TerminalPrintln();
+	TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
+	*/
 }

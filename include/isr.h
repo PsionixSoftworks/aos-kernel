@@ -18,7 +18,7 @@
 #include "string.h"
 
 #if defined(__cplusplus)
-extern "C" {
+EXTERN "C" {
 #endif
 
 #define IRQ0		32
