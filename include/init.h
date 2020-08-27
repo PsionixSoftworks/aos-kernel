@@ -17,10 +17,8 @@
 
 #include "../include/aos-defs.h"
 #include "../include/types.h"
-#include "../include/kernel.h"
-#include "../include/x86/gdt.h"
-#include "../include/x86/idt.h"
 #include "../include/terminal.h"
+#include "../include/vga.h"
 
 /* Check if we're using C++. If so, safeguard the code to C linkage. */
 #if defined(__cplusplus)
@@ -43,13 +41,8 @@ static string OS_Mode[] =
 static void _TEXT
 InitAll(BYTE Mode)
 {
-    /* Print the startup message. */
-    TerminalPrintf("%s - Version: %s, Running in '%s'.\n", OS_NAME, OS_VERSION, OS_Mode[Mode]);
-
-    /* Load up the kernel module's */
-    INFO("Getting setup...");
-    GDT_Init();
-    IDT_Init();
+    /* Initialize the Terminal. */
+    TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
 }
 
 #if defined(__cplusplus)

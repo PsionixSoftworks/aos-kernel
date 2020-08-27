@@ -14,17 +14,10 @@
  */
 
 /* Include the initializer rather than all of the modules. */
+#include "../include/kernel.h"
 #include "../include/init.h"
-#include "../include/terminal.h"
-#include "../include/centrix.h"
-#include "../include/pit.h"
-
 #include "../include/x86/gdt.h"
 #include "../include/x86/idt.h"
-#include "../include/syscall.h"
-#include "../include/tss.h"
-#include "../include/vga.h"
-
 #include "../include/paging.h"
 
 #if defined(ADAMANTINE_OS_READY)
@@ -43,16 +36,14 @@ EXTERN "C" VOID KMain(VOID);
 EXTERN "C" VOID _TEXT
 KernelRun(VOID)
 {
-	/*
+	InitAll(KERNEL_MODE_NORMAL);
+
 	TerminalPrintf("%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
 	INFO("Starting kernel modules...");
 	GDT_Init();
 	IDT_Init();
-	TimerInit(60);
-
 	PagingInit();
 
 	TerminalPrintln();
 	TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
-	*/
 }

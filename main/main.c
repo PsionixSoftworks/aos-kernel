@@ -10,32 +10,14 @@
  *
  */
 
-#include "../include/main.h"
-#include "../include/vga.h"
 #include "../include/kernel.h"
 #include "../include/terminal.h"
-#include "../include/math/math-util.h"
 
 MODULE("Main", "0.01a");
-
-struct Test
-{
-	uint32_t a;
-} PACKED;
-typedef struct Test Test_t;
-
-inline VOID CheckKernelSignature(VOID);
 
 VOID _TEXT 
 KMain(VOID) 
 {
-	TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
-	TerminalClearScreen();
-
-	double a = 13.49;
-	int b = round(a);
-
-	TerminalPrintf("%d\n", b);
-
+	KernelRun();
 	return;
 }

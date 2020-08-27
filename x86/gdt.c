@@ -21,34 +21,76 @@ EXTERN VOID GDT_Flush(UDWORD);
 GDT_Entry_t GDT_Entries[5];
 PGDT_t PGDT;
 
-static VOID GDT_SetGate(DWORD, UDWORD, UDWORD, UBYTE, UBYTE);
+static inline VOID GDT_SetBase(DWORD Index, UDWORD Base);
+static inline VOID GDT_SetLimit(DWORD Index, UDWORD Limit);
+static inline VOID GDT_SetGranularity(DWORD Index, UBYTE Granularity);
+static inline VOID GDT_SetAccess(DWORD Index, UBYTE Access);
+static inline BOOL GDT_EntryUsed(DWORD Index);
+static inline VOID GDT_SetGate(DWORD, UDWORD, UDWORD, UBYTE, UBYTE);
 
-VOID 
+VOID
 GDT_Init(VOID) 
 {
 	PGDT.Limit = (sizeof(GDT_Entry_t) * 5) - 1;	// Learn to understand this...
 	PGDT.Base = (UDWORD)&GDT_Entries;
 	
-	GDT_SetGate(0, 0, 0, 0, 0);
-	GDT_SetGate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
-	GDT_SetGate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
-	GDT_SetGate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
-	GDT_SetGate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
-	GDT_Flush((UDWORD)&PGDT);
+	UWORD Base, Limit; 
+	UBYTE Access, Granularity;
 
+	int i = 0;
+	GDT_SetGate(i++, 0, 0, 0, 0);
+	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_0, ACCESS_BYTE_FLAGS);
+	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_1, ACCESS_BYTE_FLAGS);
+	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_2, ACCESS_BYTE_FLAGS);
+	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_3, ACCESS_BYTE_FLAGS);
+	GDT_Flush((UDWORD)&PGDT);
 	INFO("GDT is initialized!");
 }
 
-static VOID 
-GDT_SetGate(DWORD Number, UDWORD Base, UDWORD Limit, UBYTE Access, UBYTE Granularity) 
+static inline VOID
+GDT_SetGate(DWORD Index, UDWORD Base, UDWORD Limit, UBYTE Access, UBYTE Granularity) 
 {
-	GDT_Entries[Number].BaseLo 		= (Base & 0xFFFF);
-	GDT_Entries[Number].BaseMiddle	= (Base >> 16) & 0xFF;
-	GDT_Entries[Number].BaseHi		= (Base >> 24) & 0xFF;
-	
-	GDT_Entries[Number].LimitLo		= (Limit & 0xFFFF);
-	GDT_Entries[Number].Granularity	= (Limit >> 16) & 0x0F;
-	
-	GDT_Entries[Number].Granularity	|= Granularity & 0xF0;
-	GDT_Entries[Number].Access		= Access;
+	/* Make sure we're not adding nothing or a used entry. */
+	if ((Index != NULL) && (!GDT_EntryUsed(Index)))
+	{
+		/* Setup a GDT. */
+		GDT_SetBase(Index, Base);
+		GDT_SetLimit(Index, Limit);
+		GDT_SetAccess(Index, Access);
+		GDT_SetGranularity(Index, Granularity);
+	}
+	return;
+}
+
+static inline VOID
+GDT_SetBase(DWORD Index, UDWORD Base)
+{
+	GDT_Entries[Index].BaseLo 		= (Base & 0xFFFF);
+	GDT_Entries[Index].BaseMiddle	= (Base >> 16) & 0xFF;
+	GDT_Entries[Index].BaseHi		= (Base >> 24) & 0xFF;
+}
+
+static inline VOID
+GDT_SetLimit(DWORD Index, UDWORD Limit)
+{
+	GDT_Entries[Index].LimitLo		= (Limit & 0xFFFF);
+	GDT_Entries[Index].Granularity	= (Limit >> 16) & 0x0F;
+}
+
+static inline VOID
+GDT_SetGranularity(DWORD Index, UBYTE Granularity)
+{
+	GDT_Entries[Index].Granularity	|= Granularity & 0xF0;
+}
+
+static inline VOID
+GDT_SetAccess(DWORD Index, UBYTE Access)
+{
+	GDT_Entries[Index].Access		= Access;
+}
+
+static inline BOOL
+GDT_EntryUsed(DWORD Index)
+{
+	return (FALSE);
 }

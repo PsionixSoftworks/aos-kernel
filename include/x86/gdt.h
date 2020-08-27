@@ -21,6 +21,14 @@
 #define GLOBAL_DESCRIPTOR
 #endif
 
+#define MEMORY_START_REGION                  0x00000000
+#define MEMORY_END_REGION                    0xFFFFFFFF
+#define ACCESS_BYTE_0                        0x9A
+#define ACCESS_BYTE_1                        0x92
+#define ACCESS_BYTE_2                        0xFA
+#define ACCESS_BYTE_3                        0xF2
+#define ACCESS_BYTE_FLAGS                    0xCF
+
 #if defined(__cplusplus)
 EXTERN "C" {
 #endif

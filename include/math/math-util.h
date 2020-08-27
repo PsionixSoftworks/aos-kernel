@@ -4,6 +4,7 @@
 #include "simple-math.h"
 
 #define PI      3.14159265358979323846264338327
+#define E       2.7182818284590452354
 
 /* Trigonometric math functions */
 extern int abs(int n);
@@ -23,7 +24,7 @@ extern double log(double x);
 extern double log10(double x);
 extern double exp(double x);
 extern double sqrt(double x);
-extern double pow(double x);
+extern double pow(double x, double y);
 extern int trunc(double x);
 extern double degtorad(double x);
 extern double radtodeg(double x);

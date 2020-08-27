@@ -26,6 +26,122 @@ ceil(double x)
     return ((double)((int)x + (x > 0.0)));
 }
 
+inline double
+sin(double x)
+{
+
+}
+
+inline double
+cos(double x)
+{
+
+}
+
+inline double
+tan(double x)
+{
+
+}
+
+inline double
+asin(double x)
+{
+
+}
+
+inline double
+acos(double x)
+{
+
+}
+
+inline double
+atan(double x)
+{
+
+}
+
+inline double
+sinh(double x)
+{
+
+}
+
+inline double
+cosh(double x)
+{
+
+}
+
+inline double
+tanh(double x)
+{
+
+}
+
+inline double
+log(double x)
+{
+
+}
+
+inline double
+log10(double x)
+{
+
+}
+
+inline double
+exp(double x)
+{
+    
+}
+
+inline double
+sqrt(double x)
+{
+    float temp, s;
+    s = x / 2;
+    temp = 0;
+
+    while (s != temp)
+    {
+        temp = s;
+        s = (x / temp + temp) / 2;
+    }
+    return (s);
+}
+
+inline double
+pow(double x, double y)
+{
+    double result = 1;
+    for (y; y > 0; y--)
+    {
+        result = result * x;
+    }
+    return (result);
+}
+
+inline int
+trunc(double x)
+{
+
+}
+
+inline double
+degtorad(double x)
+{
+    return (x * (PI / 180.0));
+}
+
+inline double
+radtodeg(double x)
+{
+
+}
+
 /* Defined in "simple-math.h" */
 inline int
 sum2i(int x, int y)
@@ -216,7 +332,6 @@ product4d(double x, double y, double z, double w)
     return (result);
 }
 
-/*
 inline int
 quotient2i(int x, int y)
 {
@@ -237,7 +352,6 @@ quotient4i(int x, int y, int z, int w)
     int result = (int)round(x / y / z / w);
     return (result);
 }
-*/
 
 inline float
 quotient2f(float x, float y)
