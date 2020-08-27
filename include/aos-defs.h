@@ -13,6 +13,7 @@
 #ifndef ADAMANTINE_STANDARD_DEFINITIONS
 #define ADAMANTINE_STANDARD_DEFINITIONS
 
+#include "backend/back.h"
 #include "types.h"
 #include "string.h"
 
@@ -105,8 +106,9 @@
 #define SET_DOUBLE(name)                DOUBLE  name
 #define SET_STRUCT(name)                STRUCT  name
 #define SET_UNION(name)                 UNION   name
-
 #define EXTERN                          extern
+
+#define _STRAIGHTEN                     __SYSTEM_IPAR
 
 #define PACK(name)                      PACKED name
 

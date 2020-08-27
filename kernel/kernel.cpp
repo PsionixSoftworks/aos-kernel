@@ -19,6 +19,7 @@
 #include "../include/x86/gdt.h"
 #include "../include/x86/idt.h"
 #include "../include/paging.h"
+#include "../include/mem-util.h"
 
 #if defined(ADAMANTINE_OS_READY)
 #include "../AOS/Include/Adamantine.h"
@@ -33,6 +34,17 @@ MODULE("Kernel", "0.04-2a");
 
 EXTERN "C" VOID KMain(VOID);
 
+static inline VOID *
+ParamTest(UDWORD _STRAIGHTEN x)
+{
+	VOID *Result = 0;
+	if (Result == NULL)
+	{
+		Result = (VOID *)x;
+	}
+	return (Result);
+}
+
 EXTERN "C" VOID _TEXT
 KernelRun(VOID)
 {
@@ -44,6 +56,9 @@ KernelRun(VOID)
 	IDT_Init();
 	PagingInit();
 
+	uint32_t *x = (uint32_t *)ParamTest(1000000);
+	MemSet(x, 0x9F, 160);
+	
 	TerminalPrintln();
 	TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
 }
