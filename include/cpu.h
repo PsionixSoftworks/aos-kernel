@@ -15,28 +15,14 @@
 
 #include "aos-defs.h"
 #include "types.h"
-#include "cpuid.h"
-
-#if defined(__cplusplus)
-EXTERN "C" {
-#endif
-
-struct CPU 
-{
-	UDWORD 				NodeID;
-};
 
 // Declare function templates:
-EXTERN STRUCT CPU CPU_Init(VOID);
+EXTERN VOID CPU_Init(VOID);
 EXTERN VOID (CPU_Register(struct CPU, DWORD ID));
 EXTERN VOID (CPU_Halt(VOID));									// Halts the CPU from C.
 EXTERN VOID (CPU_Suspend(VOID));									// Suspends the CPU from C.
 EXTERN DWORD (CPU_BrokeASweat(VOID));
+EXTERN STRING CPU_VendorString(VOID);
+EXTERN UDWORD CPU_CheckIsSupported(VOID);
 
-EXTERN UDWORD (CPUID(VOID));
-EXTERN STRING (CPUID_ISSupported(VOID));
-
-#if defined(__cplusplus)
-}
-#endif
 #endif	// !ADAMANTINE_CPU

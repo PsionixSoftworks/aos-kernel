@@ -18,10 +18,6 @@
 #include "device.h"
 #include "aos-defs.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 struct aos_device;
 
 typedef struct aos_fs 
@@ -49,9 +45,5 @@ extern uint8_t vfs_exists_in_dir(char *wd, char *fn);
 extern void vfs_init(void);
 extern uint8_t list_mount(void);
 extern uint8_t device_try_to_mount(struct aos_device *device, char *fn);
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif

@@ -43,6 +43,7 @@ ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 								$(ASSEMB_PATH)/boot/test.S		\
 								$(ASSEMB_PATH)/descriptors.asm	\
 								$(ASSEMB_PATH)/interrupt.asm	\
+								$(ASSEMB_PATH)/cpuid.asm		\
 								$(ASSEMB_PATH)/setup.S
 
 C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
@@ -81,6 +82,7 @@ OUTPUT_FILES 				:= 	boot.new.o		\
 								test.o			\
 								descriptors.o	\
 								interrupt.o		\
+								cpuid.o			\
 								setup.o			\
 								main.o			\
 								adamantine.o	\
@@ -129,6 +131,7 @@ bootloader: $(ASM_FILES_IN)
 	$(COMPILER_C) $(ASSEMB_PATH)/boot/test.S		-o test.o
 	$(NASM) $(ASSEMB_PATH)/descriptors.asm			-o descriptors.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
+	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o
 	$(COMPILER_C) $(ASSEMB_PATH)/setup.S			-o setup.o
 
 # Compile the kernel files:

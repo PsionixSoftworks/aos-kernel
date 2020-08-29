@@ -104,4 +104,8 @@ enum cpuid_features
 #define CPUID_VENDOR_VORTEX 		"Vortex86 SoC"
 #define CPUID_VENDOR_VIA			"VIA VIA VIA "
 
+EXTERN UDWORD CPUID(VOID);
+EXTERN UDWORD CPUID_String(UDWORD Code, UDWORD *Location);
+EXTERN STRING CPUID_ISSupported(VOID);
+
 #endif

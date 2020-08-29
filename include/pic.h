@@ -44,10 +44,6 @@
 #define PIC_READ_ISR		0x0B
 #endif
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 // Declare global functions:
 EXTERN  VOID (PIC_SendEOI(UBYTE IRQ));					        // Send the end of instruction to the PIC.
 EXTERN  VOID (PIC_Remap(VOID));		                            // Remap PIC.
@@ -57,7 +53,4 @@ EXTERN  UWORD (PIC_GetIRR(VOID));						        // Get (IRR?).
 EXTERN  UWORD (PIC_GetISR(VOID));						        // Get the interrupt service routine.
 EXTERN  UWORD (PIC_GetIRQRegister(DWORD OCW3));				    // Get the IRQ register.
 
-#if defined(__cplusplus)
-}
-#endif
 #endif	// !ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER

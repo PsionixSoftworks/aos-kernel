@@ -17,10 +17,6 @@
 #include "../types.h"
 #include "../string.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 struct CommandLine 
 {
     STRING              *CMD_List;
@@ -29,9 +25,5 @@ typedef struct CommandLine Command_t;
 
 EXTERN  VOID (CommandLineInit(VOID));
 EXTERN  UBYTE (ParseCommand(STRING CMD));
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif

@@ -18,10 +18,6 @@
 
 #define BUS_ENABLE                          0x1C0000007FUL
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 typedef struct AOS_BusDriver
 {
     UDWORD              BaseAddr;
@@ -29,7 +25,4 @@ typedef struct AOS_BusDriver
 
 EXTERN  SET_VOID(EnableBusDriver(VOID));
 
-#if defined(__cplusplus)
-}
-#endif
 #endif

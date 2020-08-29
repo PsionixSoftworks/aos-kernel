@@ -29,10 +29,6 @@
 #define ACCESS_BYTE_3                        0xF2
 #define ACCESS_BYTE_FLAGS                    0xCF
 
-#if defined(__cplusplus)
-EXTERN "C" {
-#endif
-
 struct GDT_Entry 
 {
    UWORD                LimitLo;                                  // The lower 16 bits of the limit.
@@ -53,7 +49,4 @@ typedef struct PGDT PGDT_t;
 
 EXTERN   VOID GDT_Init(VOID);
 
-#if defined(__cplusplus)
-}
-#endif
 #endif	                                                         // !ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE

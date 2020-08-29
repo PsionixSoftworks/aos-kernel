@@ -16,10 +16,6 @@
 #include "aos-defs.h"
 #include "types.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 // Declare the allocation type:
 typedef struct 
 {
@@ -44,9 +40,5 @@ UDWORD kMalloc_a(UDWORD Size);
 UDWORD kMalloc_p(UDWORD SIZE, UDWORD *PhysicalAddress);
 UDWORD kMalloc_ap(UDWORD Size, UDWORD *PhysicalAddress);
 UDWORD kMalloc(UDWORD Size);
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif	// !ADAMANTINE_MEMORY_UTILITY

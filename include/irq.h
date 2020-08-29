@@ -16,16 +16,9 @@
 #include "aos-defs.h"
 #include "types.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 EXTERN BYTE (AreInterruptsEnabled(VOID));
 EXTERN ULONG (IRQ_Disable(VOID));
 EXTERN VOID (IRQ_Restore(ULONG Flags));
 EXTERN VOID (ClearInterrupts(VOID));
 
-#if defined(__cplusplus)
-}
-#endif
 #endif

@@ -13,10 +13,6 @@
 #ifndef CENTRIX_CORE
 #define CENTRIX_CORE
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 #include "aos-defs.h"
 #include "types.h"
 #include "string.h"
@@ -40,11 +36,7 @@ struct CentrixCore
     STRING              OS_Name;
 };
 
-void *KernelInstall(string name);
-int32_t Verify(void);
-
-#if defined(__cplusplus)
-}
-#endif
+EXTERN void *KernelInstall(string name);
+EXTERN int32_t Verify(void);
 
 #endif	// !CENTRIX_CORE

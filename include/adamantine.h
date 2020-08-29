@@ -18,7 +18,6 @@
 #include "adamantine-x86.h"
 #include "types.h"
 
-
 #if defined( USING_SYSAPI )
 #include "../sys/sysapi.h"
 #include "../sys/input.h"
@@ -44,15 +43,4 @@
 #ifndef ADAMANTINE_VER
 #define ADAMANTINE_VER 	100
 #endif	// !ADAMANTINE_VER
-
-#ifdef __cplusplus
-extern "C" {
-#endif	// !__cplusplus
-
-
-
-#ifdef __cplusplus
-}
-#endif	// !__cplusplus
-
 #endif	// !ADAMANTINE

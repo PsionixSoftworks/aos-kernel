@@ -16,19 +16,11 @@
 #include "../aos-defs.h"
 #include "../types.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 struct CentrixBase
 {
     UWORD               Start;
     UWORD               End;
     UDWORD              *Data;
 };
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif

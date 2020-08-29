@@ -22,14 +22,4 @@
 #define AOS_ROOT_DIRNAME        "$0://root/"
 #define AOS_FILE_SYSTEM_NAME    "AOS-32"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-
-
-#if defined(__cplusplus)
-}
-#endif
-
 #endif

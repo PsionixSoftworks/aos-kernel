@@ -12,7 +12,6 @@
 
 #include "crti.S"
 #include "crtn.S"
-#include "../interrupt.asm"
 
 /* The .multiboot section is used to initalize GRUB and start the kernel. */
 .SECTION .multiboot

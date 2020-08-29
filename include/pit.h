@@ -16,14 +16,6 @@
 #include "aos-defs.h"
 #include "types.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 EXTERN  VOID (TimerInit(UDWORD Frequency));
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif	// !SYSTEM_TIMER

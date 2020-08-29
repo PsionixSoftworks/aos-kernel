@@ -21,15 +21,8 @@
 
 #if CENTRIX_VERSION <= 100
 
-#if defined(__cplusplus)
-EXTERN "C" {
-#endif
-
 EXTERN VOID (*KernelInstall(STRING Name));
 EXTERN DWORD (Verify(VOID));
 
-#if defined(__cplusplus)
-}
-#endif
 #endif	/* !CENTRIX_VERSION */
 #endif	/* !CENTRIX */

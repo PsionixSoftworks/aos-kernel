@@ -8,10 +8,6 @@
 #include "types.h"
 #include "isr.h"
 
-#if defined(__cplusplus)
-EXTERN "C" {
-#endif
-
 typedef struct Page
 {
     UDWORD Present  : 1;
@@ -40,7 +36,4 @@ EXTERN VOID SwitchPageDirectory(PageDirectory_t *NewPage);
 EXTERN Page_t *GetPage(UDWORD Address, int Make, PageDirectory_t *Directory);
 EXTERN VOID PageFault(Registers_t Register);
 
-#if defined(__cplusplus)
-}
-#endif
 #endif

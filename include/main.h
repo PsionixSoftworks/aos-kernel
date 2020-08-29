@@ -17,13 +17,6 @@
 #include "types.h"
 #include "adamantine.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
+EXTERN VOID KMain(VOID);
 
-EXTERN VOID KNain(VOID);
-
-#if defined(__cplusplus)
-}
-#endif
 #endif	// !ADAMANTINE_MAIN

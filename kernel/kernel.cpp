@@ -20,6 +20,11 @@
 #include "../include/x86/idt.h"
 #include "../include/paging.h"
 #include "../include/mem-util.h"
+#include "../include/math/math-util.h"
+#include "../include/string.h"
+
+#include "../include/cpu.h"
+#include <cpuid.h>
 
 #if defined(ADAMANTINE_OS_READY)
 #include "../AOS/Include/Adamantine.h"
@@ -32,20 +37,9 @@ MODULE("Kernel", "0.04-2a");
 /* Used for later when we enable 3D. */
 #define RUNNING_IN_3D_MODE		FALSE
 
-EXTERN "C" VOID KMain(VOID);
+EXTERN VOID KMain(VOID);
 
-static inline VOID *
-ParamTest(UDWORD _STRAIGHTEN x)
-{
-	VOID *Result = 0;
-	if (Result == NULL)
-	{
-		Result = (VOID *)x;
-	}
-	return (Result);
-}
-
-EXTERN "C" VOID _TEXT
+EXTERN VOID _TEXT
 KernelRun(VOID)
 {
 	InitAll(KERNEL_MODE_NORMAL);
@@ -56,9 +50,10 @@ KernelRun(VOID)
 	IDT_Init();
 	PagingInit();
 
-	uint32_t *x = (uint32_t *)ParamTest(1000000);
-	MemSet(x, 0x9F, 160);
-	
+	if (CPU_CheckIsSupported() == FAILURE)
+		asm("INT $0x12");
+	CPU_Init();
+
 	TerminalPrintln();
 	TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
 }

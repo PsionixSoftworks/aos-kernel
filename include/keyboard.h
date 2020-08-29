@@ -28,10 +28,6 @@
 // Define the max allocation size for keys:
 #define MAX_ALLOC_SIZE						256
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 // Declare global functions:
 EXTERN 	VOID (SetKeyCode(BYTE *Key, BYTE Code));					// Set keycodes for each key (UNUSED).
 EXTERN 	VOID (KeyboardInit(void));								// Initialize the basic keyboard driver.
@@ -53,7 +49,4 @@ typedef struct AOS_Keyboard_Basic
 	BOOL 				Initialized;								// The keyboard initializer.
 } PACKED Keyboard_t;												// keyboard type.
 
-#if defined(__cplusplus)
-}
-#endif
 #endif 	// !ADAMANTINE_KEYBOARD

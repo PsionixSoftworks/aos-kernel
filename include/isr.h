@@ -17,10 +17,6 @@
 #include "types.h"
 #include "string.h"
 
-#if defined(__cplusplus)
-EXTERN "C" {
-#endif
-
 #define IRQ0		32
 #define IRQ1		33
 #define IRQ2		34
@@ -49,7 +45,4 @@ typedef struct AOS_Registers
 typedef VOID(*ISR_t)(Registers_t);
 EXTERN	VOID RegisterInterruptHandler(UBYTE N, ISR_t Handler);
 
-#if defined(__cplusplus)
-}
-#endif
 #endif	// !ADAMANTINE_ISR

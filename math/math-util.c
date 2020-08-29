@@ -29,19 +29,19 @@ ceil(double x)
 inline double
 sin(double x)
 {
-
+    /* Opposite / Adjacent */
 }
 
 inline double
 cos(double x)
 {
-
+    /* Adjacent / Hypotenuse */
 }
 
 inline double
 tan(double x)
 {
-
+    /* Opposite / Adjacent */
 }
 
 inline double
@@ -83,7 +83,7 @@ tanh(double x)
 inline double
 log(double x)
 {
-
+    
 }
 
 inline double
@@ -133,13 +133,13 @@ trunc(double x)
 inline double
 degtorad(double x)
 {
-    return (x * (PI / 180.0));
+    return (x * PI / 180.00);
 }
 
 inline double
 radtodeg(double x)
 {
-
+    return (x / PI * 180.0);
 }
 
 /* Defined in "simple-math.h" */

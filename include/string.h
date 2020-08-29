@@ -10,9 +10,10 @@
  *
  */
 
-#ifndef STRING
-#define STRING
+#ifndef _STRING_
+#define _STRING_
 
+#include "aos-defs.h"
 #include "types.h"
 
 #if defined(__cplusplus)
@@ -21,23 +22,15 @@ typedef const char *string;
 typedef char *string;
 #endif
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 // Declare string functions:
-extern char *itoa(int value, char * str, int base);		// Converts integer to string.
-extern int strcmp(string  str1, string str2);
-extern string strcpy(string src, string dest);
-extern string strcat(string dest, string src);
-extern void to_lower(string str);
-extern void to_upper(string str);
-extern size_t strlen(const string s);
-extern size_t str_backspace(string str, char c);
-extern size_t strsplit(string str, char delim);
+EXTERN char *itoa(int value, char * str, int base);		// Converts integer to string.
+EXTERN int strcmp(string  str1, string str2);
+EXTERN string strcpy(string src, string dest);
+EXTERN string strcat(string dest, string src);
+EXTERN void to_lower(string str);
+EXTERN void to_upper(string str);
+EXTERN size_t strlen(const string s);
+EXTERN size_t str_backspace(string str, char c);
+EXTERN size_t strsplit(string str, char delim);
 
-#if defined(__cplusplus)
-}
-#endif
-
-#endif	// !STRING
+#endif	// !_STRING_

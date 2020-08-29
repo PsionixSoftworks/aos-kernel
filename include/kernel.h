@@ -21,17 +21,9 @@
 #define KERNEL_MODE_SAFE		0x1
 #define KERNEL_MODE_NO_GUI		0x2
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 typedef VOID(*KFunc_t)(BYTE);
 
 // Declare the global functions used by the kernel:
 EXTERN VOID (KernelRun(VOID));									// The kernel's init function for startup.
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif	// !ADAMANTINE_KERNEL

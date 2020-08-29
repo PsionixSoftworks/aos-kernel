@@ -27,10 +27,6 @@
 #define PCI_DEVICE_ENABLE_PARITY            (PCI_ENABLE << 0x06)
 #define PCI_DEVICE_ENABLE_WAIT              (PCI_ENABLE << 0x07)
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 struct AOS_PCI_Device
 {
     UDWORD              Vendor;
@@ -47,7 +43,4 @@ typedef struct AOS_PCI
     struct AOS_PCI_Device DeviceID;
 } PACKED PCI_t;
 
-#if defined(__cplusplus)
-}
-#endif
 #endif

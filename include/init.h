@@ -20,11 +20,6 @@
 #include "../include/terminal.h"
 #include "../include/vga.h"
 
-/* Check if we're using C++. If so, safeguard the code to C linkage. */
-#if defined(__cplusplus)
-extern "C" {
-#endif  /* !__cplusplus */
-
 static string OS_Mode[] =
 {
     "Normal Mode",
@@ -45,7 +40,4 @@ InitAll(BYTE Mode)
     TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
 }
 
-#if defined(__cplusplus)
-}
-#endif  /* !__cplusplus */
-#endif  /* !__cplusplus */
+#endif  /* !_INIT_ */

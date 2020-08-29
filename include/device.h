@@ -18,10 +18,6 @@
 #include "string.h"
 #include "driver.h"
 
-#if defined(__cplusplus)
-EXTERN "C" {
-#endif
-
 struct AOS_FileSystem;
 
 typedef struct AOS_Device 
@@ -45,7 +41,4 @@ EXTERN VOID (AOS_DeviceAdd(STRUCT AOS_Device *));
 EXTERN VOID (AOS_DeviceFree(VOID));
 EXTERN STRUCT AOS_Device AOS_DeviceGet(UDWORD);
 
-#if defined(__cplusplus)
-}
-#endif
 #endif

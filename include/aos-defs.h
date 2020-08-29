@@ -15,7 +15,6 @@
 
 #include "backend/back.h"
 #include "types.h"
-#include "string.h"
 
 #define OS_NAME                             "AdamantineOS"
 #define OS_VERSION                          "0.04a"
@@ -80,7 +79,7 @@
 #define SHORT                           signed short
 #define SIZE                            size_t
 #define CHAR                            char
-#define STRING                          string
+#define STRING                          char *
 #define FLOAT                           float
 #define DOUBLE                          double
 #define STRUCT                          struct
@@ -106,9 +105,12 @@
 #define SET_DOUBLE(name)                DOUBLE  name
 #define SET_STRUCT(name)                STRUCT  name
 #define SET_UNION(name)                 UNION   name
-#define EXTERN                          extern
 
-#define _STRAIGHTEN                     __SYSTEM_IPAR
+#ifdef __cplusplus
+#define EXTERN                          extern "C"
+#else
+#define EXTERN                          extern
+#endif
 
 #define PACK(name)                      PACKED name
 

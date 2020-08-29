@@ -3,30 +3,30 @@
 
 #include "simple-math.h"
 
-#define PI      3.14159265358979323846264338327
-#define E       2.7182818284590452354
+#define PI      3.1415926535897932385       // For Trigonometric functions
+#define E       2.7182818284590452354       // For Log e.
 
 /* Trigonometric math functions */
-extern int abs(int n);
-extern int floor(double x);
-extern int round(double x);
-extern int ceil(double x);
-extern double sin(double x);
-extern double cos(double x);
-extern double tan(double x);
-extern double asin(double x);
-extern double acos(double x);
-extern double atan(double x);
-extern double sinh(double x);
-extern double cosh(double x);
-extern double tanh(double x);
-extern double log(double x);
-extern double log10(double x);
-extern double exp(double x);
-extern double sqrt(double x);
-extern double pow(double x, double y);
-extern int trunc(double x);
-extern double degtorad(double x);
-extern double radtodeg(double x);
+EXTERN int abs(int n);
+EXTERN int floor(double x);
+EXTERN int round(double x);
+EXTERN int ceil(double x);
+EXTERN double sin(double x);
+EXTERN double cos(double x);
+EXTERN double tan(double x);
+EXTERN double asin(double x);
+EXTERN double acos(double x);
+EXTERN double atan(double x);
+EXTERN double sinh(double x);
+EXTERN double cosh(double x);
+EXTERN double tanh(double x);
+EXTERN double log(double x);
+EXTERN double log10(double x);
+EXTERN double exp(double x);
+EXTERN double sqrt(double x);
+EXTERN double pow(double x, double y);
+EXTERN int trunc(double x);
+EXTERN double degtorad(double x);
+EXTERN double radtodeg(double x);
 
 #endif

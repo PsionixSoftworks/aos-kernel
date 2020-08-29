@@ -18,10 +18,6 @@
 #include "string.h"
 #include "cpu.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 #define INFO(msg)				TerminalPrintf("[INFO]: %s\n", msg);
 #define WARNING(msg)			TerminalPrintf("[WARNING]: %s\n", msg);
 #define ERROR(msg)				TerminalPrintf("[ERROR]: %s\n", msg); CPU_Halt();
@@ -54,9 +50,5 @@ EXTERN 	UDWORD (TerminalGetCursorX(VOID));
 EXTERN 	UDWORD (TerminalGetCursorY(VOID));
 EXTERN 	VOID (Panic(const STRING Message, const STRING File, UDWORD Line));
 EXTERN 	VOID (PanicAssert(const STRING File, UDWORD Line, const STRING Descrition));
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif

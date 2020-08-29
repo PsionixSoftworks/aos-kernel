@@ -15,11 +15,4 @@
 
 #define BASE_ADDR       0x7F
 
-#if defined(__cplusplus)
-EXTERN "C" {
-#endif
-
-#if defined(__cplusplus)
-}
-#endif
 #endif

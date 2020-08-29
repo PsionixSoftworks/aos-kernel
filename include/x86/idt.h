@@ -21,10 +21,6 @@
 #define INTERRUPT_DESCRIPTOR
 #endif
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 struct IDT_Entry 
 {
 	UWORD 				BaseLo;
@@ -95,7 +91,4 @@ EXTERN	VOID (IRQ_15(VOID));
 EXTERN 	VOID (IDT_Init(VOID));
 EXTERN 	VOID (IDT_Free(VOID));
 
-#if defined(__cplusplus)
-}
-#endif
 #endif	// !ADAMANTINE_INTERRUPT_DESCRIPTOR_TABLE

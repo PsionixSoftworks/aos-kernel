@@ -20,10 +20,6 @@
 #include "input.h"
 #include "output.h"
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 // Declare io functions:
 EXTERN VOID (IO_Wait(VOID));
 
