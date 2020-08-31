@@ -83,6 +83,7 @@ OUTPUT_FILES 				:= 	boot.new.o		\
 								descriptors.o	\
 								interrupt.o		\
 								cpuid.o			\
+								timer.o			\
 								setup.o			\
 								main.o			\
 								adamantine.o	\
@@ -132,6 +133,7 @@ bootloader: $(ASM_FILES_IN)
 	$(NASM) $(ASSEMB_PATH)/descriptors.asm			-o descriptors.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o
+	$(NASM)	$(ASSEMB_PATH)/timer.asm				-o timer.o
 	$(COMPILER_C) $(ASSEMB_PATH)/setup.S			-o setup.o
 
 # Compile the kernel files:

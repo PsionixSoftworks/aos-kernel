@@ -35,6 +35,7 @@
 #define FAILURE								FALSE
 #define SUCCESS								TRUE
 #define AOS_BASE_CNTRL                      0xCE0
+#define kernel_only                        __kernel_only
 #endif
 
 // Define the module naming system for later use:

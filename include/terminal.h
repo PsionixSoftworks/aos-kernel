@@ -17,10 +17,11 @@
 #include "types.h"
 #include "string.h"
 #include "cpu.h"
+#include <stdarg.h>
 
-#define INFO(msg)				TerminalPrintf("[INFO]: %s\n", msg);
-#define WARNING(msg)			TerminalPrintf("[WARNING]: %s\n", msg);
-#define ERROR(msg)				TerminalPrintf("[ERROR]: %s\n", msg); CPU_Halt();
+#define INFO(...)			TerminalPrintf("[INFO]: %s\n", __VA_ARGS__);
+#define WARNING(...)		TerminalPrintf("[WARNING]: %s\n", __VA_ARGS__);
+#define ERROR(...)			TerminalPrintf("[ERROR]: %s\n", __VA_ARGS__); CPU_Halt();
 #define PANIC(msg)				Panic(msg, __FILE__, __LINE__);
 #define ASSERT(b) 				((b) ? (void)0 : PanicAssert(__FILE__, __LINE__, #b))
 

@@ -30,7 +30,6 @@
 #include "../include/aos-fs.h"
 
 #include "../include/cpu.h"
-#include <cpuid.h>
 
 #if defined(ADAMANTINE_OS_READY)
 #include "../AOS/Include/Adamantine.h"
@@ -45,6 +44,30 @@ MODULE("Kernel", "0.04-4a");
 
 EXTERN UDWORD kernel_end;
 EXTERN VOID KMain(VOID);
+
+static inline kernel_only string CPU_SupportedNames[] = 
+{
+    /* Intel */
+    "Pentium Pro",
+	"Pentium II",
+	"Pentium II Xeon"
+	"Pentium III",
+	"Pentium III Xeon"
+	"Pentium M",
+	"Celeron",
+	"Celeron M",
+	"Intel Core Duo",
+	"Intel Core Solo",
+	"Pentium 4",
+	"Core i3",
+	"Core i5",
+	"Core i7",
+
+    /* AMD */
+
+};
+
+EXTERN UDWORD MemoryUsed;
 
 EXTERN VOID _TEXT
 KernelRun(VOID)
@@ -63,11 +86,14 @@ KernelRun(VOID)
 
 	KeyboardInit();
 
+	TerminalPrintf("Total Memory Used: %dKB.\n", MemoryUsed);
+
 	TerminalPrintln();
 	//TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
 	TerminalPrintf("You may type below:\n");
-	TerminalPrintf(" %s >>> ", AOS_ROOT_DIRNAME);
+	TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
 
+	//TerminalClearScreen();
 	while (1)
 	{
 		string keystr = KeyboardGetKey();
@@ -76,11 +102,12 @@ KernelRun(VOID)
 			TerminalPrintf(keystr);
 			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ENTER)
 			{
-				TerminalPrintf(" %s >>> ", AOS_ROOT_DIRNAME);
+				TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
 			}
 			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ESCAPE)
 			{
-				WritePortB(0x0CF9, 0x0E);
+				/* Trigger reset... */
+				//WritePortB(0x0CF9, 0x04);
 			}
 		}
 	}
