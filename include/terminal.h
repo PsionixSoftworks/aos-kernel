@@ -22,11 +22,10 @@
 #define INFO(...)			TerminalPrintf("[INFO]: %s\n", __VA_ARGS__);
 #define WARNING(...)		TerminalPrintf("[WARNING]: %s\n", __VA_ARGS__);
 #define ERROR(...)			TerminalPrintf("[ERROR]: %s\n", __VA_ARGS__); CPU_Halt();
-#define PANIC(msg)				Panic(msg, __FILE__, __LINE__);
-#define ASSERT(b) 				((b) ? (void)0 : PanicAssert(__FILE__, __LINE__, #b))
+#define PANIC(msg)			Panic(msg, __FILE__, __LINE__);
+#define ASSERT(b) 			((b) ? (void)0 : PanicAssert(__FILE__, __LINE__, #b))
 
 typedef struct AOS_Terminal Terminal_t;
-
 struct AOS_Terminal 
 {
 	BOOL IsInitialized;

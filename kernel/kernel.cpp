@@ -31,21 +31,21 @@
 
 #include "../include/cpu.h"
 
-#if defined(ADAMANTINE_OS_READY)
-#include "../AOS/Include/Adamantine.h"
-using namespace PsionixSoftworks;
-#endif
-
 /* Tell the kernel what module and version we are using. */
 MODULE("Kernel", "0.04-4a");
 
 /* Used for later when we enable 3D. */
 #define RUNNING_IN_3D_MODE		FALSE
 
+#if defined(ADAMANTINE_OS_READY)
+#include "../../AdamantineOS Desktop/include/adamantine.h"
+using namespace PsionixSoftworks;
+#endif
+
 EXTERN UDWORD kernel_end;
 EXTERN VOID KMain(VOID);
 
-static inline kernel_only string CPU_SupportedNames[] = 
+static inline __kernel_only string CPU_SupportedNames[] = 
 {
     /* Intel */
     "Pentium Pro",
@@ -69,11 +69,11 @@ static inline kernel_only string CPU_SupportedNames[] =
 
 EXTERN UDWORD MemoryUsed;
 
-EXTERN VOID _TEXT
+EXTERN __kernel_only VOID _TEXT
 KernelRun(VOID)
 {
 	InitAll(KERNEL_MODE_NORMAL);
-
+	byte p;
 	TerminalPrintf("%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
 	INFO("Starting kernel modules...");
 	GDT_Init();
@@ -81,7 +81,7 @@ KernelRun(VOID)
 	MM_Init(&kernel_end);
 	PagingInit();
 	if (CPU_CheckIsSupported() == FAILURE)
-		asm("INT $0x12");
+		asm("INT $0x12");	// 
 	CPU_Init();
 
 	KeyboardInit();
@@ -93,7 +93,6 @@ KernelRun(VOID)
 	TerminalPrintf("You may type below:\n");
 	TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
 
-	//TerminalClearScreen();
 	while (1)
 	{
 		string keystr = KeyboardGetKey();

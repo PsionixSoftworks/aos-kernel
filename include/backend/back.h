@@ -7,6 +7,7 @@
 #define __SYSTEM_OPAR               __AOS_BASEMENT__(0x0B, 0xFF)
 
 /* Official Macros */
+#ifdef __KERNEL__
 #define __kernel_only               /* Used to determine if a function is a kernel only member. */
-
+#endif
 #endif

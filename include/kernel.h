@@ -13,6 +13,8 @@
 #ifndef _AOS_KERNEL_
 #define _AOS_KERNEL_
 
+#define __KERNEL__              1
+
 // Handle other includes here:
 #include "aos-defs.h"
 #include "types.h"
