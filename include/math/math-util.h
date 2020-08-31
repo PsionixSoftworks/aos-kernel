@@ -11,6 +11,7 @@ EXTERN int abs(int n);
 EXTERN int floor(double x);
 EXTERN int round(double x);
 EXTERN int ceil(double x);
+EXTERN int sign(double x);
 EXTERN double sin(double x);
 EXTERN double cos(double x);
 EXTERN double tan(double x);

@@ -16,10 +16,6 @@
 #include "backend/back.h"
 #include "types.h"
 
-#define OS_NAME                             "AdamantineOS"
-#define OS_VERSION                          "0.04a"
-#define OS_SIGNATURE                        "{0:0:0:0~0}"
-
 // Define the boolean operators true and false:
 #ifndef BOOLEAN_OPS
 
@@ -44,8 +40,13 @@
 // Define the module naming system for later use:
 #ifndef ADAMANTINE_MODULE
 #define ADAMANTINE_MODULE
-#define MODULE(name, version) 	        
+#define MODULE(name, version) 	            static char *n = name; \  
+                                            static char *v = version;
 #endif	// !MODULE_DESCRIPTOR
+
+#define OS_NAME                             "AdamantineOS"
+#define OS_VERSION                          v
+#define OS_SIGNATURE                        "{0:0:0:0~0}"
 
 #ifndef __STANDARD_ATTRIBUTES__
 #define __STANDARD_ATTRIBUTES__

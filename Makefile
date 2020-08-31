@@ -15,7 +15,7 @@ C_FLAGS						:= 	-std=gnu99 $(CPP_FLAGS)
 BIN 						:= 	aos32.bin
 CFG 						:= 	grub.cfg
 ISO_PATH 					:= 	iso
-ISO_FILE					:= 	AdamantineOS_0.04a.iso
+ISO_FILE					:= 	AdamantineOS_0.04-4a.iso
 BOOT_PATH					:= 	$(ISO_PATH)/boot
 GRUB_PATH					:= 	$(BOOT_PATH)/grub
 

@@ -16,15 +16,8 @@
 #include "aos-defs.h"
 #include "types.h"
 
-#if defined(__cplusplus)
-EXTERN "C" {
-#endif
-
 EXTERN UBYTE (ReadPortB(UWORD Port));					        /* Read 8-bit port. */
 EXTERN UWORD (ReadPortW(UWORD Port));					        /* Read 16-bit port. */
 EXTERN UDWORD (ReadPortDW(UWORD Port));                          /* Read 32-bit port. */
 
-#if defined(__cplusplus)
-}
-#endif
 #endif

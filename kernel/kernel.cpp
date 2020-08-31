@@ -22,6 +22,12 @@
 #include "../include/mem-util.h"
 #include "../include/math/math-util.h"
 #include "../include/string.h"
+#include "../include/io.h"
+
+#include "../include/keyboard.h"
+#include "../include/keys.h"
+
+#include "../include/aos-fs.h"
 
 #include "../include/cpu.h"
 #include <cpuid.h>
@@ -32,11 +38,12 @@ using namespace PsionixSoftworks;
 #endif
 
 /* Tell the kernel what module and version we are using. */
-MODULE("Kernel", "0.04-2a");
+MODULE("Kernel", "0.04-4a");
 
 /* Used for later when we enable 3D. */
 #define RUNNING_IN_3D_MODE		FALSE
 
+EXTERN UDWORD kernel_end;
 EXTERN VOID KMain(VOID);
 
 EXTERN VOID _TEXT
@@ -48,12 +55,33 @@ KernelRun(VOID)
 	INFO("Starting kernel modules...");
 	GDT_Init();
 	IDT_Init();
+	MM_Init(&kernel_end);
 	PagingInit();
-
 	if (CPU_CheckIsSupported() == FAILURE)
 		asm("INT $0x12");
 	CPU_Init();
 
+	KeyboardInit();
+
 	TerminalPrintln();
-	TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
+	//TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
+	TerminalPrintf("You may type below:\n");
+	TerminalPrintf(" %s >>> ", AOS_ROOT_DIRNAME);
+
+	while (1)
+	{
+		string keystr = KeyboardGetKey();
+		if (keystr > KEYBOARD_KEY_DOWN_NONE)
+		{
+			TerminalPrintf(keystr);
+			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ENTER)
+			{
+				TerminalPrintf(" %s >>> ", AOS_ROOT_DIRNAME);
+			}
+			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ESCAPE)
+			{
+				WritePortB(0x0CF9, 0x0E);
+			}
+		}
+	}
 }

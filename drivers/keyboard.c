@@ -64,7 +64,7 @@ STRING
 KeyboardGetKey(VOID) 
 {
 	KeyboardRead();
-	if ((Keyboard.KeyLast != KEYBOARD_KEY_DOWN_NONE) || (Keyboard.KeyLast != KEYBOARD_KEY_DOWN_ENTER)) 
+	if ((Keyboard.KeyLast != KEYBOARD_KEY_DOWN_NONE)) 
 		return (KeysNormal[Keyboard.KeyLast]);
 	return (KEYBOARD_KEY_DOWN_NONE);
 }
@@ -74,7 +74,7 @@ UBYTE
 KeyboardGetKeycode(VOID) 
 {
 	KeyboardRead();
-	if (Keyboard.KeyLast == KEYBOARD_KEY_DOWN_NONE) 
+	if (Keyboard.KeyLast > KEYBOARD_KEY_DOWN_NONE) 
 		return (Keyboard.KeyLast);
 	return (KEYBOARD_KEY_DOWN_NONE);
 }

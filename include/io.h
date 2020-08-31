@@ -23,8 +23,4 @@
 // Declare io functions:
 EXTERN VOID (IO_Wait(VOID));
 
-#if defined(__cplusplus)
-}
-#endif
-
 #endif	// !ADAMANTINE_IO

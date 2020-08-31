@@ -26,6 +26,15 @@ ceil(double x)
     return ((double)((int)x + (x > 0.0)));
 }
 
+inline int
+sign(double x)
+{
+    if (x < 0) {x = -1;}
+    if (x > 0) {x = 1;}
+
+    return (x);
+}
+
 inline double
 sin(double x)
 {
