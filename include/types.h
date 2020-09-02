@@ -15,8 +15,6 @@
 
 #include "limits.h"
 
-<<<<<<< HEAD
-=======
 // Define string type here:
 #if defined(__cplusplus)
 typedef const char *            string;
@@ -29,16 +27,10 @@ typedef unsigned char           uint8_t;			// 8 bit unsigned integer.
 typedef unsigned short          uint16_t;		    // 16 bit unsigned integer.
 typedef unsigned int            uint32_t;		    // 32 bit unsigned integer.
 
->>>>>>> e3c2eaa797dea32005e17da7bbc01aff4b5c3a1f
 // Define signed types:
 typedef signed char			    int8_t;			    // 8 bit signed integer.
 typedef signed short			int16_t;			// 16 bit signed integer.
 typedef signed int				int32_t;			// 32 bit signed integer.
-
-// Define unsigned types:
-typedef unsigned char 		                uint8_t;			// 8 bit unsigned integer.
-typedef unsigned short 		                uint16_t;		    // 16 bit unsigned integer.
-typedef unsigned int 			            uint32_t;		    // 32 bit unsigned integer.
 
 // Define size_t:
 #if defined(__GNUC__) && defined(__SIZE_TYPE__)
@@ -55,24 +47,19 @@ typedef signed long long 	    int64_t;			// 64 bit signed integer (x64 ONLY!).
 
 // Define string type:
 #ifdef __cplusplus
-typedef const char *                    string;
+typedef const char *            string;
 #else
-typedef char *                          string;
+typedef char *                  string;
 #endif
 
 // Define other types:
-<<<<<<< HEAD
-typedef int8_t 					        byte;				// byte is an 8 bit signed integer.
-typedef int16_t 				        word;			    // word is a 16 bit signed integer.
-typedef int32_t 		                dword;			    // dword is a 32 bit signed integer.
-typedef uint8_t                         ubyte;              // ubyte is an 8 bit unsighed integer.
-typedef uint16_t                        uword;              // uword is a 16 bit unsigned integer.
-typedef uint32_t                        udword;             // udword is a 32 bit unsigned integer.
-=======
-typedef uint8_t 				byte;				// byte is an 8 bit unsigned integer.
-typedef uint16_t 				word;			    // word is a 16 bit unsigned integer.
-typedef unsigned long 		    dword;			    // dword is a 32 bit unsigned long.
->>>>>>> e3c2eaa797dea32005e17da7bbc01aff4b5c3a1f
+typedef int8_t 				    byte;				// byte is an 8 bit unsigned integer.
+typedef int16_t 				word;			    // word is a 16 bit unsigned integer.
+typedef int32_t 		        dword;			    // dword is a 32 bit unsigned long.
+
+typedef uint8_t                 ubyte;
+typedef uint16_t                uword;
+typedef uint32_t                udword;
 
 // Define bool if we're using C:
 #ifndef __cplusplus

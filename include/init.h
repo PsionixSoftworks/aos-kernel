@@ -20,6 +20,8 @@
 #include "../include/terminal.h"
 #include "../include/vga.h"
 
+EXTERN void sys_init(void);
+
 static string OS_Mode[] =
 {
     "Normal Mode",
@@ -38,6 +40,7 @@ InitAll(BYTE Mode)
 {
     /* Initialize the Terminal. */
     TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
+    //sys_init();
 }
 
 #endif  /* !_INIT_ */

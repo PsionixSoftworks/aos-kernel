@@ -23,6 +23,7 @@
 #include "../include/math/math-util.h"
 #include "../include/string.h"
 #include "../include/io.h"
+#include "../include/tss.h"
 
 #include "../include/keyboard.h"
 #include "../include/keys.h"
@@ -30,14 +31,6 @@
 #include "../include/aos-fs.h"
 
 #include "../include/cpu.h"
-<<<<<<< HEAD
-
-#if defined(ADAMANTINE_OS_READY)
-#include "../AOS/Include/Adamantine.h"
-using namespace PsionixSoftworks;
-#endif
-=======
->>>>>>> e3c2eaa797dea32005e17da7bbc01aff4b5c3a1f
 
 /* Tell the kernel what module and version we are using. */
 MODULE("Kernel", "0.04-4a");
@@ -98,7 +91,9 @@ KernelRun(VOID)
 	TerminalPrintf("Total Memory Used: %dKB.\n", MemoryUsed);
 
 	TerminalPrintln();
-	//TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
+	TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
+
+	SwitchToUserMode();
 	TerminalPrintf("You may type below:\n");
 	TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
 
@@ -114,12 +109,8 @@ KernelRun(VOID)
 			}
 			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ESCAPE)
 			{
-<<<<<<< HEAD
-				//WritePortB(0x0CF9, 0x0E);
-=======
 				/* Trigger reset... */
 				//WritePortB(0x0CF9, 0x04);
->>>>>>> e3c2eaa797dea32005e17da7bbc01aff4b5c3a1f
 			}
 		}
 	}

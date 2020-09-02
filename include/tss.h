@@ -18,35 +18,37 @@
 #include "types.h"
 #include "aos-defs.h"
 
-typedef struct AOS_TSS_Entry
+typedef struct AOS_TSS_Entry TSS_t;
+struct AOS_TSS_Entry
 {
-    UDWORD              PreviousTSS;
-    UDWORD              ESP0;
-    UDWORD              SS0;
-    UDWORD              ESP1;
-    UDWORD              SS1;
-    UDWORD              ESP2;
-    UDWORD              SS2;
-    UDWORD              CR3;
-    UDWORD              EIP;
-    UDWORD              EFLAGS;
-    UDWORD              EAX;
-    UDWORD              ECX;
-    UDWORD              EDX;
-    UDWORD              EBX;
-    UDWORD              ESP;
-    UDWORD              EBP;
-    UDWORD              ESI;
-    UDWORD              EDI;
-    UDWORD              ES;
-    UDWORD              CS;
-    UDWORD              SS;
-    UDWORD              DS;
-    UDWORD              FS;
-    UDWORD              GS;
-    UDWORD              LDTR;
-    UWORD               IOMapBase;
-} TSS_t PACKED;
+    UDWORD              previous_tss;
+    UDWORD              esp0;
+    UDWORD              ss0;
+    UDWORD              esp1;
+    UDWORD              ss1;
+    UDWORD              esp2;
+    UDWORD              ss2;
+    UDWORD              cr3;
+    UDWORD              eip;
+    UDWORD              eflags;
+    UDWORD              eax;
+    UDWORD              ecx;
+    UDWORD              edx;
+    UDWORD              ebx;
+    UDWORD              esp;
+    UDWORD              ebp;
+    UDWORD              esi;
+    UDWORD              edi;
+    UDWORD              es;
+    UDWORD              cs;
+    UDWORD              ss;
+    UDWORD              ds;
+    UDWORD              fs;
+    UDWORD              gs;
+    UDWORD              ldt;
+    UWORD               trap;
+    UWORD               iomap_base;
+} PACKED;
 
 EXTERN VOID (SwitchToUserMode(VOID));
 EXTERN VOID (ReenableInterrupts(VOID));

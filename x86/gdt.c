@@ -26,7 +26,7 @@ static inline VOID GDT_SetLimit(DWORD Index, UDWORD Limit);
 static inline VOID GDT_SetGranularity(DWORD Index, UBYTE Granularity);
 static inline VOID GDT_SetAccess(DWORD Index, UBYTE Access);
 static inline BOOL GDT_EntryUsed(DWORD Index);
-static inline VOID GDT_SetGate(DWORD, UDWORD, UDWORD, UBYTE, UBYTE);
+inline VOID GDT_SetGate(DWORD, UDWORD, UDWORD, UBYTE, UBYTE);
 
 VOID
 GDT_Init(VOID) 
