@@ -16,12 +16,6 @@
 #include "aos-defs.h"
 #include "types.h"
 
-#if defined(__cplusplus)
-typedef const char *string;
-#else
-typedef char *string;
-#endif
-
 // Declare string functions:
 EXTERN char *itoa(int value, char * str, int base);		// Converts integer to string.
 EXTERN int strcmp(string  str1, string str2);

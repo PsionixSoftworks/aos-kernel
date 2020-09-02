@@ -35,6 +35,7 @@
 #define FAILURE								FALSE
 #define SUCCESS								TRUE
 #define AOS_BASE_CNTRL                      0xCE0
+#define kernel_only                        __kernel_only
 #endif
 
 // Define the module naming system for later use:
@@ -66,23 +67,24 @@
 #endif	// !__STANDARD_ATTRIBUTES__
 
 /* Define common types. */
-#define VOID                            void
-#define BOOL                            bool
-#define UBYTE                           uint8_t
-#define UWORD                           uint16_t
-#define UDWORD                          uint32_t
-#define ULONG                           unsigned long
-#define USHORT                          unsigned short
-#define BYTE                            int8_t
-#define WORD                            int16_t
-#define DWORD                           int32_t
-#define LONG                            signed long
-#define SHORT                           signed short
-#define SIZE                            size_t
-#define CHAR                            char
-#define STRING                          char *
-#define FLOAT                           float
-#define DOUBLE                          double
+typedef void                            VOID;
+typedef bool                            BOOL;
+typedef uint8_t                         UBYTE;
+typedef uint16_t                        UWORD;
+typedef uint32_t                        UDWORD;
+typedef unsigned long                   ULONG;
+typedef unsigned short                  USHORT;
+typedef int8_t                          BYTE;
+typedef int16_t                         WORD;
+typedef int32_t                         DWORD;
+typedef signed long                     LONG;
+typedef signed short                    SHORT;
+typedef size_t                          SIZE;
+typedef char                            CHAR;
+typedef string                          STRING;
+typedef float                           FLOAT;
+typedef double                          DOUBLE;
+
 #define STRUCT                          struct
 #define UNION                           union
 

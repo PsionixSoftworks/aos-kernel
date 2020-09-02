@@ -17,7 +17,7 @@
 #include "../../aos-defs.h"
 
 /* Define macros. */
-#define PCI_ENABLE                          0x01
+#define PCI_ENABLE                          (PCI_DRIVER & 0x01)
 #define PCI_DEVICE_ENABLE_IO                (PCI_ENABLE << 0x00)
 #define PCI_DEVICE_ENABLE_MEMORY            (PCI_ENABLE << 0x01)
 #define PCI_DEVICE_ENABLE_MASTER            (PCI_ENABLE << 0x02)

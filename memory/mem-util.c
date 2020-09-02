@@ -46,7 +46,8 @@ MM_Init(UDWORD *kernel_end)
 	MemSet((STRING)HeapBegin, 0, HeapEnd - HeapBegin);
 	PHeapDesc = (UBYTE *)Malloc(MAX_PAGE_ALLOCS);
 
-	TerminalPrintf("Kernel heap begins at %x\n", LastAlloc);
+	INFO("Memory Module is initialized!");
+	TerminalPrintf("Kernel heap begins at 0x%x\n", LastAlloc);
 }
 
 VOID
@@ -142,7 +143,7 @@ Malloc(SIZE Size)
 
 	MemoryUsed += Size + 4 + sizeof(Alloc_t);
 	MemSet((VOID *)((UDWORD)Alloc + sizeof(Alloc_t)), 0, Size);
-	MM_PrintOut();
+	//MM_PrintOut();
 
 	return ((VOID *)((UDWORD)Alloc + sizeof(Alloc_t)));
 }
