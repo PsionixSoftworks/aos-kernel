@@ -30,7 +30,6 @@
 #include "../include/aos-fs.h"
 
 #include "../include/cpu.h"
-#include <cpuid.h>
 
 #if defined(ADAMANTINE_OS_READY)
 #include "../AOS/Include/Adamantine.h"
@@ -56,6 +55,7 @@ KernelRun(VOID)
 	GDT_Init();
 	IDT_Init();
 	MM_Init(&kernel_end);
+
 	PagingInit();
 	if (CPU_CheckIsSupported() == FAILURE)
 		asm("INT $0x12");
@@ -66,7 +66,7 @@ KernelRun(VOID)
 	TerminalPrintln();
 	//TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
 	TerminalPrintf("You may type below:\n");
-	TerminalPrintf(" %s >>> ", AOS_ROOT_DIRNAME);
+	TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
 
 	while (1)
 	{
@@ -76,11 +76,11 @@ KernelRun(VOID)
 			TerminalPrintf(keystr);
 			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ENTER)
 			{
-				TerminalPrintf(" %s >>> ", AOS_ROOT_DIRNAME);
+				TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
 			}
 			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ESCAPE)
 			{
-				WritePortB(0x0CF9, 0x0E);
+				//WritePortB(0x0CF9, 0x0E);
 			}
 		}
 	}
