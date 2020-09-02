@@ -1,5 +1,6 @@
 #include "../include/math/math-util.h"
 #include <stdarg.h>
+//#include <math.h>
 
 /* Defined in "math-util.h" */
 inline int
@@ -35,10 +36,16 @@ sign(double x)
     return (x);
 }
 
+static inline double
+calculate_hypotenuse(double x)
+{
+
+}
+
 inline double
 sin(double x)
 {
-    /* Opposite / Adjacent */
+    /* Opposite / hypotenuse */
 }
 
 inline double

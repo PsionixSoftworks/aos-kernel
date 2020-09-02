@@ -3,8 +3,8 @@
 
 #include "simple-math.h"
 
-#define PI      3.1415926535897932385       // For Trigonometric functions
-#define E       2.7182818284590452354       // For Log e.
+#define PI          3.1415926535897932385       // For Trigonometric functions
+#define E           2.7182818284590452354       // For Log e.
 
 /* Trigonometric math functions */
 EXTERN int abs(int n);
