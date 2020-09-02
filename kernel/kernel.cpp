@@ -30,6 +30,14 @@
 #include "../include/aos-fs.h"
 
 #include "../include/cpu.h"
+<<<<<<< HEAD
+
+#if defined(ADAMANTINE_OS_READY)
+#include "../AOS/Include/Adamantine.h"
+using namespace PsionixSoftworks;
+#endif
+=======
+>>>>>>> e3c2eaa797dea32005e17da7bbc01aff4b5c3a1f
 
 /* Tell the kernel what module and version we are using. */
 MODULE("Kernel", "0.04-4a");
@@ -79,6 +87,7 @@ KernelRun(VOID)
 	GDT_Init();
 	IDT_Init();
 	MM_Init(&kernel_end);
+
 	PagingInit();
 	if (CPU_CheckIsSupported() == FAILURE)
 		asm("INT $0x12");	// 
@@ -105,8 +114,12 @@ KernelRun(VOID)
 			}
 			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ESCAPE)
 			{
+<<<<<<< HEAD
+				//WritePortB(0x0CF9, 0x0E);
+=======
 				/* Trigger reset... */
 				//WritePortB(0x0CF9, 0x04);
+>>>>>>> e3c2eaa797dea32005e17da7bbc01aff4b5c3a1f
 			}
 		}
 	}
