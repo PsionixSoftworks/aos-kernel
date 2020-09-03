@@ -23,7 +23,10 @@
 #include "../include/math/math-util.h"
 #include "../include/string.h"
 #include "../include/io.h"
+#include "../include/task.h"
 #include "../include/tss.h"
+
+#include "../include/device.h"
 
 #include "../include/keyboard.h"
 #include "../include/keys.h"
@@ -70,11 +73,16 @@ static inline __kernel_only string CPU_SupportedNames[] =
 
 EXTERN UDWORD MemoryUsed;
 
+EXTERN void
+_test_user_function(void)
+{
+
+}
+
 EXTERN __kernel_only VOID _TEXT
 KernelRun(VOID)
 {
 	InitAll(KERNEL_MODE_NORMAL);
-	byte p;
 	TerminalPrintf("%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
 	INFO("Starting kernel modules...");
 	GDT_Init();
@@ -83,17 +91,21 @@ KernelRun(VOID)
 
 	PagingInit();
 	if (CPU_CheckIsSupported() == FAILURE)
-		asm("INT $0x12");	// 
+		asm("INT $0x12");
 	CPU_Init();
 
 	KeyboardInit();
-
 	TerminalPrintf("Total Memory Used: %dKB.\n", MemoryUsed);
-
 	TerminalPrintln();
-	TerminalPrintf("Done! Starting %s in user_mode...\n", OS_NAME);
 
-	SwitchToUserMode();
+	TerminalPrintf("Done! Switching %s to user_mode (hopefully)...\n", OS_NAME);
+	TSS_Init();
+
+	//AOS_DeviceInit(0, "Test");
+	//SwitchToUserMode();
+	/* Perform a syscall to TerminalPrintf if successful. */
+
+	/*
 	TerminalPrintf("You may type below:\n");
 	TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
 
@@ -109,9 +121,10 @@ KernelRun(VOID)
 			}
 			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ESCAPE)
 			{
-				/* Trigger reset... */
+				/* Trigger reset... *
 				//WritePortB(0x0CF9, 0x04);
 			}
 		}
 	}
+	*/
 }

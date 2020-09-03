@@ -12,7 +12,7 @@
 
 #include "test.h"
 
-.global test_func
+.globl test_func
 .type test_func @function
 test_func:
     mov $TESTER, %eax

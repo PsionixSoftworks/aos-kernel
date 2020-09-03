@@ -29,6 +29,9 @@
 #define ACCESS_BYTE_3                        0xF2
 #define ACCESS_BYTE_FLAGS                    0xCF
 
+#define GDT_SEGMENT_NULL                     0x00
+
+
 struct GDT_Entry 
 {
    UWORD                LimitLo;                                  // The lower 16 bits of the limit.

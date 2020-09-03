@@ -20,25 +20,27 @@
 
 struct AOS_FileSystem;
 
-typedef struct AOS_Device 
+typedef struct 
+aos_device 
 {
-    UDWORD              DeviceID;
-    BYTE                DeviceStatus;
-    BYTE                (*Read)(BYTE *Buffer, UDWORD Offset, UDWORD Length, VOID *Device);
-    BYTE                (*Write)(BYTE *Buffer, UDWORD Offset, UDWORD Length, VOID *Device);
-    STRING              DeviceName;
-    STRUCT              AOS_FileSystem *FileSystem;
-} Device_t;
+    udword              device_id;
+    byte                device_status;
+    byte                (*Read)(BYTE *Buffer, UDWORD Offset, UDWORD Length, VOID *Device);
+    byte                (*Write)(BYTE *Buffer, UDWORD Offset, UDWORD Length, VOID *Device);
+    string              device_name;
+    struct              AOS_FileSystem *FileSystem;
+} device_t;
 
-enum DeviceType {
+enum 
+DeviceType {
     DEVICE_UNKNOWN,
     DEVICE_CHAR,
     DEVICE_BLOCK,
 };
 
-EXTERN VOID (AOS_DeviceInit(UDWORD, STRING));
-EXTERN VOID (AOS_DeviceAdd(STRUCT AOS_Device *));
-EXTERN VOID (AOS_DeviceFree(VOID));
-EXTERN STRUCT AOS_Device AOS_DeviceGet(UDWORD);
+EXTERN VOID AOS_DeviceInit(UDWORD, STRING);
+EXTERN VOID AOS_DeviceAdd(struct aos_device *);
+EXTERN VOID AOS_DeviceFree(VOID);
+EXTERN struct aos_device AOS_DeviceGet(UDWORD);
 
 #endif

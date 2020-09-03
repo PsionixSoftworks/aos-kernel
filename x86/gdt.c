@@ -11,14 +11,17 @@
  */
 
 #include "../include/x86/gdt.h"
+#include "../include/tss.h"
 #include "../include/terminal.h"
 #include "../include/mem-util.h"
 
 MODULE("GlobalDescriptorTable", "0.01a");
 
 EXTERN VOID GDT_Flush(UDWORD);
+EXTERN VOID TSS_Flush(VOID);
+EXTERN TSS_t tss_entry;
 
-GDT_Entry_t GDT_Entries[5];
+GDT_Entry_t GDT_Entries[6];
 PGDT_t PGDT;
 
 static inline VOID GDT_SetBase(DWORD Index, UDWORD Base);
@@ -26,7 +29,8 @@ static inline VOID GDT_SetLimit(DWORD Index, UDWORD Limit);
 static inline VOID GDT_SetGranularity(DWORD Index, UBYTE Granularity);
 static inline VOID GDT_SetAccess(DWORD Index, UBYTE Access);
 static inline BOOL GDT_EntryUsed(DWORD Index);
-inline VOID GDT_SetGate(DWORD, UDWORD, UDWORD, UBYTE, UBYTE);
+static inline VOID GDT_SetGate(DWORD, UDWORD, UDWORD, UBYTE, UBYTE);
+static inline VOID TSS_Write(uint32_t num);
 
 VOID
 GDT_Init(VOID) 
@@ -43,7 +47,10 @@ GDT_Init(VOID)
 	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_1, ACCESS_BYTE_FLAGS);
 	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_2, ACCESS_BYTE_FLAGS);
 	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_3, ACCESS_BYTE_FLAGS);
+	TSS_Write(i++);
+
 	GDT_Flush((UDWORD)&PGDT);
+	//TSS_Flush();
 	
 	INFO("GDT is initialized!");
 }
@@ -94,4 +101,18 @@ static inline BOOL
 GDT_EntryUsed(DWORD Index)
 {
 	return (FALSE);
+}
+
+static inline VOID
+TSS_Write(uint32_t num)
+{
+	uint32_t base = (uint32_t)&tss_entry;
+	uint32_t limit = sizeof(tss_entry);
+
+	GDT_SetGate(num, base, limit, 0xE9, 0x00);
+
+	tss_entry.ss0 = 0x10;
+	tss_entry.esp0 = 0x00;
+	tss_entry.cs = 0x0B;
+	tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs = 0x13;
 }

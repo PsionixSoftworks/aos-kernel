@@ -14,7 +14,8 @@
 #include "../include/tss.h"
 #include "../include/mem-util.h"
 //#include "../include/x86/gdt.h"
-static TSS_t tss_entry;
+
+TSS_t tss_entry;
 
 #define REPLACE_KERNEL_DATA_SEGMENT 0x18
 #define REPLACE_KERNEL_STACK_ADDR   0x20
@@ -22,21 +23,32 @@ static TSS_t tss_entry;
 /* 0x23 = 35: User Mode Data Selector. */
 /* 0x1B = 27: CS Selector Value. */
 EXTERN udword _user_mode(void);
-EXTERN VOID GDT_SetGate(DWORD, UDWORD, UDWORD, UBYTE, UBYTE);
+
+static char irq_stack[4096];
+
+VOID
+TSS_Init(VOID)
+{
+	MemSet(&tss_entry, 0, sizeof(struct AOS_TSS_Entry));
+	tss_entry.ss0 = 0x10;
+	tss_entry.iomap_base = 0xDFFF;
+	MemSet(irq_stack, 0, sizeof(irq_stack));
+}
 
 VOID
 SwitchToUserMode(VOID)
 {
-    _user_mode();
+    jump_usermode();
 }
 
+/*
 void
 write_tss(int32_t num, uint16_t ss0, uint32_t esp0)
 {
 	uint32_t base = (uint32_t)&tss_entry;
 	uint32_t limit = base + sizeof(tss_entry);
 
-	GDT_SetGate(num, base, limit, 0xE9, 0x00);
+	//GDT_SetGate(num, base, limit, 0xE9, 0x00);
 
 	MemSet(&tss_entry, 0, sizeof(tss_entry));
 
@@ -52,3 +64,4 @@ set_kernel_stack(uint32_t stack)
 {
 	tss_entry.esp0 = stack;
 }
+*/

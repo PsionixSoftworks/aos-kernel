@@ -11,14 +11,14 @@
  */
 
 .SECTION .init
-.GLOBAL _init
+.GLOBL _init
 .TYPE _init, @function
 _init:
     PUSH %EBP
     MOVL %ESP, %EBP
 
 .SECTION .fini
-.GLOBAL _fini
+.GLOBL _fini
 .TYPE _fini, @function
 _fini:
     PUSH %EBP

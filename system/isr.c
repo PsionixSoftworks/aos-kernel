@@ -79,7 +79,7 @@ IRQ_Handler(Registers_t Register)
 	{
 		WritePortB(0xA0, 0x20);
 	}
-	WritePortB(0x20, 0x20);
+	WritePortB(0x20, 0x20);	/* EOI */
 	
 	if (InterruptHandlers[Register.INT_NO] != 0) 
 	{

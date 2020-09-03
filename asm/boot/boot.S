@@ -19,10 +19,19 @@
 .LONG MAGIC
 .LONG FLAGS
 .LONG CHECKSUM
+.LONG 0
+.LONG 0
+.LONG 0
+.LONG 0
+.LONG 0
+.LONG 0
+.LONG 0
+.LONG 0
+.LONG 0
 
 /* Declare the .text section for the entry point and other functions. */
 .SECTION .text
-.GLOBAL _start
+.GLOBL _start
 .TYPE _start @function
 _start:
     MOV $stack_top, %esp
@@ -40,11 +49,12 @@ _start:
 
 /* Place the Multiboot stuff in read-only data because it'll never change. */
 .SECTION .rodata
-.SET ALIGN,      (1 << 0)
-.SET MEMINFO,    (1 << 1)
-.SET FLAGS,      (ALIGN | MEMINFO)
-.SET MAGIC,      (0x1BADB002)
-.SET CHECKSUM,   -(MAGIC + FLAGS)
+.SET ALIGN,     (1 << 0)
+.SET MEMINFO,   (1 << 1)
+.SET GFX_EN,    (1 << 2)
+.SET FLAGS,     (ALIGN | MEMINFO)
+.SET MAGIC,     (0x1BADB002)
+.SET CHECKSUM,  -(MAGIC + FLAGS)
 
 /* Declare the stack pointer info. */
 .SECTION .bss

@@ -84,52 +84,70 @@ EXTERN FaultHandler ; No longer used??
 ; and finally restores the stack frame.
 EXTERN ISR_Handler  ; In isr.c
 ISR_CommonStub:
-    pusha                    ; Pushes edi,esi,ebp,esp,ebx,edx,ecx,eax
+    PUSHA                    ; Pushes edi,esi,ebp,esp,ebx,edx,ecx,eax
 
-    mov ax, ds               ; Lower 16-bits of eax = ds.
-    push eax                 ; save the data segment descriptor
+    MOV AX, DS               ; Lower 16-bits of eax = ds.
+    PUSH EAX                 ; save the data segment descriptor
 
-    mov ax, 0x10  ; load the kernel data segment descriptor
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
+    MOV AX, 0x10  ; load the kernel data segment descriptor
+    MOV DS, AX
+    MOV ES, AX
+    MOV FS, AX
+    MOV GS, AX
 
-    call ISR_Handler
+    CALL ISR_Handler
 
-    pop ebx        ; reload the original data segment descriptor
-    mov ds, bx
-    mov es, bx
-    mov fs, bx
-    mov gs, bx
+    POP EBX        ; reload the original data segment descriptor
+    MOV DS, BX
+    MOV ES, BX
+    MOV FS, BX
+    MOV GS, BX
 
-    popa                     ; Pops edi,esi,ebp...
-    add esp, 8     ; Cleans up the pushed error code and pushed ISR number
-    sti
-    iret
+    POPA                     ; Pops edi,esi,ebp...
+    ADD ESP, 8     ; Cleans up the pushed error code and pushed ISR number
+    STI
+    IRET
 
 [EXTERN IRQ_Handler]
 IRQ_CommonStub:
-	PUSHA
+	  PUSHA
 	
-	MOV AX, DS
-	PUSH EAX
+	  MOV AX, DS
+	  PUSH EAX
 	
-	MOV AX, 0x10
-	MOV DS, AX
-	MOV ES, AX
-	MOV FS, AX
-	MOV GS, AX
+	  MOV AX, 0x10
+	  MOV DS, AX
+	  MOV ES, AX
+	  MOV FS, AX
+	  MOV GS, AX
 	
-	CALL IRQ_Handler
+	  CALL IRQ_Handler
 	
-	POP EBX
-	MOV DS, BX
-	MOV ES, BX
-	MOV FS, BX
-	MOV GS, BX
+	  POP EBX
+	  MOV DS, BX
+	  MOV ES, BX
+	  MOV FS, BX
+	  MOV GS, BX
 	
-	POPA
-	ADD ESP, 8
-	STI
-	IRET
+	  POPA
+	  ADD ESP, 8
+	  STI
+	  IRET
+
+[GLOBAL jump_usermode]
+EXTERN _test_user_function
+jump_usermode:
+    MOV AX, 0X23
+    MOV DS, AX
+    MOV ES, AX
+    MOV FS, AX
+    MOV GS, AX
+
+    MOV EAX, ESP
+    PUSH 0X23
+    PUSH EAX
+    PUSHF
+    PUSH 0x1B
+    PUSH _test_user_function
+    IRET
+

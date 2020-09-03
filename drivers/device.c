@@ -18,31 +18,29 @@
 #include "../include/io.h"
 #include "../include/terminal.h"
 
-MODULE("Device", "0.01a");
+MODULE("device", "0.01a");
 
-typedef struct AOS_Device Device_t;
-static Device_t *Device = 0;
+typedef struct aos_device device_t;
+static device_t *device = 0;
 
 VOID 
-AOS_DeviceInit(UDWORD DeviceID, STRING DeviceName) 
+AOS_DeviceInit(UDWORD device_id, STRING device_name)
 {
-    SIZE Size = 64 * sizeof(Device_t);
+    SIZE Size = 64 * sizeof(device_t);
 
-    Device = (Device_t *)Malloc(Size);
-    MemSet(Device, 0, Size);
+    device = (device_t *)Malloc(Size);
+    MemSet(device, 0, Size);
 
-    Device->DeviceID        = DeviceID;
-    Device->DeviceName      = DeviceName;
-    Device->DeviceStatus    = 1;
+    device->device_id       = device_id;
+    device->device_name     = device_name;
+    device->device_status   = 1;
 
-    INFO("Initialization of device complete: ");
-    TerminalPrint(DeviceName);
-    TerminalPrintln();
+    INFO("Initialization of device complete: %s.\n", device_name);
     return;
 }
 
 VOID
-AOS_DeviceFree(VOID) 
+AOS_deviceFree(VOID) 
 {
-    Free(Device);
+    Free(device);
 }

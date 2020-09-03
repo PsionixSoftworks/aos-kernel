@@ -1,16 +1,16 @@
 [GLOBAL cpuid_supported]
 cpuid_supported:
-    pushfd
-    pushfd
-    xor dword [esp], 0x00200000
-    popfd
-    pushfd
-    pop eax
-    xor eax, [esp]
-    popfd
-    and eax, 0x00200000
-    ret
+    PUSHFD
+    PUSHFD
+    XOR DWORD [ESP], 0x00200000
+    POPFD
+    PUSHFD
+    POP EAX
+    XOR EAX, [esp]
+    POPFD
+    AND EAX, 0x00200000
+    RET
 [GLOBAL cpuid]
 cpuid:
-    mov eax, 0x0
-    cpuid
+    MOV EAX, 0x0
+    CPUID

@@ -73,7 +73,8 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(X86_PATH)/idt.c				\
 								$(X86_PATH)/tss.c				\
 								$(X86_PATH)/syscall.c			\
-								$(MATH_PATH)/math-util.c		
+								$(MATH_PATH)/math-util.c		\
+								task/task.c						
 
 # Put all input files here separated by a '\':
 OUTPUT_FILES 				:= 	boot.new.o		\
@@ -112,7 +113,8 @@ OUTPUT_FILES 				:= 	boot.new.o		\
 								idt.o			\
 								tss.o			\
 								syscall.o		\
-								math-util.o
+								math-util.o		\
+								task.o			
 								#AOS/Adamantine.o	\
 								#AOS/Registry.o
 
@@ -166,6 +168,7 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
 	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
+	$(COMPILER_C) task/task.c -o task.o $(C_FLAGS)
 	# $(COMPILER_CPP) AOS/Adamantine/Adamantine.cpp -o Adamantine.o $(CPP_FLAGS)
 	# $(COMPILER_CPP) AOS/Adamantine/Registry.cpp -o Registry.o $(CPP_FLAGS)
  

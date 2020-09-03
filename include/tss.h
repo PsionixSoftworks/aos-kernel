@@ -17,41 +17,36 @@
 
 #include "types.h"
 #include "aos-defs.h"
+#include "x86/gdt.h"
 
 typedef struct AOS_TSS_Entry TSS_t;
 struct AOS_TSS_Entry
 {
-    UDWORD              previous_tss;
-    UDWORD              esp0;
-    UDWORD              ss0;
-    UDWORD              esp1;
-    UDWORD              ss1;
-    UDWORD              esp2;
-    UDWORD              ss2;
-    UDWORD              cr3;
-    UDWORD              eip;
-    UDWORD              eflags;
-    UDWORD              eax;
-    UDWORD              ecx;
-    UDWORD              edx;
-    UDWORD              ebx;
-    UDWORD              esp;
-    UDWORD              ebp;
-    UDWORD              esi;
-    UDWORD              edi;
-    UDWORD              es;
-    UDWORD              cs;
-    UDWORD              ss;
-    UDWORD              ds;
-    UDWORD              fs;
-    UDWORD              gs;
-    UDWORD              ldt;
-    UWORD               trap;
-    UWORD               iomap_base;
+    uint32_t            previous_tss:16;
+    uint32_t            esp0;
+    uint32_t            ss0:16;
+    uint32_t            esp1;
+    uint32_t            ss1:16;
+    uint32_t            esp2;
+    uint32_t            ss2:16;
+    uint32_t            cr3;
+    uint32_t            eip;
+    uint32_t            eflags;
+    uint32_t            eax, ecx, edx, ebx;
+    uint32_t            esp, ebp, esi, edi;
+    uint32_t            es:16;
+    uint32_t            cs:16;
+    uint32_t            ss:16;
+    uint32_t            ds:16;
+    uint32_t            fs:16;
+    uint32_t            gs:16;
+    uint32_t            ldt:16;
+    uint16_t            trap, iomap_base;
 } PACKED;
 
-EXTERN VOID (SwitchToUserMode(VOID));
-EXTERN VOID (ReenableInterrupts(VOID));
-EXTERN VOID (SetKernelStack(UDWORD Stack));
+EXTERN VOID TSS_Init(VOID);
+EXTERN VOID SwitchToUserMode(VOID);
+EXTERN VOID ReenableInterrupts(VOID);
+EXTERN VOID SetKernelStack(UDWORD Stack);
 
 #endif
