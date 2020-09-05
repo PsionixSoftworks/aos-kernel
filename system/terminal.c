@@ -173,19 +173,30 @@ system_logf(ubyte severity, string restrict format, ...)
 	va_start(ap, format);
 	if (severity == INFORMATION)
 	{
+		system_log_set_fore_col(SYSTEM_COLOR_LT_GREEN);
 		terminal_print("[INFO]: ");
+		printf((const string)format, ap);
+		system_log_reset_fore_col();
 	}
-	if (severity == WARNING)
+	else if (severity == WARNING)
 	{
+		system_log_set_fore_col(SYSTEM_COLOR_YELLOW);
 		terminal_print("[WARNING]: ");
+		printf((const string)format, ap);
+		system_log_reset_fore_col();
 	}
-	if (severity == ERROR)
+	else if (severity == ERROR)
 	{
+		system_log_set_fore_col(SYSTEM_COLOR_RED);
 		terminal_printf("[ERROR]: ");
 		printf((const string)format, ap);
+		system_log_reset_fore_col();
 		cpu_halt();
 	}
-	printf((const string)format, ap);
+	else
+	{
+		printf((const string)format, ap);
+	}
 
 	return (TRUE);
 }

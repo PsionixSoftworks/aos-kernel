@@ -42,6 +42,7 @@ keyboard_init(void)
 	register_interrupt_handler(33, (isr_t)&Keyboard_irq);
 	keyboard.is_initialized = TRUE;
 	//_INFO("keyboard initialized!");
+	system_logf(INFORMATION, "Paging is initialized!\n");
 }
 
 /* free the keyboard. */

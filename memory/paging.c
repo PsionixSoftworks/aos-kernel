@@ -22,7 +22,7 @@ static udword nFrames;
 static page_directory_t *KernelDirectory;
 static page_directory_t *CurrentDirectory;
 
-EXTERN udword PlacementAddress;
+EXTERN udword placement_address;
 
 #define INDEX_FROM_BIT(a)       (a / (8 * 4))
 #define OFFSET_FROM_BIT(a)      (a % (8 * 4))
@@ -125,7 +125,7 @@ paging_init(void)
     CurrentDirectory = KernelDirectory;
 
     udword i = 0;
-    while (i < PlacementAddress)
+    while (i < placement_address)
     {
         FrameAlloc(paging_get_page(i, 1, KernelDirectory), 0, 0);
         i += 0x1000;
@@ -134,6 +134,7 @@ paging_init(void)
     paging_switch_directory(KernelDirectory);
 
     //_INFO("Paging is initialized!");
+    system_logf(INFORMATION, "Paging is initialized!\n");
 }
 
 void

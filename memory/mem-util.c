@@ -24,57 +24,59 @@ MODULE("Memory-Util", "0.01a");
 /* Define mutexes here. */
 DEFINE_mutex(m_memcpy);
 
-udword LastAlloc 	= 0;
-udword HeapEnd 		= 0;
-udword HeapBegin 	= 0;
-udword PHeapBegin 	= 0;
-udword PHeapEnd 	= 0;
-udword memoryUsed 	= 0;
-ubyte *PHeapDesc 	= 0;
+udword last_alloc 	= 0;
+udword heap_end		= 0;
+udword heap_begin 	= 0;
+udword pheap_begin 	= 0;
+udword pheap_end 	= 0;
+udword memory_used 	= 0;
+ubyte *pheap_desc 	= 0;
 
 EXTERN udword kernel_end;
-udword PlacementAddress = (udword)&kernel_end;
+udword placement_address = (udword)&kernel_end;
 
 void 
 mm_init(udword *kernel_end) 
 {
-	LastAlloc = kernel_end + 0x1000;
-	HeapBegin = LastAlloc;
-	PHeapEnd = 0x400000;
-	PHeapBegin = PHeapEnd - (MAX_PAGE_ALLOCS * 4096);
-	HeapEnd = PHeapBegin;
-	memset((string)HeapBegin, 0, HeapEnd - HeapBegin);
-	PHeapDesc = (ubyte *)malloc(MAX_PAGE_ALLOCS);
+	last_alloc = kernel_end + 0x1000;
+	heap_begin = last_alloc;
+	pheap_end = 0x400000;
+	pheap_begin = pheap_end - (MAX_PAGE_ALLOCS * 4096);
+	heap_end = pheap_begin;
+	memset((string)heap_begin, 0, heap_end - heap_begin);
+	pheap_desc = (ubyte *)malloc(MAX_PAGE_ALLOCS);
 
-	_INFO("memory Module is initialized!");
-	terminal_printf("Kernel heap begins at 0x%x\n", LastAlloc);
+	//_INFO("memory Module is initialized!");
+	//terminal_printf("Kernel heap begins at 0x%x\n", last_alloc);
+	system_logf(INFORMATION, "IDT is initialized!\n");
+	system_logf(INFORMATION, "Kenel Heap starts at 0x%x.\n", last_alloc);
 }
 
 void
 MM_PrintOut(void) 
 {
-	terminal_printf("memory Used: %x bytes allocated.\n", memoryUsed);
+	terminal_printf("Memory Used: %x bytes allocated.\n", memory_used);
 }
 
 void 
 free(void *mem) 
 {
 	Alloc_t *Alloc = (mem - sizeof(Alloc_t));
-	memoryUsed -= Alloc->size + sizeof(Alloc_t);
+	memory_used -= Alloc->size + sizeof(Alloc_t);
 	Alloc->status = 0;
 }
 
 void 
 pfree(void *mem) 
 {
-	if ((mem < PHeapBegin) || (mem > PHeapEnd)) 
+	if ((mem < pheap_begin) || (mem > pheap_end)) 
 		return;
 
 	udword ad = (udword)mem;
-	ad -= PHeapBegin;
+	ad -= pheap_begin;
 	ad /= 4096;
 
-	PHeapDesc[ad] = 0;
+	pheap_desc[ad] = 0;
 
 	return;
 }
@@ -84,12 +86,12 @@ pmalloc(size_t size)
 {
 	for (size_t i = 0; i < MAX_PAGE_ALLOCS; i++) 
 	{
-		if (PHeapDesc[i]) 
+		if (pheap_desc[i]) 
 			continue;
-		PHeapDesc[i] = 1;
-		terminal_printf("PAllocated from %X to %X.\n", PHeapBegin + i * 4096, PHeapBegin + (i + 1) * 4096);
+		pheap_desc[i] = 1;
+		terminal_printf("PAllocated from %X to %X.\n", pheap_begin + i * 4096, pheap_begin + (i + 1) * 4096);
 
-		return ((string)(PHeapBegin + i * 4096));
+		return ((string)(pheap_begin + i * 4096));
 	}
 	terminal_print("pmalloc: FATAL: failure!\n");
 	return (0);
@@ -99,8 +101,8 @@ void *
 malloc(size_t size) 
 {
 	if (!size) return;
-	ubyte *mem = (ubyte *)HeapBegin;
-	while ((udword)mem < LastAlloc) 
+	ubyte *mem = (ubyte *)heap_begin;
+	while ((udword)mem < last_alloc) 
 	{
 		Alloc_t *a = (Alloc_t *)mem;
 		if (!a->size)
@@ -120,7 +122,7 @@ malloc(size_t size)
 			terminal_printf("RE:Allocated %d bytes from %d to %d...\n", size, mem + sizeof(Alloc_t), mem + sizeof(Alloc_t) + size);
 
 			memset(mem + sizeof(Alloc_t), 0, size);
-			memoryUsed += size + sizeof(Alloc_t);
+			memory_used += size + sizeof(Alloc_t);
 			return ((void *)(mem + sizeof(Alloc_t)));
 		}
 		mem += a->size;
@@ -129,19 +131,19 @@ malloc(size_t size)
 	}
 
 	nalloc:;
-	if (LastAlloc + size + sizeof(Alloc_t) >= HeapEnd) 
+	if (last_alloc + size + sizeof(Alloc_t) >= heap_end) 
 	{
 		_PANIC("Cannot allocate. Out of memory...");
 	}
-	Alloc_t *Alloc = (Alloc_t *)LastAlloc;
+	Alloc_t *Alloc = (Alloc_t *)last_alloc;
 	Alloc->status = 1;
 	Alloc->size = size;
 
-	LastAlloc += size;
-	LastAlloc += sizeof(Alloc_t);
-	LastAlloc += 4;
+	last_alloc += size;
+	last_alloc += sizeof(Alloc_t);
+	last_alloc += 4;
 
-	memoryUsed += size + 4 + sizeof(Alloc_t);
+	memory_used += size + 4 + sizeof(Alloc_t);
 	memset((void *)((udword)Alloc + sizeof(Alloc_t)), 0, size);
 	//MM_PrintOut();
 
@@ -197,17 +199,17 @@ memset(void *pointer, dword value, size_t Number)
 udword
 kmalloc_int(udword size, udword align, udword *physical_address)
 {
-	if ((align == 1) && (PlacementAddress & 0xFFFFF000))
+	if ((align == 1) && (placement_address & 0xFFFFF000))
 	{
-		PlacementAddress &= 0xFFFFF000;
-		PlacementAddress += 0x1000;
+		placement_address &= 0xFFFFF000;
+		placement_address += 0x1000;
 	}
 	if (physical_address)
 	{
-		*physical_address = PlacementAddress;
+		*physical_address = placement_address;
 	}
-	udword Temp = PlacementAddress;
-	PlacementAddress += size;
+	udword Temp = placement_address;
+	placement_address += size;
 	return (Temp);
 }
 

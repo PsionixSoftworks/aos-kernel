@@ -13,30 +13,6 @@
  *
  */
 
-/* Include the initializer rather than all of the modules. */
-/*
-#include "../include/kernel.h"
-#include "../include/x86/gdt.h"
-#include "../include/x86/idt.h"
-#include "../include/paging.h"
-#include "../include/mem-util.h"
-#include "../include/math/math-util.h"
-#include "../include/string.h"
-#include "../include/io.h"
-#include "../include/task.h"
-#include "../include/tss.h"
-#include "../include/pit.h"
-
-#include "../include/device.h"
-
-#include "../include/keyboard.h"
-#include "../include/keys.h"
-
-#include "../include/aos-fs.h"
-
-#include "../include/cpu.h"
-*/
-
 #define __KERNEL__
 
 #include "../include/aos-core.h"
@@ -76,64 +52,71 @@ static inline __kernel_string cpu_supported_names[] =
 	
 };
 
-EXTERN __kernel_udword memoryUsed;
+EXTERN __kernel_udword memory_used;
+EXTERN __kernel_udword cpuid_get_property(__kernel_ubyte);
 
+static bool use_startup_password = FALSE;	// Enable/disable logging into system before startup.
+static string user_name;					// When enabled, the username of the user.
+static string user_pass;					// When enabled, the password of the user (as an encrypted hash).
+
+/* Used when switching to user mode. */
 EXTERN __kernel_void
 _test_user_function(void)
 {
 	uint32_t a = 100;
 }
 
-system_t system;
+static inline void
+gather_user_info(void)
+{
+	system_logf(NONE, "Username: ");
+	system_logf(NONE, "Password: ");
+}
 
+/* Run the kernel module */
 EXTERN __kernel_void _TEXT
 kernel_run(__kernel_void)
 {
 	system_log_begin();
-	system_logf(NONE, "Testing%d...\n", 123);
-	system_log_end();
-	/*init_all(KERNEL_MODE_NORMAL);
-	terminal_printf("%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
-	INFO("Starting kernel modules...");
+
+	init_all(KERNEL_MODE_NORMAL);
+	system_logf(NONE, "%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
 	gdt_init();
 	idt_init();
 	mm_init(&kernel_end);
 
 	paging_init();
-	if (cpu_check_is_supported() == FAILURE)
-		asm("INT $0x12");
+	cpu_check_is_supported();
 	cpu_init();
 
 	keyboard_init();
-	terminal_printf("Total memory Used: %dKB.\n", memoryUsed);
-	terminal_println();
+	system_logf(INFORMATION, "Total memory Used: %dKB.\n\n", memory_used);
 
-	terminal_printf("Done! Switching %s to user_mode (hopefully)...\n", OS_NAME);
-	
-	//tss_init();
-	tss_user_mode_switch();
-	/* Perform a syscall to terminal_printf if successful. */
+	system_log_set_fore_col(SYSTEM_COLOR_LT_BLUE);
+	system_logf(NONE, "You may type below:\n");
+	system_logf(NONE, "~%s >>> ", AOS_ROOT_DIRNAME);
+	system_log_reset_fore_col();
 
-	/*
-	terminal_printf("You may type below:\n");
-	terminal_printf("~%s >>> ", AOS_ROOT_DIRNAME);
-
+	system_log_set_fore_col(SYSTEM_COLOR_YELLOW);
 	while (1)
 	{
+		if (use_startup_password)
+		{
+			gather_user_info();
+		}
+
 		string keystr = keyboard_get_key();
 		if (keystr > KEYBOARD_KEY_DOWN_NONE)
 		{
+			system_log_set_fore_col(SYSTEM_COLOR_YELLOW);
 			terminal_printf(keystr);
 			if (keyboard_get_key_last() == KEYBOARD_KEY_DOWN_ENTER)
 			{
-				terminal_printf("~%s >>> ", AOS_ROOT_DIRNAME);
-			}
-			if (keyboard_get_key_last() == KEYBOARD_KEY_DOWN_ESCAPE)
-			{
-				/* Trigger reset... *
-				//write_portb(0x0CF9, 0x04);
+				system_log_set_fore_col(SYSTEM_COLOR_LT_BLUE);
+				system_logf(NONE, "~%s >>> ", AOS_ROOT_DIRNAME);
 			}
 		}
 	}
-	*/
+	system_log_reset_fore_col();
+	system_log_end();
 }

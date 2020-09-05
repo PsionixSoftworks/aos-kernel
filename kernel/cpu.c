@@ -46,8 +46,10 @@ cpu_init(void)
 	bool is_supported = (cpuid_supported() > 0);
 	if (!is_supported)
 		return;
-	_INFO("CPU is initialized!");
-	terminal_printf("CPU Manufacturer: %s.\n", cpu_vendor_string());
+	//_INFO("CPU is initialized!");
+	//terminal_printf("CPU Manufacturer: %s.\n", cpu_vendor_string());
+	system_logf(INFORMATION, "CPU is initialized!\n");
+	system_logf(INFORMATION, "Manufacturer: [%s]\n", cpu_vendor_string());
 }
 
 inline void
@@ -102,8 +104,11 @@ cpu_vendor_string(void)
 	return (Str);
 }
 
-inline udword
+inline bool
 cpu_check_is_supported(void)
 {
-	return (cpuid_supported());
+	bool result = cpuid_supported();
+	if (result == FAILURE)
+		system_logf(ERROR, "CPUID is not supported on this machine.\n");
+	return (result);
 }

@@ -54,7 +54,8 @@ gdt_init(void)
 	gdt_flush((udword)&pgdt);
 	tss_flush();
 	
-	_INFO("GDT is initialized!");
+	//_INFO("GDT is initialized!");
+	system_logf(INFORMATION, "GDT is initialized!\n");
 }
 
 static inline void
