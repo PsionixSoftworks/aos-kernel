@@ -10,14 +10,16 @@
  *
  */
 
+#define __KERNEL__
+
 #include "../include/kernel.h"
 #include "../include/terminal.h"
 
 MODULE("Main", "0.01a");
 
-VOID _TEXT 
-KMain(VOID) 
+__kernel_void _TEXT 
+kernel_sys_entry(__kernel_void)
 {
-	KernelRun();
+	kernel_run();
 	return;
 }

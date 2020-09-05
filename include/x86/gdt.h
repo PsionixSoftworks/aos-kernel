@@ -28,28 +28,29 @@
 #define ACCESS_BYTE_2                        0xFA
 #define ACCESS_BYTE_3                        0xF2
 #define ACCESS_BYTE_FLAGS                    0xCF
-
 #define GDT_SEGMENT_NULL                     0x00
 
+typedef struct gdt_entry gdt_entry_t;
+typedef struct pgdt PGDT_t;
 
-struct GDT_Entry 
+struct
+gdt_entry
 {
-   UWORD                LimitLo;                                  // The lower 16 bits of the limit.
-   UWORD                BaseLo;                                   // The lower 16 bits of the base.
-   BYTE                 BaseMiddle;                               // The next 8 bits of the base.
-   BYTE                 Access;                                   // Access flags, determine what ring this segment can be used in.
-   BYTE                 Granularity;
-   BYTE                 BaseHi;                                   // The last 8 bits of the base.
+   uword                limit_lo;                                  // The lower 16 bits of the limit.
+   uword                base_lo;                                   // The lower 16 bits of the base.
+   byte                 base_middle;                               // The next 8 bits of the base.
+   byte                 access;                                   // Access flags, determine what ring this segment can be used in.
+   byte                 granularity;
+   byte                 base_hi;                                   // The last 8 bits of the base.
 } PACKED;
-typedef struct GDT_Entry GDT_Entry_t;
 
-struct PGDT 
+struct
+pgdt
 {
-   UWORD Limit;                                                   // The upper 16 bits of all selector limits.
-   UDWORD Base;                                                   // The address of the first gdt_entry_t struct.
+   uword limit;                                                   // The upper 16 bits of all selector limits.
+   udword base;                                                   // The address of the first gdt_entry_t struct.
 } PACKED;
-typedef struct PGDT PGDT_t;
 
-EXTERN   VOID GDT_Init(VOID);
+EXTERN   void gdt_init(void);
 
 #endif	                                                         // !ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE

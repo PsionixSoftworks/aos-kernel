@@ -18,11 +18,4 @@
 
 #define BUS_ENABLE                          0x1C0000007FUL
 
-typedef struct AOS_BusDriver
-{
-    UDWORD              BaseAddr;
-} PACKED BusDriver_t, *PBusDriver_t;
-
-EXTERN  SET_VOID(EnableBusDriver(VOID));
-
 #endif

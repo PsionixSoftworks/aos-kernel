@@ -8,32 +8,32 @@
 #include "types.h"
 #include "isr.h"
 
-typedef struct Page
+typedef struct page
 {
-    UDWORD Present  : 1;
-    UDWORD RW       : 1;
-    UDWORD User     : 1;
-    UDWORD Accessed : 1;
-    UDWORD Dirty    : 1;
-    UDWORD Unused   : 7;
-    UDWORD Frame    : 20;
-} Page_t;
+    udword present  : 1;
+    udword rw       : 1;
+    udword user     : 1;
+    udword access : 1;
+    udword dirty    : 1;
+    udword unused   : 7;
+    udword frame    : 20;
+} page_t;
 
-typedef struct PageTable
+typedef struct page_table
 {
-    Page_t Pages[MAX_PAGE_TABLES];
-} PageTable_t;
+    page_t pages[MAX_PAGE_TABLES];
+} page_table_t;
 
-typedef struct PageDirectory
+typedef struct page_directory
 {
-    PageTable_t *Tables[MAX_PAGE_TABLES];
-    UDWORD TablesPhysical[MAX_PAGE_TABLES];
-    UDWORD PhysicalAddress;
-} PageDirectory_t;
+    page_table_t *tables[MAX_PAGE_TABLES];
+    udword tables_physical[MAX_PAGE_TABLES];
+    udword physical_address;
+} page_directory_t;
 
-EXTERN VOID PagingInit(VOID);
-EXTERN VOID SwitchPageDirectory(PageDirectory_t *NewPage);
-EXTERN Page_t *GetPage(UDWORD Address, int Make, PageDirectory_t *Directory);
-EXTERN VOID PageFault(Registers_t Register);
+EXTERN void paging_init(void);
+EXTERN void paging_switch_directory(page_directory_t *new_page);
+EXTERN page_t *paging_get_page(udword address, udword make, page_directory_t *directory);
+EXTERN void paging_get_fault(registers_t registers);
 
 #endif

@@ -16,11 +16,4 @@
 #include "../aos-defs.h"
 #include "../types.h"
 
-struct CentrixBase
-{
-    UWORD               Start;
-    UWORD               End;
-    UDWORD              *Data;
-};
-
 #endif

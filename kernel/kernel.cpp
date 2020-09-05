@@ -14,8 +14,8 @@
  */
 
 /* Include the initializer rather than all of the modules. */
+/*
 #include "../include/kernel.h"
-#include "../include/init.h"
 #include "../include/x86/gdt.h"
 #include "../include/x86/idt.h"
 #include "../include/paging.h"
@@ -25,6 +25,7 @@
 #include "../include/io.h"
 #include "../include/task.h"
 #include "../include/tss.h"
+#include "../include/pit.h"
 
 #include "../include/device.h"
 
@@ -34,6 +35,11 @@
 #include "../include/aos-fs.h"
 
 #include "../include/cpu.h"
+*/
+
+#define __KERNEL__
+
+#include "../include/aos-core.h"
 
 /* Tell the kernel what module and version we are using. */
 MODULE("Kernel", "0.04-4a");
@@ -46,10 +52,9 @@ MODULE("Kernel", "0.04-4a");
 using namespace PsionixSoftworks;
 #endif
 
-EXTERN UDWORD kernel_end;
-EXTERN VOID KMain(VOID);
+EXTERN __kernel_udword kernel_end;
 
-static inline __kernel_only string CPU_SupportedNames[] = 
+static inline __kernel_string cpu_supported_names[] =
 {
     /* Intel */
     "Pentium Pro",
@@ -68,61 +73,65 @@ static inline __kernel_only string CPU_SupportedNames[] =
 	"Core i7",
 
     /* AMD */
-
+	
 };
 
-EXTERN UDWORD MemoryUsed;
+EXTERN __kernel_udword memoryUsed;
 
-EXTERN void
+EXTERN __kernel_void
 _test_user_function(void)
 {
-
+	uint32_t a = 100;
 }
 
-EXTERN __kernel_only VOID _TEXT
-KernelRun(VOID)
+system_t system;
+
+EXTERN __kernel_void _TEXT
+kernel_run(__kernel_void)
 {
-	InitAll(KERNEL_MODE_NORMAL);
-	TerminalPrintf("%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
+	system_log_begin();
+	system_logf(NONE, "Testing%d...\n", 123);
+	system_log_end();
+	/*init_all(KERNEL_MODE_NORMAL);
+	terminal_printf("%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
 	INFO("Starting kernel modules...");
-	GDT_Init();
-	IDT_Init();
-	MM_Init(&kernel_end);
+	gdt_init();
+	idt_init();
+	mm_init(&kernel_end);
 
-	PagingInit();
-	if (CPU_CheckIsSupported() == FAILURE)
+	paging_init();
+	if (cpu_check_is_supported() == FAILURE)
 		asm("INT $0x12");
-	CPU_Init();
+	cpu_init();
 
-	KeyboardInit();
-	TerminalPrintf("Total Memory Used: %dKB.\n", MemoryUsed);
-	TerminalPrintln();
+	keyboard_init();
+	terminal_printf("Total memory Used: %dKB.\n", memoryUsed);
+	terminal_println();
 
-	TerminalPrintf("Done! Switching %s to user_mode (hopefully)...\n", OS_NAME);
-	TSS_Init();
-
-	//AOS_DeviceInit(0, "Test");
-	//SwitchToUserMode();
-	/* Perform a syscall to TerminalPrintf if successful. */
+	terminal_printf("Done! Switching %s to user_mode (hopefully)...\n", OS_NAME);
+	
+	//tss_init();
+	tss_user_mode_switch();
+	/* Perform a syscall to terminal_printf if successful. */
 
 	/*
-	TerminalPrintf("You may type below:\n");
-	TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
+	terminal_printf("You may type below:\n");
+	terminal_printf("~%s >>> ", AOS_ROOT_DIRNAME);
 
 	while (1)
 	{
-		string keystr = KeyboardGetKey();
+		string keystr = keyboard_get_key();
 		if (keystr > KEYBOARD_KEY_DOWN_NONE)
 		{
-			TerminalPrintf(keystr);
-			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ENTER)
+			terminal_printf(keystr);
+			if (keyboard_get_key_last() == KEYBOARD_KEY_DOWN_ENTER)
 			{
-				TerminalPrintf("~%s >>> ", AOS_ROOT_DIRNAME);
+				terminal_printf("~%s >>> ", AOS_ROOT_DIRNAME);
 			}
-			if (KeyboardGetKeyLast() == KEYBOARD_KEY_DOWN_ESCAPE)
+			if (keyboard_get_key_last() == KEYBOARD_KEY_DOWN_ESCAPE)
 			{
 				/* Trigger reset... *
-				//WritePortB(0x0CF9, 0x04);
+				//write_portb(0x0CF9, 0x04);
 			}
 		}
 	}

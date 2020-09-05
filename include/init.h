@@ -15,6 +15,8 @@
 
 //#define ADAMANTINE_OS_READY
 
+#define __KERNEL__
+
 #include "../include/aos-defs.h"
 #include "../include/types.h"
 #include "../include/terminal.h"
@@ -22,7 +24,7 @@
 
 EXTERN void sys_init(void);
 
-static string OS_Mode[] =
+static __kernel_string os_mode[] =
 {
     "Normal Mode",
     "Safe Mode",
@@ -30,17 +32,16 @@ static string OS_Mode[] =
 };
 
 /*
- * Function Name: init_all();
+ * Function name: init_all();
  * 
  * Usage: To initialize all of the kernel modules
  * and setup the pre-os loading.
  */
-static void _TEXT
-InitAll(BYTE Mode)
+static __kernel_void _TEXT
+init_all(__kernel_byte mode)
 {
     /* Initialize the Terminal. */
-    TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
-    //sys_init();
+    //TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
 }
 
 #endif  /* !_INIT_ */

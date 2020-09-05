@@ -19,34 +19,36 @@
 #include "aos-defs.h"
 #include "x86/gdt.h"
 
-typedef struct AOS_TSS_Entry TSS_t;
-struct AOS_TSS_Entry
+typedef struct aos_tss_entry tss_t;
+
+struct aos_tss_entry
 {
-    uint32_t            previous_tss:16;
+    uint32_t            previous_tss;
     uint32_t            esp0;
-    uint32_t            ss0:16;
+    uint32_t            ss0;
     uint32_t            esp1;
-    uint32_t            ss1:16;
+    uint32_t            ss1;
     uint32_t            esp2;
-    uint32_t            ss2:16;
+    uint32_t            ss2;
     uint32_t            cr3;
     uint32_t            eip;
     uint32_t            eflags;
     uint32_t            eax, ecx, edx, ebx;
     uint32_t            esp, ebp, esi, edi;
-    uint32_t            es:16;
-    uint32_t            cs:16;
-    uint32_t            ss:16;
-    uint32_t            ds:16;
-    uint32_t            fs:16;
-    uint32_t            gs:16;
-    uint32_t            ldt:16;
+    uint32_t            es;
+    uint32_t            cs;
+    uint32_t            ss;
+    uint32_t            ds;
+    uint32_t            fs;
+    uint32_t            gs;
+    uint32_t            ldt;
     uint16_t            trap, iomap_base;
 } PACKED;
 
-EXTERN VOID TSS_Init(VOID);
-EXTERN VOID SwitchToUserMode(VOID);
-EXTERN VOID ReenableInterrupts(VOID);
-EXTERN VOID SetKernelStack(UDWORD Stack);
+EXTERN void tss_init(void);
+EXTERN void tss_user_mode_switch(void);
+EXTERN void tss_reenable_interrupts(void);
+EXTERN void tss_set_kernel_stack(udword stack);
+
 
 #endif

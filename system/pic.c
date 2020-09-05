@@ -16,85 +16,85 @@
 
 MODULE("ProgrammableInterruptController", "0.01a");
 
-VOID 
-PIC_SendEOI(UBYTE IRQ) 
+void 
+pic_send_eoi(ubyte irq) 
 {
-	if (IRQ >= 0x8) 
+	if (irq >= 0x8) 
 	{
-		WritePortB(PIC2_COMMAND, PIC_EOI);
+		write_portb(PIC2_COMMAND, PIC_EOI);
 	}
-	WritePortB(PIC1_COMMAND, PIC_EOI);
+	write_portb(PIC1_COMMAND, PIC_EOI);
 }
 
-VOID 
-PIC_Remap(VOID) 
+void 
+pic_remap(void) 
 {
-	WritePortB(0x20, 0x11);
-	WritePortB(0xA0, 0x11);
-	WritePortB(0x21, 0x20);
-	WritePortB(0xA1, 0x28);
-	WritePortB(0x21, 0x04);
-	WritePortB(0xA1, 0x02);
-	WritePortB(0x21, 0x01);
-	WritePortB(0xA1, 0x01);
-	WritePortB(0x21, 0x0);
-	WritePortB(0xA1, 0x0);
+	write_portb(0x20, 0x11);
+	write_portb(0xA0, 0x11);
+	write_portb(0x21, 0x20);
+	write_portb(0xA1, 0x28);
+	write_portb(0x21, 0x04);
+	write_portb(0xA1, 0x02);
+	write_portb(0x21, 0x01);
+	write_portb(0xA1, 0x01);
+	write_portb(0x21, 0x0);
+	write_portb(0xA1, 0x0);
 }
 
-VOID 
-IRQ_SetMask(UBYTE IRQ_Line) 
+void 
+irq_set_mask(ubyte irq_Line) 
 {
-	UWORD Port;
-	UBYTE Value;
+	uword port;
+	ubyte value;
 	
-	if (IRQ_Line < 0x8) 
+	if (irq_Line < 0x8) 
 	{
-		Port = PIC1_DATA;
+		port = PIC1_DATA;
 	} 
 	else 
 	{
-		Port = PIC2_DATA;
-		IRQ_Line -= 0x8;
+		port = PIC2_DATA;
+		irq_Line -= 0x8;
 	}
-	Value = ReadPortB(Port) | (1 << IRQ_Line);
-	WritePortB(Port, Value);
+	value = read_portb(port) | (1 << irq_Line);
+	write_portb(port, value);
 }
 
-VOID 
-IRQ_ClearMask(UBYTE IRQ_Line) 
+void 
+irq_clear_mask(ubyte irq_Line) 
 {
-	UWORD Port;
-	UBYTE Value;
+	uword port;
+	ubyte value;
 	
-	if (IRQ_Line < 0x8) 
+	if (irq_Line < 0x8) 
 	{
-		Port = PIC1_DATA;
+		port = PIC1_DATA;
 	} 
 	else 
 	{
-		Port = PIC2_DATA;
-		IRQ_Line -= 0x8;
+		port = PIC2_DATA;
+		irq_Line -= 0x8;
 	}
-	Value = ReadPortB(Port) | ~(1 << IRQ_Line);
-	WritePortB(Port, Value);
+	value = read_portb(port) | ~(1 << irq_Line);
+	write_portb(port, value);
 }
 
-UWORD
-PIC_GetIRR(VOID) 
+uword
+pic_get_irr(void) 
 {
-	return (PIC_GetIRQRegister(PIC_READ_IRR));
+	return (pic_get_irq_register(PIC_READ_IRR));
 }
 
-UWORD
-PIC_GetISR(VOID) 
+uword
+pic_get_isr(void) 
 {
-	return (PIC_GetIRQRegister(PIC_READ_ISR));
+	return (pic_get_irq_register(PIC_READ_isr));
 }
 
-UWORD PIC_GetIRQRegister(DWORD OCW3) 
+uword pic_get_irq_register(dword ocw3) 
 {
-	WritePortB(PIC1_COMMAND, OCW3);
-	WritePortB(PIC2_COMMAND, OCW3);
+	write_portb(PIC1_COMMAND, ocw3);
+	write_portb(PIC2_COMMAND, ocw3);
 	
-	return ((ReadPortB(PIC2_COMMAND) << 0x8) | ReadPortB(PIC1_COMMAND));
+	return ((read_portb(PIC2_COMMAND) << 0x8) | read_portb(PIC1_COMMAND));
 }

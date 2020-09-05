@@ -12,42 +12,42 @@
 
 #include "../include/irq.h"
 
-MODULE("InterruptRequest", "0.01a");
+MODULE("Interrupt-Request", "0.01a");
 
-BYTE 
-AreInterruptsEnabled(VOID) 
+byte 
+are_interrupts_enabled(void) 
 {
-    ULONG Flags;
+    ulong flags;
     asm volatile 
     ( 
         "PUSHF\n\t"
         "POP %0"
-        : "=g"(Flags) 
+        : "=g"(flags) 
     );
 
-    return Flags & (0x1 << 0x9);
+    return flags & (0x1 << 0x9);
 }
 
-ULONG
-IRQ_Disable(VOID) 
+ulong
+irq_disable(void) 
 {
-    ULONG Flags;
+    ulong flags;
     asm volatile
     (
-        "PUSHF\n\tCLI\n\tPOP %0" : "=r"(Flags) : : "memory"
+        "PUSHF\n\tCLI\n\tPOP %0" : "=r"(flags) : : "memory"
     );
 }
 
-VOID 
-IRQ_Restore(ULONG Flags) {
+void 
+irq_restore(ulong flags) {
     asm volatile
     (
-        "PUSH %0\n\tPOPF" : : "rm"(Flags) : "memory", "cc"
+        "PUSH %0\n\tPOPF" : : "rm"(flags) : "memory", "cc"
     );
 }
 
-VOID
-ClearInterrupts(VOID) 
+void
+clear_interrupts(void) 
 {
     asm volatile
     (

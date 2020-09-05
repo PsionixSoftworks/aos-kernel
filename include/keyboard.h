@@ -29,24 +29,24 @@
 #define MAX_ALLOC_SIZE						256
 
 // Declare global functions:
-EXTERN 	VOID (SetKeyCode(BYTE *Key, BYTE Code));					// Set keycodes for each key (UNUSED).
-EXTERN 	VOID (KeyboardInit(void));								// Initialize the basic keyboard driver.
-EXTERN 	VOID (KeyboardFree(void));								// Free memory associated with the keyboard driver.
-EXTERN 	VOID (KeyboardWait(void));								// Give the keyboard a wait instruction.
-EXTERN 	BOOL (KeyboardIsEnabled(void));							// Checks whether the keyboard is initialized or not.
-EXTERN 	STRING (KeyboardGetKey(void));							// Gets the value of a key pressed.
-EXTERN 	STRING (KeyboardGetString(void));
-EXTERN 	UBYTE (KeyboardGetKeycode(void));						// Gets the value of the keycode pressed.
-EXTERN 	UBYTE (KeyboardGetKeyLast(void));
+EXTERN 	void (keyboard_set_key_code(byte *key, byte code));					// Set keycodes for each key (UNUSED).
+EXTERN 	void (keyboard_init(void));								// Initialize the basic keyboard driver.
+EXTERN 	void (keyboard_free(void));								// free memory associated with the keyboard driver.
+EXTERN 	void (keyboard_wait(void));								// Give the keyboard a wait instruction.
+EXTERN 	bool (keyboard_is_enabled(void));							// Checks whether the keyboard is initialized or not.
+EXTERN 	string (keyboard_get_key(void));							// Gets the value of a key pressed.
+EXTERN 	string (keyboard_get_string(void));
+EXTERN 	ubyte (keyboard_get_keycode(void));						// Gets the value of the keycode pressed.
+EXTERN 	ubyte (keyboard_get_key_last(void));
 
 // Declare the keyboard type struct:
-typedef struct AOS_Keyboard_Basic
+typedef struct aos_keyboard_basic
 {
-	BYTE 				KeyLast;									// The last key pressed.
-	BYTE 				Status;										// The status of the keyboard key.
-	STRING 				KeyMap;										// Used to set a memory map of the keys (BROKEN).
-	STRING 				Buffer;
-	BOOL 				Initialized;								// The keyboard initializer.
-} PACKED Keyboard_t;												// keyboard type.
+	byte 				key_last;									// The last key pressed.
+	byte 				status;										// The status of the keyboard key.
+	string 				key_map;										// Used to set a memory map of the keys (BROKEN).
+	string 				buffer;
+	bool 				is_initialized;								// The keyboard initializer.
+} PACKED keyboard_t;												// keyboard type.
 
 #endif 	// !ADAMANTINE_KEYBOARD

@@ -29,14 +29,11 @@
 #include "centrix/debug.h"
 #endif
 
-struct CentrixCore 
+struct centrix_core 
 {
-    UDWORD              OS_ID;
-    UDWORD              OS_Signature;
-    STRING              OS_Name;
+    udword              os_id;
+    udword              os_signature;
+    string              os_name;
 };
-
-EXTERN void *KernelInstall(string name);
-EXTERN int32_t Verify(void);
 
 #endif	// !CENTRIX_CORE

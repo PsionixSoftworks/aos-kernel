@@ -16,12 +16,12 @@
 
 MODULE("CPU", "0.02a");
 
-EXTERN int cpuid_supported(void);
+EXTERN udword cpuid_supported(void);
 
 static inline udword
-ProcessorIndex(VOID)
+ProcessorIndex(void)
 {
-	int x = cpuid_supported();
+	udword x = cpuid_supported();
 	return (x);
 }
 
@@ -41,19 +41,19 @@ CPU_SetActive(void)
 }
 
 inline void
-CPU_Init(void)
+cpu_init(void)
 {
 	bool is_supported = (cpuid_supported() > 0);
 	if (!is_supported)
 		return;
-	INFO("CPU is initialized!");
-	TerminalPrintf("CPU Manufacturer: %s.\n", CPU_VendorString());
+	_INFO("CPU is initialized!");
+	terminal_printf("CPU Manufacturer: %s.\n", cpu_vendor_string());
 }
 
 inline void
-CPU_Halt(void) 
+cpu_halt(void) 
 {
-	TerminalPrint("System halted...\n");
+	terminal_printf("System halted...\n");
 	__asm__ volatile(
 		"CLI \n\t"	
 		"HLT \n\t"
@@ -61,7 +61,7 @@ CPU_Halt(void)
 }
 
 inline void
-CPU_Suspend(void) 
+cpu_suspend(void) 
 {
 	__asm__ volatile(
 		"HLT \n\t"
@@ -69,19 +69,19 @@ CPU_Suspend(void)
 }
 
 inline udword
-CPUID(void)
+cpuid(void)
 {
-	int x = cpuid_supported();
+	udword x = cpuid_supported();
 	asm volatile
 	(
 		"MOV $0x0, %EAX\n\t"
-		"CPUID\n\t"
+		"cpuid\n\t"
 	);
 	return (x);
 }
 
 inline udword 
-CPUID_String(udword Code, udword *Location) 
+cpuid_string(udword code, udword *Location) 
 {
 	__asm__ volatile(
 		"cpuid":
@@ -89,21 +89,21 @@ CPUID_String(udword Code, udword *Location)
 		"=b"(*(Location + 0)), 
 		"=d"(*(Location + 1)), 
 		"=c"(*(Location + 2)):
-		"a"(Code)
+		"a"(code)
 	);
-	return ((int)Location[0]);
+	return ((udword)Location[0]);
 }
 
 inline string
-CPU_VendorString(void)
+cpu_vendor_string(void)
 {
 	static char Str[16];
-	CPUID_String(0x00000000, (udword *)(Str));
+	cpuid_string(0x00000000, (udword *)(Str));
 	return (Str);
 }
 
 inline udword
-CPU_CheckIsSupported(void)
+cpu_check_is_supported(void)
 {
 	return (cpuid_supported());
 }

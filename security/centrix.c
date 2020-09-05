@@ -20,44 +20,44 @@
 
 MODULE("Centrix", "0.01a");
 
-STRING SupportedOS[] =
+string supported_os[] =
 {
     "CentrixOS",
     "AdamantineOS",
     "SteelOS",
 };
 
-struct CentrixCore Core;
-VOID *
-KernelInstall(STRING Name) {
-    Core.OS_ID = NULL;
-    Core.OS_Signature = NULL;
+struct centrix_core core;
+void *
+kernel_install(string name) {
+    core.os_id = NULL;
+    core.os_signature = NULL;
 
-    Core.OS_Name = Name;
-    return (Name);
+    core.os_name = name;
+    return (name);
 }
 
-DWORD 
-Verify(VOID)
+dword 
+kernel_verify(void)
 {
-    TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
-	TerminalClearScreen();
+    terminal_init(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
+	terminal_clear_screen();
 
-    SIZE Length = strlen(SupportedOS);
-    SIZE i = 0;
-    STRING OS_Name = Core.OS_Name;
-    while (i < Length)
+    size_t length = strlen(supported_os);
+    size_t i = 0;
+    string os_name = core.os_name;
+    while (i < length)
     {
-        if (strcmp(OS_Name, SupportedOS[i]) == 0)
+        if (strcmp(os_name, supported_os[i]) == 0)
         {
-            TerminalPrintf("[CENTRIX]: \"%s\" is a valid Operating System.\n", OS_Name);
-            TerminalPrintf("[CENTRIX]: Starting \"%s\" OS kernel...\n\n", OS_Name);
+            terminal_printf("[CENTRIX]: \"%s\" is a valid Operating System.\n", os_name);
+            terminal_printf("[CENTRIX]: Starting \"%s\" OS kernel...\n\n", os_name);
             return (SUCCESS);
         } else {
             i++;
-            if (i >= Length) 
+            if (i >= length) 
             {
-                TerminalPrintf("[CENTRIX]: \"%s\" is not a valid Operating System...\n", OS_Name);
+                terminal_printf("[CENTRIX]: \"%s\" is not a valid Operating System...\n", os_name);
                 return (FAILURE);
             }
         }

@@ -13,14 +13,3 @@
 #include "../include/adamantine.h"
 
 MODULE("adamantine", "0.01a");
-
-static STRING
-    M_Name,
-    M_Version;
-
-VOID 
-ModuleCreate(STRING Name, STRING Version)
-{
-    M_Name      = Name;
-    M_Version   = Version;
-}

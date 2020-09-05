@@ -21,74 +21,75 @@
 #define INTERRUPT_DESCRIPTOR
 #endif
 
-struct IDT_Entry 
+struct idt_entry 
 {
-	UWORD 				BaseLo;
-	UWORD 				Selector;
-	UBYTE 				AlwaysZero;
-	UBYTE 				Flags;
-	UWORD 				BaseHi;
+	uword 				base_lo;
+	uword 				selector;
+	ubyte 				always_zero;
+	ubyte 				flags;
+	uword 				base_hi;
 } PACKED;
-typedef struct IDT_Entry IDT_Entry_t;
+typedef struct idt_entry idt_entry_t;
 
-struct PIDT 
+struct pidt 
 {
-	UWORD 				Limit;
-	UDWORD 				Base;
+	uword 				limit;
+	udword 				base;
 } PACKED;
-typedef struct PIDT PIDT_t;
+typedef struct pidt pidt_t;
 
-EXTERN	VOID (ISR_0(VOID));
-EXTERN	VOID (ISR_1(VOID));
-EXTERN	VOID (ISR_2(VOID));
-EXTERN	VOID (ISR_3(VOID));
-EXTERN	VOID (ISR_4(VOID));
-EXTERN	VOID (ISR_5(VOID));
-EXTERN	VOID (ISR_6(VOID));
-EXTERN	VOID (ISR_7(VOID));
-EXTERN	VOID (ISR_8(VOID));
-EXTERN	VOID (ISR_9(VOID));
-EXTERN	VOID (ISR_10(VOID));
-EXTERN	VOID (ISR_11(VOID));
-EXTERN	VOID (ISR_12(VOID));
-EXTERN	VOID (ISR_13(VOID));
-EXTERN	VOID (ISR_14(VOID));
-EXTERN	VOID (ISR_15(VOID));
-EXTERN	VOID (ISR_16(VOID));
-EXTERN	VOID (ISR_17(VOID));
-EXTERN	VOID (ISR_18(VOID));
-EXTERN	VOID (ISR_19(VOID));
-EXTERN	VOID (ISR_20(VOID));
-EXTERN	VOID (ISR_21(VOID));
-EXTERN	VOID (ISR_22(VOID));
-EXTERN	VOID (ISR_23(VOID));
-EXTERN	VOID (ISR_24(VOID));
-EXTERN	VOID (ISR_25(VOID));
-EXTERN	VOID (ISR_26(VOID));
-EXTERN	VOID (ISR_27(VOID));
-EXTERN	VOID (ISR_28(VOID));
-EXTERN	VOID (ISR_29(VOID));
-EXTERN	VOID (ISR_30(VOID));
-EXTERN	VOID (ISR_31(VOID));
+EXTERN	void (isr_0(void));
+EXTERN	void (isr_1(void));
+EXTERN	void (isr_2(void));
+EXTERN	void (isr_3(void));
+EXTERN	void (isr_4(void));
+EXTERN	void (isr_5(void));
+EXTERN	void (isr_6(void));
+EXTERN	void (isr_7(void));
+EXTERN	void (isr_8(void));
+EXTERN	void (isr_9(void));
+EXTERN	void (isr_10(void));
+EXTERN	void (isr_11(void));
+EXTERN	void (isr_12(void));
+EXTERN	void (isr_13(void));
+EXTERN	void (isr_14(void));
+EXTERN	void (isr_15(void));
+EXTERN	void (isr_16(void));
+EXTERN	void (isr_17(void));
+EXTERN	void (isr_18(void));
+EXTERN	void (isr_19(void));
+EXTERN	void (isr_20(void));
+EXTERN	void (isr_21(void));
+EXTERN	void (isr_22(void));
+EXTERN	void (isr_23(void));
+EXTERN	void (isr_24(void));
+EXTERN	void (isr_25(void));
+EXTERN	void (isr_26(void));
+EXTERN	void (isr_27(void));
+EXTERN	void (isr_28(void));
+EXTERN	void (isr_29(void));
+EXTERN	void (isr_30(void));
+EXTERN	void (isr_31(void));
+EXTERN 	void (isr_150(void));
 
-EXTERN	VOID (IRQ_0(VOID));
-EXTERN	VOID (IRQ_1(VOID));
-EXTERN	VOID (IRQ_2(VOID));
-EXTERN	VOID (IRQ_3(VOID));
-EXTERN	VOID (IRQ_4(VOID));
-EXTERN	VOID (IRQ_5(VOID));
-EXTERN	VOID (IRQ_6(VOID));
-EXTERN	VOID (IRQ_7(VOID));
-EXTERN	VOID (IRQ_8(VOID));
-EXTERN	VOID (IRQ_9(VOID));
-EXTERN	VOID (IRQ_10(VOID));
-EXTERN	VOID (IRQ_11(VOID));
-EXTERN	VOID (IRQ_12(VOID));
-EXTERN	VOID (IRQ_13(VOID));
-EXTERN	VOID (IRQ_14(VOID));
-EXTERN	VOID (IRQ_15(VOID));
+EXTERN	void (irq_0(void));
+EXTERN	void (irq_1(void));
+EXTERN	void (irq_2(void));
+EXTERN	void (irq_3(void));
+EXTERN	void (irq_4(void));
+EXTERN	void (irq_5(void));
+EXTERN	void (irq_6(void));
+EXTERN	void (irq_7(void));
+EXTERN	void (irq_8(void));
+EXTERN	void (irq_9(void));
+EXTERN	void (irq_10(void));
+EXTERN	void (irq_11(void));
+EXTERN	void (irq_12(void));
+EXTERN	void (irq_13(void));
+EXTERN	void (irq_14(void));
+EXTERN	void (irq_15(void));
 
-EXTERN 	VOID (IDT_Init(VOID));
-EXTERN 	VOID (IDT_Free(VOID));
+EXTERN 	void (idt_init(void));
+EXTERN 	void (idt_free(void));
 
 #endif	// !ADAMANTINE_INTERRUPT_DESCRIPTOR_TABLE

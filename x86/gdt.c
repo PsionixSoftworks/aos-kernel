@@ -15,104 +15,109 @@
 #include "../include/terminal.h"
 #include "../include/mem-util.h"
 
-MODULE("GlobalDescriptorTable", "0.01a");
+MODULE("Global-Descriptor-Table", "0.01a");
 
-EXTERN VOID GDT_Flush(UDWORD);
-EXTERN VOID TSS_Flush(VOID);
-EXTERN TSS_t tss_entry;
+#define MAX_GDT_ENTRIES		6
 
-GDT_Entry_t GDT_Entries[6];
-PGDT_t PGDT;
+EXTERN void gdt_flush(udword);
+EXTERN void tss_flush(void);
+EXTERN tss_t tss_entry ALIGN(4096);
 
-static inline VOID GDT_SetBase(DWORD Index, UDWORD Base);
-static inline VOID GDT_SetLimit(DWORD Index, UDWORD Limit);
-static inline VOID GDT_SetGranularity(DWORD Index, UBYTE Granularity);
-static inline VOID GDT_SetAccess(DWORD Index, UBYTE Access);
-static inline BOOL GDT_EntryUsed(DWORD Index);
-static inline VOID GDT_SetGate(DWORD, UDWORD, UDWORD, UBYTE, UBYTE);
-static inline VOID TSS_Write(uint32_t num);
+gdt_entry_t gdt_entries[MAX_GDT_ENTRIES];
+PGDT_t pgdt;
 
-VOID
-GDT_Init(VOID) 
+static inline void gdt_set_base(dword index, udword base);
+static inline void gdt_set_limit(dword index, udword limit);
+static inline void gdt_set_granularity(dword index, ubyte granularity);
+static inline void gdt_set_access(dword index, ubyte access);
+static inline bool gdt_entry_used(dword index);
+static inline void gdt_set_gate(dword, udword, udword, ubyte, ubyte);
+static void TSS_Write(uint32_t num);
+
+void
+gdt_init(void) 
 {
-	PGDT.Limit = (sizeof(GDT_Entry_t) * 5) - 1;	// Learn to understand this...
-	PGDT.Base = (UDWORD)&GDT_Entries;
+	pgdt.limit = (sizeof(gdt_entry_t) * MAX_GDT_ENTRIES) - 1;
+	pgdt.base = (udword)&gdt_entries;
 	
-	UWORD Base, Limit; 
-	UBYTE Access, Granularity;
+	uword base, limit; 
+	ubyte access, granularity;
 
-	int i = 0;
-	GDT_SetGate(i++, NULL, NULL, NULL, NULL);	// 0th index needs to be a null segment...
-	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_0, ACCESS_BYTE_FLAGS);
-	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_1, ACCESS_BYTE_FLAGS);
-	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_2, ACCESS_BYTE_FLAGS);
-	GDT_SetGate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_3, ACCESS_BYTE_FLAGS);
+	udword i = 0;
+	gdt_set_gate(i++, GDT_SEGMENT_NULL, GDT_SEGMENT_NULL, GDT_SEGMENT_NULL, GDT_SEGMENT_NULL);		// 0th index needs to be a null segment...
+	gdt_set_gate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_0, ACCESS_BYTE_FLAGS);	
+	gdt_set_gate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_1, ACCESS_BYTE_FLAGS);	
+	gdt_set_gate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_2, ACCESS_BYTE_FLAGS);	
+	gdt_set_gate(i++, MEMORY_START_REGION, MEMORY_END_REGION, ACCESS_BYTE_3, ACCESS_BYTE_FLAGS);	
 	TSS_Write(i++);
 
-	GDT_Flush((UDWORD)&PGDT);
-	//TSS_Flush();
+	gdt_flush((udword)&pgdt);
+	tss_flush();
 	
-	INFO("GDT is initialized!");
+	_INFO("GDT is initialized!");
 }
 
-static inline VOID
-GDT_SetGate(DWORD Index, UDWORD Base, UDWORD Limit, UBYTE Access, UBYTE Granularity) 
+static inline void
+gdt_set_gate(dword index, udword base, udword limit, ubyte access, ubyte granularity) 
 {
 	/* Make sure we're not adding nothing or a used entry. */
-	if ((Index != NULL) && (!GDT_EntryUsed(Index)))
+	if ((index != NULL) && (!gdt_entry_used(index)))
 	{
 		/* Setup a GDT. */
-		GDT_SetBase(Index, Base);
-		GDT_SetLimit(Index, Limit);
-		GDT_SetAccess(Index, Access);
-		GDT_SetGranularity(Index, Granularity);
+		gdt_set_base(index, base);
+		gdt_set_limit(index, limit);
+		gdt_set_access(index, access);
+		gdt_set_granularity(index, granularity);
 	}
 	return;
 }
 
-static inline VOID
-GDT_SetBase(DWORD Index, UDWORD Base)
+static inline void
+gdt_set_base(dword index, udword base)
 {
-	GDT_Entries[Index].BaseLo 		= (Base & 0xFFFF);
-	GDT_Entries[Index].BaseMiddle	= (Base >> 16) & 0xFF;
-	GDT_Entries[Index].BaseHi		= (Base >> 24) & 0xFF;
+	gdt_entries[index].base_lo 		= (base & 0xFFFF);
+	gdt_entries[index].base_middle	= (base >> 16) & 0xFF;
+	gdt_entries[index].base_hi		= (base >> 24) & 0xFF;
 }
 
-static inline VOID
-GDT_SetLimit(DWORD Index, UDWORD Limit)
+static inline void
+gdt_set_limit(dword index, udword limit)
 {
-	GDT_Entries[Index].LimitLo		= (Limit & 0xFFFF);
-	GDT_Entries[Index].Granularity	= (Limit >> 16) & 0x0F;
+	gdt_entries[index].limit_lo		= (limit & 0xFFFF);
+	gdt_entries[index].granularity	= (limit >> 16) & 0x0F;
 }
 
-static inline VOID
-GDT_SetGranularity(DWORD Index, UBYTE Granularity)
+static inline void
+gdt_set_granularity(dword index, ubyte granularity)
 {
-	GDT_Entries[Index].Granularity	|= Granularity & 0xF0;
+	gdt_entries[index].granularity	|= granularity & 0xF0;
 }
 
-static inline VOID
-GDT_SetAccess(DWORD Index, UBYTE Access)
+static inline void
+gdt_set_access(dword index, ubyte access)
 {
-	GDT_Entries[Index].Access		= Access;
+	gdt_entries[index].access		= access;
 }
 
-static inline BOOL
-GDT_EntryUsed(DWORD Index)
+static inline bool
+gdt_entry_used(dword index)
 {
 	return (FALSE);
 }
 
-static inline VOID
+static void
 TSS_Write(uint32_t num)
 {
 	uint32_t base = (uint32_t)&tss_entry;
 	uint32_t limit = sizeof(tss_entry);
 
-	GDT_SetGate(num, base, limit, 0xE9, 0x00);
+	gdt_set_gate(num, base, limit, 0xE9, 0x00);
+
+	memset(&tss_entry, 0, sizeof(tss_entry));
 
 	tss_entry.ss0 = 0x10;
 	tss_entry.esp0 = 0x00;
+	tss_entry.iomap_base = 0xDFFF;
 	tss_entry.cs = 0x0B;
 	tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs = 0x13;
 }

@@ -11,7 +11,7 @@
  */
 
 /* Include anything the terminal requires here */
-#include <stdarg.h>
+#define __KERNEL__
 
 #include "../include/terminal.h"
 #include "../include/vga.h"
@@ -19,126 +19,137 @@
 #include "../include/keyboard.h"
 #include "../include/mutex.h"
 
+#include <stdarg.h>
+
 MODULE("terminal", "0.01a");
 
 #define EOF		(-1)
 
 /* Define mutexes here. */
-DEFINE_MUTEX(m_mprintf);
+DEFINE_mutex(m_mprintf);
 
-static Terminal_t Terminal;
-static UWORD *VideoMemory;
-static DWORD TerminalPutchar(CHAR c);
-static VOID MoveCursor(VOID);
-static VOID Scroll(VOID);
+static const ubyte default_back_color = SYSTEM_COLOR_BLACK;
+static const ubyte default_fore_color = SYSTEM_COLOR_WHITE;
 
-VOID 
-TerminalInit(UBYTE BackColor, UBYTE ForeColor) 
+static terminal_t terminal;
+static uword *video_memory;
+static string terminal_buffer;
+static inline dword terminal_putchar(char c);
+static inline void move_cursor(void);
+static inline void scroll(void);
+
+DEPRECATED static inline dword 
+terminal_putchar(char c) 
 {
-	VideoMemory = (UWORD *)VGA_TEXT_MODE_COLOR;
-	Terminal.BackColor = BackColor;
-	Terminal.ForeColor = ForeColor;
-	Terminal.IsInitialized = TRUE;
+	ubyte color_byte = ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
+	uword attribute = color_byte << 0x08;
+	uword *location;
 
-	TerminalClearScreen();
-}
-
-VOID
-TerminalClearScreen(VOID)
-{
-	UBYTE AttributeByte = ((Terminal.BackColor << 0x4) | (Terminal.ForeColor & 0x0F));
-	UWORD Blank = 0x20 | (AttributeByte << 0x8);
-
-	for (DWORD i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
+	if ((c == 0x08) && (terminal.x > 0x10)) 
 	{
-		VideoMemory[i] = Blank;
-	}
-	Terminal.x = 0;
-	Terminal.y = 0;
-	MoveCursor();
-}
-
-VOID DEPRECATED
-TerminalPrint(const STRING Str) 
-{
-	DWORD i = 0;
-	while (Str[i]) 
+		terminal_move_cursor(-1, 0);
+		location = video_memory + (terminal.y * VGA_WIDTH + terminal.x);
+		*location = ' ' | attribute;
+	} 
+	else
+	if (c == 0x09) 
 	{
-		TerminalPutchar(Str[i++]);
-	}
-}
-
-VOID
-TerminalPrintHex(UDWORD Value)
-{
-	TerminalPrintValue(Value, 0x10);
-}
-
-VOID
-TerminalPrintDec(DWORD Value)
-{
-	TerminalPrintValue(Value, 0x0A);
-}
-
-static BOOL 
-Print(const STRING Data, SIZE Length) 
-{
-	const UBYTE *Bytes = (const UBYTE *)Data;
-	for (SIZE i = 0; i < Length; i++) 
+		terminal.x = (terminal.x + 0x04) & ~(0x04-0x01);
+	} 
+	else
+	if (c == '\r') 
 	{
-		if (TerminalPutchar(Bytes[i]) == EOF)
-			return (FALSE);
-		return (TRUE);
+		terminal.x = 0;
+	} 
+	else
+	if (c == '\n') 
+	{
+		terminal.x = 0;
+		terminal.y++;
+	} 
+	else
+	if (c >= ' ') 
+	{
+		location = video_memory + (terminal.y * VGA_WIDTH + terminal.x);
+		*location = c | attribute;
+		terminal.x++;
 	}
+
+	if (terminal.x >= VGA_WIDTH) {
+		terminal.x = 0;
+		terminal.y++;
+	}
+	scroll();
+	move_cursor();
 }
 
-static VOID 
-Printf(const STRING Str, va_list ap)
+inline void 
+system_log_begin(void)
 {
-	MutexLock(&m_mprintf);
-	STRING s = 0;
-	CHAR Buffer[512];
-	for (SIZE i = 0; i < strlen((STRING)Str); i++) 
+	/* Setup the initial terminal buffer. */
+	video_memory 			= (uword *)VGA_TEXT_MODE_COLOR;
+	terminal.back_color 	= default_back_color;
+	terminal.fore_color 	= default_fore_color;
+	terminal.is_initialized = TRUE;
+
+	/* Clear the screen and set the whole screen to default. */
+	system_log_clear();
+}
+
+inline void
+system_log_end(void)
+{
+	video_memory			= NULL;
+	terminal.is_initialized = FALSE;
+}
+
+static void 
+printf(const string Str, va_list ap)
+{
+	mutex_lock(&m_mprintf);
+	string s = 0;
+	char buffer[512];
+	for (size_t i = 0; i < strlen((string)Str); i++)
 	{
 		if (Str[i] == '%') 
 		{
 			switch (Str[i + 1]) 
 			{
 				case 's':
-					s = va_arg(ap, const STRING);
-					TerminalPrint(s);
+					s = va_arg(ap, const string);
+					terminal_print(s);
 					i++;
 					continue;
 				case 'b': {
-					DWORD b = va_arg(ap, DWORD);
-					TerminalPrint(itoa(b, Buffer, 2));
+					dword b = va_arg(ap, dword);
+					terminal_print(itoa(b, buffer, 2));
 					i++;
 					continue;
 				}
 				case 'o': {
-					DWORD o = va_arg(ap, DWORD);
-					TerminalPrint(itoa(o, Buffer, 8));
+					dword o = va_arg(ap, dword);
+					terminal_print(itoa(o, buffer, 8));
 					i++;
 					continue;
 				}
 				case 'd': {
-					DWORD c = va_arg(ap, DWORD);
-					TerminalPrintDec(c);
+					dword c = va_arg(ap, dword);
+					terminal_print_dec(c);
 					i++;
 					continue;
 				}
 				case 'x': {
-					DWORD c = va_arg(ap, DWORD);
-					DWORD FinalValue = itoa(c, Buffer, 16);
-					TerminalPrint(FinalValue);
+					dword c = va_arg(ap, dword);
+					dword FinalValue = itoa(c, buffer, 16);
+					terminal_print(FinalValue);
 					i++;
 					continue;
 				}
 				case 'X': {
-					DWORD c = va_arg(ap, DWORD);
-					DWORD FinalValue = itoa(c, Buffer, 0x10);
+					dword c = va_arg(ap, dword);
+					dword FinalValue = itoa(c, buffer, 0x10);
 					to_upper(FinalValue);
-					TerminalPrint(FinalValue);
+					terminal_print(FinalValue);
 					i++;
 					continue;
 				}
@@ -146,165 +157,272 @@ Printf(const STRING Str, va_list ap)
 		} 
 		else 
 		{
-			TerminalPutchar(Str[i]);
+			terminal_putchar(Str[i]);
 		}
 	}
-	MutexUnlock(&m_mprintf);
+	mutex_unlock(&m_mprintf);
 	va_end(ap);
 }
 
-DWORD 
-TerminalPrintf(const STRING restrict Format, ...) 
+inline bool
+system_logf(ubyte severity, string restrict format, ...)
+{
+	if (!format)
+		return (FALSE);
+	va_list ap;
+	va_start(ap, format);
+	if (severity == INFORMATION)
+	{
+		terminal_print("[INFO]: ");
+	}
+	if (severity == WARNING)
+	{
+		terminal_print("[WARNING]: ");
+	}
+	if (severity == ERROR)
+	{
+		terminal_printf("[ERROR]: ");
+		printf((const string)format, ap);
+		cpu_halt();
+	}
+	printf((const string)format, ap);
+
+	return (TRUE);
+}
+
+inline void
+system_log_set_back_col(ubyte col)
+{
+	terminal.back_color = col;
+}
+
+inline void
+system_log_set_fore_col(ubyte col)
+{
+	terminal.fore_color = col;
+}
+
+inline void
+system_log_reset_back_col(void)
+{
+	terminal.back_color = default_back_color;
+}
+
+inline void
+system_log_reset_fore_col(void)
+{
+	terminal.fore_color = default_fore_color;
+}
+
+inline void
+system_log_clear_back_col(ubyte col)
+{
+	ubyte color_byte;
+	uword blank;
+
+	color_byte 				= ((col << 0x04) | (terminal.fore_color & 0x0F));
+	blank 					= 0x20 | (color_byte << 0x08);
+
+	for (size_t i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++)
+	{
+		video_memory[i] = blank;
+	}
+}
+
+inline void
+system_log_clear(void)
+{
+	/* Clear the screen and set the whole screen to default. */
+	ubyte color_byte;
+	uword blank;
+
+	/* Set the color properties (for background and text). */
+	color_byte 				= ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
+	blank 					= 0x20 | (color_byte << 0x08);
+
+	/* Fill the terminal blank (black is default) */
+	for (size_t i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++)
+	{
+		video_memory[i] = blank;
+	}
+
+	/* Set the terminal cursor x and y positions */
+	terminal.x = 0;
+	terminal.y = 0;
+	move_cursor();
+}
+
+static inline void 
+move_cursor(void) 
+{
+	uword CursorLocation = terminal.y * VGA_WIDTH + terminal.x;
+	write_portb(0x3D4, 14);
+	write_portb(0x3D5, CursorLocation >> 8);
+	write_portb(0x3D4, 15);
+	write_portb(0x3D5, CursorLocation);
+}
+
+static inline void 
+scroll(void) 
+{
+	ubyte AtributeByte = ((terminal.back_color << 0x4) | (terminal.fore_color & 0x0F));
+	uword Blank = 0x20 | (AtributeByte << 0x8);
+
+	if (terminal.y >= VGA_HEIGHT) 
+	{
+		dword i;
+		for (i = 0; i < (VGA_HEIGHT - 1) * VGA_WIDTH; i++) 
+		{
+			video_memory[i] = video_memory[i + VGA_WIDTH];
+		}
+
+		for (i = (VGA_HEIGHT - 1) * VGA_WIDTH; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
+		{
+			video_memory[i] = Blank;
+		}
+		terminal.y = VGA_HEIGHT - 1;
+	}
+}
+
+/* THIS BEGINS DEPRECATED FUNCTIONS */
+/* THIS BEGINS DEPRECATED FUNCTIONS */
+/* THIS BEGINS DEPRECATED FUNCTIONS */
+
+DEPRECATED inline void
+terminal_init(ubyte back_color, ubyte fore_color) 
+{
+	video_memory = (uword *)VGA_TEXT_MODE_COLOR;
+	terminal.back_color = back_color;
+	terminal.fore_color = fore_color;
+	terminal.is_initialized = TRUE;
+
+	terminal_clear_screen();
+}
+
+DEPRECATED inline void
+terminal_clear_screen(void)
+{
+	ubyte color_byte = ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
+	uword Blank = 0x20 | (color_byte << 0x08);
+
+	for (dword i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
+	{
+		video_memory[i] = Blank;
+	}
+	terminal.x = 0;
+	terminal.y = 0;
+	move_cursor();
+}
+
+DEPRECATED inline void
+terminal_print(const string Str) 
+{
+	dword i = 0;
+	while (Str[i]) 
+	{
+		terminal_putchar(Str[i++]);
+	}
+}
+
+DEPRECATED inline void
+terminal_print_hex(udword value)
+{
+	terminal_print_value(value, 0x10);
+}
+
+DEPRECATED inline void
+terminal_print_dec(dword value)
+{
+	terminal_print_value(value, 0x0A);
+}
+
+static inline bool 
+print(const string data, size_t length) 
+{
+	const ubyte *Bytes = (const ubyte *)data;
+	for (size_t i = 0; i < length; i++) 
+	{
+		if (terminal_putchar(Bytes[i]) == EOF)
+			return (FALSE);
+		return (TRUE);
+	}
+}
+
+DEPRECATED inline dword 
+terminal_printf(const string restrict Format, ...) 
 {
 	// TODO: Implement the printf function...
 	if (!Format)
 		return 0;
 	va_list ap;
 	va_start(ap, Format);
-	Printf((const STRING)Format, ap);
+	printf((const string)Format, ap);
 
 	return (1);
 }
 
-VOID 
-TerminalPrintln(VOID) 
+DEPRECATED inline void 
+terminal_println(void) 
 {
-	TerminalPrint("\n");
+	terminal_print("\n");
 }
 
-VOID 
-TerminalPrintValue(DWORD Value, UBYTE Base) 
+DEPRECATED inline void 
+terminal_print_value(dword value, ubyte base) 
 {
-	CHAR Buffer[16];
-	STRING NumberToString = itoa(Value, Buffer, Base);
-	if (Base == 0x10)
-		TerminalPrint("0x");
-	if (Base == 0x2)
-		TerminalPrint("0b");
-	TerminalPrint(NumberToString);
+	char buffer[16];
+	string NumberToString = itoa(value, buffer, base);
+	if (base == 0x10)
+		terminal_print("0x");
+	if (base == 0x2)
+		terminal_print("0b");
+	terminal_print(NumberToString);
 }
 
-static DWORD 
-TerminalPutchar(CHAR c) 
-{
-	UBYTE AttributeByte = ((Terminal.BackColor << 0x4) | (Terminal.ForeColor & 0x0F));
-	UWORD Attribute = AttributeByte << 0x8;
-	UWORD *Location;
-
-	if ((c == 0x08) && (Terminal.x > 0x10)) 
-	{
-		TerminalMoveCursor(-1, 0);
-		Location = VideoMemory + (Terminal.y * VGA_WIDTH + Terminal.x);
-		*Location = ' ' | Attribute;
-	} 
-	else
-	if (c == 0x09) 
-	{
-		Terminal.x = (Terminal.x + 0x4) & ~(0x4-0x1);
-	} 
-	else
-	if (c == '\r') 
-	{
-		Terminal.x = 0;
-	} 
-	else
-	if (c == '\n') 
-	{
-		Terminal.x = 0;
-		Terminal.y++;
-	} 
-	else
-	if (c >= ' ') 
-	{
-		Location = VideoMemory + (Terminal.y * VGA_WIDTH + Terminal.x);
-		*Location = c | Attribute;
-		Terminal.x++;
-	}
-
-	if (Terminal.x >= VGA_WIDTH) {
-		Terminal.x = 0;
-		Terminal.y++;
-	}
-	Scroll();
-	MoveCursor();
-}
-
-static VOID 
-MoveCursor(VOID) 
-{
-	UWORD CursorLocation = Terminal.y * VGA_WIDTH + Terminal.x;
-	WritePortB(0x3D4, 14);
-	WritePortB(0x3D5, CursorLocation >> 8);
-	WritePortB(0x3D4, 15);
-	WritePortB(0x3D5, CursorLocation);
-}
-
-static VOID 
-Scroll(VOID) 
-{
-	UBYTE AtributeByte = ((Terminal.BackColor << 0x4) | (Terminal.ForeColor & 0x0F));
-	UWORD Blank = 0x20 | (AtributeByte << 0x8);
-
-	if (Terminal.y >= VGA_HEIGHT) 
-	{
-		DWORD i;
-		for (i = 0; i < (VGA_HEIGHT - 1) * VGA_WIDTH; i++) 
-		{
-			VideoMemory[i] = VideoMemory[i + VGA_WIDTH];
-		}
-
-		for (i = (VGA_HEIGHT - 1) * VGA_WIDTH; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
-		{
-			VideoMemory[i] = Blank;
-		}
-		Terminal.y = VGA_HEIGHT - 1;
-	}
-}
-
-CHAR 
-terminal_getchar(CHAR c) 
+inline char
+terminal_getchar(char c) 
 {
 	return (c);
 }
 
-STRING TerminalBuffer;
-STRING
-TerminalGets(STRING Str) 
+inline string
+terminal_gets(string Str) 
 {
-	TerminalBuffer = strcpy(Str, TerminalBuffer);
-	return (TerminalBuffer);
+	terminal_buffer = strcpy(Str, terminal_buffer);
+	return (terminal_buffer);
 }
 
-VOID 
-TerminalMoveCursor(UDWORD x, UDWORD y)
+inline void 
+terminal_move_cursor(udword x, udword y)
 {
-	Terminal.x += x;
-	Terminal.y += y;
-	MoveCursor();
+	terminal.x += x;
+	terminal.y += y;
+	move_cursor();
 }
 
-UDWORD TerminalGetCursorX(VOID)
+udword 
+terminal_get_cursor_x(void)
 {
-	return (Terminal.x);
+	return (terminal.x);
 }
 
-UDWORD TerminalGetCursorY(VOID)
+udword terminal_get_cursor_y(void)
 {
-	return (Terminal.y);
+	return (terminal.y);
 }
 
-VOID 
-Panic(const STRING Message, const STRING File, UDWORD Line) 
+void 
+panic(const string Message, const string File, udword Line) 
 {
 	__asm__ __volatile__("CLI");
-	TerminalPrintf("!!! PANIC(%s) at %s : %d\n", Message, File, Line);
-	CPU_Halt();
+	terminal_printf("!!! PANIC(%s) at %s : %d\n", Message, File, Line);
+	cpu_halt();
 }
 
-VOID
-PanicAssert(const STRING File, UDWORD Line, const STRING Description) 
+void
+panic_assert(const string File, udword Line, const string Description) 
 {
 	__asm__ __volatile__("CLI");
-	TerminalPrintf("!!! ASSERTION-FAILED(%s) at %s : %d.\n", Description, File, Line);
-	CPU_Halt();
+	terminal_printf("!!! ASSERTION-FAILED(%s) at %s : %d.\n", Description, File, Line);
+	cpu_halt();
 }

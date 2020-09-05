@@ -28,7 +28,7 @@ INIT_PATH					:= 	security
 KERNEL_PATH					:= 	kernel
 LIB_PATH					:= 	lib
 MAIN_PATH					:= 	main
-MEMORY_PATH					:= 	memory
+memORY_PATH					:= 	memory
 SECURITY_PATH				:=	security
 SYSTEM_PATH					:= 	system
 TOOL_PATH					:= 	tool
@@ -58,9 +58,9 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(FS_PATH)/ext2/ext2.c			\
 								$(FS_PATH)/vfs.c				\
 								$(LIB_PATH)/string.c			\
-								$(MEMORY_PATH)/balloon.c		\
-								$(MEMORY_PATH)/mem-util.c		\
-								$(MEMORY_PATH)/paging.c			\
+								$(memORY_PATH)/balloon.c		\
+								$(memORY_PATH)/mem-util.c		\
+								$(memORY_PATH)/paging.c			\
 								$(SECURITY_PATH)/centrix.c		\
 								$(SYSTEM_PATH)/io.c				\
 								$(SYSTEM_PATH)/irq.c			\
@@ -152,9 +152,9 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(FS_PATH)/ext2/ext2.c -o ext2.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/vfs.c -o vfs.o $(C_FLAGS)
 	$(COMPILER_C) $(LIB_PATH)/string.c -o string.o $(C_FLAGS)
-	$(COMPILER_C) $(MEMORY_PATH)/balloon.c -o balloon.o $(C_FLAGS)
-	$(COMPILER_C) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
-	$(COMPILER_C) $(MEMORY_PATH)/paging.c -o paging.o $(C_FLAGS)
+	$(COMPILER_C) $(memORY_PATH)/balloon.c -o balloon.o $(C_FLAGS)
+	$(COMPILER_C) $(memORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
+	$(COMPILER_C) $(memORY_PATH)/paging.c -o paging.o $(C_FLAGS)
 	$(COMPILER_C) $(SECURITY_PATH)/centrix.c -o centrix.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/irq.c -o irq.o $(C_FLAGS)

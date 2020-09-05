@@ -17,6 +17,6 @@
 #include "types.h"
 #include "adamantine.h"
 
-EXTERN VOID KMain(VOID);
+EXTERN void kernel_sys_entry(void);
 
 #endif	// !ADAMANTINE_MAIN

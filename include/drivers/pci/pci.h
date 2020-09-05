@@ -19,7 +19,7 @@
 /* Define macros. */
 #define PCI_ENABLE                          (PCI_DRIVER & 0x01)
 #define PCI_DEVICE_ENABLE_IO                (PCI_ENABLE << 0x00)
-#define PCI_DEVICE_ENABLE_MEMORY            (PCI_ENABLE << 0x01)
+#define PCI_DEVICE_ENABLE_memORY            (PCI_ENABLE << 0x01)
 #define PCI_DEVICE_ENABLE_MASTER            (PCI_ENABLE << 0x02)
 #define PCI_DEVICE_ENABLE_SPECIAL           (PCI_ENABLE << 0x03)
 #define PCI_DEVICE_ENABLE_INVALIDATE        (PCI_ENABLE << 0x04)
@@ -29,12 +29,12 @@
 
 struct AOS_PCI_Device
 {
-    UDWORD              Vendor;
-    UDWORD              Device;
-    UDWORD              SubVendor;
-    UDWORD              SubDevice;
-    UDWORD              Class;
-    UDWORD              ClassMask;
+    udword              Vendor;
+    udword              device;
+    udword              SubVendor;
+    udword              SubDevice;
+    udword              Class;
+    udword              ClassMask;
 } PACKED PCI_Device_t;
 
 /* define the pci struct. */

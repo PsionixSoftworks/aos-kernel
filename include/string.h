@@ -17,8 +17,8 @@
 #include "types.h"
 
 // Declare string functions:
-EXTERN char *itoa(int value, char * str, int base);		// Converts integer to string.
-EXTERN int strcmp(string  str1, string str2);
+EXTERN char *itoa(udword value, char * str, udword base);		// Converts integer to string.
+EXTERN udword strcmp(string  str1, string str2);
 EXTERN string strcpy(string src, string dest);
 EXTERN string strcat(string dest, string src);
 EXTERN void to_lower(string str);

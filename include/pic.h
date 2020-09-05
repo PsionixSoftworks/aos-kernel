@@ -41,16 +41,16 @@
 #define ICW4_SFNM			0x10
 
 #define PIC_READ_IRR		0x0A
-#define PIC_READ_ISR		0x0B
+#define PIC_READ_isr		0x0B
 #endif
 
 // Declare global functions:
-EXTERN  VOID (PIC_SendEOI(UBYTE IRQ));					        // Send the end of instruction to the PIC.
-EXTERN  VOID (PIC_Remap(VOID));		                            // Remap PIC.
-EXTERN  VOID (IRQ_SetMask(UBYTE IRQ_Line));			            // Set the IRQ mask.
-EXTERN  VOID (IRQ_ClearMask(UBYTE IRQ_Line));			            // Clear the IRQ mask.
-EXTERN  UWORD (PIC_GetIRR(VOID));						        // Get (IRR?).
-EXTERN  UWORD (PIC_GetISR(VOID));						        // Get the interrupt service routine.
-EXTERN  UWORD (PIC_GetIRQRegister(DWORD OCW3));				    // Get the IRQ register.
+EXTERN  void (pic_send_eoi(ubyte irq));					        // Send the end of instruction to the PIC.
+EXTERN  void (pic_remap(void));		                            // Remap PIC.
+EXTERN  void (irq_set_mask(ubyte irq_Line));			            // Set the irq mask.
+EXTERN  void (irq_clear_mask(ubyte irq_Line));			            // Clear the irq mask.
+EXTERN  uword (pic_get_irr(void));						        // Get (IRR?).
+EXTERN  uword (pic_get_isr(void));						        // Get the interrupt service routine.
+EXTERN  uword (pic_get_irq_register(dword ocw3));				    // Get the irq registers.
 
 #endif	// !ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER

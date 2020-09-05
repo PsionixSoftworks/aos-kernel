@@ -12,12 +12,3 @@
 
 #include "../../aos-defs.h"
 #include "bus.h"
-
-//Bus_Driver_t *bus;
-
-void HOT
-enable_bus_driver(void)
-{
-    //bus->base_addr = BUS_ENABLE;
-
-}

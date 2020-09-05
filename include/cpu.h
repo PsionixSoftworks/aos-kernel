@@ -17,12 +17,12 @@
 #include "types.h"
 
 // Declare function templates:
-EXTERN void CPU_Init(void);                                     // Initialize the CPU.
-//EXTERN VOID CPU_Register(struct CPU, dword ID);
-EXTERN void CPU_Halt(void);									    // Halts the CPU from C.
-EXTERN void CPU_Suspend(void);									// Suspends the CPU from C.
-EXTERN dword CPU_BrokeASweat(void);                             // Checks CPU performance against heat rating.
-EXTERN string CPU_VendorString(void);                           // Gets the CPU vendor in string format.
-EXTERN udword CPU_CheckIsSupported(void);                       // Checks if the current CPU architecture is supported.
+EXTERN void cpu_init(void);                                     // Initialize the CPU.
+//EXTERN void CPU_Register(struct CPU, dword ID);
+EXTERN void cpu_halt(void);									    // Halts the CPU from C.
+EXTERN void cpu_suspend(void);									// Suspends the CPU from C.
+EXTERN dword cpu_broke_a_sweat(void);                             // Checks CPU performance against heat rating.
+EXTERN string cpu_vendor_string(void);                           // Gets the CPU vendor in string format.
+EXTERN udword cpu_check_is_supported(void);                       // Checks if the current CPU architecture is supported.
 
 #endif	// !ADAMANTINE_CPU

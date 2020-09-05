@@ -17,28 +17,28 @@
 
 MODULE("ProgrammableIntervalTimer", "0.01a");
 
-UDWORD Tick;
+udword tick;
 
-static VOID 
-TimerCallback(Registers_t Register) 
+static void 
+timer_callback(registers_t registers) 
 {
-	Tick++;
-	TerminalPrintf("Tick: %d\n", Tick);
+	tick++;
+	terminal_printf("tick: %d\n", tick);
 }
 
-VOID 
-TimerInit(UDWORD Frequency) 
+void 
+pit_init(udword frequency) 
 {
-	RegisterInterruptHandler(IRQ0, &TimerCallback);
+	register_interrupt_handler(irq0, &timer_callback);
 	
-	UDWORD Divisor = 0x1234DC / Frequency;
-	WritePortB(0x43, 0x36);
+	udword divisor = 0x1234DC / frequency;
+	write_portb(0x43, 0x36);
 	
-	UBYTE l = (UBYTE)(Divisor & 0xFF);
-	UBYTE h = (UBYTE)((Divisor >> 0x8) & 0xFF);
+	ubyte l = (ubyte)(divisor & 0xFF);
+	ubyte h = (ubyte)((divisor >> 0x8) & 0xFF);
 	
-	WritePortB(0x40, l);
-	WritePortB(0x40, h);
+	write_portb(0x40, l);
+	write_portb(0x40, h);
 
-	INFO("PIT is initialized!");
+	_INFO("PIT is initialized!");
 }

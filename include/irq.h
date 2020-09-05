@@ -16,9 +16,9 @@
 #include "aos-defs.h"
 #include "types.h"
 
-EXTERN BYTE (AreInterruptsEnabled(VOID));
-EXTERN ULONG (IRQ_Disable(VOID));
-EXTERN VOID (IRQ_Restore(ULONG Flags));
-EXTERN VOID (ClearInterrupts(VOID));
+EXTERN 	byte are_interrupts_enabled(void);
+EXTERN 	ulong irq_disable(void);
+EXTERN 	void irq_restore(ulong flags);
+EXTERN 	void clear_interrupts(void);
 
 #endif

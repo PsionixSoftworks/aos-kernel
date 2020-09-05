@@ -20,7 +20,34 @@
 #include "input.h"
 #include "output.h"
 
+typedef struct aos_input 	input_t;
+typedef struct aos_output 	output_t;
+typedef struct aos_io 		io_t;
+
+struct
+aos_input
+{
+	const ubyte(*inb)(uword);
+	const uword(*inw)(uword);
+	const udword(*inl)(uword);
+};
+
+struct
+aos_output
+{
+	const void(*outb)(uword, ubyte);
+	const void(*outw)(uword, uword);
+	const void(*outl)(uword, udword);
+};
+
+struct
+aos_io
+{
+	input_t in;
+	output_t out;
+};
+
 // Declare io functions:
-EXTERN VOID (IO_Wait(VOID));
+EXTERN void (io_wait(void));
 
 #endif	// !ADAMANTINE_IO

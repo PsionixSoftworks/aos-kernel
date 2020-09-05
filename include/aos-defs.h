@@ -34,8 +34,6 @@
 #define NULL								(void *)0
 #define FAILURE								FALSE
 #define SUCCESS								TRUE
-#define AOS_BASE_CNTRL                      0xCE0
-#define kernel_only                        __kernel_only
 #endif
 
 // Define the module naming system for later use:
@@ -58,6 +56,7 @@
 #define COLD                            __attribute__((__cold__))
 #define DEPRECATED		                __attribute__((deprecated))
 #define SECTION(name)	                __attribute__((section(name)))
+#define ALIGN(x)                        __attribute__((aligned(x)))
 #define _TEXT                           SECTION(".text")
 #define _MULTIBOOT                      SECTION(".multiboot")
 #define _RODATA                         SECTION(".rodata")
@@ -66,55 +65,30 @@
 #define ACCESS(mode)	                __attribute__((access(mode)))
 #endif	// !__STANDARD_ATTRIBUTES__
 
-/* Define common types. */
-typedef void                            VOID;
-typedef bool                            BOOL;
-typedef uint8_t                         UBYTE;
-typedef uint16_t                        UWORD;
-typedef uint32_t                        UDWORD;
-typedef unsigned long                   ULONG;
-typedef unsigned short                  USHORT;
-typedef int8_t                          BYTE;
-typedef int16_t                         WORD;
-typedef int32_t                         DWORD;
-typedef signed long                     LONG;
-typedef signed short                    SHORT;
-typedef size_t                          SIZE;
-typedef char                            CHAR;
-typedef string                          STRING;
-typedef float                           FLOAT;
-typedef double                          DOUBLE;
-
-#define STRUCT                          struct
-#define UNION                           union
-
 /* Setters for types. */
-#define SET_VOID(name)                  VOID    name
-#define SET_BOOL(name)                  BOOL    name
-#define SET_UBYTE(name)                 UBYTE   name
-#define SET_UWORD(name)                 UWORD   name
-#define SET_UDWORD(name)                UDWORD  name
-#define SET_ULONG(name)                 ULONG   name
-#define SET_USHORT(name)                USHORT  name
-#define SET_BYTE(name)                  BYTE    name
-#define SET_WORD(name)                  WORD    name
-#define SET_DWORD(name)                 DWORD   name
-#define SET_LONG(name)                  LONG    name
-#define SET_SHORT(name)                 SHORT   name
-#define SET_SIZE(name)                  SIZE    name
-#define SET_CHAR(name)                  CHAR    name
-#define SET_STRING(name)                STRING  name
-#define SET_FLOAT(name)                 FLOAT   name
-#define SET_DOUBLE(name)                DOUBLE  name
-#define SET_STRUCT(name)                STRUCT  name
-#define SET_UNION(name)                 UNION   name
+#define SET_VOID(name)                  void    name
+#define SET_BOOL(name)                  bool    name
+#define SET_UBYTE(name)                 ubyte   name
+#define SET_UWORD(name)                 uword   name
+#define SET_UDWORD(name)                udword  name
+#define SET_ULONG(name)                 ulong   name
+#define SET_USHORT(name)                ushort  name
+#define SET_BYTE(name)                  byte    name
+#define SET_WORD(name)                  word    name
+#define SET_DWORD(name)                 dword   name
+#define SET_LONG(name)                  long    name
+#define SET_SHORT(name)                 short   name
+#define SET_SIZE(name)                  size_t  name
+#define SET_CHAR(name)                  char    name
+#define SET_STRING(name)                string  name
+#define SET_FLOAT(name)                 float   name
+#define SET_DOUBLE(name)                double  name
+#define SET_STRUCT(name)                struct  name
+#define SET_UNION(name)                 union   name
 
 #ifdef __cplusplus
 #define EXTERN                          extern "C"
 #else
 #define EXTERN                          extern
 #endif
-
-#define PACK(name)                      PACKED name
-
 #endif	// !ADAMANTINE_STANDARD_DEFINITIONS

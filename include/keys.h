@@ -205,7 +205,7 @@ extern "C" {
 #endif
 
 // Define for normal keys:
-static STRING KeysNormal[256] = 
+static string KeysNormal[256] = 
 {
 	"", "", 															// <None>, <Escape>,
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
@@ -214,7 +214,7 @@ static STRING KeysNormal[256] =
 	"",																	// <Control>,
 	"a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",				// A, S, D, F, G, H, J, K, L, ;, ',
 	"`", "", "\\",														// `, <Left Shift>, \,
-	"z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "",				// Z, X, C, V, B, N, M, ',', ., /, <Right Shift>, <Alt>
+	"z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "",				// Z, X, C, V, B, N, m, ',', ., /, <Right Shift>, <Alt>
 	"*", "", " ", "",													// *, <Alt>, <Space Bar>, <Caps Lock>,
 	"", "", "", "", "", "", "", "", "", "",								// F1, F2, F3, F4, F5, F6, F7, F8, F9, F10,
 	"", 																// <Numlock (On?)>,
@@ -226,7 +226,7 @@ static STRING KeysNormal[256] =
 	"", "", "",															// Numpad 1, Numpad 2, Numpad 3,
 	"", "",																// Numpad 0, Numpad Del,
 	"", "", "",															// <NONE>, <NONE>, "<NONE>"
-	"", "",																// <Windows Key>, <Windows Key>,
+	"", "",																// <Windows key>, <Windows key>,
 };
 
 /*
@@ -240,7 +240,7 @@ static string keys_caps[256] =
 	"",																	// <Control>,
 	"A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",				// A, S, D, F, G, H, J, K, L, ;, ',
 	"~", "", "|",														// `, <Left Shift>, \,
-	"Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "",				// Z, X, C, V, B, N, M, ',', ., /, <Right Shift>, <Alt>
+	"Z", "X", "C", "V", "B", "N", "m", ",", ".", "/", "",				// Z, X, C, V, B, N, m, ',', ., /, <Right Shift>, <Alt>
 	"*", "", " ", "",													// *, <Alt>, <Space Bar>, <Caps Lock>,
 	"", "", "", "", "", "", "", "", "", "",								// F1, F2, F3, F4, F5, F6, F7, F8, F9, F10,
 	"", 																// <Numlock (On?)>,
@@ -252,7 +252,7 @@ static string keys_caps[256] =
 	"1", "2", "3",														// Numpad 1, Numpad 2, Numpad 3,
 	"0", ".",															// Numpad 0, Numpad Del,
 	"", "", "",															// <NONE>, <NONE>, "<NONE>"
-	"<ADM>", "<ADM>",													// <Windows Key>, <Windows Key>,
+	"<ADM>", "<ADM>",													// <Windows key>, <Windows key>,
 };
 */
 

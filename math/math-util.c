@@ -2,32 +2,34 @@
 #include <stdarg.h>
 //#include <math.h>
 
+MODULE("Math-Util", "0.01a");
+
 /* Defined in "math-util.h" */
-inline int
-abs(int x)
+inline udword
+abs(udword x)
 {
     return ((x < 0) ? -x : x);
 }
 
-inline int
+inline udword
 floor(double x)
 {
-    return ((double)((int)x - (x < 0.0)));
+    return ((double)((udword)x - (x < 0.0)));
 }
 
-int
+udword
 round(double x)
 {
-    return ((x >= 0) ? (int)(x + 0.5) : (int)(x - 0.5));
+    return ((x >= 0) ? (udword)(x + 0.5) : (udword)(x - 0.5));
 }
 
-inline int
+inline udword
 ceil(double x)
 {
-    return ((double)((int)x + (x > 0.0)));
+    return ((double)((udword)x + (x > 0.0)));
 }
 
-inline int
+inline udword
 sign(double x)
 {
     if (x < 0) {x = -1;}
@@ -140,7 +142,7 @@ pow(double x, double y)
     return (result);
 }
 
-inline int
+inline udword
 trunc(double x)
 {
 
@@ -159,24 +161,24 @@ radtodeg(double x)
 }
 
 /* Defined in "simple-math.h" */
-inline int
-sum2i(int x, int y)
+inline udword
+sum2i(udword x, udword y)
 {
-    int result = x + y;
+    udword result = x + y;
     return (result);
 }
 
-inline int
-sum3i(int x, int y, int z)
+inline udword
+sum3i(udword x, udword y, udword z)
 {
-    int result = x + y + z;
+    udword result = x + y + z;
     return (result);
 }
 
-inline int
-sum4i(int x, int y, int z, int w)
+inline udword
+sum4i(udword x, udword y, udword z, udword w)
 {
-    int result = x + y + z + w;
+    udword result = x + y + z + w;
     return (result);
 }
 
@@ -222,24 +224,24 @@ sum4d(double x, double y, double z, double w)
     return (result);
 }
 
-inline int
-difference2i(int x, int y)
+inline udword
+difference2i(udword x, udword y)
 {
-    int result = x - y;
+    udword result = x - y;
     return (result);
 }
 
-inline int
-difference3i(int x, int y, int z)
+inline udword
+difference3i(udword x, udword y, udword z)
 {
-    int result = x - y - z;
+    udword result = x - y - z;
     return (result);
 }
 
-inline int
-difference4i(int x, int y, int z, int w)
+inline udword
+difference4i(udword x, udword y, udword z, udword w)
 {
-    int result = x - y - z - w;
+    udword result = x - y - z - w;
     return (result);
 }
 
@@ -285,24 +287,24 @@ difference4d(double x, double y, double z, double w)
     return (result);
 }
 
-inline int
-product2i(int x, int y)
+inline udword
+product2i(udword x, udword y)
 {
-    int result = x * y;
+    udword result = x * y;
     return (result);
 }
 
-inline int
-product3i(int x, int y, int z)
+inline udword
+product3i(udword x, udword y, udword z)
 {
-    int result = x * y * z;
+    udword result = x * y * z;
     return (result);
 }
 
-inline int
-product4i(int x, int y, int z, int w)
+inline udword
+product4i(udword x, udword y, udword z, udword w)
 {
-    int result = x * y * z * w;
+    udword result = x * y * z * w;
     return (result);
 }
 
@@ -348,24 +350,24 @@ product4d(double x, double y, double z, double w)
     return (result);
 }
 
-inline int
-quotient2i(int x, int y)
+inline udword
+quotient2i(udword x, udword y)
 {
-    int result = (int)round(x / y);
+    udword result = (udword)round(x / y);
     return (result);
 }
 
-inline int
-quotient3i(int x, int y, int z)
+inline udword
+quotient3i(udword x, udword y, udword z)
 {
-    int result = (int)round(x / y / z);
+    udword result = (udword)round(x / y / z);
     return (result);
 }
 
-inline int
-quotient4i(int x, int y, int z, int w)
+inline udword
+quotient4i(udword x, udword y, udword z, udword w)
 {
-    int result = (int)round(x / y / z / w);
+    udword result = (udword)round(x / y / z / w);
     return (result);
 }
 

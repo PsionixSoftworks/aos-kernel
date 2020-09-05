@@ -16,55 +16,55 @@
 MODULE("Input-Output", "0.01a");
 
 // Write to the io port :
-VOID 
-WritePortB(UWORD Port, UBYTE Value) 
+void 
+write_portb(uword port, ubyte value) 
 {
-	asm volatile("OUTB %0, %1" : : "a"(Value), "Nd"(Port));
+	asm volatile("OUTB %0, %1" : : "a"(value), "Nd"(port));
 }
 
-VOID
-WritePortW(UWORD Port, UWORD Value)
+void
+write_portw(uword port, uword value)
 {
-	asm volatile("OUTW %0, %1" : : "a"(Value), "Nd"(Port));
+	asm volatile("OUTW %0, %1" : : "a"(value), "Nd"(port));
 }
 
-VOID
-WritePortDW(UWORD Port, UDWORD Value)
+void
+write_portdw(uword port, udword value)
 {
-	asm volatile("OUTL %0, %1" : : "a"(Value), "Nd"(Port));
+	asm volatile("OUTL %0, %1" : : "a"(value), "Nd"(port));
 }
 
-// Read from the io port:
-UBYTE 
-ReadPortB(UWORD Port)
+// read from the io port:
+ubyte 
+read_portb(uword port)
 {
-	UBYTE Value = 0;
-	asm volatile("INB %1, %0" : "=a"(Value) : "dN"(Port));
+	ubyte value = 0;
+	asm volatile("INB %1, %0" : "=a"(value) : "dN"(port));
 
-	return (Value);
+	return (value);
 }
 
-UWORD 
-ReadPortW(UWORD Port) 
+uword 
+read_portw(uword port) 
 {
-	UWORD Value = 0;
-	asm volatile("INW %1, %0" : "=a" (Value) : "dN" (Port));
+	uword value = 0;
+	asm volatile("INW %1, %0" : "=a" (value) : "dN" (port));
 
-	return (Value);
+	return (value);
 }
 
-UDWORD
-ReadPortDW(UWORD Port)
+udword
+read_portdw(uword port)
 {
-	UDWORD Value = 0;
-	asm volatile("INL %1, %0" : "=a"(Value) : "dN"(Port));
+	udword value = 0;
+	asm volatile("INL %1, %0" : "=a"(value) : "dN"(port));
 
-	return (Value);
+	return (value);
 }
 
 // Tell the io port to wait:
-VOID 
-IO_Wait(VOID) 
+void 
+io_wait(void) 
 {
 	asm volatile("JMP 1f\n\t" "1:JMP 2f\n\t" "2:");
 }

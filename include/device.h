@@ -18,17 +18,17 @@
 #include "string.h"
 #include "driver.h"
 
-struct AOS_FileSystem;
+struct aos_file_system;
 
 typedef struct 
 aos_device 
 {
     udword              device_id;
     byte                device_status;
-    byte                (*Read)(BYTE *Buffer, UDWORD Offset, UDWORD Length, VOID *Device);
-    byte                (*Write)(BYTE *Buffer, UDWORD Offset, UDWORD Length, VOID *Device);
+    byte                (*read)(byte *buffer, udword Offset, udword length, void *device);
+    byte                (*Write)(byte *buffer, udword Offset, udword length, void *device);
     string              device_name;
-    struct              AOS_FileSystem *FileSystem;
+    struct              aos_file_system *file_system;
 } device_t;
 
 enum 
@@ -38,9 +38,9 @@ DeviceType {
     DEVICE_BLOCK,
 };
 
-EXTERN VOID AOS_DeviceInit(UDWORD, STRING);
-EXTERN VOID AOS_DeviceAdd(struct aos_device *);
-EXTERN VOID AOS_DeviceFree(VOID);
-EXTERN struct aos_device AOS_DeviceGet(UDWORD);
+EXTERN void aos_device_init(udword, string);
+EXTERN void aos_device_add(struct aos_device *);
+EXTERN void aos_device_free(void);
+EXTERN struct aos_device aos_device_get(udword);
 
 #endif

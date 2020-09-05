@@ -15,9 +15,9 @@
 
 MODULE("interrupt-service-routine", "0.01a");
 
-ISR_t InterruptHandlers[256];
+isr_t InterruptHandlers[256];
 
-STRING ExceptionMessages[] = 
+string ExceptionMessages[] = 
 {
 	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",
 	"AOS_INTERRUPT Raised! : [Debug Exception]",
@@ -40,50 +40,50 @@ STRING ExceptionMessages[] =
 	"AOS_INTERRUPT Raised! : [Machine Check Exception]",
 };
 
-VOID
-FaultHandler(Registers_t Register) 
+void
+FaultHandler(registers_t registers) 
 {
-	if (Register.INT_NO < 32) 
+	if (registers.INT_NO < 32) 
 	{
-		ERROR(ExceptionMessages[Register.INT_NO]);
-		CPU_Halt();
-		TerminalPrint("System halted!");
+		_ERROR(ExceptionMessages[registers.INT_NO]);
+		cpu_halt();
+		//terminal_printf("System halted!");
 	}
 }
 
-VOID 
-RegisterInterruptHandler(UBYTE n, ISR_t Handler) 
+void 
+register_interrupt_handler(ubyte n, isr_t handler) 
 {
-	InterruptHandlers[n] = Handler;
+	InterruptHandlers[n] = handler;
 }
 
-VOID
-ISR_Handler(Registers_t Register) 
+void
+isr_handler(registers_t registers) 
 {
-	//TerminalPrintf("%s , Int No: %d\n", ExceptionMessages[Register->INT_NO], Register->INT_NO);
-	if (InterruptHandlers[Register.INT_NO] != 0) 
+	terminal_printf("%s , Int No: %d\n", ExceptionMessages[registers.INT_NO], registers.INT_NO);
+	if (InterruptHandlers[registers.INT_NO] != 0) 
 	{
-		ISR_t Handler = InterruptHandlers[Register.INT_NO];
-		Handler(Register);
+		isr_t handler = InterruptHandlers[registers.INT_NO];
+		handler(registers);
 	} 
 	else 
 	{
-		FaultHandler(Register);
+		FaultHandler(registers);
 	}
 }
 
-VOID 
-IRQ_Handler(Registers_t Register) 
+void 
+irq_handler(registers_t registers) 
 {
-	if (Register.INT_NO >= 40) 
+	if (registers.INT_NO >= 40) 
 	{
-		WritePortB(0xA0, 0x20);
+		write_portb(0xA0, 0x20);
 	}
-	WritePortB(0x20, 0x20);	/* EOI */
+	write_portb(0x20, 0x20);	/* EOI */
 	
-	if (InterruptHandlers[Register.INT_NO] != 0) 
+	if (InterruptHandlers[registers.INT_NO] != 0) 
 	{
-		ISR_t Handler = InterruptHandlers[Register.INT_NO];
-		Handler(Register);
+		isr_t handler = InterruptHandlers[registers.INT_NO];
+		handler(registers);
 	}
 }

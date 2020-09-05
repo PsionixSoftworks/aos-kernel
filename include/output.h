@@ -16,8 +16,8 @@
 #include "aos-defs.h"
 #include "types.h"
 
-EXTERN  VOID (WritePortB(UWORD Port, UBYTE Value));	            /* Writes to an 8-Bit port. */
-EXTERN  VOID (WritePortW(UWORD Port, UWORD Value));	            /* Writes to a 16-Bit port. */
-EXTERN  VOID (WritePortDW(UWORD Port, UDWORD Value));	        /* Writes to a 32-Bit port. */
+EXTERN  void (write_portb(uword port, ubyte value));	            /* Writes to an 8-Bit port. */
+EXTERN  void (write_portw(uword port, uword value));	            /* Writes to a 16-Bit port. */
+EXTERN  void (write_portdw(uword port, udword value));	        /* Writes to a 32-Bit port. */
 
 #endif

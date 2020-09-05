@@ -16,29 +16,29 @@
 
 MODULE("Mutex", "0.01a");
 
-UBYTE Enabled = 0;
+ubyte Enabled = 0;
 
-static VOID 
-ScheduleNoIRQ(VOID);
+static inline void 
+schedule_no_irq(void);
 
-VOID 
-MutexLock(Mutex* m) 
+inline void 
+mutex_lock(mutex* m) 
 {
 	/* if the lock is locked, wait and set its locked state */
-	while(m->Locked) ScheduleNoIRQ();
-	m->Locked = 1;
+	while(m->locked) schedule_no_irq();
+	m->locked = 1;
 }
 
-VOID 
-MutexUnlock(Mutex* m) 
+inline void 
+mutex_unlock(mutex* m) 
 {
 	/* this code can only be accessed by the holding thread, so unlock it */
-	m->Locked = 0;
-	ScheduleNoIRQ();
+	m->locked = 0;
+	schedule_no_irq();
 }
 
-static VOID 
-ScheduleNoIRQ(VOID) 
+static inline void 
+schedule_no_irq(void) 
 {
 	if(!Enabled)
 		return;

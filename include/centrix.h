@@ -21,8 +21,8 @@
 
 #if CENTRIX_VERSION <= 100
 
-EXTERN VOID (*KernelInstall(STRING Name));
-EXTERN DWORD (Verify(VOID));
+EXTERN void *kernel_install(string name);
+EXTERN dword kernel_verify(void);
 
 #endif	/* !CENTRIX_VERSION */
 #endif	/* !CENTRIX */

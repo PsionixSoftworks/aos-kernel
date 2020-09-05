@@ -17,60 +17,60 @@
 #include "../include/terminal.h"
 #include "../include/io.h"
 
-MODULE("MemoryUtility", "0.01a");
+MODULE("Memory-Util", "0.01a");
 
 #define MAX_PAGE_ALLOCS		32
 
 /* Define mutexes here. */
-DEFINE_MUTEX(m_memcpy);
+DEFINE_mutex(m_memcpy);
 
-UDWORD LastAlloc 	= 0;
-UDWORD HeapEnd 		= 0;
-UDWORD HeapBegin 	= 0;
-UDWORD PHeapBegin 	= 0;
-UDWORD PHeapEnd 	= 0;
-UDWORD MemoryUsed 	= 0;
-UBYTE *PHeapDesc 	= 0;
+udword LastAlloc 	= 0;
+udword HeapEnd 		= 0;
+udword HeapBegin 	= 0;
+udword PHeapBegin 	= 0;
+udword PHeapEnd 	= 0;
+udword memoryUsed 	= 0;
+ubyte *PHeapDesc 	= 0;
 
-EXTERN UDWORD kernel_end;
-UDWORD PlacementAddress = (UDWORD)&kernel_end;
+EXTERN udword kernel_end;
+udword PlacementAddress = (udword)&kernel_end;
 
-VOID 
-MM_Init(UDWORD *kernel_end) 
+void 
+mm_init(udword *kernel_end) 
 {
 	LastAlloc = kernel_end + 0x1000;
 	HeapBegin = LastAlloc;
 	PHeapEnd = 0x400000;
 	PHeapBegin = PHeapEnd - (MAX_PAGE_ALLOCS * 4096);
 	HeapEnd = PHeapBegin;
-	MemSet((STRING)HeapBegin, 0, HeapEnd - HeapBegin);
-	PHeapDesc = (UBYTE *)Malloc(MAX_PAGE_ALLOCS);
+	memset((string)HeapBegin, 0, HeapEnd - HeapBegin);
+	PHeapDesc = (ubyte *)malloc(MAX_PAGE_ALLOCS);
 
-	INFO("Memory Module is initialized!");
-	TerminalPrintf("Kernel heap begins at 0x%x\n", LastAlloc);
+	_INFO("memory Module is initialized!");
+	terminal_printf("Kernel heap begins at 0x%x\n", LastAlloc);
 }
 
-VOID
-MM_PrintOut(VOID) 
+void
+MM_PrintOut(void) 
 {
-	TerminalPrintf("Memory Used: %x bytes allocated.\n", MemoryUsed);
+	terminal_printf("memory Used: %x bytes allocated.\n", memoryUsed);
 }
 
-VOID 
-Free(VOID *Mem) 
+void 
+free(void *mem) 
 {
-	Alloc_t *Alloc = (Mem - sizeof(Alloc_t));
-	MemoryUsed -= Alloc->Size + sizeof(Alloc_t);
-	Alloc->Status = 0;
+	Alloc_t *Alloc = (mem - sizeof(Alloc_t));
+	memoryUsed -= Alloc->size + sizeof(Alloc_t);
+	Alloc->status = 0;
 }
 
-VOID 
-PFree(VOID *Mem) 
+void 
+pfree(void *mem) 
 {
-	if ((Mem < PHeapBegin) || (Mem > PHeapEnd)) 
+	if ((mem < PHeapBegin) || (mem > PHeapEnd)) 
 		return;
 
-	UDWORD ad = (UDWORD)Mem;
+	udword ad = (udword)mem;
 	ad -= PHeapBegin;
 	ad /= 4096;
 
@@ -79,81 +79,81 @@ PFree(VOID *Mem)
 	return;
 }
 
-VOID *
-PMalloc(SIZE Size) 
+void *
+pmalloc(size_t size) 
 {
-	for (DWORD i = 0; i < MAX_PAGE_ALLOCS; i++) 
+	for (size_t i = 0; i < MAX_PAGE_ALLOCS; i++) 
 	{
 		if (PHeapDesc[i]) 
 			continue;
 		PHeapDesc[i] = 1;
-		TerminalPrintf("PAllocated from %X to %X.\n", PHeapBegin + i * 4096, PHeapBegin + (i + 1) * 4096);
+		terminal_printf("PAllocated from %X to %X.\n", PHeapBegin + i * 4096, PHeapBegin + (i + 1) * 4096);
 
-		return ((STRING)(PHeapBegin + i * 4096));
+		return ((string)(PHeapBegin + i * 4096));
 	}
-	TerminalPrint("PMalloc: FATAL: failure!\n");
+	terminal_print("pmalloc: FATAL: failure!\n");
 	return (0);
 }
 
-VOID *
-Malloc(SIZE Size) 
+void *
+malloc(size_t size) 
 {
-	if (!Size) return;
-	UBYTE *Mem = (UBYTE *)HeapBegin;
-	while ((UDWORD)Mem < LastAlloc) 
+	if (!size) return;
+	ubyte *mem = (ubyte *)HeapBegin;
+	while ((udword)mem < LastAlloc) 
 	{
-		Alloc_t *a = (Alloc_t *)Mem;
-		if (!a->Size)
+		Alloc_t *a = (Alloc_t *)mem;
+		if (!a->size)
 			goto nalloc;
-		if (a->Status) 
+		if (a->status) 
 		{
-			Mem += a->Size;
-			Mem += sizeof(Alloc_t);
-			Mem += 4;
+			mem += a->size;
+			mem += sizeof(Alloc_t);
+			mem += 4;
 			continue;
 		}
 
-		if (a->Size >= Size) 
+		if (a->size >= size) 
 		{
-			a->Status = 1;
+			a->status = 1;
 
-			TerminalPrintf("RE:Allocated %d bytes from %d to %d...\n", Size, Mem + sizeof(Alloc_t), Mem + sizeof(Alloc_t) + Size);
+			terminal_printf("RE:Allocated %d bytes from %d to %d...\n", size, mem + sizeof(Alloc_t), mem + sizeof(Alloc_t) + size);
 
-			MemSet(Mem + sizeof(Alloc_t), 0, Size);
-			MemoryUsed += Size + sizeof(Alloc_t);
-			return ((VOID *)(Mem + sizeof(Alloc_t)));
+			memset(mem + sizeof(Alloc_t), 0, size);
+			memoryUsed += size + sizeof(Alloc_t);
+			return ((void *)(mem + sizeof(Alloc_t)));
 		}
-		Mem += a->Size;
-		Mem += sizeof(Alloc_t);
-		Mem += 4;
+		mem += a->size;
+		mem += sizeof(Alloc_t);
+		mem += 4;
 	}
 
 	nalloc:;
-	if (LastAlloc + Size + sizeof(Alloc_t) >= HeapEnd) 
+	if (LastAlloc + size + sizeof(Alloc_t) >= HeapEnd) 
 	{
-		PANIC("Cannot allocate. Out of memory...");
+		_PANIC("Cannot allocate. Out of memory...");
 	}
 	Alloc_t *Alloc = (Alloc_t *)LastAlloc;
-	Alloc->Status = 1;
-	Alloc->Size = Size;
+	Alloc->status = 1;
+	Alloc->size = size;
 
-	LastAlloc += Size;
+	LastAlloc += size;
 	LastAlloc += sizeof(Alloc_t);
 	LastAlloc += 4;
 
-	MemoryUsed += Size + 4 + sizeof(Alloc_t);
-	MemSet((VOID *)((UDWORD)Alloc + sizeof(Alloc_t)), 0, Size);
+	memoryUsed += size + 4 + sizeof(Alloc_t);
+	memset((void *)((udword)Alloc + sizeof(Alloc_t)), 0, size);
 	//MM_PrintOut();
 
-	return ((VOID *)((UDWORD)Alloc + sizeof(Alloc_t)));
+	return ((void *)((udword)Alloc + sizeof(Alloc_t)));
 }
 
-VOID *
-MemCpy(const VOID *Destination, const VOID *Source, SIZE Count) 
+void *
+memcpy(const void *destination, const void *source, size_t Count) 
 {
-	MutexLock(&m_memcpy);
-	STRING DST8 = (STRING)Destination;
-	STRING SRC8 = (STRING)Source;
+	mutex_lock(&m_memcpy);
+	string DST8 = (string)destination;
+	string SRC8 = (string)source;
 
 	if (Count & 1) 
 	{
@@ -171,66 +171,66 @@ MemCpy(const VOID *Destination, const VOID *Source, SIZE Count)
 		DST8 += 2;
 		SRC8 += 2;
 	}
-	MutexUnlock(&m_memcpy);
-	return ((VOID *)Destination);
+	mutex_unlock(&m_memcpy);
+	return ((void *)destination);
 }
 
-VOID *
-MemSet16(VOID *Pointer,  UDWORD Value, SIZE Size)
+void *
+memset16(void *pointer,  udword value, size_t size)
 {
-	UWORD *p = Pointer;
-	while (Size--)
-		*p++ = Value;
-	return (Pointer);
+	uword *p = pointer;
+	while (size--)
+		*p++ = value;
+	return (pointer);
 }
 
-VOID *
-MemSet(VOID *Pointer, DWORD Value, SIZE Number) 
+void *
+memset(void *pointer, dword value, size_t Number) 
 {
-	UBYTE *p = Pointer;
+	ubyte *p = pointer;
 	while (Number--)
-		*p++ = (UBYTE)Value;
-	return (Pointer);
+		*p++ = (ubyte)value;
+	return (pointer);
 }
 
 /* James Molloy... */
-UDWORD
-kMalloc_int(UDWORD Size, int Align, UDWORD *PhysicalAddress)
+udword
+kmalloc_int(udword size, udword align, udword *physical_address)
 {
-	if ((Align == 1) && (PlacementAddress & 0xFFFFF000))
+	if ((align == 1) && (PlacementAddress & 0xFFFFF000))
 	{
 		PlacementAddress &= 0xFFFFF000;
 		PlacementAddress += 0x1000;
 	}
-	if (PhysicalAddress)
+	if (physical_address)
 	{
-		*PhysicalAddress = PlacementAddress;
+		*physical_address = PlacementAddress;
 	}
-	UDWORD Temp = PlacementAddress;
-	PlacementAddress += Size;
+	udword Temp = PlacementAddress;
+	PlacementAddress += size;
 	return (Temp);
 }
 
-UDWORD
-kMalloc_a(UDWORD Size)
+udword
+kmalloc_a(udword size)
 {
-	return (kMalloc_int(Size, 1, 0));
+	return (kmalloc_int(size, 1, 0));
 }
 
-UDWORD
-kMalloc_p(UDWORD Size, UDWORD *PhysicalAddress)
+udword
+kmalloc_p(udword size, udword *physical_address)
 {
-	return (kMalloc_int(Size, 0, PhysicalAddress));
+	return (kmalloc_int(size, 0, physical_address));
 }
 
-UDWORD
-kMalloc_ap(UDWORD Size, UDWORD *PhysicalAddress)
+udword
+kmalloc_ap(udword size, udword *physical_address)
 {
-	return (kMalloc_int(Size, 1, PhysicalAddress));
+	return (kmalloc_int(size, 1, physical_address));
 }
 
-UDWORD
-kMalloc(UDWORD Size)
+udword
+kmalloc(udword size)
 {
-	return (kMalloc_int(Size, 0, 0));
+	return (kmalloc_int(size, 0, 0));
 }

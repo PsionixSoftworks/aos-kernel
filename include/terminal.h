@@ -1,5 +1,5 @@
 /*
- *  File: terminal.h
+ *  file: terminal.h
  *  Author: Vincent Cupo
  *  
  * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
@@ -19,36 +19,51 @@
 #include "cpu.h"
 #include <stdarg.h>
 
-#define INFO(...)			TerminalPrintf("[INFO]: %s\n", __VA_ARGS__);
-#define WARNING(...)		TerminalPrintf("[WARNING]: %s\n", __VA_ARGS__);
-#define ERROR(...)			TerminalPrintf("[ERROR]: %s\n", __VA_ARGS__); CPU_Halt();
-#define PANIC(msg)			Panic(msg, __FILE__, __LINE__);
-#define ASSERT(b) 			((b) ? (void)0 : PanicAssert(__FILE__, __LINE__, #b))
+#define NONE				(udword)NULL
+#define INFORMATION			0x01
+#define WARNING				0x02
+#define ERROR				0x03
 
-typedef struct AOS_Terminal Terminal_t;
-struct AOS_Terminal 
+#define _INFO(...)			terminal_printf("[INFO]: %s\n", __VA_ARGS__);
+#define _WARNING(...)		terminal_printf("[WARNING]: %s\n", __VA_ARGS__);
+#define _ERROR(...)			terminal_printf("[ERROR]: %s\n", __VA_ARGS__); cpu_halt();
+#define _PANIC(msg)			panic(msg, __FILE__, __LINE__);
+#define _ASSERT(b) 			((b) ? (void)0 : panic_assert(__FILE__, __LINE__, #b))
+
+typedef struct aos_terminal terminal_t;
+struct aos_terminal 
 {
-	BOOL IsInitialized;
-	UDWORD x;
-	UDWORD y;
-	UBYTE ForeColor;
-	UBYTE BackColor;
+	bool				is_initialized;
+	ubyte 				fore_color;
+	ubyte 				back_color;
+	udword 				x;
+	udword 				y;
 } PACKED;
 
-EXTERN 	VOID (TerminalInit(UBYTE BackColor, UBYTE ForeColor));
-EXTERN 	VOID (TerminalClearScreen(VOID));
-EXTERN 	VOID (TerminalPrint(const STRING c));
-EXTERN 	VOID (TerminalPrintHex(UDWORD Value));
-EXTERN 	VOID (TerminalPrintDec(DWORD Value));
-EXTERN 	DWORD (TerminalPrintf(const STRING Format, ...));
-EXTERN 	VOID (TerminalPrintln(VOID));
-EXTERN 	VOID (TerminalPrintValue(DWORD Value, UBYTE Base));
-EXTERN 	CHAR (Terminal_GetChar(CHAR c));
-EXTERN 	STRING(TerminalGets(STRING str));
-EXTERN 	VOID (TerminalMoveCursor(UDWORD x, UDWORD y));
-EXTERN 	UDWORD (TerminalGetCursorX(VOID));
-EXTERN 	UDWORD (TerminalGetCursorY(VOID));
-EXTERN 	VOID (Panic(const STRING Message, const STRING File, UDWORD Line));
-EXTERN 	VOID (PanicAssert(const STRING File, UDWORD Line, const STRING Descrition));
+EXTERN	DEPRECATED void terminal_init(ubyte back_color, ubyte fore_color);
+EXTERN 	DEPRECATED void terminal_clear_creen(void);
+EXTERN 	DEPRECATED void terminal_print(const string c);
+EXTERN 	DEPRECATED void terminal_print_hex(udword value);
+EXTERN 	DEPRECATED void terminal_print_dec(dword value);
+EXTERN 	DEPRECATED dword terminal_printf(const string format, ...);
+EXTERN 	DEPRECATED void terminal_println(void);
+EXTERN 	DEPRECATED void terminal_print_value(dword value, ubyte base);
+EXTERN 	DEPRECATED char terminal_get_char(char c);
+EXTERN 	DEPRECATED string terminal_gets(string str);
+EXTERN 	DEPRECATED void terminal_move_cursor(udword x, udword y);
+EXTERN 	DEPRECATED udword terminal_get_cursor_x(void);
+EXTERN 	DEPRECATED udword terminal_get_cursor_y(void);
+EXTERN 	DEPRECATED void panic(const string message, const string file, udword line);
+EXTERN 	DEPRECATED void panic_assert(const string file, udword line, const string description);
+
+EXTERN 	void system_log_begin(void);
+EXTERN	void system_log_end(void);
+EXTERN 	bool system_logf(ubyte severity, string msg, ...);
+EXTERN	void system_log_set_back_col(ubyte col);
+EXTERN 	void system_log_set_fore_col(ubyte col);
+EXTERN 	void system_log_reset_back_col(void);
+EXTERN	void system_log_reset_fore_col(void);
+EXTERN 	void system_log_clear_back_col(ubyte col);
+EXTERN 	void system_log_clear(void);
 
 #endif

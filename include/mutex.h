@@ -1,19 +1,19 @@
 /** @author Levente Kurusa <levex@linux.com> **/
-#ifndef _MUTEX_
-#define _MUTEX_
+#ifndef _mutex_
+#define _mutex_
 
 #include "aos-defs.h"
 #include "types.h"
 
 typedef struct {
-	BYTE 				Locked;
-} Mutex;
+	byte 				locked;
+} mutex;
 
-#define DEFINE_MUTEX(name) static Mutex name = { .Locked=0 };
+#define DEFINE_mutex(name) static mutex name = { .locked=0 };
 
-EXTERN VOID (MutexLock(Mutex	*M));
-EXTERN VOID (MutexUnlock(Mutex* M));
+EXTERN void (mutex_lock(mutex	*m));
+EXTERN void (mutex_unlock(mutex* m));
 
-// TODO: Finish writing Mutex...
+// TODO: Finish writing mutex...
 
-#endif	// !_MUTEX_
+#endif	// !_mutex_

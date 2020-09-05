@@ -18,25 +18,25 @@
 #include "types.h"
 
 // Declare the map node struct:
-struct MapNode 
+struct map_node 
 {
-	DWORD 				Key;										// The key for the map.
-	DWORD 				Value;										// The value of the key fro the map.
-	STRUCT 				MapNode *Next;								// Next index?
+	dword 				key;										// The key for the map.
+	dword 				value;										// The value of the key fro the map.
+	struct 				map_node *next;								// next index?
 } PACKED;
 
 // Declare the map struct:
-struct Map 
+struct map 
 {
-	SIZE 				Size;										// Size of the map.
-	STRUCT 				MapNode **List;								// Um, next index also?
+	size_t 				size;										// size of the map.
+	struct 				map_node **list;								// Um, next index also?
 } PACKED;
 
 // Declare global functions:
-EXTERN STRUCT Map *MapCreate(SIZE Size);						// Create a map data structure.
-EXTERN UDWORD (MapHashCode(STRUCT Map *M, DWORD Key));			// Map hash code... Duh?
-EXTERN UDWORD (MapGet(STRUCT Map *M, DWORD Key));				// Get the value by key.
-EXTERN VOID (MapAdd(STRUCT Map *M, DWORD Key, UDWORD Value));	// Add a value to the key.
-EXTERN VOID (MapFree(VOID));										// Free the memory created by the map.
+EXTERN struct map *map_create(size_t size);						// Create a map data structure.
+EXTERN udword (map_hash_code(struct map *m, dword key));			// map hash code... Duh?
+EXTERN udword (map_get(struct map *m, dword key));				// Get the value by key.
+EXTERN void (map_add(struct map *m, dword key, udword value));	// Add a value to the key.
+EXTERN void (map_free(void));										// free the memory created by the map.
 
 #endif	// !AMAMANTINE_MAP

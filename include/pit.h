@@ -16,6 +16,6 @@
 #include "aos-defs.h"
 #include "types.h"
 
-EXTERN  VOID (TimerInit(UDWORD Frequency));
+EXTERN  void pit_init(udword Frequency);
 
 #endif	// !SYSTEM_TIMER

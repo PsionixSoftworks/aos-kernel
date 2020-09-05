@@ -7,11 +7,11 @@
 #define E           2.7182818284590452354       // For Log e.
 
 /* Trigonometric math functions */
-EXTERN int abs(int n);
-EXTERN int floor(double x);
-EXTERN int round(double x);
-EXTERN int ceil(double x);
-EXTERN int sign(double x);
+EXTERN udword abs(udword n);
+EXTERN udword floor(double x);
+EXTERN udword round(double x);
+EXTERN udword ceil(double x);
+EXTERN udword sign(double x);
 EXTERN double sin(double x);
 EXTERN double cos(double x);
 EXTERN double tan(double x);
@@ -26,7 +26,7 @@ EXTERN double log10(double x);
 EXTERN double exp(double x);
 EXTERN double sqrt(double x);
 EXTERN double pow(double x, double y);
-EXTERN int trunc(double x);
+EXTERN udword trunc(double x);
 EXTERN double degtorad(double x);
 EXTERN double radtodeg(double x);
 

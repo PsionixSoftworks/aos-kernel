@@ -14,35 +14,35 @@
 #include "../include/isr.h"
 #include "../include/terminal.h"
 
-static VOID SyscallHandler(Registers_t *Register);
+static void SyscallHandler(registers_t *registers);
 
-DEFN_SYSCALL1(TerminalPrint, 0, STRING);
-DEFN_SYSCALL1(TerminalPrintHex, 1, STRING);
-DEFN_SYSCALL1(TerminalPrintDec, 2, STRING);
+DEFN_SYSCALL1(terminal_print, 0, string);
+DEFN_SYSCALL1(terminal_print_hex, 1, string);
+DEFN_SYSCALL1(terminal_print_dec, 2, string);
 
-static VOID *Syscalls[3] =
+static void *Syscalls[3] =
 {
-    &TerminalPrint,
-    &TerminalPrintHex,
-    &TerminalPrintDec,
+    &terminal_print,
+    &terminal_print_hex,
+    &terminal_print_dec,
 };
-UDWORD NumberOfSyscalls = 3;
+udword NumberOfSyscalls = 3;
 
-VOID 
-SysCallsInit(VOID)
+void 
+syscall_init(void)
 {
-    RegisterInterruptHandler(0x80, &SyscallHandler);
+    register_interrupt_handler(0x96, &SyscallHandler);
 }
 
-VOID
-SyscallHandler(Registers_t *Register)
+void
+SyscallHandler(registers_t *registers)
 {
-    if (Register->EAX >= NumberOfSyscalls)
+    if (registers->EAX >= NumberOfSyscalls)
         return;
     
-    VOID *Location = Syscalls[Register->EAX];
+    void *Location = Syscalls[registers->EAX];
 
-    DWORD Value = 0;
+    dword value = 0;
     asm volatile ("     \
         PUSH %1;        \
         PUSH %2;        \
@@ -55,7 +55,7 @@ SyscallHandler(Registers_t *Register)
         POP %%EBX;      \
         POP %%EBX;      \
         POP %%EBX;      \
-        " : "=a" (Value) : "r" (Register->EDI), "r" (Register->ESI), "r" (Register->EDX), "r" (Register->ECX), "r" (Register->EBX), "r" (Location)
+        " : "=a" (value) : "r" (registers->EDI), "r" (registers->ESI), "r" (registers->EDX), "r" (registers->ECX), "r" (registers->EBX), "r" (Location)
     );
-    Register->EAX = Value;
+    registers->EAX = value;
 }

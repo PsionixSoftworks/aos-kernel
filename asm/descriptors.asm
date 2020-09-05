@@ -1,6 +1,6 @@
 ; Load up the Global Descriptor Table:
-[GLOBAL GDT_Flush]
-GDT_Flush:
+[GLOBAL gdt_flush]
+gdt_flush:
 	MOV EAX, [ESP + 4]
 	LGDT [EAX]
 
@@ -10,13 +10,21 @@ GDT_Flush:
 	MOV FS, AX
 	MOV GS, AX
 	MOV SS, AX
-	jmp 0x08:.Flush
-.Flush:
+	jmp 0x08:.flush
+.flush:
 	RET
 
 ; Load up the Interrupt Descriptor Table:
-[GLOBAL IDT_Flush]
-IDT_Flush:
+[GLOBAL idt_flush]
+idt_flush:
 	MOV EAX, [ESP + 4]
 	LIDT [EAX]
 	RET
+
+; Load up the Task State Segment:
+[GLOBAL tss_flush]
+tss_flush:
+    MOV AX, 0x2B
+
+    LTR AX
+    RET

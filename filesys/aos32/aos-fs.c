@@ -14,4 +14,4 @@
 #include "../../include/mem-util.h"
 #include "../../include/terminal.h"
 
-MODULE("AOS-FileSystem", "0.01a");
+MODULE("AOS-FileSystem32", "0.01a");

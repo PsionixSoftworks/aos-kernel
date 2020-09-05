@@ -61,13 +61,18 @@ typedef uint8_t                 ubyte;
 typedef uint16_t                uword;
 typedef uint32_t                udword;
 
+typedef signed short			sshort;
+typedef signed long				slong;
+typedef unsigned short			ushort;
+typedef unsigned long			ulong;
+
 // Define bool if we're using C:
 #ifndef __cplusplus
 typedef enum {false, true}	    bool;				// Define bool (C ONLY!).
 #endif	// !__cplusplus
 
 // Define kernel_types:
-#if __KERNEL__
+#if defined(__KERNEL__)
 typedef char                    __kernel_only __kernel_char;
 typedef string                  __kernel_only __kernel_string;
 
@@ -78,8 +83,17 @@ typedef uint8_t                 __kernel_only __kernel_uint8_t;
 typedef uint16_t                __kernel_only __kernel_uint16_t;
 typedef uint32_t                __kernel_only __kernel_uint32_t;
 
+typedef byte					__kernel_only __kernel_byte;
+typedef word					__kernel_only __kernel_word;
+typedef dword					__kernel_only __kernel_dword;
+typedef ubyte					__kernel_only __kernel_ubyte;
+typedef uword					__kernel_only __kernel_uword;
+typedef udword					__kernel_only __kernel_udword;
+
 typedef float                   __kernel_only __kernel_float;
 typedef double                  __kernel_only __kernel_double;
+typedef short					__kernel_only __kernel_short;
+typedef long					__kernel_only __kernel_long; 
 
 typedef void                    __kernel_only __kernel_void;
 typedef void                    __kernel_only *__kernel_pvoid;

@@ -28,24 +28,24 @@
 #define BALLOON_SIZE_MIN		BALLOON_SIZE_1						// Minimum size is 1KB.
 #define BALLOON_SIZE_MAX		BALLOON_SIZE_64						// Maximum size is 64KB.
 
-typedef struct AOS_Balloon Balloon_t;
+typedef struct aos_balloon balloon_t;
 
 // Define the balloon type struct:
-struct AOS_Balloon 
+struct aos_balloon 
 {
-	SIZE 				Size;										// The size of the current index.
-	UDWORD 				Capacity;									// The capacity of the balloon.
-	UDWORD 				*Buffer;
-	UDWORD 				*Data;
-	BOOL 				Valid;
+	size_t 				size;										// The size of the current index.
+	udword 				capacity;									// The capacity of the balloon.
+	udword 				*buffer;
+	udword 				*data;
+	bool 				valid;
 } PACKED;
 
 // Declare global functions:
-EXTERN 	BOOL (BalloonInit(SIZE Size));							// Initialize the balloon memory type.
-EXTERN 	UDWORD (*BalloonInflate(UDWORD Amount, UDWORD Value));	// Inflate balloon data.
-EXTERN 	UDWORD (*BalloonPop(VOID));								// Pop the balloon off the stack.
-EXTERN 	VOID (BalloonCleanup(VOID));								// Cleanup when no longer needed.
-EXTERN 	SIZE (BalloonSize(VOID));								// Get the balloon memory size.
-EXTERN 	SIZE (BalloonCapacity(VOID));
+EXTERN 	bool (balloon_init(size_t size));							// Initialize the balloon memory type.
+EXTERN 	udword (*balloon_inflate(udword amount, udword value));	// Inflate balloon data.
+EXTERN 	udword (*balloon_pop(void));								// Pop the balloon off the stack.
+EXTERN 	void (balloon_cleanup(void));								// Cleanup when no longer needed.
+EXTERN 	size_t (balloon_size(void));								// Get the balloon memory size.
+EXTERN 	size_t (balloon_capacity(void));
 
 #endif	// !ADAMANTINE_BALLOON

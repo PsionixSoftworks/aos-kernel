@@ -1,11 +1,11 @@
 #include "../include/task.h"
 #include "../include/tss.h"
 
-Task_t new_task;
-Task_t current_task;
+task_t new_task;
+task_t current_task;
 
 void *
-CreateTask(udword task_id, string task_name)
+task_create(udword task_id, string task_name)
 {
     new_task.task_id = task_id;
     new_task.task_name = task_name;
@@ -13,19 +13,19 @@ CreateTask(udword task_id, string task_name)
 }
 
 void
-StartTask(task_type_t *task)
+task_start(task_type_t *task)
 {
 
 }
 
 void
-SwitchTask(task_type_t *task1, task_type_t *task2)
+task_switch(task_type_t *task1, task_type_t *task2)
 {
 
 }
 
 void
-EndTask(task_type_t *task)
+task_end(task_type_t *task)
 {
 
 }

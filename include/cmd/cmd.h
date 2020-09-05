@@ -17,13 +17,4 @@
 #include "../types.h"
 #include "../string.h"
 
-struct CommandLine 
-{
-    STRING              *CMD_List;
-};
-typedef struct CommandLine Command_t;
-
-EXTERN  VOID (CommandLineInit(VOID));
-EXTERN  UBYTE (ParseCommand(STRING CMD));
-
 #endif

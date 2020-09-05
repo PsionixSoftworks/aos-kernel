@@ -17,41 +17,41 @@
 
 MODULE("System", "0.01a");
 
-VOID 
-SystemEnableCursor(UBYTE CursorStart, UBYTE CursorEnd) 
+void 
+system_enable_cursor(ubyte cursor_start, ubyte cursor_end) 
 {
-	WritePortB(0x3D4, 0x0A);
-	WritePortB(0x3D5, (ReadPortB(0x3D5) & 0xC0) | CursorStart);
+	write_portb(0x3D4, 0x0A);
+	write_portb(0x3D5, (read_portb(0x3D5) & 0xC0) | cursor_start);
 	
-	WritePortB(0x3D4, 0x0B);
-	WritePortB(0x3D5, (ReadPortB(0x3D5) & 0xE0) | CursorEnd);
+	write_portb(0x3D4, 0x0B);
+	write_portb(0x3D5, (read_portb(0x3D5) & 0xE0) | cursor_end);
 }
 
-VOID 
-SystemDisableCursor(VOID) 
+void 
+system_disable_cursor(void) 
 {
-	WritePortB(0x3D4, 0x0A);
-	WritePortB(0x3D5, 0x20);
+	write_portb(0x3D4, 0x0A);
+	write_portb(0x3D5, 0x20);
 }
 
-VOID 
-SystemUpdateCursor(UDWORD x, UDWORD y) 
+void 
+system_update_cursor(udword x, udword y) 
 {
-	UWORD Pos = y * VGA_WIDTH + x;
+	uword position = y * VGA_WIDTH + x;
 	
-	WritePortB(0x3D4, 0x0F);
-	WritePortB(0x3D5, (UBYTE)(Pos & 0xFF));
-	WritePortB(0x3D4, 0x0E);
-	WritePortB(0x3D5, (UBYTE)((Pos >> 8) & 0xFF));
+	write_portb(0x3D4, 0x0F);
+	write_portb(0x3D5, (ubyte)(position & 0xFF));
+	write_portb(0x3D4, 0x0E);
+	write_portb(0x3D5, (ubyte)((position >> 8) & 0xFF));
 }
 
-UWORD 
-SystemGetCursorPosition(void)
+uword 
+system_get_cursor_position(void)
 {
-	UWORD Pos = 0;
-	WritePortB(0x3D4, 0x0F);
-	Pos |= ReadPortB(0x3D5);
-	WritePortB(0x3D4, 0x0E);
-	Pos |= ((UWORD)ReadPortB(0x3D5)) << 8;
-	return (Pos);
+	uword position = 0;
+	write_portb(0x3D4, 0x0F);
+	position |= read_portb(0x3D5);
+	write_portb(0x3D4, 0x0E);
+	position |= ((uword)read_portb(0x3D5)) << 8;
+	return (position);
 }

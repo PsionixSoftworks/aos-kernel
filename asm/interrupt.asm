@@ -1,25 +1,25 @@
 %macro ISR_NOERRCODE 1
-  global ISR_%1
-  ISR_%1:
-    cli                         ; Disable interrupts firstly.
-    push byte 0                 ; Push a dummy error code.
-    push byte %1                ; Push the interrupt number.
-    jmp ISR_CommonStub         ; Go to our common handler code.
+  global isr_%1
+  isr_%1:
+    CLI                         ; Disable interrupts firstly.
+    PUSH BYTE 0                 ; Push a dummy error code.
+    PUSH %1                ; Push the interrupt number.
+    JMP ISR_CommonStub         ; Go to our common handler code.
 %endmacro
 
 ; This macro creates a stub for an ISR which passes it's own
 ; error code.
 %macro ISR_ERRCODE 1
-  GLOBAL ISR_%1
-  ISR_%1:
+  GLOBAL isr_%1
+  isr_%1:
     CLI                         ; Disable interrupts.
     PUSH %1                ; Push the interrupt number
     JMP ISR_CommonStub
 %endmacro
 
 %macro IRQ 2
-GLOBAL IRQ_%1
-IRQ_%1:
+GLOBAL irq_%1
+irq_%1:
 	CLI
 	PUSH BYTE 0
 	PUSH BYTE %2
@@ -58,7 +58,7 @@ ISR_NOERRCODE 	28
 ISR_NOERRCODE	  29
 ISR_NOERRCODE 	30
 ISR_NOERRCODE 	31
-ISR_NOERRCODE   128
+ISR_NOERRCODE   150
 
 IRQ	0, 32
 IRQ	1, 33
@@ -82,7 +82,7 @@ EXTERN FaultHandler ; No longer used??
 ; This is our common ISR stub. It saves the processor state, sets
 ; up for kernel mode segments, calls the C-level fault handler,
 ; and finally restores the stack frame.
-EXTERN ISR_Handler  ; In isr.c
+EXTERN isr_handler  ; In ISR.c
 ISR_CommonStub:
     PUSHA                    ; Pushes edi,esi,ebp,esp,ebx,edx,ecx,eax
 
@@ -95,7 +95,7 @@ ISR_CommonStub:
     MOV FS, AX
     MOV GS, AX
 
-    CALL ISR_Handler
+    CALL isr_handler
 
     POP EBX        ; reload the original data segment descriptor
     MOV DS, BX
@@ -108,7 +108,7 @@ ISR_CommonStub:
     STI
     IRET
 
-[EXTERN IRQ_Handler]
+[EXTERN irq_handler]
 IRQ_CommonStub:
 	  PUSHA
 	
@@ -121,7 +121,7 @@ IRQ_CommonStub:
 	  MOV FS, AX
 	  MOV GS, AX
 	
-	  CALL IRQ_Handler
+	  CALL irq_handler
 	
 	  POP EBX
 	  MOV DS, BX
@@ -135,19 +135,18 @@ IRQ_CommonStub:
 	  IRET
 
 [GLOBAL jump_usermode]
-EXTERN _test_user_function
+EXTERN test_user_function
 jump_usermode:
-    MOV AX, 0X23
-    MOV DS, AX
-    MOV ES, AX
-    MOV FS, AX
-    MOV GS, AX
-
-    MOV EAX, ESP
-    PUSH 0X23
-    PUSH EAX
-    PUSHF
-    PUSH 0x1B
-    PUSH _test_user_function
-    IRET
-
+  MOV ax, 0x23
+  MOV ds, ax
+  MOV es, ax
+  MOV fs, ax
+  MOV gs, ax
+  
+  MOV eax, esp
+  PUSH 0x23
+  PUSH eax
+  PUSHF
+  PUSH 0x1B
+  PUSH test_user_function
+  IRET

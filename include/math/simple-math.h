@@ -5,9 +5,9 @@
 #include "../types.h"
 
 /* Simple addition */
-EXTERN int sum2i(int x, int y);
-EXTERN int sum3i(int x, int y, int z);
-EXTERN int sum4i(int x, int y, int z, int w);
+EXTERN udword sum2i(udword x, udword y);
+EXTERN udword sum3i(udword x, udword y, udword z);
+EXTERN udword sum4i(udword x, udword y, udword z, udword w);
 EXTERN float sum2f(float x, float y);
 EXTERN float sum3f(float x, float y, float z);
 EXTERN float sum4f(float x, float y, float z, float w);
@@ -16,9 +16,9 @@ EXTERN double sum3d(double x, double y, double z);
 EXTERN double sum4d(double x, double y, double z, double w);
 
 /* Simple subtraction */
-EXTERN int difference2i(int x, int y);
-EXTERN int difference3i(int x, int y, int z);
-EXTERN int difference4i(int x, int y, int z, int w);
+EXTERN udword difference2i(udword x, udword y);
+EXTERN udword difference3i(udword x, udword y, udword z);
+EXTERN udword difference4i(udword x, udword y, udword z, udword w);
 EXTERN float difference2f(float x, float y);
 EXTERN float difference3f(float x, float y, float z);
 EXTERN float difference4f(float x, float y, float z, float w);
@@ -27,9 +27,9 @@ EXTERN double difference3d(double x, double y, double z);
 EXTERN double difference4d(double x, double y, double z, double w);
 
 /* Simple multiplication */
-EXTERN int product2i(int x, int y);
-EXTERN int product3i(int x, int y, int z);
-EXTERN int product4i(int x, int y, int z, int w);
+EXTERN udword product2i(udword x, udword y);
+EXTERN udword product3i(udword x, udword y, udword z);
+EXTERN udword product4i(udword x, udword y, udword z, udword w);
 EXTERN float product2f(float x, float y);
 EXTERN float product3f(float x, float y, float z);
 EXTERN float product4f(float x, float y, float z, float w);
@@ -38,9 +38,9 @@ EXTERN double product3d(double x, double y, double z);
 EXTERN double product4d(double x, double y, double z, double w);
 
 /* Simple division */
-EXTERN int quotient2i(int x, int y);
-EXTERN int quotient3i(int x, int y, int z);
-EXTERN int quotient4i(int x, int y, int z, int w);
+EXTERN udword quotient2i(udword x, udword y);
+EXTERN udword quotient3i(udword x, udword y, udword z);
+EXTERN udword quotient4i(udword x, udword y, udword z, udword w);
 EXTERN float quotient2f(float x, float y);
 EXTERN float quotient3f(float x, float y, float z);
 EXTERN float quotient4f(float x, float y, float z, float w);

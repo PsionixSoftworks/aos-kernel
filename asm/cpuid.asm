@@ -10,7 +10,7 @@ cpuid_supported:
     POPFD
     AND EAX, 0x00200000
     RET
-[GLOBAL cpuid]
-cpuid:
-    MOV EAX, 0x0
-    CPUID
+;[GLOBAL cpuid]
+;cpuid:
+;    MOV EAX, 0x0
+;    CPUID

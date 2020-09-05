@@ -6,6 +6,4 @@
 
 typedef struct aos_block block_t;
 
-
-
 #endif

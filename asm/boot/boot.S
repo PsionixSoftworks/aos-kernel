@@ -10,9 +10,6 @@
  *
  */
 
-#include "crti.S"
-#include "crtn.S"
-
 /* The .multiboot section is used to initalize GRUB and start the kernel. */
 .SECTION .multiboot
 .ALIGN 4
@@ -31,11 +28,18 @@
 
 /* Declare the .text section for the entry point and other functions. */
 .SECTION .text
+.TYPE _init, @function
+_init:
+    MOV $0x1FFF, %EAX
+    MOV %EAX, %ECX
+    RET
+
 .GLOBL _start
 .TYPE _start @function
 _start:
-    MOV $stack_top, %esp
-    CALL KMain
+    MOV $_init, %ESP
+    MOV $stack_top, %ESP
+    CALL kernel_sys_entry
     CLI
 1:  HLT
     JMP 1b
@@ -50,9 +54,9 @@ _start:
 /* Place the Multiboot stuff in read-only data because it'll never change. */
 .SECTION .rodata
 .SET ALIGN,     (1 << 0)
-.SET MEMINFO,   (1 << 1)
+.SET MEM_INFO,  (1 << 1)
 .SET GFX_EN,    (1 << 2)
-.SET FLAGS,     (ALIGN | MEMINFO)
+.SET FLAGS,     (ALIGN | MEM_INFO)
 .SET MAGIC,     (0x1BADB002)
 .SET CHECKSUM,  -(MAGIC + FLAGS)
 

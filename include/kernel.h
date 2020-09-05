@@ -13,7 +13,7 @@
 #ifndef _AOS_KERNEL_
 #define _AOS_KERNEL_
 
-#define __KERNEL__              1
+#define __KERNEL__
 
 // Handle other includes here:
 #include "aos-defs.h"
@@ -23,27 +23,26 @@
 #define KERNEL_MODE_SAFE		0x1
 #define KERNEL_MODE_NO_GUI		0x2
 
-typedef struct AOS_SystemInformation
+typedef struct aos_system_information
 {
-    /* CPU Specs */
-    BYTE CPU_Cores;
-    BYTE CPU_Temperature;
-    UDWORD CPU_ID;
-    FLOAT CPU_Frequency;
-    STRING CPU_Manufacturer;
-    STRING CPU_Name;
+    /* cpu Specs */
+    __kernel_byte       cpu_cores;
+    __kernel_byte       cpu_temperature;
+    __kernel_udword     cpu_id;
+    __kernel_float      cpu_frequency;
+    __kernel_string     cpu_manufacturer;
+    __kernel_string     cpu_name;
 
-    /* Memory Specs */
-    ULONG MemoryInstalled;
-    ULONG MemoryAvailable;
-    BYTE MemorySpeed;
+    /* memory Specs */
+    __kernel_udword     memory_installed;
+    __kernel_udword     memory_available;
+    __kernel_byte       memory_speed;
 
     /* Other Info */
-    LONG UpTime;
-} SystemInfo_t;
+    __kernel_long       up_time;
+} system_info_t;
 
 // Declare the global functions used by the kernel:
-EXTERN VOID (KernelRun(VOID));									// The kernel's init function for startup.
-
+EXTERN  __kernel_void kernel_run(__kernel_void);									// The kernel's init function for startup.
 
 #endif	// !ADAMANTINE_KERNEL

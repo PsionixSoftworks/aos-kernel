@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _VIRTUAL_FILESYS_
-#define _VIRTUAL_FILESYS_
+#ifndef _virtual_FILESYS_
+#define _virtual_FILESYS_
 
 #include "types.h"
 #include "string.h"

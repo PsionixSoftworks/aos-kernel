@@ -12,8 +12,8 @@
 
 #include "../include/string.h"
 
-char *
-itoa( int value, char * str, int base ) 
+inline char *
+itoa( udword value, char * str, udword base ) 
 {
     char *rc;
     char *ptr;
@@ -56,11 +56,11 @@ itoa( int value, char * str, int base )
     return (rc);
 }
 
-int
+inline udword
 strcmp(string str1, string str2) 
 {
-	int i = 0;
-	int failed = 0;
+	udword i = 0;
+	udword failed = 0;
 	while ((str1[i] != '\0') && (str2[i] != '\0')) 
     {
 		if (str1[i] != str2[i]) 
@@ -77,7 +77,7 @@ strcmp(string str1, string str2)
 	return (failed);
 }
 
-string
+inline string
 strcpy(string src, string dest) 
 {
 	unsigned i;
@@ -88,7 +88,7 @@ strcpy(string src, string dest)
     return (dest);
 }
 
-string
+inline string
 strcat(string dest, string src) 
 {
 	size_t i, j;
@@ -99,7 +99,7 @@ strcat(string dest, string src)
     return dest;
 }
 
-size_t
+inline size_t
 strlen(const string s) 
 {
 	size_t i = 0;
@@ -107,7 +107,7 @@ strlen(const string s)
 	return (i);
 }
 
-size_t
+inline size_t
 str_backspace(string str, char c) 
 {
     size_t i = strlen(str);
@@ -124,7 +124,7 @@ str_backspace(string str, char c)
     return (0);
 }
 
-size_t strsplit(string str, char delim) 
+inline size_t strsplit(string str, char delim) 
 {
     size_t n = 0;
     uint32_t i = 0;
@@ -141,7 +141,7 @@ size_t strsplit(string str, char delim)
     return (n);
 }
 
-void 
+inline void 
 to_lower(string str)
 {
     while(*str != '\0')
@@ -154,7 +154,7 @@ to_lower(string str)
     }
 }
 
-void
+inline void
 to_upper(string str)
 {
     while (*str != '\0')

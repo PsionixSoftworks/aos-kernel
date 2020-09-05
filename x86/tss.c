@@ -15,30 +15,82 @@
 #include "../include/mem-util.h"
 //#include "../include/x86/gdt.h"
 
-TSS_t tss_entry;
+tss_t tss_entry __attribute__((aligned(4096)));
 
 #define REPLACE_KERNEL_DATA_SEGMENT 0x18
 #define REPLACE_KERNEL_STACK_ADDR   0x20
 
-/* 0x23 = 35: User Mode Data Selector. */
-/* 0x1B = 27: CS Selector Value. */
-EXTERN udword _user_mode(void);
+/* 0x23 = 35: user Mode data selector. */
+/* 0x1B = 27: CS selector value. */
+EXTERN uint32_t jump_usermode(void);
 
 static char irq_stack[4096];
 
-VOID
-TSS_Init(VOID)
+void
+tss_init(void)
 {
-	MemSet(&tss_entry, 0, sizeof(struct AOS_TSS_Entry));
+	memset(&tss_entry, 0, sizeof(struct aos_tss_entry));
 	tss_entry.ss0 = 0x10;
 	tss_entry.iomap_base = 0xDFFF;
-	MemSet(irq_stack, 0, sizeof(irq_stack));
+	memset(irq_stack, 0, sizeof(irq_stack));
 }
 
-VOID
-SwitchToUserMode(VOID)
+/*
+static void
+jump_usermode(void)
 {
-    jump_usermode();
+	asm volatile
+	(	"		\
+		cli; 			\
+		mov $0x23, %ax;	\
+		mov %ax, %ds;	\
+		mov %ax, %es;	\
+		mov %ax, %fs;	\
+		mov %ax, %gs;	\
+						\
+		mov  %esp, %eax;\
+		pushl $0x23;	\
+		pushl %eax;		\
+		pushf;			\
+		pushl $0x1B;	\
+		push $1f;		\
+		iret;			\
+	1:	\
+		pop %eax;		\
+		or %eax, 0x200;	\
+		push %eax;		\
+		"
+	);
+}
+*/
+
+void
+tss_user_mode_switch(void)
+{
+    //jump_usermode();
+	asm volatile("  \
+     cli; \
+     mov $0x23, %ax; \
+     mov %ax, %ds; \
+     mov %ax, %es; \
+     mov %ax, %fs; \
+     mov %ax, %gs; \
+                   \
+     mov %esp, %eax; \
+     pushl $0x23; \
+     pushl %eax; \
+     pushf; \
+     pushl $0x1B; \
+     push $1f; \
+     iret; \
+   1: \
+     ");
+}
+
+void
+test_user_function(void)
+{
+	udword a = 0;
 }
 
 /*
@@ -50,7 +102,7 @@ write_tss(int32_t num, uint16_t ss0, uint32_t esp0)
 
 	//GDT_SetGate(num, base, limit, 0xE9, 0x00);
 
-	MemSet(&tss_entry, 0, sizeof(tss_entry));
+	memset(&tss_entry, 0, sizeof(tss_entry));
 
 	tss_entry.ss0 	= ss0;
 	tss_entry.esp0 	= esp0;

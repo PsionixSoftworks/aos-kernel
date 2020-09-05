@@ -17,150 +17,68 @@
 
 MODULE("Balloon", "0.01a");
 
-static Balloon_t Balloon;
+static balloon_t balloon;
 
-BOOL
-BalloonInit(SIZE Size) 
+bool
+balloon_init(size_t size) 
 {
-	Balloon.Valid = 	
+	balloon.valid = 	
 	(
-		(Size == BALLOON_SIZE_MIN)	||
-		(Size == BALLOON_SIZE_1) 	||
-		(Size == BALLOON_SIZE_2) 	||
-		(Size == BALLOON_SIZE_4) 	||
-		(Size == BALLOON_SIZE_8) 	||
-		(Size == BALLOON_SIZE_16) 	||
-		(Size == BALLOON_SIZE_32) 	||
-		(Size == BALLOON_SIZE_64)	||
-		(Size == BALLOON_SIZE_MAX)
+		(size == BALLOON_SIZE_MIN)	||
+		(size == BALLOON_SIZE_1) 	||
+		(size == BALLOON_SIZE_2) 	||
+		(size == BALLOON_SIZE_4) 	||
+		(size == BALLOON_SIZE_8) 	||
+		(size == BALLOON_SIZE_16) 	||
+		(size == BALLOON_SIZE_32) 	||
+		(size == BALLOON_SIZE_64)	||
+		(size == BALLOON_SIZE_MAX)
 	);
-	if (!Balloon.Valid) 
+	if (!balloon.valid) 
 	{
-		PANIC("Balloon memory size must be one of the supported values!");
+		_PANIC("balloon memory size must be one of the supported values!");
 		return;
 	}
 
 	// Allocate a specified balloon size for the data structure.
 	// This code should only be reachable if the size is one of the macro's.
-	Balloon.Buffer = (UDWORD *)Malloc(Size);
-	Balloon.Size = Size;
+	balloon.buffer = (udword *)malloc(size);
+	balloon.size = size;
 }
 
-UDWORD *
-BalloonInflate(UDWORD Amount, UDWORD Value) 
+udword *
+balloon_inflate(udword amount, udword value) 
 {
-	if (Amount > Balloon.Capacity) 
+	if (amount > balloon.capacity) 
 	{
-		UDWORD *Result = BalloonPop();
+		udword *Result = balloon_pop();
 		return (Result);
 	}
-	Balloon.Data = MemSet(Balloon.Buffer, Value, Balloon.Size);
+	balloon.data = memset(balloon.buffer, value, balloon.size);
 }
 
-VOID
-BalloonCleanup(VOID) 
+void
+balloon_cleanup(void) 
 {
-	if ((Balloon.Size <= BALLOON_SIZE_MIN) || Balloon.Size > BALLOON_SIZE_MAX)
+	if ((balloon.size <= BALLOON_SIZE_MIN) || balloon.size > BALLOON_SIZE_MAX)
 		return;
-	Free(Balloon.Buffer);
+	free(balloon.buffer);
 }
 
-UDWORD *
-BalloonPop(VOID) 
+udword *
+balloon_pop(void) 
 {
-	return (Balloon.Data);
+	return (balloon.data);
 }
 
-SIZE
-BalloonSize(VOID)
+size_t
+balloon_size(void)
 {
-	return (Balloon.Size);
-}
-
-SIZE
-BalloonCapacity(VOID)
-{
-	return (Balloon.Capacity);
-}
-
-/*
-// Initialize the data to fill:
-static uint32_t *data;
-
-// Declare the balloon struct:
-balloon_t balloon;
-
-// For checking if the memory type can still be used:
-bool popped;
-
-// Initialize the balloon memory util with one of the available sizes:
-bool balloon_init(uint32_t size) {
-	for (uint32_t i = 0; i < size; i++) {
-		data[i] = 0;
-	}
-	bool is_valid = ((size == BALLOON_SIZE_4) || (size == BALLOON_SIZE_8) || (size == BALLOON_SIZE_16) || (size == BALLOON_SIZE_32) || (size == BALLOON_SIZE_64));
-	if (is_valid) {
-		balloon.size = 0;
-		balloon.capacity = size;
-	} else {
-		//_int_10();
-	}
-	popped = false;
-	return (is_valid);
-}
-
-// Add data to the memory module:
-uint32_t *balloon_inflate(uint32_t amount, uint32_t value) {
-	if (!popped) {
-		if ((amount >= balloon.size) && (amount < balloon.capacity)) {
-			balloon.size = amount;
-			data[amount] = value;
-		}
-	}
-	if (balloon.size > balloon.capacity) {
-		return (balloon_pop());
-	}
-	return (0);
-}
-
-// Delete memory from the memory module:
-void balloon_deflate(uint32_t amount) {
-	if (!popped) {
-		if (amount > 0) {
-			for (uint32_t i = balloon.size; i > balloon.size - amount; i--) {
-				data[i] = 0;
-			}
-		}
-	}
-}
-
-// Free the memory in the module:
-void balloon_cleanup() {
-	for (uint32_t i = 0; i < balloon.capacity; i++) {
-		data[i] = 0;
-	}
-	balloon.size = 0;
-	balloon.capacity = 0;
-}
-
-// Disable this memory module and get the data in it:
-uint32_t *balloon_pop() {
-	uint32_t *tmp = data;
-	if (balloon.size > 0) {
-		if (!popped) {
-			popped = true;
-		}
-	}
-	return (tmp);
-}
-
-// Get the size of the current memory heap:
-uint32_t balloon_size() {
 	return (balloon.size);
 }
 
-// Get the capacity of the balloon module:
-uint32_t balloon_capacity() {
+size_t
+balloon_capacity(void)
+{
 	return (balloon.capacity);
 }
-*/

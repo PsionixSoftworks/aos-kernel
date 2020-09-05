@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE_MEMORY_UTILITY
-#define ADAMANTINE_MEMORY_UTILITY
+#ifndef ADAMANTINE_memORY_UTILITY
+#define ADAMANTINE_memORY_UTILITY
 
 #include "aos-defs.h"
 #include "types.h"
@@ -19,26 +19,26 @@
 // Declare the allocation type:
 typedef struct 
 {
-	BYTE 				Status;
-	SIZE 				Size;
+	byte 				status;
+	size_t 				size;
 } Alloc_t;
 
-EXTERN VOID (MM_Init(UDWORD *kernel_end));
-EXTERN VOID (PagingMapVirtualToPhysical(UDWORD Virtual, UDWORD Physical));
+EXTERN	void mm_init(udword *kernel_end);
+EXTERN	void paging_map_virtual_to_physical(udword virt, udword physical);
 
-EXTERN VOID (*PMalloc(SIZE Size));
-EXTERN VOID (*Malloc(SIZE Size));
-EXTERN VOID (PFree(VOID *Mem));
-EXTERN VOID (free(VOID *Mem));
+EXTERN	void *pmalloc(size_t size);
+EXTERN	void *malloc(size_t size);
+EXTERN	void pfree(void *mem);
+EXTERN	void free(void *mem);
 
-EXTERN VOID (*MemCpy(const VOID *Destination, const VOID *Source, SIZE Size));
-EXTERN VOID (*MemSet(VOID *Pointer, DWORD Value, SIZE Size));
-EXTERN VOID (*MemSet16(VOID *Pointer,  UDWORD Value, SIZE Size));
+EXTERN	void *memcpy(const void *destination, const void *source, size_t size);
+EXTERN	void *memset(void *pointer, dword value, size_t size);
+EXTERN	void *memset16(void *pointer,  udword value, size_t size);
 
-UDWORD kMalloc_int(UDWORD Size, int Align, UDWORD *PhysicalAddress);
-UDWORD kMalloc_a(UDWORD Size);
-UDWORD kMalloc_p(UDWORD SIZE, UDWORD *PhysicalAddress);
-UDWORD kMalloc_ap(UDWORD Size, UDWORD *PhysicalAddress);
-UDWORD kMalloc(UDWORD Size);
+udword	kmalloc_int(udword size, udword align, udword *physical_address);
+udword	kmalloc_a(udword size);
+udword	kmalloc_p(udword size_t, udword *physical_address);
+udword	kmalloc_ap(udword size, udword *physical_address);
+udword	kmalloc(udword size);
 
-#endif	// !ADAMANTINE_MEMORY_UTILITY
+#endif	// !ADAMANTINE_memORY_UTILITY
