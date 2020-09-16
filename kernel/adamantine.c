@@ -32,7 +32,5 @@ kernel_run(__kernel_void)
 	system_log_begin();
 	system_logf(NONE, "%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
 	init_descriptor_tables();
-
-	asm volatile("INT $0x00");
 	system_log_end();
 }
