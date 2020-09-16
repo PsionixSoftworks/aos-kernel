@@ -13,12 +13,11 @@
 /* Include anything the terminal requires here */
 #define __KERNEL__
 
-#include "../include/terminal.h"
-#include "../include/vga.h"
-#include "../include/io.h"
-#include "../include/keyboard.h"
-#include "../include/mutex.h"
-
+#include <system/terminal.h>
+#include <drivers/vga.h>
+#include <system/io.h>
+#include <drivers/keyboard.h>
+#include <adamantine/mutex.h>
 #include <stdarg.h>
 
 MODULE("terminal", "0.01a");

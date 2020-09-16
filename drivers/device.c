@@ -10,13 +10,11 @@
  *
  */
 
-#include "../include/aos-defs.h"
-#include "../include/device.h"
-#include "../include/driver.h"
-#include "../include/mem-util.h"
-#include "../include/mutex.h"
-#include "../include/io.h"
-#include "../include/terminal.h"
+#include <drivers/device.h>
+#include <memory/mm.h>
+#include <adamantine/mutex.h>
+#include <system/io.h>
+#include <system/terminal.h>
 
 MODULE("Device", "0.01a");
 

@@ -13,9 +13,9 @@
 #ifndef ADAMANTINE_MAIN
 #define ADAMANTINE_MAIN
 
-#include "aos-defs.h"
-#include "types.h"
-#include "adamantine.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/adamantine.h>
+#include <adamantine/aos-types.h>
 
 EXTERN void kernel_sys_entry(void);
 

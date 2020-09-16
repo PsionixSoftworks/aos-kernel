@@ -16,15 +16,6 @@
 .LONG MAGIC
 .LONG FLAGS
 .LONG CHECKSUM
-.LONG 0
-.LONG 0
-.LONG 0
-.LONG 0
-.LONG 0
-.LONG 0
-.LONG 0
-.LONG 0
-.LONG 0
 
 /* Declare the .text section for the entry point and other functions. */
 .SECTION .text

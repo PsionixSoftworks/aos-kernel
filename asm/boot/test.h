@@ -16,7 +16,7 @@
 #ifdef __ASSEMBLER__
 #define TESTER      10
 #else
-#include "../../include/types.h"
+#include <adamantine/aos-types.h>
 
 extern uint32_t test_func(void);
 #endif

@@ -10,9 +10,9 @@
  *
  */
 
-#include "../include/paging.h"
-#include "../include/mem-util.h"
-#include "../include/terminal.h"
+#include <paging.h>
+#include <memory/mm.h>
+#include <system/terminal.h>
 
 MODULE("Paging", "0.01a");
 

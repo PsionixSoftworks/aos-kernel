@@ -10,11 +10,10 @@
  *
  */
 
-#include "../include/vfs.h"
-#include "../include/terminal.h"
-#include "../include/mem-util.h"
-#include "../include/ext2.h"
-#include "../include/aos-defs.h"
+#include <filesys/vfs.h>
+#include <system/terminal.h>
+#include <memory/mm.h>
+#include <filesys/ext2.h>
 
 MODULE("virtualFileSystem", "0.01a");
 

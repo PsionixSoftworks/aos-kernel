@@ -10,11 +10,11 @@
  *
  */
 
-#include "../../include/ext2.h"
-#include "../../include/vfs.h"
-#include "../../include/terminal.h"
-#include "../../include/mem-util.h"
-#include "../../include/string.h"
+#include <filesys/ext2.h>
+#include <filesys/vfs.h>
+#include <system/terminal.h>
+#include <memory/mm.h>
+#include <adamantine/aos-string.h>
 
 /*
 #define SIZE_OF_SINGLY (priv->blocksize * priv->blocksize / 4)

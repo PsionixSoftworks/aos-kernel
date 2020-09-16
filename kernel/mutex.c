@@ -11,8 +11,7 @@
  *
  */
 
-#include "../include/mutex.h"
-#include "../include/aos-defs.h"
+#include <adamantine/mutex.h>
 
 MODULE("Mutex", "0.01a");
 

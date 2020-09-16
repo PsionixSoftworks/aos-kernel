@@ -12,8 +12,8 @@
 
 #define __KERNEL__
 
-#include "../include/kernel.h"
-#include "../include/terminal.h"
+#include <kernel/kernel.h>
+#include <system/terminal.h>
 
 MODULE("Main", "0.01a");
 

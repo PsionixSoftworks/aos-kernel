@@ -14,7 +14,7 @@
 #define _AOS_PCI_
 
 /* Includes go here. */
-#include "../../aos-defs.h"
+#include <adamantine/aos-defs.h>
 
 /* Define macros. */
 #define PCI_ENABLE                          (PCI_DRIVER & 0x01)

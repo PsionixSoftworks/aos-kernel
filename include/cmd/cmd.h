@@ -13,8 +13,8 @@
 #ifndef _COMMAND_
 #define _COMMAND_
 
-#include "../aos-defs.h"
-#include "../types.h"
-#include "../string.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
+#include <adamantine/aos-string.h>
 
 #endif

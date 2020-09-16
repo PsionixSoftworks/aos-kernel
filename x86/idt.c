@@ -10,11 +10,11 @@
  *
  */
 
-#include "../include/x86/idt.h"
-#include "../include/terminal.h"
-#include "../include/io.h"
-#include "../include/mem-util.h"
-#include "../include/pic.h"
+#include <x86/idt.h>
+#include <system/terminal.h>
+#include <system/io.h>
+#include <memory/mm.h>
+#include <kernel/pic.h>
 
 MODULE("Interrupt-Descriptor-Table", "0.01a");
 

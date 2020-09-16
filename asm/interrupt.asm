@@ -1,20 +1,20 @@
 %macro ISR_NOERRCODE 1
-  global isr_%1
-  isr_%1:
+  global isr%1
+  isr%1:
     CLI                         ; Disable interrupts firstly.
     PUSH BYTE 0                 ; Push a dummy error code.
     PUSH %1                ; Push the interrupt number.
-    JMP ISR_CommonStub         ; Go to our common handler code.
+    JMP isr_common_stub         ; Go to our common handler code.
 %endmacro
 
 ; This macro creates a stub for an ISR which passes it's own
 ; error code.
 %macro ISR_ERRCODE 1
-  GLOBAL isr_%1
-  isr_%1:
+  GLOBAL isr%1
+  isr%1:
     CLI                         ; Disable interrupts.
     PUSH %1                ; Push the interrupt number
-    JMP ISR_CommonStub
+    JMP isr_common_stub
 %endmacro
 
 %macro IRQ 2
@@ -77,13 +77,11 @@ IRQ	13, 45
 IRQ	14, 46
 IRQ	15, 47
 
-EXTERN FaultHandler ; No longer used??
-
 ; This is our common ISR stub. It saves the processor state, sets
 ; up for kernel mode segments, calls the C-level fault handler,
 ; and finally restores the stack frame.
 EXTERN isr_handler  ; In ISR.c
-ISR_CommonStub:
+isr_common_stub:
     PUSHA                    ; Pushes edi,esi,ebp,esp,ebx,edx,ecx,eax
 
     MOV AX, DS               ; Lower 16-bits of eax = ds.
@@ -133,20 +131,3 @@ IRQ_CommonStub:
 	  ADD ESP, 8
 	  STI
 	  IRET
-
-[GLOBAL jump_usermode]
-EXTERN test_user_function
-jump_usermode:
-  MOV ax, 0x23
-  MOV ds, ax
-  MOV es, ax
-  MOV fs, ax
-  MOV gs, ax
-  
-  MOV eax, esp
-  PUSH 0x23
-  PUSH eax
-  PUSHF
-  PUSH 0x1B
-  PUSH test_user_function
-  IRET

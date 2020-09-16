@@ -10,7 +10,7 @@
  *
  */
 
-#include "../include/string.h"
+#include <adamantine/aos-string.h>
 
 inline char *
 itoa( udword value, char * str, udword base ) 

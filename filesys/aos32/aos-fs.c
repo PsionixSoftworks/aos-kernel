@@ -10,8 +10,8 @@
  *
  */
 
-#include "../../include/aos-fs.h"
-#include "../../include/mem-util.h"
-#include "../../include/terminal.h"
+#include <filesys/aos-fs.h>
+#include <memory/mm.h>
+#include <system/terminal.h>
 
 MODULE("AOS-FileSystem32", "0.01a");

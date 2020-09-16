@@ -10,9 +10,9 @@
  *
  */
 
-#include "../include/syscall.h"
-#include "../include/isr.h"
-#include "../include/terminal.h"
+#include <system/syscall.h>
+#include <kernel/isr.h>
+#include <system/terminal.h>
 
 static void SyscallHandler(registers_t *registers);
 

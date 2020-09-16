@@ -4,9 +4,9 @@
 #define MAX_PAGE_TABLES     0x400
 #define PAGE_BLOCK_SIZE     0x1000
 
-#include "aos-defs.h"
-#include "types.h"
-#include "isr.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
+#include <kernel/isr.h>
 
 typedef struct page
 {

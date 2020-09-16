@@ -10,7 +10,7 @@
  *
  */
 
-#include "../include/cmd/cmd.h"
-#include "../include/terminal.h"
+#include <cmd/cmd.h>
+#include <system/terminal.h>
 
 MODULE("Command", "0.01a");

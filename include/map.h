@@ -14,8 +14,8 @@
 #define AMAMANTINE_MAP
 
 // Includes go here:
-#include "aos-defs.h"
-#include "types.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
 
 // Declare the map node struct:
 struct map_node 

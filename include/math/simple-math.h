@@ -1,8 +1,8 @@
 #ifndef _AOS_SIMPLE_MATH_
 #define _AOS_SIMPLE_MATH_
 
-#include "../aos-defs.h"
-#include "../types.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
 
 /* Simple addition */
 EXTERN udword sum2i(udword x, udword y);

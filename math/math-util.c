@@ -1,12 +1,11 @@
-#include "../include/math/math-util.h"
+#include <math/math-util.h>
 #include <stdarg.h>
-//#include <math.h>
 
-MODULE("Math-Util", "0.01a");
+// MODULE("Math-Util", "0.01a");
 
 /* Defined in "math-util.h" */
 inline udword
-abs(udword x)
+abs(dword x)
 {
     return ((x < 0) ? -x : x);
 }
@@ -41,79 +40,82 @@ sign(double x)
 static inline double
 calculate_hypotenuse(double x)
 {
-
+    return (x);
 }
 
 inline double
 sin(double x)
 {
     /* Opposite / hypotenuse */
+    return (x);
 }
 
 inline double
 cos(double x)
 {
     /* Adjacent / Hypotenuse */
+    return (x);
 }
 
 inline double
 tan(double x)
 {
     /* Opposite / Adjacent */
+    return (x);
 }
 
 inline double
 asin(double x)
 {
-
+    return (x);
 }
 
 inline double
 acos(double x)
 {
-
+    return (x);
 }
 
 inline double
 atan(double x)
 {
-
+    return (x);
 }
 
 inline double
 sinh(double x)
 {
-
+    return (x);
 }
 
 inline double
 cosh(double x)
 {
-
+    return (x);
 }
 
 inline double
 tanh(double x)
 {
-
+    return (x);
 }
 
 inline double
 log(double x)
 {
-    
+    return (x);
 }
 
 inline double
 log10(double x)
 {
-
+    return (x);
 }
 
 inline double
 exp(double x)
 {
-    
+    return (x);
 }
 
 inline double
@@ -145,7 +147,7 @@ pow(double x, double y)
 inline udword
 trunc(double x)
 {
-
+    return (x);
 }
 
 inline double

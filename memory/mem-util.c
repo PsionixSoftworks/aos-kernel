@@ -11,11 +11,11 @@
  */
 
 // Includes go here:
-#include "../include/mem-util.h"
-#include "../include/mutex.h"
-#include "../include/types.h"
-#include "../include/terminal.h"
-#include "../include/io.h"
+#include <memory/mm.h>
+#include <adamantine/mutex.h>
+#include <adamantine/aos-types.h>
+#include <system/terminal.h>
+#include <system/io.h>
 
 MODULE("Memory-Util", "0.01a");
 
@@ -36,7 +36,7 @@ EXTERN udword kernel_end;
 udword placement_address = (udword)&kernel_end;
 
 void 
-mm_init(udword *kernel_end) 
+mm_init(udword kernel_end) 
 {
 	last_alloc = kernel_end + 0x1000;
 	heap_begin = last_alloc;
@@ -48,14 +48,14 @@ mm_init(udword *kernel_end)
 
 	//_INFO("memory Module is initialized!");
 	//terminal_printf("Kernel heap begins at 0x%x\n", last_alloc);
-	system_logf(INFORMATION, "IDT is initialized!\n");
+	system_logf(INFORMATION, "Memory Heap is initialized!\n");
 	system_logf(INFORMATION, "Kenel Heap starts at 0x%x.\n", last_alloc);
 }
 
 void
 MM_PrintOut(void) 
 {
-	terminal_printf("Memory Used: %x bytes allocated.\n", memory_used);
+	system_logf(INFORMATION, "Memory Used: %x bytes allocated.\n", memory_used);
 }
 
 void 

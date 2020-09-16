@@ -1,8 +1,8 @@
 #ifndef AOS_TASK_H
 #define AOS_TASK_H
 
-#include "aos-defs.h"
-#include "types.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
 
 typedef struct task task_t;
 typedef void(*task_type_t)(udword, string);

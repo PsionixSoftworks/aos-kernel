@@ -11,7 +11,7 @@
  */
 
 // Includes go here:
-#include "../include/io.h"
+#include <system/io.h>
 
 MODULE("Input-Output", "0.01a");
 

@@ -1,8 +1,8 @@
 #ifndef _AOS_C_VECTOR2F_
 #define _AOS_C_VECTOR2F_
 
-#include "../aos-defs.h"
-#include "../types.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
 
 typedef struct aos_vector2 vector2f;
 

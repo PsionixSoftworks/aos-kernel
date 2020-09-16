@@ -17,10 +17,10 @@
 
 #define __KERNEL__
 
-#include "../include/aos-defs.h"
-#include "../include/types.h"
-#include "../include/terminal.h"
-#include "../include/vga.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
+#include <system/terminal.h>
+#include <drivers/vga.h>
 
 EXTERN void sys_init(void);
 

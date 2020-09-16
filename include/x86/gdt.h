@@ -14,8 +14,8 @@
 #define ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE
 
 // Includes go here:
-#include "../aos-defs.h"
-#include "../types.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
 
 #ifndef GLOBAL_DESCRIPTOR
 #define GLOBAL_DESCRIPTOR
@@ -30,11 +30,12 @@
 #define ACCESS_BYTE_FLAGS                    0xCF
 #define GDT_SEGMENT_NULL                     0x00
 
-typedef struct gdt_entry gdt_entry_t;
-typedef struct pgdt PGDT_t;
+typedef struct aos_gdt_entry gdt_t;
+typedef struct aos_pgdt pgdt_t;
+typedef void(*init_desc)(dword, udword, udword, ubyte, ubyte);
 
 struct
-gdt_entry
+aos_gdt_entry
 {
    uword                limit_lo;                                  // The lower 16 bits of the limit.
    uword                base_lo;                                   // The lower 16 bits of the base.
@@ -45,12 +46,13 @@ gdt_entry
 } PACKED;
 
 struct
-pgdt
+aos_pgdt
 {
    uword limit;                                                   // The upper 16 bits of all selector limits.
    udword base;                                                   // The address of the first gdt_entry_t struct.
 } PACKED;
 
-EXTERN   void gdt_init(void);
+EXTERN   init_desc gdt_init(void);
+EXTERN   inline void gdt_add_descriptor(init_desc descriptor, udword base, udword limit, ubyte access, ubyte granularity);
 
 #endif	                                                         // !ADAMANTINE_GLOBAL_DESCRIPTOR_TABLE

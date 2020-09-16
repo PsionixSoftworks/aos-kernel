@@ -3,19 +3,24 @@ CP 							:= 	cp
 RM 							:= 	rm -rf
 MKDIR 						:= 	mkdir -pv
 
+INCLUDE_PATH				:= 	-Iinclude
+DEFAULT_INCLUDE_PATH		:= 	$(INCLUDE_PATH)
 LINKER						:= 	i686-elf-gcc -T linker.ld
 NASM						:=	nasm -f elf32
 ASM							:= 	i686-elf-as
 COMPILER_C					:= 	i686-elf-gcc -c
 COMPILER_CPP				:=	i686-elf-g++ -c
-CPP_FLAGS					:= 	-ffreestanding -nostdlib -Wall -Wextra
+CPP_FLAGS					:= 	-ffreestanding -nostdlib -Wall -Wextra $(DEFAULT_INCLUDE_PATH)
 C_FLAGS						:= 	-std=gnu99 $(CPP_FLAGS)
+
 
 # Set the basic paths and compilation:
 BIN 						:= 	aos32.bin
 CFG 						:= 	grub.cfg
 ISO_PATH 					:= 	iso
 ISO_FILE					:= 	AdamantineOS_0.04-4a.iso
+ISO_OUTPUT_PATH				:= 	build/
+ISO_OUTPUT					:= 	$(ISO_OUTPUT_PATH)/$(ISO_FILE)
 BOOT_PATH					:= 	$(ISO_PATH)/boot
 GRUB_PATH					:= 	$(BOOT_PATH)/grub
 
@@ -28,14 +33,13 @@ INIT_PATH					:= 	security
 KERNEL_PATH					:= 	kernel
 LIB_PATH					:= 	lib
 MAIN_PATH					:= 	main
-memORY_PATH					:= 	memory
+MEMORY_PATH					:= 	memory
 SECURITY_PATH				:=	security
 SYSTEM_PATH					:= 	system
 TOOL_PATH					:= 	tool
 USER_PATH					:= 	user
 X86_PATH					:=	x86
 MATH_PATH					:= 	math
-AOS_DIR						:= 	AOS
 
 ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 								$(ASSEMB_PATH)/boot/crti.S		\
@@ -47,8 +51,7 @@ ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 								$(ASSEMB_PATH)/setup.S
 
 C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
-								$(MAIN_PATH)/adamantine.c		\
-								$(KERNEL_PATH)/kernel.cpp		\
+								$(KERNEL_PATH)/adamantine.c	\
 								$(KERNEL_PATH)/cmd.c			\
 								$(KERNEL_PATH)/cpu.c			\
 								$(KERNEL_PATH)/mutex.c			\
@@ -58,37 +61,34 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(FS_PATH)/ext2/ext2.c			\
 								$(FS_PATH)/vfs.c				\
 								$(LIB_PATH)/string.c			\
-								$(memORY_PATH)/balloon.c		\
-								$(memORY_PATH)/mem-util.c		\
-								$(memORY_PATH)/paging.c			\
+								$(MEMORY_PATH)/balloon.c		\
+								$(MEMORY_PATH)/mem-util.c		\
+								$(MEMORY_PATH)/paging.c			\
 								$(SECURITY_PATH)/centrix.c		\
 								$(SYSTEM_PATH)/io.c				\
-								$(SYSTEM_PATH)/irq.c			\
-								$(SYSTEM_PATH)/isr.c			\
-								$(SYSTEM_PATH)/pic.c			\
-								$(SYSTEM_PATH)/pit.c			\
+								$(KERNEL_PATH)/irq.c			\
+								$(KERNEL_PATH)/isr.c			\
+								$(KERNEL_PATH)/pic.c			\
+								$(KERNEL_PATH)/pit.c			\
 								$(SYSTEM_PATH)/system.c			\
 								$(SYSTEM_PATH)/terminal.c		\
-								$(X86_PATH)/gdt.c				\
-								$(X86_PATH)/idt.c				\
+								$(X86_PATH)/descriptor-tables.c	\
+								#$(X86_PATH)/gdt.c				\
+								#$(X86_PATH)/idt.c				\
 								$(X86_PATH)/tss.c				\
 								$(X86_PATH)/syscall.c			\
 								$(MATH_PATH)/math-util.c		\
 								task/task.c						
 
 # Put all input files here separated by a '\':
-OUTPUT_FILES 				:= 	boot.new.o		\
-								crti.o			\
-								crtn.o			\
-								test.o			\
+OUTPUT_FILES 				:= 	boot.o			\
 								descriptors.o	\
 								interrupt.o		\
+								adamantine.o	\
 								cpuid.o			\
 								timer.o			\
 								setup.o			\
 								main.o			\
-								adamantine.o	\
-								kernel.o		\
 								cmd.o			\
 								cpu.o			\
 								mutex.o			\
@@ -109,14 +109,7 @@ OUTPUT_FILES 				:= 	boot.new.o		\
 								pit.o			\
 								system.o		\
 								terminal.o		\
-								gdt.o			\
-								idt.o			\
-								tss.o			\
-								syscall.o		\
-								math-util.o		\
-								task.o			
-								#AOS/Adamantine.o	\
-								#AOS/Registry.o
+								descriptor-tables.o \
 
 # AOS_OUTPUT					:= 	$(AOS_DIR)/Adamantine.o	\
 # 								$(AOS_DIR)/Registry.o	
@@ -128,10 +121,7 @@ all: bootloader kernel linker iso
 
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
-	$(ASM) $(ASSEMB_PATH)/boot/boot.S				-o boot.new.o
-	$(ASM) $(ASSEMB_PATH)/boot/crti.S				-o crti.o
-	$(ASM) $(ASSEMB_PATH)/boot/crtn.S				-o crtn.o
-	$(COMPILER_C) $(ASSEMB_PATH)/boot/test.S		-o test.o
+	$(ASM) $(ASSEMB_PATH)/boot/boot.S				-o boot.o
 	$(NASM) $(ASSEMB_PATH)/descriptors.asm			-o descriptors.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o
@@ -140,37 +130,33 @@ bootloader: $(ASM_FILES_IN)
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)
-	$(COMPILER_C) $(MAIN_PATH)/main.c -o main.o $(C_FLAGS)
-	$(COMPILER_C) $(MAIN_PATH)/adamantine.c -o adamantine.o $(C_FLAGS)
-	$(COMPILER_CPP) $(KERNEL_PATH)/kernel.cpp -o kernel.o $(CPP_FLAGS)
-	$(COMPILER_C) $(KERNEL_PATH)/cmd.c -o cmd.o $(C_FLAGS)
-	$(COMPILER_C) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
-	$(COMPILER_C) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
 	$(COMPILER_C) $(DRIVER_PATH)/device.c -o device.o $(C_FLAGS)
 	$(COMPILER_C) $(DRIVER_PATH)/keyboard.c -o keyboard.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/aos32/aos-fs.c -o aos-fs.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/ext2/ext2.c -o ext2.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/vfs.c -o vfs.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/adamantine.c -o adamantine.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/cmd.c -o cmd.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/irq.c -o irq.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/isr.c -o isr.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/pic.c -o pic.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
 	$(COMPILER_C) $(LIB_PATH)/string.c -o string.o $(C_FLAGS)
-	$(COMPILER_C) $(memORY_PATH)/balloon.c -o balloon.o $(C_FLAGS)
-	$(COMPILER_C) $(memORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
-	$(COMPILER_C) $(memORY_PATH)/paging.c -o paging.o $(C_FLAGS)
+	$(COMPILER_C) $(MAIN_PATH)/main.c -o main.o $(C_FLAGS)
+	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
+	$(COMPILER_C) $(MEMORY_PATH)/balloon.c -o balloon.o $(C_FLAGS)
+	$(COMPILER_C) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
+	$(COMPILER_C) $(MEMORY_PATH)/paging.c -o paging.o $(C_FLAGS)
 	$(COMPILER_C) $(SECURITY_PATH)/centrix.c -o centrix.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)
-	$(COMPILER_C) $(SYSTEM_PATH)/irq.c -o irq.o $(C_FLAGS)
-	$(COMPILER_C) $(SYSTEM_PATH)/isr.c -o isr.o $(C_FLAGS)
-	$(COMPILER_C) $(SYSTEM_PATH)/pic.c -o pic.o $(C_FLAGS)
-	$(COMPILER_C) $(SYSTEM_PATH)/pit.c -o pit.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/system.c -o system.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/terminal.c -o terminal.o $(C_FLAGS)
-	$(COMPILER_C) $(X86_PATH)/gdt.c -o gdt.o $(C_FLAGS)
-	$(COMPILER_C) $(X86_PATH)/idt.c -o idt.o $(C_FLAGS)
+	$(COMPILER_C) $(X86_PATH)/descriptor-tables.c -o descriptor-tables.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
-	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	$(COMPILER_C) task/task.c -o task.o $(C_FLAGS)
-	# $(COMPILER_CPP) AOS/Adamantine/Adamantine.cpp -o Adamantine.o $(CPP_FLAGS)
-	# $(COMPILER_CPP) AOS/Adamantine/Registry.cpp -o Registry.o $(CPP_FLAGS)
  
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)
@@ -183,6 +169,8 @@ iso: kernel
 	$(CP) $(CFG) $(GRUB_PATH)
 	grub-file --is-x86-multiboot $(BOOT_PATH)/$(BIN)
 	grub-mkrescue -o $(ISO_FILE) $(ISO_PATH)
+	$(MKDIR) $(ISO_OUTPUT_PATH)
+	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
 	qemu-system-x86_64 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
 	$(RM) *.o $(BIN) *iso
 

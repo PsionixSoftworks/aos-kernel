@@ -13,8 +13,8 @@
 #ifndef _AOS_BUS_
 #define _AOS_BUS_
 
-#include "../../device.h"
-#include "../../aos-defs.h"
+#include <adamantine/aos-defs.h>
+#include <drivers/driver.h>
 
 #define BUS_ENABLE                          0x1C0000007FUL
 

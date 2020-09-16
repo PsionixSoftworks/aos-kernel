@@ -13,8 +13,8 @@
 #ifndef _INPUT_
 #define _INPUT_
 
-#include "aos-defs.h"
-#include "types.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
 
 EXTERN 	ubyte (read_portb(uword port));					        /* read 8-bit port. */
 EXTERN 	uword (read_portw(uword port));					        /* read 16-bit port. */

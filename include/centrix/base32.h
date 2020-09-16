@@ -13,7 +13,7 @@
 #ifndef _CENTRIX_BASE32_
 #define _CENTRIX_BASE32_
 
-#include "../aos-defs.h"
-#include "../types.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
 
 #endif

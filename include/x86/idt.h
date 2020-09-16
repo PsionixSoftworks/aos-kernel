@@ -14,8 +14,8 @@
 #define ADAMANTINE_INTERRUPT_DESCRIPTOR_TABLE
 
 // Includes go here:
-#include "../aos-defs.h"
-#include "../types.h"
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-types.h>
 
 #ifndef INTERRUPT_DESCRIPTOR
 #define INTERRUPT_DESCRIPTOR

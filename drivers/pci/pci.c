@@ -10,6 +10,6 @@
  *
  */
 
-#include "../../include/drivers/pci/pci.h"
+#include <pci.h>
 
 MODULE("PCI", "0.01a");

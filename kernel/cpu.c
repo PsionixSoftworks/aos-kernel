@@ -10,9 +10,9 @@
  *
  */
 
-#include "../include/cpu.h"
-#include "../include/cpuid.h"
-#include "../include/terminal.h"
+#include <kernel/cpu.h>
+#include <kernel/cpuid.h>
+#include <system/terminal.h>
 
 MODULE("CPU", "0.02a");
 

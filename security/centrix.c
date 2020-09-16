@@ -12,11 +12,11 @@
 
 #define CENTRIX_MODE1
 
-#include "../include/centrix-core.h"
-#include "../include/centrix.h"
-#include "../include/terminal.h"
-#include "../include/cpu.h"
-#include "../include/vga.h"
+#include <centrix/centrix-core.h>
+#include <centrix/centrix.h>
+#include <system/terminal.h>
+#include <kernel/cpu.h>
+#include <drivers/vga.h>
 
 MODULE("Centrix", "0.01a");
 
