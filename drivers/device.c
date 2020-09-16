@@ -38,7 +38,7 @@ aos_device_init(udword device_id, string device_name)
 }
 
 void
-AOS_deviceFree(void) 
+AOS_deviceFree(void)
 {
     free(device);
 }
