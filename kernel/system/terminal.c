@@ -11,17 +11,14 @@
  */
 
 /* Include anything the terminal requires here */
-#include <system/terminal.h>
-#include <adamantine/version.h>
-#include <drivers/vga.h>
-#include <system/io.h>
+#include <kernel/system/terminal.h>
+#include <kernel/drivers/vga.h>
+#include <kernel/system/io.h>
 #include <kernel/cpu.h>
+#include <adamantine/version.h>
 #include <stdarg.h>
 
 #if (OS_VERSION_NUMBER >= 50)
-
-#define DEFAULT_BACKGROUND_COLOR	SYSTEM_COLOR_BLACK
-#define DEFAULT_FOREGROUND_COLOR	SYSTEM_COLOR_LT_GREEN
 
 static uint16_t *video_buffer;
 static uint8_t background_color;

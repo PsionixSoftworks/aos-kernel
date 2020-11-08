@@ -17,8 +17,8 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 #include <adamantine/aos-string.h>
-#include <input.h>
-#include <output.h>
+#include <kernel/input.h>
+#include <kernel/output.h>
 
 typedef struct aos_input 	input_t;
 typedef struct aos_output 	output_t;

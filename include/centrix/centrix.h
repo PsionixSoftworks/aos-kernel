@@ -13,11 +13,11 @@
 #ifndef CENTRIX
 #define CENTRIX
 
+#include <kernel/memory/mm.h>
+#include <kernel/system/terminal.h>
 #include <adamantine/aos-defs.h>
-#include <centrix/centrix-core.h>
 #include <adamantine/aos-types.h>
-#include <memory/mm.h>
-#include <system/terminal.h>
+#include <centrix/centrix-core.h>
 
 #if CENTRIX_VERSION <= 100
 

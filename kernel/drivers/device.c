@@ -10,11 +10,11 @@
  *
  */
 
-#include <drivers/device.h>
-#include <memory/mm.h>
+#include <kernel/drivers/device.h>
+#include <kernel/memory/mm.h>
+#include <kernel/system/io.h>
+#include <kernel/system/terminal.h>
 #include <adamantine/mutex.h>
-#include <system/io.h>
-#include <system/terminal.h>
 
 MODULE("Device", "0.01a");
 

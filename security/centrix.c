@@ -14,9 +14,9 @@
 
 #include <centrix/centrix-core.h>
 #include <centrix/centrix.h>
-#include <system/terminal.h>
+#include <kernel/system/terminal.h>
 #include <kernel/cpu.h>
-#include <drivers/vga.h>
+#include <kernel/drivers/vga.h>
 
 MODULE("Centrix", "0.01a");
 

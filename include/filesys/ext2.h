@@ -15,7 +15,7 @@
 
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
-#include <drivers/driver.h>
+#include <kernel/drivers/driver.h>
 
 /*
 #ifndef EXT2_FILESYSTEM

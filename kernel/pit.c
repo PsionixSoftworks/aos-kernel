@@ -12,8 +12,8 @@
 
 #include <kernel/pit.h>
 #include <kernel/isr.h>
-#include <system/terminal.h>
-#include <system/io.h>
+#include <kernel/system/terminal.h>
+#include <kernel/system/io.h>
 
 MODULE("ProgrammableIntervalTimer", "0.01a");
 

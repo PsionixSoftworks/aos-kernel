@@ -11,16 +11,16 @@
  */
 
 /* Includes go here: */
-#include <drivers/keyboard.h>
-#include <drivers/keys.h>
-#include <system/terminal.h>
-#include <memory/mm.h>
-#include <x86/descriptor-tables.h>
+#include <kernel/drivers/keyboard.h>
+#include <kernel/drivers/keys.h>
+#include <kernel/system/terminal.h>
+#include <kernel/memory/mm.h>
+#include <kernel/x86/descriptor-tables.h>
 #include <kernel/isr.h>
-#include <adamantine/mutex.h>
 #include <kernel/pic.h>
 #include <kernel/irq.h>
-#include <system/io.h>
+#include <kernel/system/io.h>
+#include <adamantine/mutex.h>
 
 MODULE("Keyboard", "0.01a");
 

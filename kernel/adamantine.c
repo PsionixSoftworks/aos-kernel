@@ -18,9 +18,9 @@
 //#include <aos-core.h>
 #include <adamantine/adamantine.h>
 #include <adamantine/aos-defs.h>
-#include <drivers/vga.h>
-#include <system/terminal.h>
-#include <x86/descriptor-tables.h>
+#include <kernel/drivers/vga.h>
+#include <kernel/system/terminal.h>
+#include <kernel/x86/descriptor-tables.h>
 
 /* Tell the kernel what module and version we are using. */
 MODULE("Kernel", "0.04-4a");

@@ -12,8 +12,8 @@
 
 #include <filesys/ext2.h>
 #include <filesys/vfs.h>
-#include <system/terminal.h>
-#include <memory/mm.h>
+#include <kernel/system/terminal.h>
+#include <kernel/memory/mm.h>
 #include <adamantine/aos-string.h>
 
 /*

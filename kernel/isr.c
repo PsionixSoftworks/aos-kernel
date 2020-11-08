@@ -11,7 +11,7 @@
  */
 
 #include <kernel/isr.h>
-#include <system/terminal.h>
+#include <kernel/system/terminal.h>
 
 MODULE("interrupt-service-routine", "0.01a");
 

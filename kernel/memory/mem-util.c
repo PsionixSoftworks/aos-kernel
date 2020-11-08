@@ -11,11 +11,11 @@
  */
 
 // Includes go here:
-#include <memory/mm.h>
+#include <kernel/memory/mm.h>
+#include <kernel/system/terminal.h>
+#include <kernel/system/io.h>
 #include <adamantine/mutex.h>
 #include <adamantine/aos-types.h>
-#include <system/terminal.h>
-#include <system/io.h>
 
 MODULE("Memory-Util", "0.01a");
 

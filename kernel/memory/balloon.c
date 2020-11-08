@@ -10,10 +10,10 @@
  *
  */
 
-#include <memory/balloon.h>
-#include <memory/mm.h>
+#include <kernel/memory/balloon.h>
+#include <kernel/memory/mm.h>
+#include <kernel/system/terminal.h>
 #include <adamantine/mutex.h>
-#include <system/terminal.h>
 
 MODULE("Balloon", "0.01a");
 

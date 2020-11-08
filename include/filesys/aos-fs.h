@@ -16,7 +16,7 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 #include <adamantine/aos-string.h>
-#include <drivers/driver.h>
+#include <kernel/drivers/driver.h>
 #include <filesys/vfs.h>
 
 #define AOS_ROOT_DIRNAME        "$0://root/"

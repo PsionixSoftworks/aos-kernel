@@ -11,8 +11,8 @@
  */
 
 
-#include <x86/tss.h>
-#include <memory/mm.h>
+#include <kernel/x86/tss.h>
+#include <kernel/memory/mm.h>
 
 tss_t tss_entry __attribute__((aligned(4096)));
 

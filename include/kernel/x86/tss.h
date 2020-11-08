@@ -17,7 +17,7 @@
 
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
-#include <x86/descriptor-tables.h>
+#include <kernel/x86/descriptor-tables.h>
 
 #define REPLACE_KERNEL_DATA_SEGMENT 0x18
 #define REPLACE_KERNEL_STACK_ADDR   0x20

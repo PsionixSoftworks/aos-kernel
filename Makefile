@@ -27,18 +27,18 @@ GRUB_PATH					:= 	$(BOOT_PATH)/grub
 # Setup OS specific directories:
 ADAMANTINE_PATH				:= 	adamantine
 ASSEMB_PATH					:= 	asm
-DRIVER_PATH					:= 	drivers
 FS_PATH						:=	filesys
 INIT_PATH					:= 	security
 KERNEL_PATH					:= 	kernel
+DRIVER_PATH					:= 	$(KERNEL_PATH)/drivers
+MEMORY_PATH					:= 	$(KERNEL_PATH)/memory
+SYSTEM_PATH					:= 	$(KERNEL_PATH)/system
+X86_PATH					:=	$(KERNEL_PATH)/x86
 LIB_PATH					:= 	lib
 MAIN_PATH					:= 	main
-MEMORY_PATH					:= 	memory
 SECURITY_PATH				:=	security
-SYSTEM_PATH					:= 	system
 TOOL_PATH					:= 	tool
 USER_PATH					:= 	user
-X86_PATH					:=	x86
 MATH_PATH					:= 	math
 
 ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
@@ -63,7 +63,6 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(LIB_PATH)/string.c			\
 								$(MEMORY_PATH)/balloon.c		\
 								$(MEMORY_PATH)/mem-util.c		\
-								$(MEMORY_PATH)/paging.c			\
 								$(SECURITY_PATH)/centrix.c		\
 								$(SYSTEM_PATH)/io.c				\
 								$(KERNEL_PATH)/irq.c			\
@@ -100,7 +99,6 @@ OUTPUT_FILES 				:= 	boot.o			\
 								string.o		\
 								balloon.o		\
 								mem-util.o		\
-								paging.o		\
 								centrix.o		\
 								io.o			\
 								irq.o			\
@@ -148,7 +146,6 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/balloon.c -o balloon.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
-	$(COMPILER_C) $(MEMORY_PATH)/paging.c -o paging.o $(C_FLAGS)
 	$(COMPILER_C) $(SECURITY_PATH)/centrix.c -o centrix.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/system.c -o system.o $(C_FLAGS)
@@ -156,7 +153,6 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(X86_PATH)/descriptor-tables.c -o descriptor-tables.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
-	$(COMPILER_C) task/task.c -o task.o $(C_FLAGS)
  
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)

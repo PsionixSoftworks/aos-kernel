@@ -10,10 +10,10 @@
  *
  */
 
-#include <system/system.h>
-#include <system/io.h>
+#include <kernel/system/system.h>
+#include <kernel/system/io.h>
+#include <kernel/drivers/vga.h>
 #include <adamantine/adamantine.h>
-#include <drivers/vga.h>
 
 MODULE("System", "0.01a");
 

@@ -12,7 +12,7 @@
 
 #include <kernel/cpu.h>
 #include <kernel/cpuid.h>
-#include <system/terminal.h>
+#include <kernel/system/terminal.h>
 
 MODULE("CPU", "0.02a");
 

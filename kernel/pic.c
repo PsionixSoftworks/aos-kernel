@@ -12,7 +12,7 @@
 
 #include <kernel/pic.h>
 #include <kernel/irq.h>
-#include <system/io.h>
+#include <kernel/system/io.h>
 
 MODULE("ProgrammableInterruptController", "0.01a");
 

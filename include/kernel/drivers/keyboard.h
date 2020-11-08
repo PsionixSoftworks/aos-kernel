@@ -17,7 +17,7 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 #include <adamantine/aos-string.h>
-#include <drivers/driver.h>
+#include <kernel/drivers/driver.h>
 
 #ifndef KEYBOARD_DRIVER
 #define KEYBOARD_DRIVER						(BASE_ADDR - 0x67)
