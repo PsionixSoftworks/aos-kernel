@@ -29,8 +29,8 @@ MODULE("Kernel", "0.04-4a");
 EXTERN __kernel_void _TEXT
 kernel_run(__kernel_void)
 {
-	system_log_begin();
-	system_logf(NONE, "%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
+	//system_log_begin();
+	//system_logf(NONE, "%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
 	init_descriptor_tables();
-	system_log_end();
+	//system_log_end();
 }

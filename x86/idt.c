@@ -89,7 +89,7 @@ idt_init(void)
 	idt_flush((udword)&pidt);
 
     //_INFO("IDT is initialized!");
-    system_logf(INFORMATION, "IDT is initialized!\n");
+    //system_logf(INFORMATION, "IDT is initialized!\n");
 }
 
 static inline void

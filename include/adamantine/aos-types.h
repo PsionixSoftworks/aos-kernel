@@ -73,6 +73,7 @@ typedef enum {false, true}	    bool;				// Define bool (C ONLY!).
 
 // Define kernel_types:
 #if defined(__KERNEL__)
+#define __kernel_only
 typedef char                    __kernel_only __kernel_char;
 typedef string                  __kernel_only __kernel_string;
 

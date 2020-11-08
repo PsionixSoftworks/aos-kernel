@@ -19,13 +19,14 @@ static void SyscallHandler(registers_t *registers);
 DEFN_SYSCALL1(terminal_print, 0, string);
 DEFN_SYSCALL1(terminal_print_hex, 1, string);
 DEFN_SYSCALL1(terminal_print_dec, 2, string);
-
+/*
 static void *Syscalls[3] =
 {
     &terminal_print,
     &terminal_print_hex,
     &terminal_print_dec,
 };
+*/
 udword NumberOfSyscalls = 3;
 
 void 
@@ -40,8 +41,8 @@ SyscallHandler(registers_t *registers)
     if (registers->EAX >= NumberOfSyscalls)
         return;
     
-    void *Location = Syscalls[registers->EAX];
-
+    //void *Location = Syscalls[registers->EAX];
+    /*
     dword value = 0;
     asm volatile ("     \
         PUSH %1;        \
@@ -58,4 +59,5 @@ SyscallHandler(registers_t *registers)
         " : "=a" (value) : "r" (registers->EDI), "r" (registers->ESI), "r" (registers->EDX), "r" (registers->ECX), "r" (registers->EBX), "r" (Location)
     );
     registers->EAX = value;
+    */
 }

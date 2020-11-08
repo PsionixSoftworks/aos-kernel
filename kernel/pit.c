@@ -40,5 +40,5 @@ pit_init(udword frequency)
 	write_portb(0x40, l);
 	write_portb(0x40, h);
 
-	_INFO("PIT is initialized!");
+	//_INFO("PIT is initialized!");
 }

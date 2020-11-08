@@ -55,7 +55,7 @@ gdt_init(void)
 	tss_flush();
 	
 	//_INFO("GDT is initialized!");
-	system_logf(INFORMATION, "GDT is initialized!\n");
+	//system_logf(INFORMATION, "GDT is initialized!\n");
 }
 
 inline void

@@ -48,14 +48,14 @@ mm_init(udword kernel_end)
 
 	//_INFO("memory Module is initialized!");
 	//terminal_printf("Kernel heap begins at 0x%x\n", last_alloc);
-	system_logf(INFORMATION, "Memory Heap is initialized!\n");
-	system_logf(INFORMATION, "Kenel Heap starts at 0x%x.\n", last_alloc);
+	//system_logf(INFORMATION, "Memory Heap is initialized!\n");
+	//system_logf(INFORMATION, "Kenel Heap starts at 0x%x.\n", last_alloc);
 }
 
 void
 MM_PrintOut(void) 
 {
-	system_logf(INFORMATION, "Memory Used: %x bytes allocated.\n", memory_used);
+	//system_logf(INFORMATION, "Memory Used: %x bytes allocated.\n", memory_used);
 }
 
 void 
@@ -93,7 +93,7 @@ pmalloc(size_t size)
 
 		return ((string)(pheap_begin + i * 4096));
 	}
-	terminal_print("pmalloc: FATAL: failure!\n");
+	terminal_printf("pmalloc: FATAL: failure!\n");
 	return (0);
 }
 
@@ -133,7 +133,7 @@ malloc(size_t size)
 	nalloc:;
 	if (last_alloc + size + sizeof(Alloc_t) >= heap_end) 
 	{
-		_PANIC("Cannot allocate. Out of memory...");
+		//_PANIC("Cannot allocate. Out of memory...");
 	}
 	Alloc_t *Alloc = (Alloc_t *)last_alloc;
 	Alloc->status = 1;

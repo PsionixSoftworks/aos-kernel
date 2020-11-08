@@ -45,7 +45,7 @@ fault_handler(registers_t registers)
 {
 	if (registers.INT_NO < 32) 
 	{
-		_ERROR(ExceptionMessages[registers.INT_NO]);
+		//_ERROR(ExceptionMessages[registers.INT_NO]);
 		cpu_halt();
 		//terminal_printf("System halted!");
 	}

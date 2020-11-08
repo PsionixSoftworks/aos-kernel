@@ -40,8 +40,8 @@ kernel_install(string name) {
 dword 
 kernel_verify(void)
 {
-    terminal_init(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
-	terminal_clear_screen();
+    terminal_init();
+	terminal_clear();
 
     size_t length = strlen(supported_os);
     size_t i = 0;

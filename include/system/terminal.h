@@ -13,12 +13,16 @@
 #ifndef _AOS_TERMINAL_
 #define _AOS_TERMINAL_
 
+/*
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 #include <adamantine/aos-string.h>
 #include <kernel/cpu.h>
-#include <stdarg.h>
+*/
+//#include <stdarg.h>
+//#include <drivers/vga.h>
 
+/*
 #define NONE				(udword)NULL
 #define INFORMATION			0x01
 #define WARNING				0x02
@@ -39,9 +43,10 @@ struct aos_terminal
 	udword 				x;
 	udword 				y;
 } PACKED;
-
+*/
+/*
 EXTERN	DEPRECATED void terminal_init(ubyte back_color, ubyte fore_color);
-EXTERN 	DEPRECATED void terminal_clear_creen(void);
+EXTERN 	DEPRECATED void terminal_clear_screen(void);
 EXTERN 	DEPRECATED void terminal_print(const string c);
 EXTERN 	DEPRECATED void terminal_print_hex(udword value);
 EXTERN 	DEPRECATED void terminal_print_dec(dword value);
@@ -65,5 +70,27 @@ EXTERN 	void system_log_reset_back_col(void);
 EXTERN	void system_log_reset_fore_col(void);
 EXTERN 	void system_log_clear_back_col(ubyte col);
 EXTERN 	void system_log_clear(void);
+*/
+
+#define __KERNEL__
+#include <adamantine/aos-types.h>
+
+#define PANIC(MESSAGE)			panic(MESSAGE, __FILE__, __LINE__);
+#define PANIC_ASSERT(MESSAGE)	panic_assert(__FILE__, __LINE__, MESSAGE);
+
+typedef void(*terminal_attrib_t)(enum vga_color, enum vga_color);
+void terminal_init(void);
+void terminal_clear(void);
+void terminal_set_background_color(uint8_t color);
+void terminal_set_foreground_color(uint8_t color);
+void terminal_reset_background_color(void);
+void terminal_reset_foreground_color(void);
+uint8_t terminal_get_background_color(void);
+uint8_t terminal_get_foreground_color(void);
+void terminal_print(string str);
+void terminal_printf(string str, ...);
+
+void panic(const string msg, const string file, udword line);
+void panic_assert(const string file, udword line, const string description);
 
 #endif

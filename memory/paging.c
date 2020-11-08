@@ -86,7 +86,7 @@ FrameAlloc(page_t *page, udword IsKernel, udword IsWritable)
         udword Index = FrameFirst();
         if (Index == (udword)-1)
         {
-            _PANIC("No free frames...");
+            //_PANIC("No free frames...");
         }
         FrameSet(Index * PAGE_BLOCK_SIZE);
         page->present = 1;
@@ -134,7 +134,7 @@ paging_init(void)
     paging_switch_directory(KernelDirectory);
 
     //_INFO("Paging is initialized!");
-    system_logf(INFORMATION, "Paging is initialized!\n");
+    //system_logf(INFORMATION, "Paging is initialized!\n");
 }
 
 void
@@ -189,7 +189,7 @@ paging_get_fault(registers_t registers)
     if (US)         {terminal_printf("user-Mode ");}
     if (Reserved)   {terminal_printf("Reserved ");}
     terminal_printf(") - at 0x%X.\n", FaultingAddress);
-    _PANIC(" [AOS PAGE FAULT] ");
+    //_PANIC(" [AOS PAGE FAULT] ");
 }
 
 /* Me! */

@@ -36,7 +36,7 @@ balloon_init(size_t size)
 	);
 	if (!balloon.valid) 
 	{
-		_PANIC("balloon memory size must be one of the supported values!");
+		//_PANIC("balloon memory size must be one of the supported values!");
 		return;
 	}
 

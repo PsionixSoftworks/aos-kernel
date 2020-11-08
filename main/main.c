@@ -10,16 +10,27 @@
  *
  */
 
-#define __KERNEL__
-
-#include <kernel/kernel.h>
+//#include <kernel/kernel.h>
 #include <system/terminal.h>
+#include <drivers/vga.h>
 
-MODULE("Main", "0.01a");
+typedef void(*kernel_t)(void);
 
-__kernel_void _TEXT 
+kernel_t
 kernel_sys_entry(__kernel_void)
 {
-	kernel_run();
-	return;
+	terminal_init();
+	uint8_t bgcol = terminal_get_background_color();
+	uint8_t fgcol = terminal_get_foreground_color();
+	if (bgcol != SYSTEM_COLOR_BLUE)
+		bgcol = SYSTEM_COLOR_BLUE;
+	if (fgcol != SYSTEM_COLOR_WHITE)
+		fgcol = SYSTEM_COLOR_WHITE;
+	terminal_set_background_color(bgcol);
+	terminal_set_foreground_color(fgcol);
+	terminal_clear();
+
+	
+
+	return 0x0;
 }

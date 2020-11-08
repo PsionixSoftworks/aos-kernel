@@ -25,7 +25,7 @@
 #define VGA_WIDTH                   80
 #define VGA_HEIGHT                  25
 
-enum VgaColor 
+enum vga_color 
 {
     SYSTEM_COLOR_BLACK,
     SYSTEM_COLOR_BLUE,
@@ -44,12 +44,5 @@ enum VgaColor
     SYSTEM_COLOR_YELLOW,
     SYSTEM_COLOR_WHITE
 };
-
-static void putpixel(unsigned char *screen, udword x, udword y, udword color) {
-    unsigned where = x * 3 + y * 2400;
-    screen[where] = color & 0xFF;
-    screen[where + 1] = (color >> 8) & 0xFF;
-    screen[where + 2] = (color >> 16) & 0xFF;
-}
 
 #endif
