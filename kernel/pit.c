@@ -29,7 +29,7 @@ timer_callback(registers_t registers)
 void 
 pit_init(udword frequency) 
 {
-	register_interrupt_handler(irq0, &timer_callback);
+	register_interrupt_handler(IRQ0, &timer_callback);
 	
 	udword divisor = 0x1234DC / frequency;
 	write_portb(0x43, 0x36);
@@ -40,5 +40,5 @@ pit_init(udword frequency)
 	write_portb(0x40, l);
 	write_portb(0x40, h);
 
-	//_INFO("PIT is initialized!");
+	terminal_printf("PIT is initialized!");
 }

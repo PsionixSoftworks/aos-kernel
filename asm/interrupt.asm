@@ -23,7 +23,7 @@ irq_%1:
 	CLI
 	PUSH BYTE 0
 	PUSH BYTE %2
-	JMP IRQ_CommonStub
+	JMP irq_common_stub
 %endmacro
 
 ISR_NOERRCODE 	0
@@ -107,7 +107,7 @@ isr_common_stub:
     IRET
 
 [EXTERN irq_handler]
-IRQ_CommonStub:
+irq_common_stub:
 	  PUSHA
 	
 	  MOV AX, DS

@@ -14,6 +14,8 @@
 #include <kernel/system/terminal.h>
 #include <kernel/drivers/vga.h>
 #include <kernel/x86/descriptor-tables.h>
+#include <kernel/pit.h>
+#include <kernel/memory/paging.h>
 
 typedef void(*kernel_t)(void);
 
@@ -41,6 +43,12 @@ kernel_sys_entry(__kernel_void)
 	terminal_printf("Starting modules...\n");
 
 	init_descriptor_tables();
+	initialize_paging();
+
+	terminal_printf("Paging test (should set a page fault):\n");
+
+	uint32_t *ptr = (uint32_t *)0xA0000000;
+	uint32_t do_page_fault = *ptr;
 
 	return 0x0;
 }

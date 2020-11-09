@@ -72,6 +72,7 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(SYSTEM_PATH)/system.c			\
 								$(SYSTEM_PATH)/terminal.c		\
 								$(X86_PATH)/descriptor-tables.c	\
+								$(MEMORY_PATH)/paging.c
 								#$(X86_PATH)/gdt.c				\
 								#$(X86_PATH)/idt.c				\
 								$(X86_PATH)/tss.c				\
@@ -108,6 +109,7 @@ OUTPUT_FILES 				:= 	boot.o			\
 								system.o		\
 								terminal.o		\
 								descriptor-tables.o \
+								paging.o
 
 # AOS_OUTPUT					:= 	$(AOS_DIR)/Adamantine.o	\
 # 								$(AOS_DIR)/Registry.o	
@@ -151,6 +153,7 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(SYSTEM_PATH)/system.c -o system.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/terminal.c -o terminal.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/descriptor-tables.c -o descriptor-tables.o $(C_FLAGS)
+	$(COMPILER_C) $(MEMORY_PATH)/paging.c -o paging.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
  

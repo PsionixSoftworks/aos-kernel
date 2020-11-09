@@ -17,22 +17,22 @@
 #include <adamantine/aos-types.h>
 #include <adamantine/aos-string.h>
 
-#define irq0		32
-#define irq1		33
-#define irq2		34
-#define irq3		35
-#define irq4		36
-#define irq5		37
-#define irq6		38
-#define irq7		39
-#define irq8		40
-#define irq9		41
-#define irq10		42
-#define irq11		43
-#define irq12		44
-#define irq13		45
-#define irq14		46
-#define irq15		47
+#define IRQ0		32
+#define IRQ1		33
+#define IRQ2		34
+#define IRQ3		35
+#define IRQ4		36
+#define IRQ5		37
+#define IRQ6		38
+#define IRQ7		39
+#define IRQ8		40
+#define IRQ9		41
+#define IRQ10		42
+#define IRQ11		43
+#define IRQ12		44
+#define IRQ13		45
+#define IRQ14		46
+#define IRQ15		47
 
 typedef struct aos_registers 
 {

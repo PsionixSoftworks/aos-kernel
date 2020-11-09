@@ -15,9 +15,9 @@
 
 MODULE("interrupt-service-routine", "0.01a");
 
-isr_t InterruptHandlers[256];
+isr_t interrupt_handlers[256];
 
-string ExceptionMessages[] = 
+string exception_messages[] = 
 {
 	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",
 	"AOS_INTERRUPT Raised! : [Debug Exception]",
@@ -40,13 +40,13 @@ string ExceptionMessages[] =
 	"AOS_INTERRUPT Raised! : [Machine Check Exception]",
 };
 
-void
+DEPRECATED void
 fault_handler(registers_t registers) 
 {
 	if (registers.INT_NO < 32) 
 	{
-		//_ERROR(ExceptionMessages[registers.INT_NO]);
-		cpu_halt();
+		//_ERROR(exception_messages[registers.INT_NO]);
+		//cpu_halt();
 		//terminal_printf("System halted!");
 	}
 }
@@ -54,22 +54,18 @@ fault_handler(registers_t registers)
 void 
 register_interrupt_handler(ubyte n, isr_t handler) 
 {
-	InterruptHandlers[n] = handler;
+	interrupt_handlers[n] = handler;
 }
 
 void
 isr_handler(registers_t registers) 
 {
-	terminal_printf("%s , Int No: %d\n", ExceptionMessages[registers.INT_NO], registers.INT_NO);
-	if (InterruptHandlers[registers.INT_NO] != 0) 
+	terminal_printf("%s, Int No: 0x%X\n", exception_messages[registers.INT_NO], registers.INT_NO);
+	if (interrupt_handlers[registers.INT_NO] != 0) 
 	{
-		isr_t handler = InterruptHandlers[registers.INT_NO];
+		isr_t handler = interrupt_handlers[registers.INT_NO];
 		handler(registers);
 	} 
-	else 
-	{
-		fault_handler(registers);
-	}
 }
 
 void 
@@ -81,9 +77,9 @@ irq_handler(registers_t registers)
 	}
 	write_portb(0x20, 0x20);	/* EOI */
 	
-	if (InterruptHandlers[registers.INT_NO] != 0) 
+	if (interrupt_handlers[registers.INT_NO] != 0) 
 	{
-		isr_t handler = InterruptHandlers[registers.INT_NO];
+		isr_t handler = interrupt_handlers[registers.INT_NO];
 		handler(registers);
 	}
 }

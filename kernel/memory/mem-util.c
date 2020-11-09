@@ -33,7 +33,7 @@ udword memory_used 	= 0;
 ubyte *pheap_desc 	= 0;
 
 EXTERN udword kernel_end;
-udword placement_address = (udword)&kernel_end;
+uint32_t placement_address = (uint32_t)&kernel_end;
 
 void 
 mm_init(udword kernel_end) 
