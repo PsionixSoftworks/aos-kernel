@@ -1,5 +1,5 @@
 # AdamantineOS
-The main repo for AdamantineOS.
+The main repo for the AdamantineOS Kernel.
 
 # Contributing
 AdamantineOS (AOS) must keep structure when developing for the kernel. You must make sure to abide by all rules for AOS Kernel dev. If you have access to this project, then you are one of very few who will ever work on this project. As such it is your sworn responsibility to ensure the development lifecycle the best you can. Thank you.
@@ -17,4 +17,4 @@ Adamantine is a word for a nearly indestructable mythological material, usually 
 - You must abide by the terms of the license attached to this repo.
 
 # Current Issues
-- The IDT cannot process interrupts and triple faults whenever one is met. (Broken again...)
+- The IDT cannot process interrupts and triple faults whenever one is met. (Fixed again..!)
