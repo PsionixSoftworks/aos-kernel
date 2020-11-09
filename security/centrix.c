@@ -40,6 +40,7 @@ kernel_install(string name) {
 dword 
 kernel_verify(void)
 {
+    /*
     terminal_init();
 	terminal_clear();
 
@@ -62,4 +63,7 @@ kernel_verify(void)
             }
         }
     }
+    */
+
+   return (0);
 }

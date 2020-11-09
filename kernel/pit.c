@@ -20,10 +20,11 @@ MODULE("ProgrammableIntervalTimer", "0.01a");
 udword tick;
 
 static void 
-timer_callback(registers_t registers) 
+timer_callback(registers_t regs) 
 {
 	tick++;
 	terminal_printf("tick: %d\n", tick);
+
 }
 
 void 
@@ -40,5 +41,5 @@ pit_init(udword frequency)
 	write_portb(0x40, l);
 	write_portb(0x40, h);
 
-	terminal_printf("PIT is initialized!");
+	terminal_printf("PIT is initialized!\n");
 }

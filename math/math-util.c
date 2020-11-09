@@ -137,9 +137,10 @@ inline double
 pow(double x, double y)
 {
     double result = 1;
-    for (y; y > 0; y--)
+    while (y > 0)
     {
         result = result * x;
+        y--;
     }
     return (result);
 }

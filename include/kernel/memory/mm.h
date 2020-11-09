@@ -21,7 +21,7 @@ typedef struct
 {
 	byte 				status;
 	size_t 				size;
-} Alloc_t;
+} alloc_t;
 
 EXTERN	void mm_init(udword kernel_end);
 EXTERN	void paging_map_virtual_to_physical(udword virt, udword physical);
@@ -31,8 +31,11 @@ EXTERN	void *malloc(size_t size);
 EXTERN	void pfree(void *mem);
 EXTERN	void free(void *mem);
 
-EXTERN	void *memcpy(const void *destination, const void *source, size_t size);
-EXTERN	void *memset(void *pointer, dword value, size_t size);
+EXTERN 	void *memchr(const void *str, int c, size_t n);
+EXTERN 	int memcmp(const void *str1, const void *str2, size_t n);
+EXTERN 	void *memcpy(void *dest, const void *src, size_t n);
+EXTERN 	void *memmove(void *dest, const void *src, size_t n);
+EXTERN 	void *memset(void *dest, int c, size_t n);
 EXTERN	void *memset16(void *pointer,  udword value, size_t size);
 
 udword	kmalloc_int(udword size, udword align, udword *physical_address);

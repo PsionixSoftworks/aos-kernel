@@ -32,7 +32,7 @@ udword NumberOfSyscalls = 3;
 void 
 syscall_init(void)
 {
-    register_interrupt_handler(0x96, &SyscallHandler);
+    register_interrupt_handler(0x96, (isr_t)&SyscallHandler);
 }
 
 void

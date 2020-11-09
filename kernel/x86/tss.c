@@ -20,8 +20,6 @@ tss_t tss_entry __attribute__((aligned(4096)));
 /* 0x1B = 27: CS selector value. */
 EXTERN uint32_t jump_usermode(void);
 
-static char irq_stack[4096];
-
 void
 tss_user_mode_switch(void)
 {
@@ -31,5 +29,5 @@ tss_user_mode_switch(void)
 void
 test_user_function(void)
 {
-	udword a = 0;
+	
 }

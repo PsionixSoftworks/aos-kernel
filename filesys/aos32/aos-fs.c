@@ -13,5 +13,3 @@
 #include <filesys/aos-fs.h>
 #include <kernel/memory/mm.h>
 #include <kernel/system/terminal.h>
-
-MODULE("AOS-FileSystem32", "0.01a");

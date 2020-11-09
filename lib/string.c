@@ -11,9 +11,10 @@
  */
 
 #include <adamantine/aos-string.h>
+#include <kernel/memory/mm.h>
 
-inline char *
-itoa( udword value, char * str, udword base ) 
+char *
+itoa(int value, char * str, int base) 
 {
     char *rc;
     char *ptr;
@@ -56,47 +57,45 @@ itoa( udword value, char * str, udword base )
     return (rc);
 }
 
-inline udword
-strcmp(string str1, string str2) 
+int
+strcmp(const char *str1, const char *str2) 
 {
-	udword i = 0;
-	udword failed = 0;
-	while ((str1[i] != '\0') && (str2[i] != '\0')) 
+	register const uint8_t *s1 = (const uint8_t *)str1;
+    register const uint8_t *s2 = (const uint8_t *)str2;
+    uint8_t c1;
+    uint8_t c2;
+
+    do
     {
-		if (str1[i] != str2[i]) 
+        c1 = (uint8_t) *s1++;
+        c2 = (uint8_t) *s2++;
+        if (c1 == '\0')
         {
-			failed = 1;
-			break;
-		}
-		i++;
-	}
-	if (((str1[i] == '\0') && (str2[i] != '\0')) || ((str1[i] != '\0') && (str2[i] == '\0'))) 
-    {
-		failed = 1;
-	}
-	return (failed);
+            return (c1 - c2);
+        }
+    } while (c1 == c2);
+    
+    return (c1 - c2);
 }
 
-inline string
-strcpy(string src, string dest) 
+string
+strcpy(char *dest, char *src) 
 {
-	unsigned i;
-    for (i = 0; src[i] != '\0'; ++i)
-        dest[i] = src[i];
-    dest[i] = '\0';
+	return (memcpy(dest, src, strlen(src) + 1));
+}
+
+string
+strcat(char *dest, const char *src) 
+{
+	char *ptr = dest + strlen(dest);
+
+    while (*src != '\0')
+    {
+        *ptr++ = *src++;
+    }
+    *ptr = '\0';
 
     return (dest);
-}
-
-inline string
-strcat(string dest, string src) 
-{
-	size_t i, j;
-    for (i = 0; dest[i] != '\0'; i++);
-    for (j = 0; src[j] != '\0'; j++)
-        dest[i + j] = src[j];
-    dest[i + j] = '\0';
-    return dest;
 }
 
 inline size_t

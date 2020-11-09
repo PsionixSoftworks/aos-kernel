@@ -31,7 +31,7 @@
 // Define Adamantine API macros:
 #ifndef ADAMANTINE_MACROS
 #define FAILSAFE
-#define NULL								(void *)0
+#define NULL								0
 #define FAILURE								FALSE
 #define SUCCESS								TRUE
 #endif
@@ -39,14 +39,8 @@
 // Define the module naming system for later use:
 #ifndef ADAMANTINE_MODULE
 #define ADAMANTINE_MODULE
-#define MODULE(name, version) 	            static char *n = name; \
-                                            static char *v = version;
+#define MODULE(a, b)
 #endif	// !MODULE_DESCRIPTOR
-
-#define OS_NAME                             "AdamantineOS"
-#define OS_SIGNATURE                        "{0:0:0:0~0}"
-#define OS_MODULE_NAME                      n
-#define OS_VERSION                          v
 
 #ifndef __STANDARD_ATTRIBUTES__
 #define __STANDARD_ATTRIBUTES__
@@ -59,7 +53,6 @@
 #define SECTION(name)	                __attribute__((section(name)))
 #define ALIGN(x)                        __attribute__((aligned(x)))
 #define _TEXT                           SECTION(".text")
-#define _MULTIBOOT                      SECTION(".multiboot")
 #define _RODATA                         SECTION(".rodata")
 #define _DATA                           SECTION(".data")
 #define _BSS                            SECTION(".bss")

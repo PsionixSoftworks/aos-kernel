@@ -16,13 +16,27 @@
 #include <kernel/x86/descriptor-tables.h>
 #include <kernel/pit.h>
 #include <kernel/memory/paging.h>
+#include <kernel/memory/mm.h>
 
+extern uint32_t kernel_end;
 typedef void(*kernel_t)(void);
+
+/*
+static void
+do_page_fault(void)
+{
+	uint32_t *ptr = (uint32_t *)0xA0000000;
+	uint32_t page_fault = *ptr;
+}
+*/
 
 static void
 start_modules(void)
 {
 	init_descriptor_tables();
+	pit_init(50);
+	mm_init((uint32_t)&kernel_end);
+	initialize_paging();
 }
 
 kernel_t
@@ -42,13 +56,9 @@ kernel_sys_entry(__kernel_void)
 	terminal_printf("== Adamantine OS - Version 0.1a ==\n");
 	terminal_printf("Starting modules...\n");
 
-	init_descriptor_tables();
-	initialize_paging();
+	start_modules();
 
-	terminal_printf("Paging test (should set a page fault):\n");
-
-	uint32_t *ptr = (uint32_t *)0xA0000000;
-	uint32_t do_page_fault = *ptr;
+	terminal_printf("Done! Preparing for next phase...\n\n");
 
 	return 0x0;
 }

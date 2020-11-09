@@ -22,7 +22,6 @@
 #define PANIC(MESSAGE)			panic(MESSAGE, __FILE__, __LINE__);
 #define PANIC_ASSERT(MESSAGE)	panic_assert(__FILE__, __LINE__, MESSAGE);
 
-typedef void(*terminal_attrib_t)(enum vga_color, enum vga_color);
 void terminal_init(void);
 void terminal_clear(void);
 void terminal_set_background_color(uint8_t color);

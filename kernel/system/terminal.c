@@ -27,7 +27,6 @@ static uint32_t x;
 static uint32_t y;
 
 static inline void terminal_putchar(char c);
-static inline void terminal_kprintf(string restrict format, va_list ap);
 static inline void terminal_scroll(void);
 
 static inline void cursor_enable(uint8_t start, uint8_t end);
@@ -133,8 +132,8 @@ terminal_printf(string restrict format, ...)
 					continue;
 				}
 				case 'c': {
-					string __input = va_arg(ap, string);
-					terminal_putchar(__input);
+					char *__input = va_arg(ap, char *);
+					terminal_putchar((int)__input);
 					i++;
 					continue;
 				}

@@ -36,6 +36,8 @@ irq_disable(void)
     (
         "PUSHF\n\tCLI\n\tPOP %0" : "=r"(flags) : : "memory"
     );
+
+    return (flags);
 }
 
 void 

@@ -31,6 +31,7 @@ clear_frame(uint32_t frame_address)
     frames[idx] &= ~(0x1 << off);
 }
 
+/* Find out if we even need this... *
 static uint32_t
 test_frame(uint32_t frame_address)
 {
@@ -39,6 +40,7 @@ test_frame(uint32_t frame_address)
     uint32_t off = OFFSET_FROM_BIT(frame);
     return (frames[idx] & (0x1 << off));
 }
+*/
 
 static uint32_t
 first_frame(void)
@@ -58,6 +60,7 @@ first_frame(void)
             }
         }
     }
+    return (0);
 }
 
 void
@@ -110,7 +113,7 @@ initialize_paging(void)
     memset(kernel_directory, 0, sizeof(page_directory_t));
     current_directory = kernel_directory;
 
-    int i = 0;
+    unsigned int i = 0;
     while (i < placement_address)
     {
         alloc_frame(get_page(i, 1, kernel_directory), 0, 0);
@@ -119,6 +122,8 @@ initialize_paging(void)
     register_interrupt_handler(14, page_fault);
 
     switch_page_directory(kernel_directory);
+
+    terminal_printf("Paging is initialized!\n");
 }
 
 void
@@ -165,7 +170,7 @@ page_fault(registers_t regs)
     int rw          = regs.ERR_CODE & 0x2;
     int us          = regs.ERR_CODE & 0x4;
     int reserved    = regs.ERR_CODE & 0x8;
-    int id          = regs.ERR_CODE & 0x10;
+    // int id          = regs.ERR_CODE & 0x10;
 
     terminal_print("Page fault! ( ");
     if (present) {terminal_print("present ");}

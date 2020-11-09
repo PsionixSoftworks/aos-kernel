@@ -17,10 +17,11 @@
 #include <adamantine/aos-types.h>
 
 // Declare string functions:
-EXTERN char *itoa(udword value, char * str, udword base);		// Converts integer to string.
-EXTERN udword strcmp(string  str1, string str2);
-EXTERN string strcpy(string src, string dest);
-EXTERN string strcat(string dest, string src);
+char *strcat(char *dest, const char *src);
+char *strchr(const char *str, int c);
+int strcmp(const char *str1, const char *str2);
+char *strcpy(char *dest, char *src);
+char *itoa(int value, char *str, int base);
 EXTERN void to_lower(string str);
 EXTERN void to_upper(string str);
 EXTERN size_t strlen(const string s);

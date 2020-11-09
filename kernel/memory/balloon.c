@@ -37,13 +37,15 @@ balloon_init(size_t size)
 	if (!balloon.valid) 
 	{
 		//_PANIC("balloon memory size must be one of the supported values!");
-		return;
+		return (-1);
 	}
 
 	// Allocate a specified balloon size for the data structure.
 	// This code should only be reachable if the size is one of the macro's.
 	balloon.buffer = (udword *)malloc(size);
 	balloon.size = size;
+
+	return (0);
 }
 
 udword *
@@ -51,10 +53,12 @@ balloon_inflate(udword amount, udword value)
 {
 	if (amount > balloon.capacity) 
 	{
-		udword *Result = balloon_pop();
-		return (Result);
+		udword *result = balloon_pop();
+		return (result);
 	}
 	balloon.data = memset(balloon.buffer, value, balloon.size);
+
+	return (0);
 }
 
 void

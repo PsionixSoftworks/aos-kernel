@@ -21,7 +21,7 @@
 #define DECL_SYSCALL2(fn, p1, p2)               udword syscall_##fn(p1, p2);
 #define DECL_SYSCALL3(fn, p1, p2, p3)           udword syscall_##fn(p1, p2, p3);
 #define DECL_SYSCALL4(fn, p1, p2, p3, p4)       udword syscall_##fn(p1, p2, p3, p4);
-#define DECL_SYSCALL4(fn, p1, p2, p3, p4, p5)   udword syscall_##fn(p1, p2, p3, p4, p5);
+#define DECL_SYSCALL5(fn, p1, p2, p3, p4, p5)   udword syscall_##fn(p1, p2, p3, p4, p5);
 
 #define DEFN_SYSCALL0(fn, num)                                                          \
 udword syscall_##fn()                                                                      \

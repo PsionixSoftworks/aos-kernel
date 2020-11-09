@@ -21,9 +21,6 @@ MODULE("Memory-Util", "0.01a");
 
 #define MAX_PAGE_ALLOCS		32
 
-/* Define mutexes here. */
-DEFINE_mutex(m_memcpy);
-
 udword last_alloc 	= 0;
 udword heap_end		= 0;
 udword heap_begin 	= 0;
@@ -33,7 +30,7 @@ udword memory_used 	= 0;
 ubyte *pheap_desc 	= 0;
 
 EXTERN udword kernel_end;
-uint32_t placement_address = (uint32_t)&kernel_end;
+uint32_t placement_address = (uint32_t)(&kernel_end);
 
 void 
 mm_init(udword kernel_end) 
@@ -46,71 +43,32 @@ mm_init(udword kernel_end)
 	memset((string)heap_begin, 0, heap_end - heap_begin);
 	pheap_desc = (ubyte *)malloc(MAX_PAGE_ALLOCS);
 
-	//_INFO("memory Module is initialized!");
-	//terminal_printf("Kernel heap begins at 0x%x\n", last_alloc);
-	//system_logf(INFORMATION, "Memory Heap is initialized!\n");
-	//system_logf(INFORMATION, "Kenel Heap starts at 0x%x.\n", last_alloc);
-}
-
-void
-MM_PrintOut(void) 
-{
-	//system_logf(INFORMATION, "Memory Used: %x bytes allocated.\n", memory_used);
+	terminal_printf("Memory Module is initialized!\n");
+	terminal_printf("Kernel heap begins at 0x%x\n", last_alloc);
 }
 
 void 
 free(void *mem) 
 {
-	Alloc_t *Alloc = (mem - sizeof(Alloc_t));
-	memory_used -= Alloc->size + sizeof(Alloc_t);
-	Alloc->status = 0;
-}
-
-void 
-pfree(void *mem) 
-{
-	if ((mem < pheap_begin) || (mem > pheap_end)) 
-		return;
-
-	udword ad = (udword)mem;
-	ad -= pheap_begin;
-	ad /= 4096;
-
-	pheap_desc[ad] = 0;
-
-	return;
-}
-
-void *
-pmalloc(size_t size) 
-{
-	for (size_t i = 0; i < MAX_PAGE_ALLOCS; i++) 
-	{
-		if (pheap_desc[i]) 
-			continue;
-		pheap_desc[i] = 1;
-		terminal_printf("PAllocated from %X to %X.\n", pheap_begin + i * 4096, pheap_begin + (i + 1) * 4096);
-
-		return ((string)(pheap_begin + i * 4096));
-	}
-	terminal_printf("pmalloc: FATAL: failure!\n");
-	return (0);
+	alloc_t *alloc = (mem - sizeof(alloc_t));
+	memory_used -= alloc->size + sizeof(alloc_t);
+	alloc->status = 0;
 }
 
 void *
 malloc(size_t size) 
 {
-	if (!size) return;
+	if (!size) return 0;
 	ubyte *mem = (ubyte *)heap_begin;
 	while ((udword)mem < last_alloc) 
 	{
-		Alloc_t *a = (Alloc_t *)mem;
+		alloc_t *a = (alloc_t *)mem;
 		if (!a->size)
 			goto nalloc;
 		if (a->status) 
 		{
 			mem += a->size;
-			mem += sizeof(Alloc_t);
+			mem += sizeof(alloc_t);
 			mem += 4;
 			continue;
 		}
@@ -119,80 +77,114 @@ malloc(size_t size)
 		{
 			a->status = 1;
 
-			terminal_printf("RE:Allocated %d bytes from %d to %d...\n", size, mem + sizeof(Alloc_t), mem + sizeof(Alloc_t) + size);
+			terminal_printf("RE:Allocated %d bytes from %d to %d...\n", size, mem + sizeof(alloc_t), mem + sizeof(alloc_t) + size);
 
-			memset(mem + sizeof(Alloc_t), 0, size);
-			memory_used += size + sizeof(Alloc_t);
-			return ((void *)(mem + sizeof(Alloc_t)));
+			memset(mem + sizeof(alloc_t), 0, size);
+			memory_used += size + sizeof(alloc_t);
+			return ((void *)(mem + sizeof(alloc_t)));
 		}
 		mem += a->size;
-		mem += sizeof(Alloc_t);
+		mem += sizeof(alloc_t);
 		mem += 4;
 	}
 
 	nalloc:;
-	if (last_alloc + size + sizeof(Alloc_t) >= heap_end) 
+	if (last_alloc + size + sizeof(alloc_t) >= heap_end) 
 	{
-		//_PANIC("Cannot allocate. Out of memory...");
+		PANIC("Cannot allocate. Out of memory...");
 	}
-	Alloc_t *Alloc = (Alloc_t *)last_alloc;
-	Alloc->status = 1;
-	Alloc->size = size;
+	alloc_t *alloc = (alloc_t *)last_alloc;
+	alloc->status = 1;
+	alloc->size = size;
 
 	last_alloc += size;
-	last_alloc += sizeof(Alloc_t);
+	last_alloc += sizeof(alloc_t);
 	last_alloc += 4;
 
-	memory_used += size + 4 + sizeof(Alloc_t);
-	memset((void *)((udword)Alloc + sizeof(Alloc_t)), 0, size);
-	//MM_PrintOut();
+	memory_used += size + 4 + sizeof(alloc_t);
+	memset((void *)((udword)alloc + sizeof(alloc_t)), 0, size);
 
-	return ((void *)((udword)Alloc + sizeof(Alloc_t)));
+	return ((void *)((udword)alloc + sizeof(alloc_t)));
 }
 
 void *
-memcpy(const void *destination, const void *source, size_t Count) 
+memchr(register const void *str, int c, size_t n)
 {
-	mutex_lock(&m_memcpy);
-	string DST8 = (string)destination;
-	string SRC8 = (string)source;
+    const uint8_t *source = (const uint8_t *)str;
 
-	if (Count & 1) 
-	{
-		DST8[0] = SRC8[0];
-		DST8++;
-		SRC8++;
-	}
+    while (n-- > 0)
+    {
+        if (*source == c)
+        {
+            return (void *)source;
+        }
+        source++;
+    }
+    return (NULL);
+}
 
-	Count /= 2;
-	while (Count--) 
-	{
-		DST8[0] = SRC8[0];
-		DST8[1] = SRC8[1];
+int
+memcmp(const void *str1, const void *str2, size_t n)
+{
+    register const uint8_t *s1 = (const uint8_t *)str1;
+    register const uint8_t *s2 = (const uint8_t *)str2;
 
-		DST8 += 2;
-		SRC8 += 2;
-	}
-	mutex_unlock(&m_memcpy);
-	return ((void *)destination);
+    while (n-- > 0)
+    {
+        if (*s1++ != *s2++)
+        {
+            return (s1[-1] < s2[-1] ? -1 : 1);
+        }
+    }
+    return (0);
 }
 
 void *
-memset16(void *pointer,  udword value, size_t size)
+memcpy(void *dest, const void *src, size_t n) 
 {
-	uword *p = pointer;
-	while (size--)
-		*p++ = value;
-	return (pointer);
+	char *d = dest;
+    const char *s = src;
+    while (n--)
+    {
+        *d++ = *s++;
+    }
+    return (dest);
 }
 
 void *
-memset(void *pointer, dword value, size_t Number) 
+memmove(void *dest, const void *src, size_t n)
 {
-	ubyte *p = pointer;
-	while (Number--)
-		*p++ = (ubyte)value;
-	return (pointer);
+    char *d = dest;
+    const char *s = src;
+    
+    if (d < s)
+    {
+        while (n--)
+        {
+            *d++ = *s++;
+        }
+    }
+    else
+    {
+        const char *lasts = s + (n - 1);
+        char *lastd = d + (n - 1);
+        while (n--)
+        {
+            *lastd-- = *lasts--;
+        }
+    }
+    return (dest);
+}
+
+void *
+memset(void *dest, int c, size_t n)
+{
+    uint8_t *ptr = dest;
+    while (n-- > 0)
+    {
+        *ptr++ = c;
+    }
+    return (dest);
 }
 
 /* James Molloy... */
