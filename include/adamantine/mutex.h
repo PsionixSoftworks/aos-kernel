@@ -16,8 +16,8 @@ typedef struct {
 extern "C" {
 #endif
 
-void (mutex_lock(mutex	*m));
-void (mutex_unlock(mutex* m));
+void mutex_lock(mutex	*m);
+void mutex_unlock(mutex* m);
 
 #if defined(__cplusplus)
 }

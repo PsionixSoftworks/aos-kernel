@@ -43,15 +43,15 @@ extern "C" {
 #endif
 
 // Declare global functions:
-void (keyboard_set_key_code(byte *key, byte code));				// Set keycodes for each key (UNUSED).
-void (keyboard_init(void));										// Initialize the basic keyboard driver.
-void (keyboard_free(void));										// free memory associated with the keyboard driver.
-void (keyboard_wait(void));										// Give the keyboard a wait instruction.
-bool (keyboard_is_enabled(void));								// Checks whether the keyboard is initialized or not.
-string (keyboard_get_key(void));								// Gets the value of a key pressed.
-string (keyboard_get_string(void));
-uint8_t (keyboard_get_keycode(void));							// Gets the value of the keycode pressed.
-uint8_t (keyboard_get_key_last(void));
+void keyboard_set_key_code(byte *key, byte code);				// Set keycodes for each key (UNUSED).
+void keyboard_init(void);										// Initialize the basic keyboard driver.
+void keyboard_free(void);										// free memory associated with the keyboard driver.
+void keyboard_wait(void);										// Give the keyboard a wait instruction.
+bool keyboard_is_enabled(void);									// Checks whether the keyboard is initialized or not.
+string keyboard_get_key(void);									// Gets the value of a key pressed.
+string keyboard_get_string(void);
+uint8_t keyboard_get_keycode(void);								// Gets the value of the keycode pressed.
+uint8_t keyboard_get_key_last(void);
 
 #if defined(__cplusplus)
 }

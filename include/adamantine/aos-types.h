@@ -55,7 +55,7 @@ typedef int32_t	                dword;  		    // dword is a 32 bit unsigned long
 typedef enum {false, true}	    bool;				// Define bool (C ONLY!).
 #endif	// !__cplusplus
 
-typedef void (*kernel_t)(void);
+typedef void kernel_t;
 
 // Define kernel_types:
 #if defined(__KERNEL__)

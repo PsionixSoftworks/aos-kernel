@@ -92,5 +92,6 @@ kernel_sys_entry(__kernel_void)
 	terminal_printf("String after 'free': %s.\n");
 
 	aos.kernel_stop();
-	return 0;
+
+	return;
 }

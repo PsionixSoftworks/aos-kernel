@@ -48,7 +48,7 @@ typedef struct
     kernel_t (*kernel_setup)(void);
     kernel_t (*kernel_start)(void);
     kernel_t (*kernel_stop)(void);
-} aos_base_t PACKED;
+} aos_base_t;
 
 #ifndef ADAMANTINE_VER
 #define ADAMANTINE_VER 	OS_VERSION_NUMBER
