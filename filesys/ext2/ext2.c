@@ -240,7 +240,7 @@ ext2_read_root_directory(char *filename, device_t *device, ext2_priv_data *priv)
         return (0);
     }
 
-    for (udword i = 0; i < 12; i++) 
+    for (uint32_t i = 0; i < 12; i++) 
     {
         uint32_t b = inode->dbp[i];
         if (b == 0) break;
@@ -269,7 +269,7 @@ ext2_find_file_inode(char *ff, inode_t *inode_buf, device_t *device, ext2_priv_d
         while (n--) 
         {
             terminal_printf("Looking for %s.\n", filename);
-            for (udword i = 0; i < 12; i++) {
+            for (uint32_t i = 0; i < 12; i++) {
                 uint32_t b = inode->dbp[i];
                 if (!b) break;
                 ext2_read_block(root_buf, b, device, priv);
@@ -305,9 +305,9 @@ void
 ext2_list_directory(char *dd, char *buffer, device_t *device, ext2_priv_data *priv) 
 {
     char *dir = dd;
-    udword rc = ext2_find_file_inode(dir, (inode_t *)buffer, device, priv);
+    uint32_t rc = ext2_find_file_inode(dir, (inode_t *)buffer, device, priv);
     if (!rc) return;
-    for (udword i = 0; i < 12; i++) 
+    for (uint32_t i = 0; i < 12; i++) 
     {
         uint32_t b = inode->dbp[i];
         if (!b) break;
@@ -361,7 +361,7 @@ ext2_read_file(char *fn, uint8_t buffer, device_t *device, ext2_priv_data *priv)
         return (0);
     }
 
-    for (udword i = 0; i < 12; i++) 
+    for (uint32_t i = 0; i < 12; i++) 
     {
         uint32_t b = minode->dbp[i];
         if (b == 0) {
@@ -392,7 +392,7 @@ ext2_find_new_inode_id(uint32_t *id, device_t *device, ext2_priv_data *priv)
 {
     ext2_read_block(root_buf, priv->first_bgd, device, priv);
     block_group_desc_t *bg = (block_group_desc_t *)root_buf;
-    for (udword i = 0; i < priv->number_of_bgs; i++) 
+    for (uint32_t i = 0; i < priv->number_of_bgs; i++) 
     {
         if (bg->num_of_unallocated_inode) 
         {
@@ -413,7 +413,7 @@ ext2_alloc_block(uint32_t *out, device_t *device, ext2_priv_data *priv)
 {
     ext2_read_block(root_buf, priv->first_bgd, device, priv);
     block_group_desc_t *bg = (block_group_desc_t *)root_buf;
-    for (udword i = 0; i < priv->number_of_bgs; i++) 
+    for (uint32_t i = 0; i < priv->number_of_bgs; i++) 
     {
         if (bg->num_of_unallocated_block) 
         {
@@ -463,7 +463,7 @@ ext2_touch(char *file, device_t *device __attribute__((unused)), ext2_priv_data 
     uint32_t block = 0;
     uint32_t ioff = 0;ext2_get_inode_block(id, &block, &ioff, device, priv);
     inode_t *winode = (inode_t *)root_buf;
-    for (udword i = 0; i < ioff; i++)
+    for (uint32_t i = 0; i < ioff; i++)
         winode++;
     memcpy(winode, fi, sizeof(inode_t));
     ext2_write_block(root_buf, block, device, priv);
@@ -480,7 +480,7 @@ ext2_touch(char *file, device_t *device __attribute__((unused)), ext2_priv_data 
     t++;
 
     uint8_t found = 0;
-    for (udword i = 0; i < 12; i++) 
+    for (uint32_t i = 0; i < 12; i++) 
     {
         if (inode->dbp[i] == 0) 
         {
@@ -543,7 +543,7 @@ ext2_writefile(char *fn, char *buf, uint32_t len, device_t *device, ext2_priv_da
             return (0);
         }
 
-        for (udword i = 0; i < blocks_to_alloc; i++) 
+        for (uint32_t i = 0; i < blocks_to_alloc; i++) 
         {
             uint32_t bid = 0;
             ext2_alloc_block(&bid, device, priv);
@@ -554,7 +554,7 @@ ext2_writefile(char *fn, char *buf, uint32_t len, device_t *device, ext2_priv_da
 
         ext2_write_inode(inode, inode_id - 1, device, priv);
 
-        for (udword i = 0; i < blocks_to_alloc; i++) 
+        for (uint32_t i = 0; i < blocks_to_alloc; i++) 
         {
             ext2_read_block(root_buf, inode->dbp[i], device, priv);
             if (i + 1 < blocks_to_alloc) 

@@ -29,12 +29,12 @@
 
 struct AOS_PCI_Device
 {
-    udword              Vendor;
-    udword              device;
-    udword              SubVendor;
-    udword              SubDevice;
-    udword              Class;
-    udword              ClassMask;
+    uint32_t              Vendor;
+    uint32_t              device;
+    uint32_t              SubVendor;
+    uint32_t              SubDevice;
+    uint32_t              Class;
+    uint32_t              ClassMask;
 } PACKED PCI_Device_t;
 
 /* define the pci struct. */

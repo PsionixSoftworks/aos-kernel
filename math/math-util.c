@@ -4,31 +4,31 @@
 // MODULE("Math-Util", "0.01a");
 
 /* Defined in "math-util.h" */
-inline udword
+inline uint32_t
 abs(dword x)
 {
     return ((x < 0) ? -x : x);
 }
 
-inline udword
+inline uint32_t
 floor(double x)
 {
-    return ((double)((udword)x - (x < 0.0)));
+    return ((double)((uint32_t)x - (x < 0.0)));
 }
 
-udword
+uint32_t
 round(double x)
 {
-    return ((x >= 0) ? (udword)(x + 0.5) : (udword)(x - 0.5));
+    return ((x >= 0) ? (uint32_t)(x + 0.5) : (uint32_t)(x - 0.5));
 }
 
-inline udword
+inline uint32_t
 ceil(double x)
 {
-    return ((double)((udword)x + (x > 0.0)));
+    return ((double)((uint32_t)x + (x > 0.0)));
 }
 
-inline udword
+inline uint32_t
 sign(double x)
 {
     if (x < 0) {x = -1;}
@@ -145,7 +145,7 @@ pow(double x, double y)
     return (result);
 }
 
-inline udword
+inline uint32_t
 trunc(double x)
 {
     return (x);
@@ -164,24 +164,24 @@ radtodeg(double x)
 }
 
 /* Defined in "simple-math.h" */
-inline udword
-sum2i(udword x, udword y)
+inline uint32_t
+sum2i(uint32_t x, uint32_t y)
 {
-    udword result = x + y;
+    uint32_t result = x + y;
     return (result);
 }
 
-inline udword
-sum3i(udword x, udword y, udword z)
+inline uint32_t
+sum3i(uint32_t x, uint32_t y, uint32_t z)
 {
-    udword result = x + y + z;
+    uint32_t result = x + y + z;
     return (result);
 }
 
-inline udword
-sum4i(udword x, udword y, udword z, udword w)
+inline uint32_t
+sum4i(uint32_t x, uint32_t y, uint32_t z, uint32_t w)
 {
-    udword result = x + y + z + w;
+    uint32_t result = x + y + z + w;
     return (result);
 }
 
@@ -227,24 +227,24 @@ sum4d(double x, double y, double z, double w)
     return (result);
 }
 
-inline udword
-difference2i(udword x, udword y)
+inline uint32_t
+difference2i(uint32_t x, uint32_t y)
 {
-    udword result = x - y;
+    uint32_t result = x - y;
     return (result);
 }
 
-inline udword
-difference3i(udword x, udword y, udword z)
+inline uint32_t
+difference3i(uint32_t x, uint32_t y, uint32_t z)
 {
-    udword result = x - y - z;
+    uint32_t result = x - y - z;
     return (result);
 }
 
-inline udword
-difference4i(udword x, udword y, udword z, udword w)
+inline uint32_t
+difference4i(uint32_t x, uint32_t y, uint32_t z, uint32_t w)
 {
-    udword result = x - y - z - w;
+    uint32_t result = x - y - z - w;
     return (result);
 }
 
@@ -290,24 +290,24 @@ difference4d(double x, double y, double z, double w)
     return (result);
 }
 
-inline udword
-product2i(udword x, udword y)
+inline uint32_t
+product2i(uint32_t x, uint32_t y)
 {
-    udword result = x * y;
+    uint32_t result = x * y;
     return (result);
 }
 
-inline udword
-product3i(udword x, udword y, udword z)
+inline uint32_t
+product3i(uint32_t x, uint32_t y, uint32_t z)
 {
-    udword result = x * y * z;
+    uint32_t result = x * y * z;
     return (result);
 }
 
-inline udword
-product4i(udword x, udword y, udword z, udword w)
+inline uint32_t
+product4i(uint32_t x, uint32_t y, uint32_t z, uint32_t w)
 {
-    udword result = x * y * z * w;
+    uint32_t result = x * y * z * w;
     return (result);
 }
 
@@ -353,24 +353,24 @@ product4d(double x, double y, double z, double w)
     return (result);
 }
 
-inline udword
-quotient2i(udword x, udword y)
+inline uint32_t
+quotient2i(uint32_t x, uint32_t y)
 {
-    udword result = (udword)round(x / y);
+    uint32_t result = (uint32_t)round(x / y);
     return (result);
 }
 
-inline udword
-quotient3i(udword x, udword y, udword z)
+inline uint32_t
+quotient3i(uint32_t x, uint32_t y, uint32_t z)
 {
-    udword result = (udword)round(x / y / z);
+    uint32_t result = (uint32_t)round(x / y / z);
     return (result);
 }
 
-inline udword
-quotient4i(udword x, udword y, udword z, udword w)
+inline uint32_t
+quotient4i(uint32_t x, uint32_t y, uint32_t z, uint32_t w)
 {
-    udword result = (udword)round(x / y / z / w);
+    uint32_t result = (uint32_t)round(x / y / z / w);
     return (result);
 }
 

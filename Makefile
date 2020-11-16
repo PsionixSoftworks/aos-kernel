@@ -170,7 +170,8 @@ iso: kernel
 	grub-mkrescue -o $(ISO_FILE) $(ISO_PATH)
 	$(MKDIR) $(ISO_OUTPUT_PATH)
 	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
-	qemu-system-x86_64 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
+#	qemu-system-x86_64 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
+	qemu-system-i386 -cdrom $(ISO_FILE)
 	$(RM) *.o $(BIN) *iso
 
 # This might need to get updated...

@@ -23,8 +23,8 @@ typedef struct
 	size_t 				size;
 } alloc_t;
 
-EXTERN	void mm_init(udword kernel_end);
-EXTERN	void paging_map_virtual_to_physical(udword virt, udword physical);
+EXTERN	void mm_init(uint32_t kernel_end);
+EXTERN	void paging_map_virtual_to_physical(uint32_t virt, uint32_t physical);
 
 EXTERN	void *pmalloc(size_t size);
 EXTERN	void *malloc(size_t size);
@@ -36,12 +36,12 @@ EXTERN 	int memcmp(const void *str1, const void *str2, size_t n);
 EXTERN 	void *memcpy(void *dest, const void *src, size_t n);
 EXTERN 	void *memmove(void *dest, const void *src, size_t n);
 EXTERN 	void *memset(void *dest, int c, size_t n);
-EXTERN	void *memset16(void *pointer,  udword value, size_t size);
+EXTERN	void *memset16(void *pointer,  uint32_t value, size_t size);
 
-udword	kmalloc_int(udword size, udword align, udword *physical_address);
-udword	kmalloc_a(udword size);
-udword	kmalloc_p(udword size_t, udword *physical_address);
-udword	kmalloc_ap(udword size, udword *physical_address);
-udword	kmalloc(udword size);
+uint32_t	kmalloc_int(uint32_t size, uint32_t align, uint32_t *physical_address);
+uint32_t	kmalloc_a(uint32_t size);
+uint32_t	kmalloc_p(uint32_t size_t, uint32_t *physical_address);
+uint32_t	kmalloc_ap(uint32_t size, uint32_t *physical_address);
+uint32_t	kmalloc(uint32_t size);
 
 #endif	// !ADAMANTINE_memORY_UTILITY

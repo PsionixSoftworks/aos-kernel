@@ -27,10 +27,10 @@ aos_system
 };
 
 // Declare global functions:
-EXTERN void (system_enable_cursor(ubyte cursor_start, ubyte cursor_end));  // Enable the cursor in the terminal.
+EXTERN void (system_enable_cursor(uint8_t cursor_start, uint8_t cursor_end));  // Enable the cursor in the terminal.
 EXTERN void (system_disable_cursor(void));							// Disable the terminal cursor.
-EXTERN void (system_update_cursor(udword x, udword y));			// Update the cursor position.
-EXTERN void (system_set_cursor_type(ubyte type));					// Set the cursor type (UNUSED).
-EXTERN uword (system_get_cursor_position(void));					// Get the cursor position.
+EXTERN void (system_update_cursor(uint32_t x, uint32_t y));			// Update the cursor position.
+EXTERN void (system_set_cursor_type(uint8_t type));					// Set the cursor type (UNUSED).
+EXTERN uint16_t (system_get_cursor_position(void));					// Get the cursor position.
 
 #endif	// !ADAMANTINE_SYSTEM

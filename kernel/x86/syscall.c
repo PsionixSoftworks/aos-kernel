@@ -27,7 +27,7 @@ static void *Syscalls[3] =
     &terminal_print_dec,
 };
 */
-udword NumberOfSyscalls = 3;
+uint32_t NumberOfSyscalls = 3;
 
 void 
 syscall_init(void)

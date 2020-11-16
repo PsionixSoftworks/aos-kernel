@@ -25,7 +25,7 @@
 #define UNSIGNED_SHORT_SIZE_MIN             (SIGNED_SHORT_SIZE_MIN + 0x7FFF) + 1
 #define UNSIGNED_SHORT_SIZE_MAX             (SIGNED_SHORT_SIZE_MAX + 0x7FFF) + 1
 
-/* size of "udword" type. */
+/* size of "uint32_t" type. */
 #define SIGNED_INT_SIZE_MIN                 0x7FFFFFFF - 0xFFFFFFFF
 #define SIGNED_INT_SIZE_MAX                 SIGNED_INT_SIZE_MIN + 0xFFFFFFFF
 #define UNSIGNED_INT_SIZE_MIN               (SIGNED_INT_SIZE_MIN + 0x7FFFFFFF) + 1

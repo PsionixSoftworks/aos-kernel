@@ -16,8 +16,8 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 
-EXTERN  void (write_portb(uword port, ubyte value));	            /* Writes to an 8-Bit port. */
-EXTERN  void (write_portw(uword port, uword value));	            /* Writes to a 16-Bit port. */
-EXTERN  void (write_portdw(uword port, udword value));	        /* Writes to a 32-Bit port. */
+EXTERN  void (write_portb(uint16_t port, uint8_t value));	            /* Writes to an 8-Bit port. */
+EXTERN  void (write_portw(uint16_t port, uint16_t value));	            /* Writes to a 16-Bit port. */
+EXTERN  void (write_portdw(uint16_t port, uint32_t value));	        /* Writes to a 32-Bit port. */
 
 #endif

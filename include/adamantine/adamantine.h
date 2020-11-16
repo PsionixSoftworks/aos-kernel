@@ -19,6 +19,12 @@
 #include <adamantine/adamantine-x86.h>
 #include <adamantine/version.h>
 
+#ifndef __sys_entry
+#define __sys_entry 	__kernel_only
+#else
+#define __sys_entry
+#endif
+
 #if defined( USING_AOSAPI ) && AOSAPI_VER > 10
 #include <sys/sysapi.h>
 #include <sys/input.h>
@@ -33,13 +39,20 @@
 #if defined( USING_ARBITRARY_SYSTEM )
 #endif	// !USING_ARBITRARY_SYSTEM
 
-#if !defined( _x86_ARCHTYPE ) && !defined( _x64_ARCHTYPE )
-#define _x86_ARCHTYPE		0x20
-#endif	// !ARCHTYPE
-
 #if !defined( __adamantine__ ) && defined( __x86_runtime__ ) || defined( __adamantine_subsystem__ )
-#define __adamantine__ __binary__(__Instructable Inst, func_ptr);
+#define __adamantine__ __binary__(__instructable inst, func_ptr);
 #endif 	// !__adamantine__
+
+typedef struct
+{
+    kernel_t (*kernel_setup)(void);
+    kernel_t (*kernel_start)(void);
+    kernel_t (*kernel_stop)(void);
+} aos_base_t PACKED;
+
+CGUARD_BEGIN
+
+CGUARD_END
 
 #ifndef ADAMANTINE_VER
 #define ADAMANTINE_VER 	OS_VERSION_NUMBER

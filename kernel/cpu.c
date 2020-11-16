@@ -16,12 +16,12 @@
 
 MODULE("CPU", "0.02a");
 
-EXTERN udword cpuid_supported(void);
+EXTERN uint32_t cpuid_supported(void);
 
-static inline udword
+static inline uint32_t
 ProcessorIndex(void)
 {
-	udword x = cpuid_supported();
+	uint32_t x = cpuid_supported();
 	return (x);
 }
 
@@ -70,10 +70,10 @@ cpu_suspend(void)
 	);
 }
 
-inline udword
+inline uint32_t
 cpuid(void)
 {
-	udword x = cpuid_supported();
+	uint32_t x = cpuid_supported();
 	asm volatile
 	(
 		"MOV $0x0, %EAX\n\t"
@@ -82,8 +82,8 @@ cpuid(void)
 	return (x);
 }
 
-inline udword 
-cpuid_string(udword code, udword *Location) 
+inline uint32_t 
+cpuid_string(uint32_t code, uint32_t *Location) 
 {
 	__asm__ volatile(
 		"cpuid":
@@ -93,14 +93,14 @@ cpuid_string(udword code, udword *Location)
 		"=c"(*(Location + 2)):
 		"a"(code)
 	);
-	return ((udword)Location[0]);
+	return ((uint32_t)Location[0]);
 }
 
 inline string
 cpu_vendor_string(void)
 {
 	static char Str[16];
-	cpuid_string(0x00000000, (udword *)(Str));
+	cpuid_string(0x00000000, (uint32_t *)(Str));
 	return (Str);
 }
 

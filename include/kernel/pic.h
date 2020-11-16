@@ -45,12 +45,12 @@
 #endif
 
 // Declare global functions:
-EXTERN  void (pic_send_eoi(ubyte irq));					        // Send the end of instruction to the PIC.
+EXTERN  void (pic_send_eoi(uint8_t irq));					        // Send the end of instruction to the PIC.
 EXTERN  void (pic_remap(void));		                            // Remap PIC.
-EXTERN  void (irq_set_mask(ubyte irq_Line));			            // Set the irq mask.
-EXTERN  void (irq_clear_mask(ubyte irq_Line));			            // Clear the irq mask.
-EXTERN  uword (pic_get_irr(void));						        // Get (IRR?).
-EXTERN  uword (pic_get_isr(void));						        // Get the interrupt service routine.
-EXTERN  uword (pic_get_irq_register(dword ocw3));				    // Get the irq registers.
+EXTERN  void (irq_set_mask(uint8_t irq_Line));			            // Set the irq mask.
+EXTERN  void (irq_clear_mask(uint8_t irq_Line));			            // Clear the irq mask.
+EXTERN  uint16_t (pic_get_irr(void));						        // Get (IRR?).
+EXTERN  uint16_t (pic_get_isr(void));						        // Get the interrupt service routine.
+EXTERN  uint16_t (pic_get_irq_register(dword ocw3));				    // Get the irq registers.
 
 #endif	// !ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER

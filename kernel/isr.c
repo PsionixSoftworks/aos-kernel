@@ -53,7 +53,7 @@ fault_handler(registers_t registers)
 }
 
 void 
-register_interrupt_handler(ubyte n, isr_t handler) 
+register_interrupt_handler(uint8_t n, isr_t handler) 
 {
 	interrupt_handlers[n] = handler;
 }

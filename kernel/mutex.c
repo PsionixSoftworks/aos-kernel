@@ -15,7 +15,7 @@
 
 MODULE("Mutex", "0.01a");
 
-ubyte Enabled = 0;
+uint8_t Enabled = 0;
 
 static inline void 
 schedule_no_irq(void);

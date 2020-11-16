@@ -27,17 +27,17 @@ typedef struct aos_io 		io_t;
 struct
 aos_input
 {
-	ubyte(*inb)(uword);
-	uword(*inw)(uword);
-	udword(*inl)(uword);
+	uint8_t(*inb)(uint16_t);
+	uint16_t(*inw)(uint16_t);
+	uint32_t(*inl)(uint16_t);
 };
 
 struct
 aos_output
 {
-	void(*outb)(uword, ubyte);
-	void(*outw)(uword, uword);
-	void(*outl)(uword, udword);
+	void(*outb)(uint16_t, uint8_t);
+	void(*outw)(uint16_t, uint16_t);
+	void(*outl)(uint16_t, uint32_t);
 };
 
 struct

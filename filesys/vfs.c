@@ -23,12 +23,12 @@ MODULE("virtualFileSystem", "0.01a");
 uint8_t __init_vfs = 0;
 
 mount_info_t **mp = 0;
-udword last_mount_id = 0;
+uint32_t last_mount_id = 0;
 
 Device_t *
 check_mount(char *loc) 
 {
-    for (udword i = 0; i < last_mount_id; i++) 
+    for (uint32_t i = 0; i < last_mount_id; i++) 
     {
         if (strcmp(loc, mp[i]->loc) == 0) 
         {
@@ -41,7 +41,7 @@ check_mount(char *loc)
 uint8_t 
 list_mount(void) 
 {
-    for (udword i = 0; i < MAX_MOUNTS; i++) 
+    for (uint32_t i = 0; i < MAX_MOUNTS; i++) 
     {
         if (!mp[i]) 
             break;
@@ -93,7 +93,7 @@ device_try_to_mount(Device_t *device, char *loc)
 }
 
 uint8_t 
-__find_mount(char *filename, udword *adjust) 
+__find_mount(char *filename, uint32_t *adjust) 
 {
     char *orig = (char *)malloc(strlen(filename) + 1);
     memset(orig, 0, strlen(filename) + 1);
@@ -102,7 +102,7 @@ __find_mount(char *filename, udword *adjust)
         str_backspace(orig, '/');
     while (1) 
     {
-        for (udword i = 0; i < MAX_MOUNTS; i++) 
+        for (uint32_t i = 0; i < MAX_MOUNTS; i++) 
         {
             if (!mp[i]) 
                 break;
@@ -123,11 +123,11 @@ __find_mount(char *filename, udword *adjust)
 uint8_t 
 vfs_read(char *filename, char *buffer) 
 {
-    udword adjust = 0;
-    udword i = __find_mount(filename, &adjust);
+    uint32_t adjust = 0;
+    uint32_t i = __find_mount(filename, &adjust);
     filename += adjust;
 
-    udword rc = mp[i]->device->fs->read(filename, buffer, mp[i]->device, mp[i]->device->fs->priv_data);
+    uint32_t rc = mp[i]->device->fs->read(filename, buffer, mp[i]->device, mp[i]->device->fs->priv_data);
     return (rc);
 }
 
@@ -139,13 +139,13 @@ vfs_ls(char *dir, char *buffer)
     memcpy(orig, dir, strlen(dir) + 1);
     while (1) 
     {
-        for (udword i = 0; i < MAX_MOUNTS; i++) 
+        for (uint32_t i = 0; i < MAX_MOUNTS; i++) 
         {
             if (!mp[i]) break;
             if (strcmp(mp[i]->loc, orig) == 0) 
             {
                 mp[i]->device->fs->read_dir(dir + strlen(mp[i]->device->fs->priv_data) - 1, buffer, mp[i]->device, mp[i]->device->fs->priv_data);
-                for (udword k = 0; k < MAX_MOUNTS; k++) 
+                for (uint32_t k = 0; k < MAX_MOUNTS; k++) 
                 {
                     if (!mp[k]) 
                         break;
@@ -186,14 +186,14 @@ vfs_exists_in_dir(char *wd, char *fn)
         filename[index] = '/';
         filename[index + 1] = 0;
     }
-    udword rc = 0;
+    uint32_t rc = 0;
     char *o = (char *)malloc(strlen(filename) + 2);
     memset(o, 0, strlen(filename) + 2);
     memcpy(o, filename, strlen(filename) + 1);
 
     while (1) 
     {
-        for (udword i = 0; i < MAX_MOUNTS; i++) 
+        for (uint32_t i = 0; i < MAX_MOUNTS; i++) 
         {
             if (!mp[i]) 
                 break;

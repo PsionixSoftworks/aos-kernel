@@ -22,7 +22,7 @@ typedef struct aos_device device_t;
 static device_t *device = 0;
 
 void 
-aos_device_init(udword device_id, string device_name)
+aos_device_init(uint32_t device_id, string device_name)
 {
     size_t size = 64 * sizeof(device_t);
 

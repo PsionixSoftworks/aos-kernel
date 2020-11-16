@@ -70,7 +70,7 @@ keyboard_get_key(void)
 }
 
 /* Get the key code */
-inline ubyte
+inline uint8_t
 keyboard_get_keycode(void) 
 {
 	keyboard_read();
@@ -80,7 +80,7 @@ keyboard_get_keycode(void)
 }
 
 /* Get the numeric last key pressed. */
-inline ubyte 
+inline uint8_t 
 keyboard_get_key_last(void) 
 {
 	return (keyboard.key_last);

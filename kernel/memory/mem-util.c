@@ -21,19 +21,19 @@ MODULE("Memory-Util", "0.01a");
 
 #define MAX_PAGE_ALLOCS		32
 
-udword last_alloc 	= 0;
-udword heap_end		= 0;
-udword heap_begin 	= 0;
-udword pheap_begin 	= 0;
-udword pheap_end 	= 0;
-udword memory_used 	= 0;
-ubyte *pheap_desc 	= 0;
+uint32_t last_alloc 	= 0;
+uint32_t heap_end		= 0;
+uint32_t heap_begin 	= 0;
+uint32_t pheap_begin 	= 0;
+uint32_t pheap_end 	= 0;
+uint32_t memory_used 	= 0;
+uint8_t *pheap_desc 	= 0;
 
-EXTERN udword kernel_end;
+EXTERN uint32_t kernel_end;
 uint32_t placement_address = (uint32_t)(&kernel_end);
 
 void 
-mm_init(udword kernel_end) 
+mm_init(uint32_t kernel_end) 
 {
 	last_alloc = kernel_end + 0x1000;
 	heap_begin = last_alloc;
@@ -41,7 +41,7 @@ mm_init(udword kernel_end)
 	pheap_begin = pheap_end - (MAX_PAGE_ALLOCS * 4096);
 	heap_end = pheap_begin;
 	memset((string)heap_begin, 0, heap_end - heap_begin);
-	pheap_desc = (ubyte *)malloc(MAX_PAGE_ALLOCS);
+	pheap_desc = (uint8_t *)malloc(MAX_PAGE_ALLOCS);
 
 	terminal_printf("Memory Module is initialized!\n");
 	terminal_printf("Kernel heap begins at 0x%x\n", last_alloc);
@@ -59,8 +59,8 @@ void *
 malloc(size_t size) 
 {
 	if (!size) return 0;
-	ubyte *mem = (ubyte *)heap_begin;
-	while ((udword)mem < last_alloc) 
+	uint8_t *mem = (uint8_t *)heap_begin;
+	while ((uint32_t)mem < last_alloc) 
 	{
 		alloc_t *a = (alloc_t *)mem;
 		if (!a->size)
@@ -102,9 +102,9 @@ malloc(size_t size)
 	last_alloc += 4;
 
 	memory_used += size + 4 + sizeof(alloc_t);
-	memset((void *)((udword)alloc + sizeof(alloc_t)), 0, size);
+	memset((void *)((uint32_t)alloc + sizeof(alloc_t)), 0, size);
 
-	return ((void *)((udword)alloc + sizeof(alloc_t)));
+	return ((void *)((uint32_t)alloc + sizeof(alloc_t)));
 }
 
 void *
@@ -188,8 +188,8 @@ memset(void *dest, int c, size_t n)
 }
 
 /* James Molloy... */
-udword
-kmalloc_int(udword size, udword align, udword *physical_address)
+uint32_t
+kmalloc_int(uint32_t size, uint32_t align, uint32_t *physical_address)
 {
 	if ((align == 1) && (placement_address & 0xFFFFF000))
 	{
@@ -200,31 +200,31 @@ kmalloc_int(udword size, udword align, udword *physical_address)
 	{
 		*physical_address = placement_address;
 	}
-	udword Temp = placement_address;
+	uint32_t Temp = placement_address;
 	placement_address += size;
 	return (Temp);
 }
 
-udword
-kmalloc_a(udword size)
+uint32_t
+kmalloc_a(uint32_t size)
 {
 	return (kmalloc_int(size, 1, 0));
 }
 
-udword
-kmalloc_p(udword size, udword *physical_address)
+uint32_t
+kmalloc_p(uint32_t size, uint32_t *physical_address)
 {
 	return (kmalloc_int(size, 0, physical_address));
 }
 
-udword
-kmalloc_ap(udword size, udword *physical_address)
+uint32_t
+kmalloc_ap(uint32_t size, uint32_t *physical_address)
 {
 	return (kmalloc_int(size, 1, physical_address));
 }
 
-udword
-kmalloc(udword size)
+uint32_t
+kmalloc(uint32_t size)
 {
 	return (kmalloc_int(size, 0, 0));
 }

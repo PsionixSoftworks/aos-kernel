@@ -15,9 +15,12 @@
 
 #define __KERNEL__
 #include <adamantine/aos-types.h>
+#include <adamantine/aos-defs.h>
 
 #define DEFAULT_BACKGROUND_COLOR	SYSTEM_COLOR_BLACK
 #define DEFAULT_FOREGROUND_COLOR	SYSTEM_COLOR_LT_GREEN
+
+CGUARD_BEGIN
 
 #define PANIC(MESSAGE)			panic(MESSAGE, __FILE__, __LINE__);
 #define PANIC_ASSERT(MESSAGE)	panic_assert(__FILE__, __LINE__, MESSAGE);
@@ -33,7 +36,9 @@ uint8_t terminal_get_foreground_color(void);
 void terminal_print(string str);
 void terminal_printf(string str, ...);
 
-void panic(const string msg, const string file, udword line);
-void panic_assert(const string file, udword line, const string description);
+void panic(const string msg, const string file, uint32_t line);
+void panic_assert(const string file, uint32_t line, const string description);
+
+CGUARD_END
 
 #endif

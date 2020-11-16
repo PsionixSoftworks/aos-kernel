@@ -28,14 +28,14 @@ typedef struct aos_system_information
     /* cpu Specs */
     __kernel_byte       cpu_cores;
     __kernel_byte       cpu_temperature;
-    __kernel_udword     cpu_id;
+    __kernel_uint32_t     cpu_id;
     __kernel_float      cpu_frequency;
     __kernel_string     cpu_manufacturer;
     __kernel_string     cpu_name;
 
     /* memory Specs */
-    __kernel_udword     memory_installed;
-    __kernel_udword     memory_available;
+    __kernel_uint32_t     memory_installed;
+    __kernel_uint32_t     memory_available;
     __kernel_byte       memory_speed;
 
     /* Other Info */

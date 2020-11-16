@@ -17,46 +17,46 @@ MODULE("Input-Output", "0.01a");
 
 // Write to the io port :
 void 
-write_portb(uword port, ubyte value) 
+write_portb(uint16_t port, uint8_t value) 
 {
 	asm volatile("OUTB %0, %1" : : "a"(value), "Nd"(port));
 }
 
 void
-write_portw(uword port, uword value)
+write_portw(uint16_t port, uint16_t value)
 {
 	asm volatile("OUTW %0, %1" : : "a"(value), "Nd"(port));
 }
 
 void
-write_portdw(uword port, udword value)
+write_portdw(uint16_t port, uint32_t value)
 {
 	asm volatile("OUTL %0, %1" : : "a"(value), "Nd"(port));
 }
 
 // read from the io port:
-ubyte 
-read_portb(uword port)
+uint8_t 
+read_portb(uint16_t port)
 {
-	ubyte value = 0;
+	uint8_t value = 0;
 	asm volatile("INB %1, %0" : "=a"(value) : "dN"(port));
 
 	return (value);
 }
 
-uword 
-read_portw(uword port) 
+uint16_t 
+read_portw(uint16_t port) 
 {
-	uword value = 0;
+	uint16_t value = 0;
 	asm volatile("INW %1, %0" : "=a" (value) : "dN" (port));
 
 	return (value);
 }
 
-udword
-read_portdw(uword port)
+uint32_t
+read_portdw(uint16_t port)
 {
-	udword value = 0;
+	uint32_t value = 0;
 	asm volatile("INL %1, %0" : "=a"(value) : "dN"(port));
 
 	return (value);

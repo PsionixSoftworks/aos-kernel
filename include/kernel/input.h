@@ -16,8 +16,8 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 
-EXTERN 	ubyte (read_portb(uword port));					        /* read 8-bit port. */
-EXTERN 	uword (read_portw(uword port));					        /* read 16-bit port. */
-EXTERN 	udword (read_portdw(uword port));                          /* read 32-bit port. */
+EXTERN 	uint8_t (read_portb(uint16_t port));					        /* read 8-bit port. */
+EXTERN 	uint16_t (read_portw(uint16_t port));					        /* read 16-bit port. */
+EXTERN 	uint32_t (read_portdw(uint16_t port));                          /* read 32-bit port. */
 
 #endif

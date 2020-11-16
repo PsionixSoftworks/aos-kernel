@@ -51,7 +51,7 @@ struct aos_tss_entry
 EXTERN void tss_init(void);
 EXTERN void tss_user_mode_switch(void);
 EXTERN void tss_reenable_interrupts(void);
-EXTERN void tss_set_kernel_stack(udword stack);
+EXTERN void tss_set_kernel_stack(uint32_t stack);
 
 
 #endif

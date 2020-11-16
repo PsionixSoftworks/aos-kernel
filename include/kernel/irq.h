@@ -17,8 +17,8 @@
 #include <adamantine/aos-types.h>
 
 EXTERN 	byte are_interrupts_enabled(void);
-EXTERN 	ulong irq_disable(void);
-EXTERN 	void irq_restore(ulong flags);
+EXTERN 	unsigned long irq_disable(void);
+EXTERN 	void irq_restore(unsigned long flags);
 EXTERN 	void clear_interrupts(void);
 
 #endif

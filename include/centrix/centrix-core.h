@@ -32,8 +32,8 @@ CGUARD_BEGIN
 
 struct centrix_core 
 {
-    udword              os_id;
-    udword              os_signature;
+    uint32_t              os_id;
+    uint32_t              os_signature;
     string              os_name;
 };
 

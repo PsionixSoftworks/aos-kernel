@@ -22,21 +22,9 @@
 #include <adamantine/adamantine.h>
 
 extern uint32_t kernel_end;
-typedef void(*kernel_t)(void);
 
-#define __sys_entry 	__kernel_only
-
-/*
-static void
-do_page_fault(void)
-{
-	uint32_t *ptr = (uint32_t *)0xA0000000;
-	uint32_t page_fault = *ptr;
-}
-*/
-
-static void
-start_modules(void)
+static inline __kernel_void
+start_modules(__kernel_void)
 {
 	init_descriptor_tables();
 	pit_init(50);
@@ -44,28 +32,74 @@ start_modules(void)
 	initialize_paging();
 }
 
-#include <kernel/system/io.h>
+static inline __kernel_void
+stop_modules(__kernel_void)
+{
+	return;
+}
 
-kernel_t __sys_entry
-kernel_sys_entry(__kernel_void)
+static inline kernel_t
+kernel_setup(__kernel_void)
 {
 	terminal_init();
-	__kernel_ubyte bgcol = terminal_get_background_color();
-	__kernel_ubyte fgcol = terminal_get_foreground_color();
+	uint8_t bgcol = terminal_get_background_color();
+	uint8_t fgcol = terminal_get_foreground_color();
 	if (bgcol != DEFAULT_BACKGROUND_COLOR)
 		bgcol = DEFAULT_BACKGROUND_COLOR;
 	if (fgcol != DEFAULT_FOREGROUND_COLOR)
 		fgcol = DEFAULT_FOREGROUND_COLOR;
 	terminal_set_background_color(bgcol);
 	terminal_set_foreground_color(fgcol);
-	terminal_clear();	
+	terminal_clear();
+}
 
+static inline kernel_t
+kernel_start(__kernel_void)
+{
 	terminal_printf("== Adamantine OS - Version %s ==\n", OS_VERSION_STRING);
 	terminal_printf("Starting modules...\n");
 
 	start_modules();
+}
+
+static inline kernel_t
+kernel_stop(__kernel_void)
+{
+	stop_modules();
+}
+
+static aos_base_t aos;
+
+static inline void
+aos_init(void)
+{
+	aos.kernel_setup = &kernel_setup;
+	aos.kernel_start = &kernel_start;
+	aos.kernel_stop = &kernel_stop;
+}
+
+#include <kernel/system/io.h>
+
+kernel_t __sys_entry
+kernel_sys_entry(__kernel_void)
+{
+	/* Initialize the kernel */
+	aos_init();
+
+	/* Call kernel_setup & kernel_start */
+	aos.kernel_setup();
+	aos.kernel_start();
 
 	terminal_printf("Done! Preparing for next phase...\n\n");
 
-	return 0x0;
+	char *str;
+	str = (char *)malloc(12);
+
+	strcpy(str, "ADAMNANTINE");
+	terminal_printf("String Before 'free': %s.\n");
+	free(str);
+	terminal_printf("String after 'free': %s.\n");
+
+	aos.kernel_stop();
+	return 0;
 }

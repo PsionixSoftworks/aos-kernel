@@ -270,7 +270,7 @@ cursor_get_pos(void)
 }
 
 void 
-panic(const string msg, const string file, udword line) 
+panic(const string msg, const string file, uint32_t line) 
 {
 	__asm__ __volatile__("CLI");
 	terminal_printf("!!! PANIC(%s) in file \"%s\" : Line: %d\n", msg, file, line);
@@ -278,7 +278,7 @@ panic(const string msg, const string file, udword line)
 }
 
 void
-panic_assert(const string file, udword line, const string description)
+panic_assert(const string file, uint32_t line, const string description)
 {
 	__asm__ __volatile__("CLI");
 	terminal_printf("!!! ASSERTION-FAILED(%s) in file \"%s\" : Line: %d.\n", description, file, line);
@@ -301,27 +301,27 @@ panic_assert(const string file, udword line, const string description)
 /* Define mutexes here. */
 DEFINE_mutex(m_mprintf);
 
-static const ubyte default_back_color = SYSTEM_COLOR_BLACK;
-static const ubyte default_fore_color = SYSTEM_COLOR_WHITE;
+static const uint8_t default_back_color = SYSTEM_COLOR_BLACK;
+static const uint8_t default_fore_color = SYSTEM_COLOR_WHITE;
 
 static terminal_t terminal;
-static uword *video_buffer;
+static uint16_t *video_buffer;
 static string terminal_buffer;
 static inline dword terminal_putchar(char c);
 static inline void move_cursor(void);
 static inline void scroll(void);
 static bool is_initialized;
-static ubyte fore_color;
-static ubyte back_color;
-static udword x;
-static udword y;
+static uint8_t fore_color;
+static uint8_t back_color;
+static uint32_t x;
+static uint32_t y;
 
 DEPRECATED static inline dword 
 terminal_putchar(char c) 
 {
-	ubyte color_byte = ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
-	uword attribute = color_byte << 0x08;
-	uword *location;
+	uint8_t color_byte = ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
+	uint16_t attribute = color_byte << 0x08;
+	uint16_t *location;
 
 	if ((c == 0x08) && (terminal.x > 0x10)) 
 	{
@@ -365,7 +365,7 @@ inline void
 system_log_begin(void)
 {
 	/* Setup the initial terminal buffer. */
-	video_buffer 	= (uword *)VGA_TEXT_MODE_COLOR;
+	video_buffer 	= (uint16_t *)VGA_TEXT_MODE_COLOR;
 	back_color 		= default_back_color;
 	fore_color 		= default_fore_color;
 	is_initialized 	= TRUE;
@@ -443,7 +443,7 @@ printf(const string Str, va_list ap)
 }
 
 inline bool
-system_logf(ubyte severity, string restrict format, ...)
+system_logf(uint8_t severity, string restrict format, ...)
 {
 	if (!format)
 		return (FALSE);
@@ -480,13 +480,13 @@ system_logf(ubyte severity, string restrict format, ...)
 }
 
 inline void
-system_log_set_back_col(ubyte col)
+system_log_set_back_col(uint8_t col)
 {
 	back_color = col;
 }
 
 inline void
-system_log_set_fore_col(ubyte col)
+system_log_set_fore_col(uint8_t col)
 {
 	fore_color = col;
 }
@@ -504,10 +504,10 @@ system_log_reset_fore_col(void)
 }
 
 inline void
-system_log_clear_back_col(ubyte col)
+system_log_clear_back_col(uint8_t col)
 {
-	ubyte color_byte;
-	uword blank;
+	uint8_t color_byte;
+	uint16_t blank;
 
 	color_byte 				= ((col << 0x04) | (terminal.fore_color & 0x0F));
 	blank 					= 0x20 | (color_byte << 0x08);
@@ -522,8 +522,8 @@ inline void
 system_log_clear(void)
 {
 	/* Clear the screen and set the whole screen to default. */
-	ubyte color_byte;
-	uword blank;
+	uint8_t color_byte;
+	uint16_t blank;
 
 	/* Set the color properties (for background and text). */
 	color_byte 				= ((back_color << 0x04) | (fore_color & 0x0F));
@@ -544,7 +544,7 @@ system_log_clear(void)
 static inline void 
 move_cursor(void) 
 {
-	uword CursorLocation = terminal.y * VGA_WIDTH + terminal.x;
+	uint16_t CursorLocation = terminal.y * VGA_WIDTH + terminal.x;
 	write_portb(0x3D4, 14);
 	write_portb(0x3D5, CursorLocation >> 8);
 	write_portb(0x3D4, 15);
@@ -554,8 +554,8 @@ move_cursor(void)
 static inline void 
 scroll(void) 
 {
-	ubyte AtributeByte = ((terminal.back_color << 0x4) | (terminal.fore_color & 0x0F));
-	uword Blank = 0x20 | (AtributeByte << 0x8);
+	uint8_t AtributeByte = ((terminal.back_color << 0x4) | (terminal.fore_color & 0x0F));
+	uint16_t Blank = 0x20 | (AtributeByte << 0x8);
 
 	if (terminal.y >= VGA_HEIGHT) 
 	{
@@ -578,9 +578,9 @@ scroll(void)
 /* THIS BEGINS DEPRECATED FUNCTIONS */
 
 DEPRECATED inline void
-terminal_init(ubyte back_color, ubyte fore_color) 
+terminal_init(uint8_t back_color, uint8_t fore_color) 
 {
-	video_buffer = (uword *)VGA_TEXT_MODE_COLOR;
+	video_buffer = (uint16_t *)VGA_TEXT_MODE_COLOR;
 	terminal.back_color = back_color;
 	terminal.fore_color = fore_color;
 	terminal.is_initialized = TRUE;
@@ -591,8 +591,8 @@ terminal_init(ubyte back_color, ubyte fore_color)
 DEPRECATED inline void
 terminal_clear_screen(void)
 {
-	ubyte color_byte = ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
-	uword Blank = 0x20 | (color_byte << 0x08);
+	uint8_t color_byte = ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
+	uint16_t Blank = 0x20 | (color_byte << 0x08);
 
 	for (dword i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
 	{
@@ -614,7 +614,7 @@ terminal_print(const string Str)
 }
 
 DEPRECATED inline void
-terminal_print_hex(udword value)
+terminal_print_hex(uint32_t value)
 {
 	terminal_print_value(value, 0x10);
 }
@@ -628,7 +628,7 @@ terminal_print_dec(dword value)
 static inline bool 
 print(const string data, size_t length) 
 {
-	const ubyte *Bytes = (const ubyte *)data;
+	const uint8_t *Bytes = (const uint8_t *)data;
 	for (size_t i = 0; i < length; i++) 
 	{
 		if (terminal_putchar(Bytes[i]) == EOF)
@@ -657,7 +657,7 @@ terminal_println(void)
 }
 
 DEPRECATED inline void 
-terminal_print_value(dword value, ubyte base) 
+terminal_print_value(dword value, uint8_t base) 
 {
 	char buffer[16];
 	string NumberToString = itoa(value, buffer, base);
@@ -682,20 +682,20 @@ terminal_gets(string Str)
 }
 
 inline void 
-terminal_move_cursor(udword x, udword y)
+terminal_move_cursor(uint32_t x, uint32_t y)
 {
 	terminal.x += x;
 	terminal.y += y;
 	move_cursor();
 }
 
-udword 
+uint32_t 
 terminal_get_cursor_x(void)
 {
 	return (terminal.x);
 }
 
-udword terminal_get_cursor_y(void)
+uint32_t terminal_get_cursor_y(void)
 {
 	return (terminal.y);
 }

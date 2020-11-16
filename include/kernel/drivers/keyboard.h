@@ -36,8 +36,8 @@ EXTERN 	void (keyboard_wait(void));								// Give the keyboard a wait instructi
 EXTERN 	bool (keyboard_is_enabled(void));							// Checks whether the keyboard is initialized or not.
 EXTERN 	string (keyboard_get_key(void));							// Gets the value of a key pressed.
 EXTERN 	string (keyboard_get_string(void));
-EXTERN 	ubyte (keyboard_get_keycode(void));						// Gets the value of the keycode pressed.
-EXTERN 	ubyte (keyboard_get_key_last(void));
+EXTERN 	uint8_t (keyboard_get_keycode(void));						// Gets the value of the keycode pressed.
+EXTERN 	uint8_t (keyboard_get_key_last(void));
 
 // Declare the keyboard type struct:
 typedef struct aos_keyboard_basic

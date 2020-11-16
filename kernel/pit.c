@@ -17,7 +17,7 @@
 
 MODULE("ProgrammableIntervalTimer", "0.01a");
 
-udword tick;
+uint32_t tick;
 
 static void 
 timer_callback(registers_t regs) 
@@ -28,15 +28,15 @@ timer_callback(registers_t regs)
 }
 
 void 
-pit_init(udword frequency) 
+pit_init(uint32_t frequency) 
 {
 	register_interrupt_handler(IRQ0, &timer_callback);
 	
-	udword divisor = 0x1234DC / frequency;
+	uint32_t divisor = 0x1234DC / frequency;
 	write_portb(0x43, 0x36);
 	
-	ubyte l = (ubyte)(divisor & 0xFF);
-	ubyte h = (ubyte)((divisor >> 0x8) & 0xFF);
+	uint8_t l = (uint8_t)(divisor & 0xFF);
+	uint8_t h = (uint8_t)((divisor >> 0x8) & 0xFF);
 	
 	write_portb(0x40, l);
 	write_portb(0x40, h);

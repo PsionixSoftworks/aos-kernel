@@ -34,16 +34,16 @@ typedef struct aos_balloon balloon_t;
 struct aos_balloon 
 {
 	size_t 				size;										// The size of the current index.
-	udword 				capacity;									// The capacity of the balloon.
-	udword 				*buffer;
-	udword 				*data;
+	uint32_t 				capacity;									// The capacity of the balloon.
+	uint32_t 				*buffer;
+	uint32_t 				*data;
 	bool 				valid;
 } PACKED;
 
 // Declare global functions:
 EXTERN 	bool (balloon_init(size_t size));							// Initialize the balloon memory type.
-EXTERN 	udword (*balloon_inflate(udword amount, udword value));	// Inflate balloon data.
-EXTERN 	udword (*balloon_pop(void));								// Pop the balloon off the stack.
+EXTERN 	uint32_t (*balloon_inflate(uint32_t amount, uint32_t value));	// Inflate balloon data.
+EXTERN 	uint32_t (*balloon_pop(void));								// Pop the balloon off the stack.
 EXTERN 	void (balloon_cleanup(void));								// Cleanup when no longer needed.
 EXTERN 	size_t (balloon_size(void));								// Get the balloon memory size.
 EXTERN 	size_t (balloon_capacity(void));

@@ -36,13 +36,13 @@
 
 typedef struct aos_registers 
 {
-	udword DS;                  // data segment selector
-   	udword EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX; // Pushed by pusha.
-   	udword INT_NO, ERR_CODE;    // Interrupt number and error code (if applicable)
-   	udword EIP, CS, EFLAGS, USERESP, SS;
+	uint32_t DS;                  // data segment selector
+   	uint32_t EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX; // Pushed by pusha.
+   	uint32_t INT_NO, ERR_CODE;    // Interrupt number and error code (if applicable)
+   	uint32_t EIP, CS, EFLAGS, USERESP, SS;
 } registers_t;
 
 typedef void(*isr_t)(registers_t);
-EXTERN	void register_interrupt_handler(ubyte n, isr_t handler);
+EXTERN	void register_interrupt_handler(uint8_t n, isr_t handler);
 
 #endif	// !ADAMANTINE_isr

@@ -23,6 +23,6 @@ EXTERN void cpu_halt(void);									    // Halts the CPU from C.
 EXTERN void cpu_suspend(void);									// Suspends the CPU from C.
 EXTERN dword cpu_broke_a_sweat(void);                             // Checks CPU performance against heat rating.
 EXTERN string cpu_vendor_string(void);                           // Gets the CPU vendor in string format.
-EXTERN udword cpu_check_is_supported(void);                       // Checks if the current CPU architecture is supported.
+EXTERN uint32_t cpu_check_is_supported(void);                       // Checks if the current CPU architecture is supported.
 
 #endif	// !ADAMANTINE_CPU

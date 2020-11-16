@@ -42,18 +42,18 @@ balloon_init(size_t size)
 
 	// Allocate a specified balloon size for the data structure.
 	// This code should only be reachable if the size is one of the macro's.
-	balloon.buffer = (udword *)malloc(size);
+	balloon.buffer = (uint32_t *)malloc(size);
 	balloon.size = size;
 
 	return (0);
 }
 
-udword *
-balloon_inflate(udword amount, udword value) 
+uint32_t *
+balloon_inflate(uint32_t amount, uint32_t value) 
 {
 	if (amount > balloon.capacity) 
 	{
-		udword *result = balloon_pop();
+		uint32_t *result = balloon_pop();
 		return (result);
 	}
 	balloon.data = memset(balloon.buffer, value, balloon.size);
@@ -69,7 +69,7 @@ balloon_cleanup(void)
 	free(balloon.buffer);
 }
 
-udword *
+uint32_t *
 balloon_pop(void) 
 {
 	return (balloon.data);

@@ -16,34 +16,34 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 
-#define DECL_SYSCALL0(fn)                       udword syscall_##fn();
-#define DECL_SYSCALL1(fn, p1)                   udword syscall_##fn(p1);
-#define DECL_SYSCALL2(fn, p1, p2)               udword syscall_##fn(p1, p2);
-#define DECL_SYSCALL3(fn, p1, p2, p3)           udword syscall_##fn(p1, p2, p3);
-#define DECL_SYSCALL4(fn, p1, p2, p3, p4)       udword syscall_##fn(p1, p2, p3, p4);
-#define DECL_SYSCALL5(fn, p1, p2, p3, p4, p5)   udword syscall_##fn(p1, p2, p3, p4, p5);
+#define DECL_SYSCALL0(fn)                       uint32_t syscall_##fn();
+#define DECL_SYSCALL1(fn, p1)                   uint32_t syscall_##fn(p1);
+#define DECL_SYSCALL2(fn, p1, p2)               uint32_t syscall_##fn(p1, p2);
+#define DECL_SYSCALL3(fn, p1, p2, p3)           uint32_t syscall_##fn(p1, p2, p3);
+#define DECL_SYSCALL4(fn, p1, p2, p3, p4)       uint32_t syscall_##fn(p1, p2, p3, p4);
+#define DECL_SYSCALL5(fn, p1, p2, p3, p4, p5)   uint32_t syscall_##fn(p1, p2, p3, p4, p5);
 
 #define DEFN_SYSCALL0(fn, num)                                                          \
-udword syscall_##fn()                                                                      \
+uint32_t syscall_##fn()                                                                      \
 {                                                                                       \
-    udword a;                                                                              \
+    uint32_t a;                                                                              \
     asm volatile("INT $0x96" : "=a" (a) : "0" (num));                                   \
     return (a);                                                                         \
 }
 
 #define DEFN_SYSCALL1(fn, num, P1)                                                      \
-udword syscall_##fn(P1 p1)                                                                 \
+uint32_t syscall_##fn(P1 p1)                                                                 \
 {                                                                                       \
-    udword a;                                                                              \
-    asm volatile("INT $0x96" : "=a" (a) : "0" (num), "b" ((udword)p1));                    \
+    uint32_t a;                                                                              \
+    asm volatile("INT $0x96" : "=a" (a) : "0" (num), "b" ((uint32_t)p1));                    \
     return (a);                                                                         \
 }
 
 #define DEFN_SYSCALL2(fn, num, P1, P2)                                                  \
-udword syscall_##fn(P1 p1, P2 p2)                                                          \
+uint32_t syscall_##fn(P1 p1, P2 p2)                                                          \
 {                                                                                       \
-    udword a;                                                                              \
-    asm volatile("INT $0x96" : "=a" (a) : "0" (num), "b", ((udword)p1)), "c" ((udword)p2);    \
+    uint32_t a;                                                                              \
+    asm volatile("INT $0x96" : "=a" (a) : "0" (num), "b", ((uint32_t)p1)), "c" ((uint32_t)p2);    \
     return (a);                                                                         \
 }
 

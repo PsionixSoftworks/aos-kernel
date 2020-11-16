@@ -18,7 +18,7 @@
 MODULE("System", "0.01a");
 
 void 
-system_enable_cursor(ubyte cursor_start, ubyte cursor_end) 
+system_enable_cursor(uint8_t cursor_start, uint8_t cursor_end) 
 {
 	write_portb(0x3D4, 0x0A);
 	write_portb(0x3D5, (read_portb(0x3D5) & 0xC0) | cursor_start);
@@ -35,23 +35,23 @@ system_disable_cursor(void)
 }
 
 void 
-system_update_cursor(udword x, udword y) 
+system_update_cursor(uint32_t x, uint32_t y) 
 {
-	uword position = y * VGA_WIDTH + x;
+	uint16_t position = y * VGA_WIDTH + x;
 	
 	write_portb(0x3D4, 0x0F);
-	write_portb(0x3D5, (ubyte)(position & 0xFF));
+	write_portb(0x3D5, (uint8_t)(position & 0xFF));
 	write_portb(0x3D4, 0x0E);
-	write_portb(0x3D5, (ubyte)((position >> 8) & 0xFF));
+	write_portb(0x3D5, (uint8_t)((position >> 8) & 0xFF));
 }
 
-uword 
+uint16_t 
 system_get_cursor_position(void)
 {
-	uword position = 0;
+	uint16_t position = 0;
 	write_portb(0x3D4, 0x0F);
 	position |= read_portb(0x3D5);
 	write_portb(0x3D4, 0x0E);
-	position |= ((uword)read_portb(0x3D5)) << 8;
+	position |= ((uint16_t)read_portb(0x3D5)) << 8;
 	return (position);
 }

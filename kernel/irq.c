@@ -17,7 +17,7 @@ MODULE("Interrupt-Request", "0.01a");
 byte 
 are_interrupts_enabled(void) 
 {
-    ulong flags;
+    unsigned long flags;
     asm volatile 
     ( 
         "PUSHF\n\t"
@@ -28,10 +28,10 @@ are_interrupts_enabled(void)
     return flags & (0x1 << 0x9);
 }
 
-ulong
+unsigned long
 irq_disable(void) 
 {
-    ulong flags;
+    unsigned long flags;
     asm volatile
     (
         "PUSHF\n\tCLI\n\tPOP %0" : "=r"(flags) : : "memory"
@@ -41,7 +41,7 @@ irq_disable(void)
 }
 
 void 
-irq_restore(ulong flags) {
+irq_restore(unsigned long flags) {
     asm volatile
     (
         "PUSH %0\n\tPOPF" : : "rm"(flags) : "memory", "cc"

@@ -17,7 +17,7 @@
 MODULE("ProgrammableInterruptController", "0.01a");
 
 void 
-pic_send_eoi(ubyte irq) 
+pic_send_eoi(uint8_t irq) 
 {
 	if (irq >= 0x8) 
 	{
@@ -42,10 +42,10 @@ pic_remap(void)
 }
 
 void 
-irq_set_mask(ubyte irq_Line) 
+irq_set_mask(uint8_t irq_Line) 
 {
-	uword port;
-	ubyte value;
+	uint16_t port;
+	uint8_t value;
 	
 	if (irq_Line < 0x8) 
 	{
@@ -61,10 +61,10 @@ irq_set_mask(ubyte irq_Line)
 }
 
 void 
-irq_clear_mask(ubyte irq_Line) 
+irq_clear_mask(uint8_t irq_Line) 
 {
-	uword port;
-	ubyte value;
+	uint16_t port;
+	uint8_t value;
 	
 	if (irq_Line < 0x8) 
 	{
@@ -79,19 +79,19 @@ irq_clear_mask(ubyte irq_Line)
 	write_portb(port, value);
 }
 
-uword
+uint16_t
 pic_get_irr(void) 
 {
 	return (pic_get_irq_register(PIC_READ_IRR));
 }
 
-uword
+uint16_t
 pic_get_isr(void) 
 {
 	return (pic_get_irq_register(PIC_READ_isr));
 }
 
-uword pic_get_irq_register(dword ocw3) 
+uint16_t pic_get_irq_register(dword ocw3) 
 {
 	write_portb(PIC1_COMMAND, ocw3);
 	write_portb(PIC2_COMMAND, ocw3);

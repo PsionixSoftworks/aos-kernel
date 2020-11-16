@@ -6,6 +6,6 @@
 
 typedef struct aos_chunk chunk_t;
 
-EXTERN udword chunk_create(size_t size);
+EXTERN uint32_t chunk_create(size_t size);
 
 #endif
