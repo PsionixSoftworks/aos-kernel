@@ -47,7 +47,14 @@ aos_io
 	output_t out;
 };
 
-// Declare io functions:
-EXTERN void (io_wait(void));
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+void io_wait(void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif	// !ADAMANTINE_IO

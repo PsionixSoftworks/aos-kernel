@@ -62,10 +62,10 @@
 /* Setters for types. */
 #define SET_VOID(name)                  void    name
 #define SET_BOOL(name)                  bool    name
-#define SET_uint8_t(name)                 uint8_t   name
-#define SET_uint16_t(name)                 uint16_t   name
-#define SET_uint32_t(name)                uint32_t  name
-#define SET_unsigned long(name)                 unsigned long   name
+#define SET_uint8_t(name)               uint8_t   name
+#define SET_uint16_t(name)              uint16_t   name
+#define SET_uint32_t(name)              uint32_t  name
+#define SET_unsigned long(name)         unsigned long   name
 #define SET_USHORT(name)                ushort  name
 #define SET_BYTE(name)                  byte    name
 #define SET_WORD(name)                  word    name

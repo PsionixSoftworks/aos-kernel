@@ -17,8 +17,6 @@
 #include <adamantine/aos-types.h>
 #include <adamantine/aos-string.h>
 
-CGUARD_BEGIN
-
 #if !defined(CENTRIX_MODE1) || !defined(CENTRIX_ALPHA)
 /* We'll just ignore it for now. */
 #else
@@ -32,11 +30,9 @@ CGUARD_BEGIN
 
 struct centrix_core 
 {
-    uint32_t              os_id;
-    uint32_t              os_signature;
-    string              os_name;
+    uint32_t                    os_id;
+    uint32_t                    os_signature;
+    string                      os_name;
 };
-
-CGUARD_END
 
 #endif	// !CENTRIX_CORE

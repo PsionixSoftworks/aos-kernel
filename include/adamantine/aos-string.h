@@ -16,16 +16,24 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 // Declare string functions:
 char *strcat(char *dest, const char *src);
 char *strchr(const char *str, int c);
 int strcmp(const char *str1, const char *str2);
 char *strcpy(char *dest, char *src);
 char *itoa(int value, char *str, int base);
-EXTERN void to_lower(string str);
-EXTERN void to_upper(string str);
-EXTERN size_t strlen(const string s);
-EXTERN size_t str_backspace(string str, char c);
-EXTERN size_t strsplit(string str, char delim);
+void to_lower(string str);
+void to_upper(string str);
+size_t strlen(const string s);
+size_t str_backspace(string str, char c);
+size_t strsplit(string str, char delim);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif	// !_STRING_

@@ -39,11 +39,19 @@ typedef struct mount_info
     struct aos_device *device;
 } mount_info_t;
 
-extern uint8_t vfs_read(char *f, char *buffer);
-extern uint32_t vfs_ls(char *d, char *buffer);
-extern uint8_t vfs_exists_in_dir(char *wd, char *fn);
-extern void vfs_init(void);
-extern uint8_t list_mount(void);
-extern uint8_t device_try_to_mount(struct aos_device *device, char *fn);
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+uint8_t vfs_read(char *f, char *buffer);
+uint32_t vfs_ls(char *d, char *buffer);
+uint8_t vfs_exists_in_dir(char *wd, char *fn);
+void vfs_init(void);
+uint8_t list_mount(void);
+uint8_t device_try_to_mount(struct aos_device *device, char *fn);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

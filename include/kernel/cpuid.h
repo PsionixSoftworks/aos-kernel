@@ -107,8 +107,16 @@ enum cpuid_features
 #define CPUID_VENDOR_VORTEX 		"Vortex86 SoC"
 #define CPUID_VENDOR_VIA			"VIA VIA VIA "
 
-EXTERN uint32_t cpuid(void);
-EXTERN uint32_t cpuid_string(uint32_t code, uint32_t *Location);
-EXTERN string cpuid_is_supported(void);
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+uint32_t cpuid(void);
+uint32_t cpuid_string(uint32_t code, uint32_t *Location);
+string cpuid_is_supported(void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

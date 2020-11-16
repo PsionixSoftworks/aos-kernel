@@ -16,6 +16,14 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 
-EXTERN  void pit_init(uint32_t Frequency);
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+void pit_init(uint32_t Frequency);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif	// !SYSTEM_TIMER

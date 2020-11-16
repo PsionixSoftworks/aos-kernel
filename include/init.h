@@ -22,8 +22,7 @@
 #include <system/terminal.h>
 #include <drivers/vga.h>
 
-EXTERN void sys_init(void);
-
+/* Do we even need this here? */
 static __kernel_string os_mode[] =
 {
     "Normal Mode",
@@ -40,8 +39,7 @@ static __kernel_string os_mode[] =
 static __kernel_void _TEXT
 init_all(__kernel_byte mode)
 {
-    /* Initialize the Terminal. */
-    //TerminalInit(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
+    return;
 }
 
 #endif  /* !_INIT_ */

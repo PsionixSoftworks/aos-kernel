@@ -15,6 +15,6 @@ struct aos_vector2
     float(*get_y)(void);
     float(*length_squared)(void);
     
-} PACKED;
+};
 
 #endif

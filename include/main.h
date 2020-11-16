@@ -17,6 +17,4 @@
 #include <adamantine/adamantine.h>
 #include <adamantine/aos-types.h>
 
-EXTERN void kernel_sys_entry(void);
-
 #endif	// !ADAMANTINE_MAIN

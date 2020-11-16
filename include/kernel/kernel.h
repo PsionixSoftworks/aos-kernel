@@ -42,7 +42,15 @@ typedef struct aos_system_information
     __kernel_long       up_time;
 } system_info_t;
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 // Declare the global functions used by the kernel:
-EXTERN  __kernel_void kernel_run(__kernel_void);									// The kernel's init function for startup.
+__kernel_void kernel_run(__kernel_void);						// The kernel's init function for startup.
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif	// !ADAMANTINE_KERNEL

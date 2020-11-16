@@ -10,16 +10,7 @@
  *
  */
 
-//#include <kernel/kernel.h>
-#include <kernel/system/terminal.h>
-#include <kernel/drivers/vga.h>
-#include <kernel/x86/descriptor-tables.h>
-#include <kernel/pit.h>
-#include <kernel/memory/paging.h>
-#include <kernel/memory/mm.h>
-
-#define USING_CENTRIX_CORE
-#include <adamantine/adamantine.h>
+#include <adamantine/aos-core.h>
 
 extern uint32_t kernel_end;
 

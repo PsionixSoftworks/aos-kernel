@@ -16,9 +16,17 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 
-EXTERN 	byte are_interrupts_enabled(void);
-EXTERN 	unsigned long irq_disable(void);
-EXTERN 	void irq_restore(unsigned long flags);
-EXTERN 	void clear_interrupts(void);
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+byte are_interrupts_enabled(void);
+unsigned long irq_disable(void);
+void irq_restore(unsigned long flags);
+void clear_interrupts(void);
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 #endif

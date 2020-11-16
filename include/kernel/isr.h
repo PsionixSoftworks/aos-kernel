@@ -42,7 +42,15 @@ typedef struct aos_registers
    	uint32_t EIP, CS, EFLAGS, USERESP, SS;
 } registers_t;
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 typedef void(*isr_t)(registers_t);
-EXTERN	void register_interrupt_handler(uint8_t n, isr_t handler);
+void register_interrupt_handler(uint8_t n, isr_t handler);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif	// !ADAMANTINE_isr

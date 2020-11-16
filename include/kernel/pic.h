@@ -44,13 +44,21 @@
 #define PIC_READ_isr		0x0B
 #endif
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 // Declare global functions:
-EXTERN  void (pic_send_eoi(uint8_t irq));					        // Send the end of instruction to the PIC.
-EXTERN  void (pic_remap(void));		                            // Remap PIC.
-EXTERN  void (irq_set_mask(uint8_t irq_Line));			            // Set the irq mask.
-EXTERN  void (irq_clear_mask(uint8_t irq_Line));			            // Clear the irq mask.
-EXTERN  uint16_t (pic_get_irr(void));						        // Get (IRR?).
-EXTERN  uint16_t (pic_get_isr(void));						        // Get the interrupt service routine.
-EXTERN  uint16_t (pic_get_irq_register(dword ocw3));				    // Get the irq registers.
+void pic_send_eoi(uint8_t irq);					                // Send the end of instruction to the PIC.
+void pic_remap(void);		                                    // Remap PIC.
+void irq_set_mask(uint8_t irq_Line);			                // Set the irq mask.
+void irq_clear_mask(uint8_t irq_Line);			                // Clear the irq mask.
+uint16_t pic_get_irr(void);						                // Get (IRR?).
+uint16_t pic_get_isr(void);						                // Get the interrupt service routine.
+uint16_t pic_get_irq_register(dword ocw3);				        // Get the irq registers.
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif	// !ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER

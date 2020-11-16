@@ -20,10 +20,12 @@
 #define DEFAULT_BACKGROUND_COLOR	SYSTEM_COLOR_BLACK
 #define DEFAULT_FOREGROUND_COLOR	SYSTEM_COLOR_LT_GREEN
 
-CGUARD_BEGIN
-
 #define PANIC(MESSAGE)			panic(MESSAGE, __FILE__, __LINE__);
 #define PANIC_ASSERT(MESSAGE)	panic_assert(__FILE__, __LINE__, MESSAGE);
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 void terminal_init(void);
 void terminal_clear(void);
@@ -39,6 +41,8 @@ void terminal_printf(string str, ...);
 void panic(const string msg, const string file, uint32_t line);
 void panic_assert(const string file, uint32_t line, const string description);
 
-CGUARD_END
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

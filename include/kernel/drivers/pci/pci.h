@@ -19,7 +19,7 @@
 /* Define macros. */
 #define PCI_ENABLE                          (PCI_DRIVER & 0x01)
 #define PCI_DEVICE_ENABLE_IO                (PCI_ENABLE << 0x00)
-#define PCI_DEVICE_ENABLE_memORY            (PCI_ENABLE << 0x01)
+#define PCI_DEVICE_ENABLE_MEMORY            (PCI_ENABLE << 0x01)
 #define PCI_DEVICE_ENABLE_MASTER            (PCI_ENABLE << 0x02)
 #define PCI_DEVICE_ENABLE_SPECIAL           (PCI_ENABLE << 0x03)
 #define PCI_DEVICE_ENABLE_INVALIDATE        (PCI_ENABLE << 0x04)
@@ -27,20 +27,20 @@
 #define PCI_DEVICE_ENABLE_PARITY            (PCI_ENABLE << 0x06)
 #define PCI_DEVICE_ENABLE_WAIT              (PCI_ENABLE << 0x07)
 
-struct AOS_PCI_Device
+struct aos_pci_device
 {
-    uint32_t              Vendor;
-    uint32_t              device;
-    uint32_t              SubVendor;
-    uint32_t              SubDevice;
-    uint32_t              Class;
-    uint32_t              ClassMask;
-} PACKED PCI_Device_t;
+    uint32_t                    vendor;
+    uint32_t                    device;
+    uint32_t                    sub_vendor;
+    uint32_t                    sub_device;
+    uint32_t                    class;
+    uint32_t                    class_mask;
+} pci_device_t;
 
 /* define the pci struct. */
-typedef struct AOS_PCI
+typedef struct aos_pci
 {
-    struct AOS_PCI_Device DeviceID;
-} PACKED PCI_t;
+    struct aos_pci_device device_id;
+} pci_t;
 
 #endif

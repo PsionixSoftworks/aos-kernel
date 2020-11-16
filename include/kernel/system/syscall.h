@@ -51,6 +51,14 @@ DECL_SYSCALL1(terminal_print, string);
 DECL_SYSCALL1(terminal_print_hex, string);
 DECL_SYSCALL1(terminal_print_dec, string);
 
-EXTERN  SET_VOID(syscall_init(void));
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+void syscall_init(void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

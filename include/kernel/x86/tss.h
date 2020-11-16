@@ -48,10 +48,17 @@ struct aos_tss_entry
     uint16_t            trap, iomap_base;
 } PACKED;
 
-EXTERN void tss_init(void);
-EXTERN void tss_user_mode_switch(void);
-EXTERN void tss_reenable_interrupts(void);
-EXTERN void tss_set_kernel_stack(uint32_t stack);
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
+void tss_init(void);
+void tss_user_mode_switch(void);
+void tss_reenable_interrupts(void);
+void tss_set_kernel_stack(uint32_t stack);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

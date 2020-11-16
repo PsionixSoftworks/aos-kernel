@@ -1,4 +1,5 @@
 /** @author Levente Kurusa <levex@linux.com> **/
+/** Modified & updated by Vincent C. **/
 #ifndef _mutex_
 #define _mutex_
 
@@ -6,14 +7,20 @@
 #include <adamantine/aos-types.h>
 
 typedef struct {
-	byte 				locked;
+	byte 						locked;
 } mutex;
 
 #define DEFINE_mutex(name) static mutex name = { .locked=0 };
 
-EXTERN void (mutex_lock(mutex	*m));
-EXTERN void (mutex_unlock(mutex* m));
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
-// TODO: Finish writing mutex...
+void (mutex_lock(mutex	*m));
+void (mutex_unlock(mutex* m));
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif	// !_mutex_

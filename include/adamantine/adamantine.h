@@ -50,10 +50,6 @@ typedef struct
     kernel_t (*kernel_stop)(void);
 } aos_base_t PACKED;
 
-CGUARD_BEGIN
-
-CGUARD_END
-
 #ifndef ADAMANTINE_VER
 #define ADAMANTINE_VER 	OS_VERSION_NUMBER
 #endif	// !ADAMANTINE_VER
