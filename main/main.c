@@ -18,8 +18,13 @@
 #include <kernel/memory/paging.h>
 #include <kernel/memory/mm.h>
 
+#define USING_CENTRIX_CORE
+#include <adamantine/adamantine.h>
+
 extern uint32_t kernel_end;
 typedef void(*kernel_t)(void);
+
+#define __sys_entry 	__kernel_only
 
 /*
 static void
@@ -39,12 +44,14 @@ start_modules(void)
 	initialize_paging();
 }
 
-kernel_t
+#include <kernel/system/io.h>
+
+kernel_t __sys_entry
 kernel_sys_entry(__kernel_void)
 {
 	terminal_init();
-	uint8_t bgcol = terminal_get_background_color();
-	uint8_t fgcol = terminal_get_foreground_color();
+	__kernel_ubyte bgcol = terminal_get_background_color();
+	__kernel_ubyte fgcol = terminal_get_foreground_color();
 	if (bgcol != DEFAULT_BACKGROUND_COLOR)
 		bgcol = DEFAULT_BACKGROUND_COLOR;
 	if (fgcol != DEFAULT_FOREGROUND_COLOR)
@@ -53,7 +60,7 @@ kernel_sys_entry(__kernel_void)
 	terminal_set_foreground_color(fgcol);
 	terminal_clear();	
 
-	terminal_printf("== Adamantine OS - Version 0.1a ==\n");
+	terminal_printf("== Adamantine OS - Version %s ==\n", OS_VERSION_STRING);
 	terminal_printf("Starting modules...\n");
 
 	start_modules();

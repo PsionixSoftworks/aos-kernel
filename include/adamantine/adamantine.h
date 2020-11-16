@@ -17,8 +17,9 @@
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
 #include <adamantine/adamantine-x86.h>
+#include <adamantine/version.h>
 
-#if defined( USING_SYSAPI )
+#if defined( USING_AOSAPI ) && AOSAPI_VER > 10
 #include <sys/sysapi.h>
 #include <sys/input.h>
 #include <sys/output.h>
@@ -41,6 +42,6 @@
 #endif 	// !__adamantine__
 
 #ifndef ADAMANTINE_VER
-#define ADAMANTINE_VER 	100
+#define ADAMANTINE_VER 	OS_VERSION_NUMBER
 #endif	// !ADAMANTINE_VER
 #endif	// !ADAMANTINE

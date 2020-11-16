@@ -18,7 +18,7 @@
 #include <adamantine/version.h>
 #include <stdarg.h>
 
-#if (OS_VERSION_NUMBER >= 50)
+#if (OS_VERSION_NUMBER >= 40)
 
 static uint16_t *video_buffer;
 static uint8_t background_color;

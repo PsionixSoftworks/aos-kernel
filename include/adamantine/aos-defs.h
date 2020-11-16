@@ -85,4 +85,13 @@
 #else
 #define EXTERN                          extern
 #endif
+
+#if !defined( CGUARDS ) && defined( __cplusplus )
+#define CGUARDS
+#define CGUARD_BEGIN                    extern "C" {
+#define CGUARD_END                      }
+#else
+#define CGUARD_BEGIN
+#define CGUARD_END
+#endif
 #endif	// !ADAMANTINE_STANDARD_DEFINITIONS

@@ -17,12 +17,13 @@
 #include <adamantine/aos-types.h>
 #include <adamantine/aos-string.h>
 
+CGUARD_BEGIN
+
 #if !defined(CENTRIX_MODE1) || !defined(CENTRIX_ALPHA)
 /* We'll just ignore it for now. */
 #else
 #include <centrix/centrix-unit.h>
 #include <centrix/base32.h>
-
 #endif
 
 #if defined(DEBUG_MODE)
@@ -35,5 +36,7 @@ struct centrix_core
     udword              os_signature;
     string              os_name;
 };
+
+CGUARD_END
 
 #endif	// !CENTRIX_CORE
