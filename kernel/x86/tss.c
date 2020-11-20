@@ -14,7 +14,7 @@
 #include <kernel/x86/tss.h>
 #include <kernel/memory/mm.h>
 
-tss_t tss_entry __attribute__((aligned(4096)));
+struct tss tss_entry __attribute__((aligned(4096)));
 
 /* 0x23 = 35: user Mode data selector. */
 /* 0x1B = 27: CS selector value. */

@@ -58,13 +58,6 @@ cos(double x)
 }
 
 inline double
-tan(double x)
-{
-    /* Opposite / Adjacent */
-    return (x);
-}
-
-inline double
 asin(double x)
 {
     return (x);

@@ -36,7 +36,7 @@ void terminal_reset_foreground_color(void);
 uint8_t terminal_get_background_color(void);
 uint8_t terminal_get_foreground_color(void);
 void terminal_print(string str);
-void terminal_printf(string str, ...);
+void terminal_printf(const string str, ...);
 
 void panic(const string msg, const string file, uint32_t line);
 void panic_assert(const string file, uint32_t line, const string description);

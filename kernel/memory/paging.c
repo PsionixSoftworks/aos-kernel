@@ -104,7 +104,6 @@ void
 initialize_paging(void)
 {
     uint32_t mem_end_page = 0x1000000;
-
     nframes = mem_end_page / 0x1000;
     frames = (uint32_t *)kmalloc(INDEX_FROM_BIT(nframes));
     memset(frames, 0, INDEX_FROM_BIT(nframes));

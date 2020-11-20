@@ -2,6 +2,7 @@
 #define _ADAMANTINE_DESCRIPTOR_TABLES_H
 
 #include <adamantine/aos-types.h>
+#include <adamantine/aos-defs.h>
 
 struct gdt_entry_struct
 {
@@ -11,15 +12,29 @@ struct gdt_entry_struct
     uint8_t access;
     uint8_t granularity;
     uint8_t base_high;
-} __attribute__((packed));
+} PACKED;
 typedef struct gdt_entry_struct gdt_entry_t;
 
 struct gdt_ptr_struct
 {
     uint16_t limit;
     uint32_t base;
-} __attribute__((packed));
+} PACKED;
 typedef struct gdt_ptr_struct gdt_ptr_t;
+
+struct ldt_entry_struct
+{
+    uint8_t table;
+    uint8_t rpl;
+} PACKED;
+typedef struct ldt_entry_struct ldt_entry_t;
+
+struct ldt_ptr_struct
+{
+    uint16_t limit;
+    uint32_t base;
+} PACKED;
+typedef struct ldt_ptr_struct ldt_ptr_t;
 
 struct idt_entry_struct
 {
@@ -28,14 +43,14 @@ struct idt_entry_struct
     uint8_t always0;
     uint8_t flags;
     uint16_t base_hi;
-} __attribute__((packed));
+} PACKED;
 typedef struct idt_entry_struct idt_entry_t;
 
 struct idt_ptr_struct
 {
     uint16_t limit;
     uint32_t base;
-} __attribute__((packed));
+} PACKED;
 typedef struct idt_ptr_struct idt_ptr_t;
 
 #if defined(__cplusplus)

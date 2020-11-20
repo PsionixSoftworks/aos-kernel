@@ -11,6 +11,7 @@
  */
 
 #include <adamantine/aos-core.h>
+#include <kernel/drivers/keyboard.h>
 
 extern uint32_t kernel_end;
 
@@ -80,17 +81,9 @@ kernel_sys_entry(__kernel_void)
 	/* Call kernel_setup & kernel_start */
 	aos.kernel_setup();
 	aos.kernel_start();
-
+	
 	terminal_printf("Done! Preparing for next phase...\n\n");
-
-	char *str;
-	str = (char *)malloc(12);
-
-	strcpy(str, "ADAMNANTINE");
-	terminal_printf("String Before 'free': %s.\n");
-	free(str);
-	terminal_printf("String after 'free': %s.\n");
-
+	
 	aos.kernel_stop();
 
 	return;

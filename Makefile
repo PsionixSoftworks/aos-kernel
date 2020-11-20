@@ -48,7 +48,7 @@ ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 								$(ASSEMB_PATH)/descriptors.asm	\
 								$(ASSEMB_PATH)/interrupt.asm	\
 								$(ASSEMB_PATH)/cpuid.asm		\
-								$(ASSEMB_PATH)/setup.S
+								$(ASSEMB_PATH)/setup.S			
 
 C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(KERNEL_PATH)/adamantine.c	\
@@ -72,7 +72,8 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(SYSTEM_PATH)/system.c			\
 								$(SYSTEM_PATH)/terminal.c		\
 								$(X86_PATH)/descriptor-tables.c	\
-								$(MEMORY_PATH)/paging.c
+								$(MEMORY_PATH)/paging.c			\
+								$(MATH_PATH)/math-util.c
 								#$(X86_PATH)/gdt.c				\
 								#$(X86_PATH)/idt.c				\
 								$(X86_PATH)/tss.c				\
@@ -100,6 +101,7 @@ OUTPUT_FILES 				:= 	boot.o			\
 								string.o		\
 								balloon.o		\
 								mem-util.o		\
+								math-util.o		\
 								centrix.o		\
 								io.o			\
 								irq.o			\
@@ -127,6 +129,7 @@ bootloader: $(ASM_FILES_IN)
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o
 	$(NASM)	$(ASSEMB_PATH)/timer.asm				-o timer.o
 	$(COMPILER_C) $(ASSEMB_PATH)/setup.S			-o setup.o
+#	$(NASM) $(ASSEMB_PATH)/math-tan.asm				-o math-tan.o
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)

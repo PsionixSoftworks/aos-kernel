@@ -22,31 +22,20 @@
 #define REPLACE_KERNEL_DATA_SEGMENT 0x18
 #define REPLACE_KERNEL_STACK_ADDR   0x20
 
-typedef struct aos_tss_entry tss_t;
-
-struct aos_tss_entry
-{
-    uint32_t            previous_tss;
-    uint32_t            esp0;
-    uint32_t            ss0;
-    uint32_t            esp1;
-    uint32_t            ss1;
-    uint32_t            esp2;
-    uint32_t            ss2;
-    uint32_t            cr3;
-    uint32_t            eip;
-    uint32_t            eflags;
-    uint32_t            eax, ecx, edx, ebx;
-    uint32_t            esp, ebp, esi, edi;
-    uint32_t            es;
-    uint32_t            cs;
-    uint32_t            ss;
-    uint32_t            ds;
-    uint32_t            fs;
-    uint32_t            gs;
-    uint32_t            ldt;
-    uint16_t            trap, iomap_base;
-} PACKED;
+struct tss {
+    unsigned long link;
+    unsigned long esp0, ss0;
+    unsigned long esp1, ss1;
+    unsigned long esp2, ss2;
+    unsigned long cr3;
+    unsigned long eip;
+    unsigned long eflags;
+    unsigned long eax, ecx, edx, ebx, esp, ebp;
+    unsigned long esi, edi;
+    unsigned long es, cs, ss, ds, fs, gs;
+    unsigned long ldt;
+    unsigned long iomap;
+};
 
 #if defined(__cplusplus)
 extern "C" {

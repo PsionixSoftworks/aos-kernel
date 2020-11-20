@@ -56,17 +56,37 @@ inline void
 cpu_halt(void) 
 {
 	terminal_printf("System halted...\n");
-	__asm__ volatile(
-		"CLI \n\t"	
-		"HLT \n\t"
+	asm volatile(
+		"cli\n\t"	
+		"hlt\n\t"
 	);
 }
 
 inline void
 cpu_suspend(void) 
 {
-	__asm__ volatile(
-		"HLT \n\t"
+	asm volatile(
+		"hlt\n\t"
+	);
+}
+
+/* Sets the interrupt flag (IF) to 0. */
+void
+cpu_clear_interrupts(void)
+{
+	asm volatile
+	(
+		"cli\n\t"
+	);
+}
+
+/* Sets the interrupt flag (IF) to 1. */
+void
+cpu_set_interrupts(void)
+{
+	asm volatile
+	(
+		"sti\n\t"
 	);
 }
 
@@ -76,7 +96,7 @@ cpuid(void)
 	uint32_t x = cpuid_supported();
 	asm volatile
 	(
-		"MOV $0x0, %EAX\n\t"
+		"mov $0x0, %eax\n\t"
 		"cpuid\n\t"
 	);
 	return (x);

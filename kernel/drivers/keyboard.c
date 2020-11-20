@@ -15,7 +15,6 @@
 #include <kernel/drivers/keys.h>
 #include <kernel/system/terminal.h>
 #include <kernel/memory/mm.h>
-#include <kernel/x86/descriptor-tables.h>
 #include <kernel/isr.h>
 #include <kernel/pic.h>
 #include <kernel/irq.h>
@@ -40,8 +39,6 @@ keyboard_init(void)
 	
 	register_interrupt_handler(33, (isr_t)&Keyboard_irq);
 	keyboard.is_initialized = TRUE;
-	//_INFO("keyboard initialized!");
-	//system_logf(INFORMATION, "Paging is initialized!\n");
 }
 
 /* free the keyboard. */

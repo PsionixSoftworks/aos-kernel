@@ -5,15 +5,20 @@
 #include <kernel/pic.h>
 
 extern void gdt_flush(uint32_t);
+extern void ldt_flush(uint32_t);
 extern void idt_flush(uint32_t);
 
 static void init_gdt(void);
 static void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
+static void init_ldt(void);
+static void ldt_set_gate(uint32_t, uint8_t, uint8_t);
 static void init_idt(void);
 static void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
 
 gdt_entry_t gdt_entries[5];
 gdt_ptr_t gdt_ptr;
+ldt_entry_t ldt_entries[2];
+ldt_ptr_t ldt_ptr;
 idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
 
@@ -21,6 +26,7 @@ void
 init_descriptor_tables(void)
 {
     init_gdt();
+    init_ldt();
     init_idt();
 }
 
@@ -54,6 +60,29 @@ gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t
     gdt_entries[num].granularity    |= gran & 0xF0;
     gdt_entries[num].access         = access;
 }
+
+/* This is a test for the Local Descriptor Table and may be changed or removed at any time. \/\/ */
+void
+init_ldt(void)
+{
+    ldt_ptr.limit = sizeof(ldt_entry_t) - 1;
+    ldt_ptr.base = (uint32_t)&ldt_entries;
+
+    ldt_set_gate(0, 0, 0);
+    ldt_set_gate(1, 2, 10);
+
+    ldt_flush((uint32_t)&ldt_ptr);
+
+    terminal_printf("LDT is initialized!\n");
+}
+
+static void
+ldt_set_gate(uint32_t num, uint8_t table, uint8_t rpl)
+{
+    ldt_entries[num].table = table;
+    ldt_entries[num].rpl = rpl;
+}
+/* This is a test for the Local Descriptor Table and may be changed or removed at any time. ^^ */
 
 void
 init_idt(void)

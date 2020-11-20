@@ -42,7 +42,7 @@ terminal_init(void)
 	foreground_color = DEFAULT_FOREGROUND_COLOR;
 	x = 0;
 	y = 0;
-
+	
 	terminal_clear();
 	cursor_enable(0x0, 0xF);
 }
@@ -108,7 +108,7 @@ terminal_print(string str)
 }
 
 void
-terminal_printf(string restrict format, ...)
+terminal_printf(const string restrict format, ...)
 {
 	char buffer[256];
 	va_list ap;
