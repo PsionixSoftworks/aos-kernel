@@ -43,8 +43,8 @@ mm_init(uint32_t kernel_end)
 	memset((string)heap_begin, 0, heap_end - heap_begin);
 	pheap_desc = (uint8_t *)malloc(MAX_PAGE_ALLOCS);
 
-	terminal_printf("Memory Module is initialized!\n");
-	terminal_printf("Kernel heap begins at 0x%x\n", last_alloc);
+	terminal_printf("[INFO]: Memory Module is initialized!\n");
+	terminal_printf("[INFO]: Kernel heap begins at 0x%x\n", last_alloc);
 }
 
 void 
@@ -77,7 +77,7 @@ malloc(size_t size)
 		{
 			a->status = 1;
 
-			terminal_printf("RE:Allocated %d bytes from %d to %d...\n", size, mem + sizeof(alloc_t), mem + sizeof(alloc_t) + size);
+			//terminal_printf("RE:Allocated %d bytes from %d to %d...\n", size, mem + sizeof(alloc_t), mem + sizeof(alloc_t) + size);
 
 			memset(mem + sizeof(alloc_t), 0, size);
 			memory_used += size + sizeof(alloc_t);

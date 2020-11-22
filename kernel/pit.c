@@ -24,7 +24,6 @@ timer_callback(registers_t regs)
 {
 	tick++;
 	terminal_printf("tick: %d\n", tick);
-
 }
 
 void 
@@ -40,6 +39,4 @@ pit_init(uint32_t frequency)
 	
 	write_portb(0x40, l);
 	write_portb(0x40, h);
-
-	terminal_printf("PIT is initialized!\n");
 }

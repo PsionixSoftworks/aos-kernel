@@ -15,6 +15,27 @@
 
 extern uint32_t kernel_end;
 
+static inline void write_aos_message(void);
+static char *msg[] = {
+	"              AAAAAAAAAAAAA      OOOOOOOOOOOO              SSSSSSSSSSSSSS     \n",
+	"             AAAAAAAAAAAAAA    OOOOOOOOOOOOOOOO         SSSSSSSSSSSSSSSSSSSS  \n",
+	"            AAAA    AAAA      OOOO          OOOO      SSSSSSSS        SSSSSSSS\n",
+	"           AAAA     AAAA     OOOO            OOOO     SSSSSS              SSSS\n",
+	"          AAAA      AAAA     OOOO            OOOO     SSSS                SSSS\n",
+	"         AAAA       AAAA     OOOO            OOOO     SSSSSS                  \n",
+	"        AAAA        AAAA     OOOO            OOOO       SSSSSSSSSSSSSSSS      \n",
+	"       AAAAAAAAAAAAAAAAA     OOOO            OOOO           SSSSSSSSSSSSSS    \n",
+	"      AAAAAAAAAAAAAAAAAA     OOOO            OOOO               SSSSSSSSSSSS  \n",
+	"     AAAA           AAAA     OOOO            OOOO     SSSS                SSSS\n",
+	"    AAAA           AAAA      OOOO            OOOO     SSSS                SSSS\n",
+	"   AAAA            AAAA      OOOO            OOOO     SSSS              SSSSSS\n",
+	"  AAAA             AAAA       OOOO          OOOO      SSSSSSSS        SSSSSSSS\n",
+	"AAAAAAAA         AAAAAAAAA     OOOOOOOOOOOOOOOO         SSSSSSSSSSSSSSSSSSSS  \n",
+	"AAAAAAAA         AAAAAAAAA       OOOOOOOOOOOO              SSSSSSSSSSSSSS     \n\n",
+
+	"=============================[Version: v%s]==============================\n",
+};
+
 static inline __kernel_void
 start_modules(__kernel_void)
 {
@@ -43,14 +64,13 @@ kernel_setup(__kernel_void)
 	terminal_set_background_color(bgcol);
 	terminal_set_foreground_color(fgcol);
 	terminal_clear();
+
+	write_aos_message();
 }
 
 static inline kernel_t
 kernel_start(__kernel_void)
 {
-	terminal_printf("== Adamantine OS - Version %s ==\n", OS_VERSION_STRING);
-	terminal_printf("Starting modules...\n");
-
 	start_modules();
 }
 
@@ -87,4 +107,13 @@ kernel_sys_entry(__kernel_void)
 	aos.kernel_stop();
 
 	return;
+}
+
+static inline void
+write_aos_message(void)
+{
+	for (size_t i = 0; i < 16; ++i)
+	{
+		terminal_printf(msg[i], OS_VERSION_STRING);
+	}
 }

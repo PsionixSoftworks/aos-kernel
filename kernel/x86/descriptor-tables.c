@@ -28,6 +28,8 @@ init_descriptor_tables(void)
     init_gdt();
     init_ldt();
     init_idt();
+
+    terminal_printf("[INFO]: Descriptor tables initialized!\n");
 }
 
 static void
@@ -43,8 +45,6 @@ init_gdt(void)
     gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
 
     gdt_flush((uint32_t)&gdt_ptr);
-
-    terminal_printf("GDT is initialized!\n");
 }
 
 static void
@@ -72,8 +72,6 @@ init_ldt(void)
     ldt_set_gate(1, 2, 10);
 
     ldt_flush((uint32_t)&ldt_ptr);
-
-    terminal_printf("LDT is initialized!\n");
 }
 
 static void
@@ -128,8 +126,6 @@ init_idt(void)
     idt_set_gate(31, (uint32_t)isr31, 0x08, 0x8E);
 
     idt_flush((uint32_t)&idt_ptr);
-
-    terminal_printf("IDT is initialized!\n");
 }
 
 static void

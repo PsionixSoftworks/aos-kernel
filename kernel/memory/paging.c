@@ -122,7 +122,7 @@ initialize_paging(void)
 
     switch_page_directory(kernel_directory);
 
-    terminal_printf("Paging is initialized!\n");
+    terminal_printf("[INFO]: Paging is initialized!\n");
 }
 
 void
