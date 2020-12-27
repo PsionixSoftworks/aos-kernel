@@ -13,7 +13,6 @@
 #ifndef ADAMANTINE_STANDARD_DEFINITIONS
 #define ADAMANTINE_STANDARD_DEFINITIONS
 
-#include <backend/back.h>
 #include <adamantine/aos-types.h>
 
 // Define the boolean operators true and false:

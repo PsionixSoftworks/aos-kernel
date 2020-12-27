@@ -13,7 +13,7 @@
 #ifndef _AOS_KERNEL_
 #define _AOS_KERNEL_
 
-#define __KERNEL__
+#define _
 
 // Handle other includes here:
 #include <adamantine/aos-defs.h>
@@ -26,20 +26,20 @@
 typedef struct aos_system_information
 {
     /* cpu Specs */
-    __kernel_byte       cpu_cores;
-    __kernel_byte       cpu_temperature;
-    __kernel_uint32_t     cpu_id;
-    __kernel_float      cpu_frequency;
-    __kernel_string     cpu_manufacturer;
-    __kernel_string     cpu_name;
+    byte       cpu_cores;
+    byte       cpu_temperature;
+    uint32_t     cpu_id;
+    float      cpu_frequency;
+    string     cpu_manufacturer;
+    string     cpu_name;
 
     /* memory Specs */
-    __kernel_uint32_t     memory_installed;
-    __kernel_uint32_t     memory_available;
-    __kernel_byte       memory_speed;
+    uint32_t     memory_installed;
+    uint32_t     memory_available;
+    byte       memory_speed;
 
     /* Other Info */
-    __kernel_long       up_time;
+    long       up_time;
 } system_info_t;
 
 #if defined(__cplusplus)
@@ -47,7 +47,7 @@ extern "C" {
 #endif
 
 // Declare the global functions used by the kernel:
-__kernel_void kernel_run(__kernel_void);						// The kernel's init function for startup.
+void kernel_run(void);						// The kernel's init function for startup.
 
 #if defined(__cplusplus)
 }

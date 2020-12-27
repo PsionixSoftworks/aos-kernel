@@ -15,7 +15,7 @@
 
 //#define ADAMANTINE_OS_READY
 
-#define __KERNEL__
+#define _
 
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-types.h>
@@ -23,7 +23,7 @@
 #include <drivers/vga.h>
 
 /* Do we even need this here? */
-static __kernel_string os_mode[] =
+static string os_mode[] =
 {
     "Normal Mode",
     "Safe Mode",
@@ -36,8 +36,8 @@ static __kernel_string os_mode[] =
  * Usage: To initialize all of the kernel modules
  * and setup the pre-os loading.
  */
-static __kernel_void _TEXT
-init_all(__kernel_byte mode)
+static void _TEXT
+init_all(byte mode)
 {
     return;
 }

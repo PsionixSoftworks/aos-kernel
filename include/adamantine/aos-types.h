@@ -13,7 +13,7 @@
 #ifndef AOS_KERNEL_TYPES
 #define AOS_KERNEL_TYPES
 
-#include <limits.h>
+#include "limits.h"
 
 // Define string type here:
 #if defined(__cplusplus)
@@ -57,30 +57,4 @@ typedef enum {false, true}	    bool;				// Define bool (C ONLY!).
 
 typedef void kernel_t;
 
-// Define kernel_types:
-#if defined(__KERNEL__)
-#define __kernel_only
-typedef char                    __kernel_only __kernel_char;
-typedef string                  __kernel_only __kernel_string;
-
-typedef int8_t                  __kernel_only __kernel_int8_t;
-typedef int16_t                 __kernel_only __kernel_int16_t;
-typedef int32_t                 __kernel_only __kernel_int32_t;
-typedef uint8_t                 __kernel_only __kernel_uint8_t;
-typedef uint16_t                __kernel_only __kernel_uint16_t;
-typedef uint32_t                __kernel_only __kernel_uint32_t;
-
-typedef byte           			__kernel_only __kernel_byte;
-typedef word		    		__kernel_only __kernel_word;
-typedef dword			    	__kernel_only __kernel_dword;
-
-typedef float                   __kernel_only __kernel_float;
-typedef double                  __kernel_only __kernel_double;
-typedef short					__kernel_only __kernel_short;
-typedef long					__kernel_only __kernel_long; 
-
-typedef void                    __kernel_only __kernel_void;
-typedef void                    __kernel_only *__kernel_pvoid;
-typedef bool                    __kernel_only __kernel_bool;
 #endif
-#endif 	// !ADAMANTINE_TYPES

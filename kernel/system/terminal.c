@@ -286,7 +286,7 @@ panic_assert(const string file, uint32_t line, const string description)
 }
 
 #else
-#define __KERNEL__
+#define _
 
 #include <system/terminal.h>
 #include <drivers/vga.h>

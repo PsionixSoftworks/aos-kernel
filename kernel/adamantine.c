@@ -13,24 +13,109 @@
  *
  */
 
-#define __KERNEL__
+#define _
 
-//#include <aos-core.h>
 #include <adamantine/adamantine.h>
-#include <adamantine/aos-defs.h>
-#include <kernel/drivers/vga.h>
-#include <kernel/system/terminal.h>
-#include <kernel/x86/descriptor-tables.h>
 
-/* Tell the kernel what module and version we are using. */
-MODULE("Kernel", "0.04-4a");
+extern uint32_t kernel_end;
 
-/* Run the kernel module */
-EXTERN __kernel_void _TEXT
-kernel_run(__kernel_void)
+static inline void write_aos_message(void);
+static char *msg[] = {
+	"              AAAAAAAAAAAAA      OOOOOOOOOOOO              SSSSSSSSSSSSSS     \n",
+	"             AAAAAAAAAAAAAA    OOOOOOOOOOOOOOOO         SSSSSSSSSSSSSSSSSSSS  \n",
+	"            AAAA    AAAA      OOOO          OOOO      SSSSSSSS        SSSSSSSS\n",
+	"           AAAA     AAAA     OOOO            OOOO     SSSSSS              SSSS\n",
+	"          AAAA      AAAA     OOOO            OOOO     SSSS                SSSS\n",
+	"         AAAA       AAAA     OOOO            OOOO     SSSSSS                  \n",
+	"        AAAA        AAAA     OOOO            OOOO       SSSSSSSSSSSSSSSS      \n",
+	"       AAAAAAAAAAAAAAAAA     OOOO            OOOO           SSSSSSSSSSSSSS    \n",
+	"      AAAAAAAAAAAAAAAAAA     OOOO            OOOO               SSSSSSSSSSSS  \n",
+	"     AAAA           AAAA     OOOO            OOOO     SSSS                SSSS\n",
+	"    AAAA           AAAA      OOOO            OOOO     SSSS                SSSS\n",
+	"   AAAA            AAAA      OOOO            OOOO     SSSS              SSSSSS\n",
+	"  AAAA             AAAA       OOOO          OOOO      SSSSSSSS        SSSSSSSS\n",
+	"AAAAAAAA         AAAAAAAAA     OOOOOOOOOOOOOOOO         SSSSSSSSSSSSSSSSSSSS  \n",
+	"AAAAAAAA         AAAAAAAAA       OOOOOOOOOOOO              SSSSSSSSSSSSSS     \n\n",
+
+	"=============================[Version: v%s]==============================\n",
+};
+
+static inline void
+start_modules(void)
 {
-	//system_log_begin();
-	//system_logf(NONE, "%s kernel [Version: %s] is starting up...\n", OS_NAME, OS_VERSION);
 	init_descriptor_tables();
-	//system_log_end();
+	pit_init(50);
+	mm_init((uint32_t)&kernel_end);
+	initialize_paging();
+}
+
+static inline void
+stop_modules(void)
+{
+	return;
+}
+
+static inline kernel_t
+kernel_setup(void)
+{
+	terminal_init();
+	uint8_t bgcol = terminal_get_background_color();
+	uint8_t fgcol = terminal_get_foreground_color();
+	if (bgcol != DEFAULT_BACKGROUND_COLOR)
+		bgcol = DEFAULT_BACKGROUND_COLOR;
+	if (fgcol != DEFAULT_FOREGROUND_COLOR)
+		fgcol = DEFAULT_FOREGROUND_COLOR;
+	terminal_set_background_color(bgcol);
+	terminal_set_foreground_color(fgcol);
+	terminal_clear();
+
+	write_aos_message();
+}
+
+static inline kernel_t
+kernel_start(void)
+{
+	start_modules();
+}
+
+static inline kernel_t
+kernel_stop(void)
+{
+	stop_modules();
+}
+
+static aos_base_t aos;
+
+static inline void
+aos_init(void)
+{
+	aos.kernel_setup = &kernel_setup;
+	aos.kernel_start = &kernel_start;
+	aos.kernel_stop = &kernel_stop;
+}
+
+kernel_t
+kernel_sys_entry(void)
+{
+	/* Initialize the kernel */
+	aos_init();
+
+	/* Call kernel_setup & kernel_start */
+	aos.kernel_setup();
+	aos.kernel_start();
+	
+	terminal_printf("Done! Preparing for next phase...\n\n");
+	
+	aos.kernel_stop();
+
+	return;
+}
+
+static inline void
+write_aos_message(void)
+{
+	for (size_t i = 0; i < 16; ++i)
+	{
+		terminal_printf(msg[i], OS_VERSION_STRING);
+	}
 }

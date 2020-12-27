@@ -14,34 +14,49 @@
 #define ADAMANTINE
 
 // Includes go here:
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
-#include <adamantine/adamantine-x86.h>
-#include <adamantine/version.h>
-
-#ifndef __sys_entry
-#define __sys_entry 	__kernel_only
+#if defined( __AOS64__ )
+#include <adamantine/adamantine-x64.h
 #else
-#define __sys_entry
+#include <adamantine/adamantine-x86.h>
 #endif
 
-#if defined( USING_AOSAPI ) && AOSAPI_VER > 10
-#include <sys/sysapi.h>
-#include <sys/input.h>
-#include <sys/output.h>
-#endif	// !USING_SYSAPI
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-string.h>
+#include <adamantine/aos-types.h>
+#include <adamantine/version.h>
 
-#if defined( USING_CENTRIX_CORE )
+#include <filesys/aos-fs.h>
+#include <filesys/ext2.h>
+#include <filesys/vfs.h>
+
+#include <kernel/cpu.h>
+#include <kernel/cpuid.h>
+
+#include <kernel/drivers/vga.h>
+
+#include <kernel/irq.h>
+#include <kernel/isr.h>
+#include <kernel/kernel.h>
+#include <kernel/pic.h>
+#include <kernel/pit.h>
+#include <kernel/task.h>
+
+#include <kernel/memory/mm.h>
+#include <kernel/memory/ordered-array.h>
+#include <kernel/memory/paging.h>
+
+#include <kernel/system/io.h>
+#include <kernel/system/system.h>
+#include <kernel/system/terminal.h>
+
+#include <math/math-util.h>
+#include <math/simple-math.h>
+#include <math/vector2f.h>
+
+#if defined( USING_CENTRIX_CORE )   // Here's a hint: We're not...
 #include <centrix/centrix-core.h>
 #include <centrix/centrix.h>
 #endif
-
-#if defined( USING_ARBITRARY_SYSTEM )
-#endif	// !USING_ARBITRARY_SYSTEM
-
-#if !defined( __adamantine__ ) && defined( __x86_runtime__ ) || defined( __adamantine_subsystem__ )
-#define __adamantine__ __binary__(__instructable inst, func_ptr);
-#endif 	// !__adamantine__
 
 typedef struct
 {

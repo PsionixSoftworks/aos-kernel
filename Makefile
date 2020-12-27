@@ -42,17 +42,11 @@ USER_PATH					:= 	user
 MATH_PATH					:= 	math
 
 ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
-								$(ASSEMB_PATH)/boot/crti.S		\
-								$(ASSEMB_PATH)/boot/crtn.S		\
-								$(ASSEMB_PATH)/boot/test.S		\
 								$(ASSEMB_PATH)/descriptors.asm	\
 								$(ASSEMB_PATH)/interrupt.asm	\
-								$(ASSEMB_PATH)/cpuid.asm		\
-								$(ASSEMB_PATH)/setup.S			
+								$(ASSEMB_PATH)/cpuid.asm		
 
-C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
-								$(KERNEL_PATH)/adamantine.c	\
-								$(KERNEL_PATH)/cmd.c			\
+C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c		\
 								$(KERNEL_PATH)/cpu.c			\
 								$(KERNEL_PATH)/mutex.c			\
 								$(DRIVER_PATH)/device.c			\
@@ -61,9 +55,7 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(FS_PATH)/ext2/ext2.c			\
 								$(FS_PATH)/vfs.c				\
 								$(LIB_PATH)/string.c			\
-								$(MEMORY_PATH)/balloon.c		\
 								$(MEMORY_PATH)/mem-util.c		\
-								$(SECURITY_PATH)/centrix.c		\
 								$(SYSTEM_PATH)/io.c				\
 								$(KERNEL_PATH)/irq.c			\
 								$(KERNEL_PATH)/isr.c			\
@@ -74,12 +66,6 @@ C_FILES_IN					:=	$(MAIN_PATH)/main.c				\
 								$(X86_PATH)/descriptor-tables.c	\
 								$(MEMORY_PATH)/paging.c			\
 								$(MATH_PATH)/math-util.c
-								#$(X86_PATH)/gdt.c				\
-								#$(X86_PATH)/idt.c				\
-								$(X86_PATH)/tss.c				\
-								$(X86_PATH)/syscall.c			\
-								$(MATH_PATH)/math-util.c		\
-								task/task.c						
 
 # Put all input files here separated by a '\':
 OUTPUT_FILES 				:= 	boot.o			\
@@ -88,9 +74,6 @@ OUTPUT_FILES 				:= 	boot.o			\
 								adamantine.o	\
 								cpuid.o			\
 								timer.o			\
-								setup.o			\
-								main.o			\
-								cmd.o			\
 								cpu.o			\
 								mutex.o			\
 								device.o		\
@@ -99,10 +82,8 @@ OUTPUT_FILES 				:= 	boot.o			\
 								ext2.o			\
 								vfs.o			\
 								string.o		\
-								balloon.o		\
 								mem-util.o		\
 								math-util.o		\
-								centrix.o		\
 								io.o			\
 								irq.o			\
 								isr.o			\
@@ -128,8 +109,6 @@ bootloader: $(ASM_FILES_IN)
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o
 	$(NASM)	$(ASSEMB_PATH)/timer.asm				-o timer.o
-	$(COMPILER_C) $(ASSEMB_PATH)/setup.S			-o setup.o
-#	$(NASM) $(ASSEMB_PATH)/math-tan.asm				-o math-tan.o
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)
@@ -139,7 +118,6 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(FS_PATH)/ext2/ext2.c -o ext2.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/vfs.c -o vfs.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/adamantine.c -o adamantine.o $(C_FLAGS)
-	$(COMPILER_C) $(KERNEL_PATH)/cmd.c -o cmd.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/irq.c -o irq.o $(C_FLAGS)
@@ -147,11 +125,8 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(KERNEL_PATH)/pic.c -o pic.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
 	$(COMPILER_C) $(LIB_PATH)/string.c -o string.o $(C_FLAGS)
-	$(COMPILER_C) $(MAIN_PATH)/main.c -o main.o $(C_FLAGS)
 	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
-	$(COMPILER_C) $(MEMORY_PATH)/balloon.c -o balloon.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
-	$(COMPILER_C) $(SECURITY_PATH)/centrix.c -o centrix.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/system.c -o system.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/terminal.c -o terminal.o $(C_FLAGS)

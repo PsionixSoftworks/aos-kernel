@@ -13,7 +13,7 @@
 #ifndef _AOS_TERMINAL_
 #define _AOS_TERMINAL_
 
-#define __KERNEL__
+#define _
 #include <adamantine/aos-types.h>
 #include <adamantine/aos-defs.h>
 
