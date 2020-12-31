@@ -1,6 +1,4 @@
-#include <kernel/memory/paging.h>
-#include <kernel/system/terminal.h>
-#include <kernel/memory/mm.h>
+#include <adamantine/adamantine.h>
 
 page_directory_t *kernel_directory = 0;
 page_directory_t *current_directory = 0;

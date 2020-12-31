@@ -11,9 +11,7 @@
  */
 
 // Includes go here:
-#include <kernel/system/io.h>
-
-MODULE("Input-Output", "0.01a");
+#include <adamantine/adamantine.h>
 
 // Write to the io port :
 void 

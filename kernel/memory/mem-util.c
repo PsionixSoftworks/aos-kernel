@@ -11,23 +11,17 @@
  */
 
 // Includes go here:
-#include <kernel/memory/mm.h>
-#include <kernel/system/terminal.h>
-#include <kernel/system/io.h>
-#include <adamantine/mutex.h>
-#include <adamantine/aos-types.h>
-
-MODULE("Memory-Util", "0.01a");
+#include <adamantine/adamantine.h>
 
 #define MAX_PAGE_ALLOCS		32
 
-uint32_t last_alloc 	= 0;
-uint32_t heap_end		= 0;
-uint32_t heap_begin 	= 0;
-uint32_t pheap_begin 	= 0;
-uint32_t pheap_end 	= 0;
-uint32_t memory_used 	= 0;
-uint8_t *pheap_desc 	= 0;
+static uint32_t last_alloc 	= 0;
+static uint32_t heap_end		= 0;
+static uint32_t heap_begin 	= 0;
+static uint32_t pheap_begin 	= 0;
+static uint32_t pheap_end 	= 0;
+static uint32_t memory_used 	= 0;
+static uint8_t *pheap_desc 	= 0;
 
 EXTERN uint32_t kernel_end;
 uint32_t placement_address = (uint32_t)(&kernel_end);
@@ -40,7 +34,7 @@ mm_init(uint32_t kernel_end)
 	pheap_end = 0x400000;
 	pheap_begin = pheap_end - (MAX_PAGE_ALLOCS * 4096);
 	heap_end = pheap_begin;
-	memset((string)heap_begin, 0, heap_end - heap_begin);
+	memset((char *)heap_begin, 0, heap_end - heap_begin);
 	pheap_desc = (uint8_t *)malloc(MAX_PAGE_ALLOCS);
 
 	terminal_printf("[INFO]: Memory Module is initialized!\n");

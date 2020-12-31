@@ -11,15 +11,7 @@
  */
 
 /* Includes go here: */
-#include <kernel/drivers/keyboard.h>
-#include <kernel/drivers/keys.h>
-#include <kernel/system/terminal.h>
-#include <kernel/memory/mm.h>
-#include <kernel/isr.h>
-#include <kernel/pic.h>
-#include <kernel/irq.h>
-#include <kernel/system/io.h>
-#include <adamantine/mutex.h>
+#include <adamantine/adamantine.h>
 
 MODULE("Keyboard", "0.01a");
 
@@ -34,7 +26,7 @@ static inline SET_VOID(keyboard_read(void));								// read the keyboard on key 
 inline void 
 keyboard_init(void) 
 {
-	keyboard.key_map = (string)malloc(256);
+	keyboard.key_map = (char *)malloc(256);
 	memset(keyboard.key_map, 0, 256);
 	
 	register_interrupt_handler(33, (isr_t)&Keyboard_irq);
@@ -57,7 +49,7 @@ keyboard_is_enabled(void)
 }
 
 /* Get the key as a character */
-inline string 
+inline char * 
 keyboard_get_key(void) 
 {
 	keyboard_read();
@@ -100,8 +92,8 @@ keyboard_read(void)
 		keyboard.key_last = read_portb(KEYBOARD_DATA);
 }
 
-/* Get the keyboard string (last string of characters typed before <ENTER> key is pressed). */
-inline string
+/* Get the keyboard char * (last char * of characters typed before <ENTER> key is pressed). */
+inline char *
 keyboard_get_string(void) 
 {
 	return (keyboard.buffer);

@@ -10,6 +10,4 @@
  *
  */
 
-#include <pci.h>
-
-MODULE("PCI", "0.01a");
+#include <adamantine/adamantine.h>

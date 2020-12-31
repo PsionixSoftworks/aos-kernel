@@ -13,9 +13,7 @@
 #ifndef ADAMANTINE_isr
 #define ADAMANTINE_isr
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
-#include <adamantine/aos-string.h>
+#include <stdint.h>
 
 #define IRQ0		32
 #define IRQ1		33

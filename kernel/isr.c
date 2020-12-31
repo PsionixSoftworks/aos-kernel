@@ -10,15 +10,11 @@
  *
  */
 
-#include <kernel/isr.h>
-#include <kernel/system/terminal.h>
-#include <kernel/system/io.h>
-
-MODULE("interrupt-service-routine", "0.01a");
+#include <adamantine/adamantine.h>
 
 isr_t interrupt_handlers[256];
 
-string exception_messages[] =
+char *exception_messages[] =
 {
 	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",
 	"AOS_INTERRUPT Raised! : [Single-Step Interrupt Exception]",

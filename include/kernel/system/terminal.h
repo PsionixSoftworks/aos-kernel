@@ -13,8 +13,6 @@
 #ifndef _AOS_TERMINAL_
 #define _AOS_TERMINAL_
 
-#define _
-#include <adamantine/aos-types.h>
 #include <adamantine/aos-defs.h>
 
 #define DEFAULT_BACKGROUND_COLOR	SYSTEM_COLOR_BLACK
@@ -35,11 +33,11 @@ void terminal_reset_background_color(void);
 void terminal_reset_foreground_color(void);
 uint8_t terminal_get_background_color(void);
 uint8_t terminal_get_foreground_color(void);
-void terminal_print(string str);
-void terminal_printf(const string str, ...);
+void terminal_print(char * str);
+void terminal_printf(const char * str, ...);
 
-void panic(const string msg, const string file, uint32_t line);
-void panic_assert(const string file, uint32_t line, const string description);
+void panic(const char * msg, const char * file, uint32_t line);
+void panic_assert(const char * file, uint32_t line, const char * description);
 
 #if defined(__cplusplus)
 }

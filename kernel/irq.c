@@ -10,11 +10,9 @@
  *
  */
 
-#include <kernel/irq.h>
+#include <adamantine/adamantine.h>
 
-MODULE("Interrupt-Request", "0.01a");
-
-byte 
+uint8_t 
 are_interrupts_enabled(void) 
 {
     unsigned long flags;

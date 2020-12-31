@@ -1,7 +1,7 @@
 #ifndef _ADAMANTINE_PAGING_H
 #define _ADAMANTINE_PAGING_H
 
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 #include <kernel/isr.h>
 
 typedef struct page

@@ -1,7 +1,7 @@
 #ifndef _ORDERED_ARRAY_H
 #define _ORDERED_ARRAY_H
 
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 typedef void *type_t;
 

@@ -10,11 +10,7 @@
  *
  */
 
-#include <kernel/pic.h>
-#include <kernel/irq.h>
-#include <kernel/system/io.h>
-
-MODULE("ProgrammableInterruptController", "0.01a");
+#include <adamantine/adamantine.h>
 
 void 
 pic_send_eoi(uint8_t irq) 
@@ -91,7 +87,7 @@ pic_get_isr(void)
 	return (pic_get_irq_register(PIC_READ_isr));
 }
 
-uint16_t pic_get_irq_register(dword ocw3) 
+uint16_t pic_get_irq_register(int8_t ocw3) 
 {
 	write_portb(PIC1_COMMAND, ocw3);
 	write_portb(PIC2_COMMAND, ocw3);

@@ -13,45 +13,49 @@
 #ifndef _virtual_FILESYS_
 #define _virtual_FILESYS_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
-#include <adamantine/aos-string.h>
-#include <kernel/drivers/driver.h>
+#include <stdint.h>
 
-struct aos_device;
+#define FS_WRITE    0
+#define FS_READ     1
+#define FS_APPEND   2
 
-typedef struct aos_fs 
-{
+struct fs_container;
+struct filesystem;
+struct file;
+
+struct fs_container {
+    const char *name;
+    unsigned long index;
+    unsigned long flags;
+    struct fs_container *last;
+    struct fs_container *next;
+} PACKED;
+
+struct filesystem {
+    char *root;
     char *name;
-    uint8_t (*probe)(struct aos_device *);
-    uint8_t (*read)(char *, char *, struct aos_device *, void *);
-    uint8_t (*read_dir)(char *, char *, struct aos_device *, void *);
-    uint8_t (*touch)(char *fn, struct aos_device *, void *);
-    uint8_t (*write_file)(char *fn, char *buf, uint32_t len, struct aos_device *, void *);
-    uint8_t (*exists)(char *filename, struct aos_device *, void *);
-    uint8_t (*mount)(struct aos_device *, void *);
-    int8_t *priv_data;
-} filesystem_t;
+    struct filesystem *current;
+} PACKED;
 
-typedef struct mount_info 
-{
-    char *loc;
-    struct aos_device *device;
-} mount_info_t;
+struct file {
+    char *name;
+    unsigned long flags;
+};
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
+void vfs_init(const struct filesystem *filesystem);
+void vfs_install(void);
+int vfs_mount(struct filesystem *filesystem);
 
-uint8_t vfs_read(char *f, char *buffer);
-uint32_t vfs_ls(char *d, char *buffer);
-uint8_t vfs_exists_in_dir(char *wd, char *fn);
-void vfs_init(void);
-uint8_t list_mount(void);
-uint8_t device_try_to_mount(struct aos_device *device, char *fn);
+void *vfs_directory_create(struct filesystem *fs, char *dirname);
+void *vfs_directory_delete(struct filesystem *fs, char *dirname);
+void *vfs_directory_rename(struct filesystem *fs, char *dirname, char *newname);
 
-#if defined(__cplusplus)
-}
-#endif
+struct filesystem *vfs_file_open(char *filename, uint8_t mode);
+void *vfs_file_write(struct filesystem *fs, void *data);
+void *vfs_file_read(struct filesystem *fs);
+void *vfs_file_append(struct filesystem *fs, void *data);
+void *vfs_file_close(struct filesystem *fs);
+
+int8_t vfs_check_permission(struct filesystem *fs, struct file *f, unsigned long flags);
 
 #endif

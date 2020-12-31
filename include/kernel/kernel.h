@@ -16,8 +16,7 @@
 #define _
 
 // Handle other includes here:
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 #define KERNEL_MODE_NORMAL		0x0
 #define KERNEL_MODE_SAFE		0x1
@@ -26,17 +25,17 @@
 typedef struct aos_system_information
 {
     /* cpu Specs */
-    byte       cpu_cores;
-    byte       cpu_temperature;
+    uint8_t       cpu_cores;
+    uint8_t       cpu_temperature;
     uint32_t     cpu_id;
     float      cpu_frequency;
-    string     cpu_manufacturer;
-    string     cpu_name;
+    char *     cpu_manufacturer;
+    char *     cpu_name;
 
     /* memory Specs */
     uint32_t     memory_installed;
     uint32_t     memory_available;
-    byte       memory_speed;
+    uint8_t       memory_speed;
 
     /* Other Info */
     long       up_time;

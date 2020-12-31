@@ -11,8 +11,7 @@
  */
 
 
-#include <kernel/x86/tss.h>
-#include <kernel/memory/mm.h>
+#include <adamantine/adamantine.h>
 
 struct tss tss_entry __attribute__((aligned(4096)));
 

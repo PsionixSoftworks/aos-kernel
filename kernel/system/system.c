@@ -10,12 +10,7 @@
  *
  */
 
-#include <kernel/system/system.h>
-#include <kernel/system/io.h>
-#include <kernel/drivers/vga.h>
 #include <adamantine/adamantine.h>
-
-MODULE("System", "0.01a");
 
 void 
 system_enable_cursor(uint8_t cursor_start, uint8_t cursor_end) 

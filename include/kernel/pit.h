@@ -13,8 +13,7 @@
 #ifndef SYSTEM_TIMER
 #define SYSTEM_TIMER
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 #if defined(__cplusplus)
 extern "C" {

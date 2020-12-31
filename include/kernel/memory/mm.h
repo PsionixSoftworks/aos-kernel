@@ -13,13 +13,12 @@
 #ifndef ADAMANTINE_memORY_UTILITY
 #define ADAMANTINE_memORY_UTILITY
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 // Declare the allocation type:
 typedef struct 
 {
-	byte 				status;
+	uint8_t				status;
 	size_t 				size;
 } alloc_t;
 
@@ -35,12 +34,14 @@ void *malloc(size_t size);
 void pfree(void *mem);
 void free(void *mem);
 
+/*
 void *memchr(const void *str, int c, size_t n);
 int memcmp(const void *str1, const void *str2, size_t n);
 void *memcpy(void *dest, const void *src, size_t n);
 void *memmove(void *dest, const void *src, size_t n);
 void *memset(void *dest, int c, size_t n);
 void *memset16(void *pointer,  uint32_t value, size_t size);
+*/
 
 uint32_t	kmalloc_int(uint32_t size, uint32_t align, uint32_t *physical_address);
 uint32_t	kmalloc_a(uint32_t size);

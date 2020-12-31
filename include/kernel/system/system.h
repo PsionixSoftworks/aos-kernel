@@ -14,8 +14,7 @@
 #define ADAMANTINE_SYSTEM
 
 // Includes go here:
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 #include <kernel/system/io.h>
 
 typedef struct aos_system system_t;

@@ -3,11 +3,10 @@
 #ifndef _mutex_
 #define _mutex_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 typedef struct {
-	byte 						locked;
+	uint8_t						locked;
 } mutex;
 
 #define DEFINE_mutex(name) static mutex name = { .locked=0 };

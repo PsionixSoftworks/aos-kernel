@@ -10,6 +10,4 @@
  *
  */
 
-#include <filesys/aos-fs.h>
-#include <kernel/memory/mm.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/adamantine.h>

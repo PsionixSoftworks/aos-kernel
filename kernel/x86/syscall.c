@@ -10,15 +10,13 @@
  *
  */
 
-#include <kernel/system/syscall.h>
-#include <kernel/isr.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/adamantine.h>
 
 static void SyscallHandler(registers_t *registers);
 
-DEFN_SYSCALL1(terminal_print, 0, string);
-DEFN_SYSCALL1(terminal_print_hex, 1, string);
-DEFN_SYSCALL1(terminal_print_dec, 2, string);
+DEFN_SYSCALL1(terminal_print, 0, char *);
+DEFN_SYSCALL1(terminal_print_hex, 1, char *);
+DEFN_SYSCALL1(terminal_print_dec, 2, char *);
 /*
 static void *Syscalls[3] =
 {
@@ -43,7 +41,7 @@ SyscallHandler(registers_t *registers)
     
     //void *Location = Syscalls[registers->EAX];
     /*
-    dword value = 0;
+    int32_t value = 0;
     asm volatile ("     \
         PUSH %1;        \
         PUSH %2;        \

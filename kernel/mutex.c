@@ -11,9 +11,7 @@
  *
  */
 
-#include <adamantine/mutex.h>
-
-MODULE("Mutex", "0.01a");
+#include <adamantine/adamantine.h>
 
 uint8_t Enabled = 0;
 

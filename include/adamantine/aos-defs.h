@@ -13,7 +13,7 @@
 #ifndef ADAMANTINE_STANDARD_DEFINITIONS
 #define ADAMANTINE_STANDARD_DEFINITIONS
 
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 // Define the boolean operators true and false:
 #ifndef BOOLEAN_OPS
@@ -59,25 +59,25 @@
 #endif	// !__STANDARD_ATTRIBUTES__
 
 /* Setters for types. */
-#define SET_VOID(name)                  void    name
-#define SET_BOOL(name)                  bool    name
-#define SET_uint8_t(name)               uint8_t   name
-#define SET_uint16_t(name)              uint16_t   name
-#define SET_uint32_t(name)              uint32_t  name
-#define SET_unsigned long(name)         unsigned long   name
-#define SET_USHORT(name)                ushort  name
-#define SET_BYTE(name)                  byte    name
-#define SET_WORD(name)                  word    name
-#define SET_DWORD(name)                 dword   name
-#define SET_LONG(name)                  long    name
-#define SET_SHORT(name)                 short   name
-#define SET_SIZE(name)                  size_t  name
-#define SET_CHAR(name)                  char    name
-#define SET_STRING(name)                string  name
-#define SET_FLOAT(name)                 float   name
-#define SET_DOUBLE(name)                double  name
-#define SET_STRUCT(name)                struct  name
-#define SET_UNION(name)                 union   name
+#define SET_VOID(name)                  void name
+#define SET_BOOL(name)                  bool name
+#define SET_uint8_t(name)               uint8_t name
+#define SET_uint16_t(name)              uint16_t name
+#define SET_uint32_t(name)              uint32_t name
+#define SET_unsigned long(name)         unsigned long name
+#define SET_USHORT(name)                ushort name
+#define SET_BYTE(name)                  uint8_t name
+#define SET_WORD(name)                  word name
+#define SET_DWORD(name)                 dword name
+#define SET_LONG(name)                  long name
+#define SET_SHORT(name)                 short name
+#define SET_SIZE(name)                  size_t name
+#define SET_CHAR(name)                  char name
+#define SET_STRING(name)                char *name
+#define SET_FLOAT(name)                 float name
+#define SET_DOUBLE(name)                double name
+#define SET_STRUCT(name)                struct name
+#define SET_UNION(name)                 union name
 
 #ifdef __cplusplus
 #define EXTERN                          extern "C"

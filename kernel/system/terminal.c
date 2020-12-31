@@ -11,11 +11,7 @@
  */
 
 /* Include anything the terminal requires here */
-#include <kernel/system/terminal.h>
-#include <kernel/drivers/vga.h>
-#include <kernel/system/io.h>
-#include <kernel/cpu.h>
-#include <adamantine/version.h>
+#include <adamantine/adamantine.h>
 #include <stdarg.h>
 
 #if (OS_VERSION_NUMBER >= 40)
@@ -99,7 +95,7 @@ terminal_get_foreground_color(void)
 }
 
 void
-terminal_print(string str)
+terminal_print(char *str)
 {
 	for (size_t i = 0; i < strlen(str); ++i)
 	{
@@ -108,7 +104,7 @@ terminal_print(string str)
 }
 
 void
-terminal_printf(const string restrict format, ...)
+terminal_printf(const char *restrict format, ...)
 {
 	char buffer[256];
 	va_list ap;
@@ -120,7 +116,7 @@ terminal_printf(const string restrict format, ...)
 			switch (format[i + 1])
 			{
 				case 's': {
-					string __input = va_arg(ap, string);
+					char *__input = va_arg(ap, char *);
 					terminal_print(__input);
 					i++;
 					continue;
@@ -151,7 +147,7 @@ terminal_printf(const string restrict format, ...)
 				}
 				case 'x': {
 					int32_t __input = va_arg(ap, int32_t);
-					string result = itoa(__input, buffer, 16);
+					char *result = itoa(__input, buffer, 16);
 					to_lower(result);
 					terminal_print(result);
 					i++;
@@ -159,7 +155,7 @@ terminal_printf(const string restrict format, ...)
 				}
 				case 'X': {
 					int32_t __input = va_arg(ap, int32_t);
-					string result = itoa(__input, buffer, 16);
+					char *result = itoa(__input, buffer, 16);
 					to_upper(result);
 					terminal_print(result);
 					i++;
@@ -270,7 +266,7 @@ cursor_get_pos(void)
 }
 
 void 
-panic(const string msg, const string file, uint32_t line) 
+panic(const char *msg, const char *file, uint32_t line) 
 {
 	__asm__ __volatile__("CLI");
 	terminal_printf("!!! PANIC(%s) in file \"%s\" : Line: %d\n", msg, file, line);
@@ -278,7 +274,7 @@ panic(const string msg, const string file, uint32_t line)
 }
 
 void
-panic_assert(const string file, uint32_t line, const string description)
+panic_assert(const char *file, uint32_t line, const char *description)
 {
 	__asm__ __volatile__("CLI");
 	terminal_printf("!!! ASSERTION-FAILED(%s) in file \"%s\" : Line: %d.\n", description, file, line);
@@ -306,8 +302,8 @@ static const uint8_t default_fore_color = SYSTEM_COLOR_WHITE;
 
 static terminal_t terminal;
 static uint16_t *video_buffer;
-static string terminal_buffer;
-static inline dword terminal_putchar(char c);
+static char *terminal_buffer;
+static inline int32_t terminal_putchar(char c);
 static inline void move_cursor(void);
 static inline void scroll(void);
 static bool is_initialized;
@@ -316,7 +312,7 @@ static uint8_t back_color;
 static uint32_t x;
 static uint32_t y;
 
-DEPRECATED static inline dword 
+DEPRECATED static inline int32_t 
 terminal_putchar(char c) 
 {
 	uint8_t color_byte = ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
@@ -382,50 +378,50 @@ system_log_end(void)
 }
 
 static void 
-printf(const string Str, va_list ap)
+printf(const char *Str, va_list ap)
 {
 	mutex_lock(&m_mprintf);
-	string s = 0;
+	char *s = 0;
 	char buffer[512];
-	for (size_t i = 0; i < strlen((string)Str); i++)
+	for (size_t i = 0; i < strlen((char)*Str); i++)
 	{
 		if (Str[i] == '%') 
 		{
 			switch (Str[i + 1]) 
 			{
 				case 's':
-					s = va_arg(ap, const string);
+					s = va_arg(ap, const char)*;
 					terminal_print(s);
 					i++;
 					continue;
 				case 'b': {
-					dword b = va_arg(ap, dword);
+					int32_t b = va_arg(ap, int32_t);
 					terminal_print(itoa(b, buffer, 2));
 					i++;
 					continue;
 				}
 				case 'o': {
-					dword o = va_arg(ap, dword);
+					int32_t o = va_arg(ap, int32_t);
 					terminal_print(itoa(o, buffer, 8));
 					i++;
 					continue;
 				}
 				case 'd': {
-					dword c = va_arg(ap, dword);
+					int32_t c = va_arg(ap, int32_t);
 					terminal_print_dec(c);
 					i++;
 					continue;
 				}
 				case 'x': {
-					dword c = va_arg(ap, dword);
-					dword FinalValue = itoa(c, buffer, 16);
+					int32_t c = va_arg(ap, int32_t);
+					int32_t FinalValue = itoa(c, buffer, 16);
 					terminal_print(FinalValue);
 					i++;
 					continue;
 				}
 				case 'X': {
-					dword c = va_arg(ap, dword);
-					dword FinalValue = itoa(c, buffer, 0x10);
+					int32_t c = va_arg(ap, int32_t);
+					int32_t FinalValue = itoa(c, buffer, 0x10);
 					to_upper(FinalValue);
 					terminal_print(FinalValue);
 					i++;
@@ -443,7 +439,7 @@ printf(const string Str, va_list ap)
 }
 
 inline bool
-system_logf(uint8_t severity, string restrict format, ...)
+system_logf(uint8_t severity, char *restrict format, ...)
 {
 	if (!format)
 		return (FALSE);
@@ -453,27 +449,27 @@ system_logf(uint8_t severity, string restrict format, ...)
 	{
 		system_log_set_fore_col(SYSTEM_COLOR_LT_GREEN);
 		terminal_print("[INFO]: ");
-		printf((const string)format, ap);
+		printf((const char)*format, ap);
 		system_log_reset_fore_col();
 	}
 	else if (severity == WARNING)
 	{
 		system_log_set_fore_col(SYSTEM_COLOR_YELLOW);
 		terminal_print("[WARNING]: ");
-		printf((const string)format, ap);
+		printf((const char)*format, ap);
 		system_log_reset_fore_col();
 	}
 	else if (severity == ERROR)
 	{
 		system_log_set_fore_col(SYSTEM_COLOR_RED);
 		terminal_printf("[ERROR]: ");
-		printf((const string)format, ap);
+		printf((const char)*format, ap);
 		system_log_reset_fore_col();
 		cpu_halt();
 	}
 	else
 	{
-		printf((const string)format, ap);
+		printf((const char)*format, ap);
 	}
 
 	return (TRUE);
@@ -559,7 +555,7 @@ scroll(void)
 
 	if (terminal.y >= VGA_HEIGHT) 
 	{
-		dword i;
+		int32_t i;
 		for (i = 0; i < (VGA_HEIGHT - 1) * VGA_WIDTH; i++) 
 		{
 			video_buffer[i] = video_buffer[i + VGA_WIDTH];
@@ -594,7 +590,7 @@ terminal_clear_screen(void)
 	uint8_t color_byte = ((terminal.back_color << 0x04) | (terminal.fore_color & 0x0F));
 	uint16_t Blank = 0x20 | (color_byte << 0x08);
 
-	for (dword i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
+	for (int32_t i = 0; i < (VGA_WIDTH * VGA_HEIGHT); i++) 
 	{
 		video_buffer[i] = Blank;
 	}
@@ -604,9 +600,9 @@ terminal_clear_screen(void)
 }
 
 DEPRECATED inline void
-terminal_print(const string Str) 
+terminal_print(const char *Str) 
 {
-	dword i = 0;
+	int32_t i = 0;
 	while (Str[i]) 
 	{
 		terminal_putchar(Str[i++]);
@@ -620,13 +616,13 @@ terminal_print_hex(uint32_t value)
 }
 
 DEPRECATED inline void
-terminal_print_dec(dword value)
+terminal_print_dec(int32_t value)
 {
 	terminal_print_value(value, 0x0A);
 }
 
 static inline bool 
-print(const string data, size_t length) 
+print(const char *data, size_t length) 
 {
 	const uint8_t *Bytes = (const uint8_t *)data;
 	for (size_t i = 0; i < length; i++) 
@@ -637,15 +633,15 @@ print(const string data, size_t length)
 	}
 }
 
-DEPRECATED inline dword 
-terminal_printf(const string restrict Format, ...) 
+DEPRECATED inline int32_t 
+terminal_printf(const char *restrict Format, ...) 
 {
 	// TODO: Implement the printf function...
 	if (!Format)
 		return 0;
 	va_list ap;
 	va_start(ap, Format);
-	printf((const string)Format, ap);
+	printf((const char)*Format, ap);
 
 	return (1);
 }
@@ -657,15 +653,15 @@ terminal_println(void)
 }
 
 DEPRECATED inline void 
-terminal_print_value(dword value, uint8_t base) 
+terminal_print_value(int32_t value, uint8_t base) 
 {
 	char buffer[16];
-	string NumberToString = itoa(value, buffer, base);
+	char *NumberTochar *= itoa(value, buffer, base);
 	if (base == 0x10)
 		terminal_print("0x");
 	if (base == 0x2)
 		terminal_print("0b");
-	terminal_print(NumberToString);
+	terminal_print(NumberTochar)*;
 }
 
 inline char
@@ -674,8 +670,8 @@ terminal_getchar(char c)
 	return (c);
 }
 
-inline string
-terminal_gets(string Str) 
+inline char
+*terminal_gets(char *Str) 
 {
 	terminal_buffer = strcpy(Str, terminal_buffer);
 	return (terminal_buffer);

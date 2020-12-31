@@ -23,7 +23,7 @@
 #include <drivers/vga.h>
 
 /* Do we even need this here? */
-static string os_mode[] =
+static char * os_mode[] =
 {
     "Normal Mode",
     "Safe Mode",
@@ -37,7 +37,7 @@ static string os_mode[] =
  * and setup the pre-os loading.
  */
 static void _TEXT
-init_all(byte mode)
+init_all(uint8_t mode)
 {
     return;
 }

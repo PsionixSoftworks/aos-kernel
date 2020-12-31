@@ -13,14 +13,13 @@
 #ifndef _INTERRUPT_REQUESTS_
 #define _INTERRUPT_REQUESTS_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-byte are_interrupts_enabled(void);
+uint8_t are_interrupts_enabled(void);
 unsigned long irq_disable(void);
 void irq_restore(unsigned long flags);
 void clear_interrupts(void);

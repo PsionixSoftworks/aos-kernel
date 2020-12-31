@@ -1,11 +1,8 @@
-#include <math/math-util.h>
-#include <stdarg.h>
-
-// MODULE("Math-Util", "0.01a");
+#include <adamantine/adamantine.h>
 
 /* Defined in "math-util.h" */
 inline uint32_t
-abs(dword x)
+abs(int32_t x)
 {
     return ((x < 0) ? -x : x);
 }

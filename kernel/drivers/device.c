@@ -10,19 +10,13 @@
  *
  */
 
-#include <kernel/drivers/device.h>
-#include <kernel/memory/mm.h>
-#include <kernel/system/io.h>
-#include <kernel/system/terminal.h>
-#include <adamantine/mutex.h>
-
-MODULE("Device", "0.01a");
+#include <adamantine/adamantine.h>
 
 typedef struct aos_device device_t;
 static device_t *device = 0;
 
 void 
-aos_device_init(uint32_t device_id, string device_name)
+aos_device_init(uint32_t device_id, char *device_name)
 {
     size_t size = 64 * sizeof(device_t);
 

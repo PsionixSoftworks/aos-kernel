@@ -94,8 +94,10 @@ aos_init(void)
 	aos.kernel_stop = &kernel_stop;
 }
 
+extern uint32_t get_num(int);
+
 kernel_t
-kernel_sys_entry(void)
+kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 {
 	/* Initialize the kernel */
 	aos_init();
@@ -103,7 +105,7 @@ kernel_sys_entry(void)
 	/* Call kernel_setup & kernel_start */
 	aos.kernel_setup();
 	aos.kernel_start();
-	
+
 	terminal_printf("Done! Preparing for next phase...\n\n");
 	
 	aos.kernel_stop();

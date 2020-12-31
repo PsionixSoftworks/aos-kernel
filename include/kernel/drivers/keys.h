@@ -13,9 +13,6 @@
 #ifndef ADAMANTINE_KEYS
 #define ADAMANTINE_KEYS
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
-
 // Define the keys for down state:
 #ifndef KEYBOARD_KEY_DOWN
 #define KEYBOARD_KEY_DOWN_NONE									0x00
@@ -205,7 +202,7 @@ extern "C" {
 #endif
 
 // Define for normal keys:
-static string KeysNormal[256] = 
+static char *KeysNormal[256] = 
 {
 	"", "", 															// <None>, <Escape>,
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
@@ -231,7 +228,7 @@ static string KeysNormal[256] =
 
 /*
 // Define for keys when shift is held:
-static string keys_caps[256] = 
+static char * keys_caps[256] = 
 {
 	"", "", 															// <None>, <Escape>,
 	"!", "@", "#", "$", "%", "^", "&", "*", "(", ")",					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,

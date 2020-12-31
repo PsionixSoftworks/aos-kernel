@@ -13,8 +13,7 @@
 #ifndef _SYSCALL_
 #define _SYSCALL_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <adamantine/adamantine.h>
 
 #define DECL_SYSCALL0(fn)                       uint32_t syscall_##fn();
 #define DECL_SYSCALL1(fn, p1)                   uint32_t syscall_##fn(p1);
@@ -47,9 +46,9 @@ uint32_t syscall_##fn(P1 p1, P2 p2)                                             
     return (a);                                                                         \
 }
 
-DECL_SYSCALL1(terminal_print, string);
-DECL_SYSCALL1(terminal_print_hex, string);
-DECL_SYSCALL1(terminal_print_dec, string);
+DECL_SYSCALL1(terminal_print, char *);
+DECL_SYSCALL1(terminal_print_hex, char *);
+DECL_SYSCALL1(terminal_print_dec, char *);
 
 #if defined(__cplusplus)
 extern "C" {

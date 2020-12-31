@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 /* Trigonometric math functions */
-uint32_t abs(dword n);
+uint32_t abs(int32_t n);
 uint32_t floor(double x);
 uint32_t round(double x);
 uint32_t ceil(double x);

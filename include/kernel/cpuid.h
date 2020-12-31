@@ -13,8 +13,7 @@
 #ifndef _CPUID_
 #define _CPUID_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 enum cpuid_requests 
 {
@@ -113,7 +112,7 @@ extern "C" {
 
 uint32_t cpuid(void);
 uint32_t cpuid_string(uint32_t code, uint32_t *Location);
-string cpuid_is_supported(void);
+char * cpuid_is_supported(void);
 
 #if defined(__cplusplus)
 }

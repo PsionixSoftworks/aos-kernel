@@ -13,9 +13,7 @@
 #ifndef _EXT2_
 #define _EXT2_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
-#include <kernel/drivers/driver.h>
+#include <stdint.h>
 
 /*
 #ifndef EXT2_FILESYSTEM

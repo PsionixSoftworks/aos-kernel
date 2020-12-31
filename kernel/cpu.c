@@ -10,11 +10,7 @@
  *
  */
 
-#include <kernel/cpu.h>
-#include <kernel/cpuid.h>
-#include <kernel/system/terminal.h>
-
-MODULE("CPU", "0.02a");
+#include <adamantine/adamantine.h>
 
 EXTERN uint32_t cpuid_supported(void);
 
@@ -116,7 +112,7 @@ cpuid_string(uint32_t code, uint32_t *Location)
 	return ((uint32_t)Location[0]);
 }
 
-inline string
+inline char *
 cpu_vendor_string(void)
 {
 	static char Str[16];

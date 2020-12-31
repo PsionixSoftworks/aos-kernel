@@ -14,10 +14,9 @@
 #define _AOS_KEYBOARD_
 
 // Include files here:
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
-#include <adamantine/aos-string.h>
-#include <kernel/drivers/driver.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include "keys.h"
 
 #ifndef KEYBOARD_DRIVER
 #define KEYBOARD_DRIVER						(BASE_ADDR - 0x67)
@@ -31,10 +30,10 @@
 // Declare the keyboard type struct:
 typedef struct aos_keyboard_basic
 {
-	byte 				key_last;								// The last key pressed.
-	byte 				status;									// The status of the keyboard key.
-	string 				key_map;								// Used to set a memory map of the keys (BROKEN).
-	string 				buffer;
+	uint8_t				key_last;								// The last key pressed.
+	uint8_t 			status;									// The status of the keyboard key.
+	char 				*key_map;								// Used to set a memory map of the keys (BROKEN).
+	char 				*buffer;
 	bool 				is_initialized;							// The keyboard initializer.
 } keyboard_t;
 
@@ -43,13 +42,13 @@ extern "C" {
 #endif
 
 // Declare global functions:
-void keyboard_set_key_code(byte *key, byte code);				// Set keycodes for each key (UNUSED).
+void keyboard_set_key_code(uint8_t *key, uint8_t code);				// Set keycodes for each key (UNUSED).
 void keyboard_init(void);										// Initialize the basic keyboard driver.
 void keyboard_free(void);										// free memory associated with the keyboard driver.
 void keyboard_wait(void);										// Give the keyboard a wait instruction.
 bool keyboard_is_enabled(void);									// Checks whether the keyboard is initialized or not.
-string keyboard_get_key(void);									// Gets the value of a key pressed.
-string keyboard_get_string(void);
+char *keyboard_get_key(void);									// Gets the value of a key pressed.
+char *keyboard_get_string(void);
 uint8_t keyboard_get_keycode(void);								// Gets the value of the keycode pressed.
 uint8_t keyboard_get_key_last(void);
 

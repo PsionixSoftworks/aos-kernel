@@ -1,8 +1,7 @@
 #ifndef _AOS_SIMPLE_MATH_
 #define _AOS_SIMPLE_MATH_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 #if defined(__cplusplus)
 "C" {

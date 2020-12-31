@@ -14,8 +14,7 @@
 #define ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER
 
 // Includes go here:
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 // Check if the PIC devices have been defined:
 #ifndef PIC_DEVICE
@@ -55,7 +54,7 @@ void irq_set_mask(uint8_t irq_Line);			                // Set the irq mask.
 void irq_clear_mask(uint8_t irq_Line);			                // Clear the irq mask.
 uint16_t pic_get_irr(void);						                // Get (IRR?).
 uint16_t pic_get_isr(void);						                // Get the interrupt service routine.
-uint16_t pic_get_irq_register(dword ocw3);				        // Get the irq registers.
+uint16_t pic_get_irq_register(int8_t ocw3);				        // Get the irq registers.
 
 #if defined(__cplusplus)
 }

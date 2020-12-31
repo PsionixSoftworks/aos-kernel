@@ -10,12 +10,7 @@
  *
  */
 
-#include <kernel/pit.h>
-#include <kernel/isr.h>
-#include <kernel/system/terminal.h>
-#include <kernel/system/io.h>
-
-MODULE("ProgrammableIntervalTimer", "0.01a");
+#include <adamantine/adamantine.h>
 
 uint32_t tick;
 

@@ -13,13 +13,11 @@
 #ifndef _AOS_FILE_SYSTEM_
 #define _AOS_FILE_SYSTEM_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
-#include <adamantine/aos-string.h>
-#include <kernel/drivers/driver.h>
-#include <filesys/vfs.h>
+#include <adamantine/adamantine.h>
 
 #define AOS_ROOT_DIRNAME        "$0://root/"
 #define AOS_FILE_SYSTEM_NAME    "AOS-32"
+
+
 
 #endif

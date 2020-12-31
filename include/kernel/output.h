@@ -13,8 +13,7 @@
 #ifndef _OUTPUT_
 #define _OUTPUT_
 
-#include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
+#include <stdint.h>
 
 #if defined(__cplusplus)
 extern "C" {

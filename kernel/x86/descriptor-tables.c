@@ -1,8 +1,4 @@
-#include <kernel/x86/descriptor-tables.h>
-#include <adamantine/aos-types.h>
-#include <kernel/system/terminal.h>
-#include <kernel/memory/mm.h>
-#include <kernel/pic.h>
+#include <adamantine/adamantine.h>
 
 extern void gdt_flush(uint32_t);
 extern void ldt_flush(uint32_t);

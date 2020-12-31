@@ -13,7 +13,8 @@
 #ifndef ADAMANTINE_X86
 #define ADAMANTINE_X86
 
+#include <stddef.h>
+#include <stdint.h>
 #include <adamantine/aos-defs.h>
-#include <adamantine/aos-types.h>
 
 #endif	// !ADAMANTINE_X86
