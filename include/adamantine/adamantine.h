@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE
-#define ADAMANTINE
+#ifndef _ADAMANTINE_H
+#define _ADAMANTINE_H
 
 // Includes go here:
 #if !defined( __AOS64__ )
@@ -61,6 +61,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef ADAMANTINE
+#define ADAMANTINE    1
+#endif
 
 #if defined( USING_CENTRIX_CORE )   // Here's a hint: We're not...
 #include <centrix/centrix-core.h>
