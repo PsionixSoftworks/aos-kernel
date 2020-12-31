@@ -64,7 +64,7 @@ vfs_directory_rename(struct filesystem *fs, char *dirname, char *newname)
 struct filesystem *
 vfs_file_open(char *filename, uint8_t mode)
 {
-
+    terminal_printf("%s has been created!", filename);
 }
 
 void *

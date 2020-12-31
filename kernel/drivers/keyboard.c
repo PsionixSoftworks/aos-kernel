@@ -54,7 +54,7 @@ keyboard_get_key(void)
 {
 	keyboard_read();
 	if ((keyboard.key_last != KEYBOARD_KEY_DOWN_NONE)) 
-		return (KeysNormal[keyboard.key_last]);
+		return (keys_normal[keyboard.key_last]);
 	return (KEYBOARD_KEY_DOWN_NONE);
 }
 

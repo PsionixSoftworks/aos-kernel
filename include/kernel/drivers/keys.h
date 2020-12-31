@@ -202,7 +202,7 @@ extern "C" {
 #endif
 
 // Define for normal keys:
-static char *KeysNormal[256] = 
+static char *keys_normal[256] = 
 {
 	"", "", 															// <None>, <Escape>,
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,

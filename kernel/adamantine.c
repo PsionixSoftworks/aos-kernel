@@ -96,6 +96,8 @@ aos_init(void)
 
 extern uint32_t get_num(int);
 
+typedef struct file FILE;
+
 kernel_t
 kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 {
@@ -107,6 +109,14 @@ kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 	aos.kernel_start();
 
 	terminal_printf("Done! Preparing for next phase...\n\n");
+	
+	struct filesystem *vfs;
+	char *filename = "test.txt";
+	vfs_init(&vfs);
+	terminal_printf("Creating a new file called \"%s\".\n", filename);
+	FILE *f = vfs_file_open(filename, 'w');
+	vfs_file_write(&f, "Testing123");
+	vfs_file_close(&f);
 	
 	aos.kernel_stop();
 

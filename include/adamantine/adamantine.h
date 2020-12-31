@@ -14,10 +14,10 @@
 #define ADAMANTINE
 
 // Includes go here:
-#if defined( __AOS64__ )
-#include <adamantine/adamantine-x64.h
-#else
+#if !defined( __AOS64__ )
 #include <adamantine/adamantine-x86.h>
+#else
+#include <adamantine/adamantine-x64.h>
 #endif
 
 #include <adamantine/aos-defs.h>

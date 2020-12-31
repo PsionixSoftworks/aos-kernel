@@ -86,14 +86,7 @@ strcpy(char *dest, char *src)
 char *
 strcat(char *dest, const char *src) 
 {
-	char *ptr = dest + strlen(dest);
-
-    while (*src != '\0')
-    {
-        *ptr++ = *src++;
-    }
-    *ptr = '\0';
-
+	strcpy(dest + strlen(dest), src);
     return (dest);
 }
 
