@@ -19,6 +19,8 @@
 #define FS_READ     1
 #define FS_APPEND   2
 
+#define PATH_SEP    '/'
+
 struct fs_container;
 struct filesystem;
 struct file;
