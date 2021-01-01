@@ -111,9 +111,13 @@ kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 	terminal_printf("Done! Preparing for next phase...\n\n");
 	
 	struct filesystem *vfs;
+        vfs_init(vfs);
+        vfs_install();
+        vfs_mount(&vfs);
+
 	char *filename = "test.txt";
-	vfs_init(&vfs);
 	terminal_printf("Creating a new file called \"%s\".\n", filename);
+
 	FILE *f = vfs_file_open(filename, FS_WRITE);
 	vfs_file_write(&f, "Testing123");
 	vfs_file_close(&f);
