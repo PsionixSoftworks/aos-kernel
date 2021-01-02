@@ -13,6 +13,8 @@ void *realloc(void *ptr, size_t new_size);
 void free(void *ptr);
 void * aligned_alloc(size_t alignment, size_t size);
 
+char *itoa(int value, char * str, int base);
+
 #if defined(__cplusplus)
 }
 #endif

@@ -1,4 +1,4 @@
-#include <adamantine/adamantine.h>
+#include <kernel/task.h>
 
 task_t new_task;
 task_t current_task;

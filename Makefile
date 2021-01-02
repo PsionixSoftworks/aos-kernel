@@ -34,18 +34,18 @@ DRIVER_PATH					:= 	$(KERNEL_PATH)/drivers
 MEMORY_PATH					:= 	$(KERNEL_PATH)/memory
 SYSTEM_PATH					:= 	$(KERNEL_PATH)/system
 X86_PATH					:=	$(KERNEL_PATH)/x86
-LIB_PATH					:= 	lib
+STDLIB_PATH					:= 	stdlib
 MAIN_PATH					:= 	main
 SECURITY_PATH				:=	security
 TOOL_PATH					:= 	tool
 USER_PATH					:= 	user
 MATH_PATH					:= 	math
+STRING_PATH					:= 	string
 
 ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 								$(ASSEMB_PATH)/descriptors.S	\
 								$(ASSEMB_PATH)/interrupt.asm	\
 								$(ASSEMB_PATH)/cpuid.asm		
-
 C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c		\
 								$(KERNEL_PATH)/cpu.c			\
 								$(KERNEL_PATH)/mutex.c			\
@@ -54,18 +54,33 @@ C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c		\
 								$(FS_PATH)/aos32/aos-fs.c		\
 								$(FS_PATH)/ext2/ext2.c			\
 								$(FS_PATH)/vfs.c				\
-								$(LIB_PATH)/string.c			\
 								$(MEMORY_PATH)/mem-util.c		\
-								$(SYSTEM_PATH)/io.c				\
-								$(KERNEL_PATH)/irq.c			\
-								$(KERNEL_PATH)/isr.c			\
-								$(KERNEL_PATH)/pic.c			\
-								$(KERNEL_PATH)/pit.c			\
-								$(SYSTEM_PATH)/system.c			\
-								$(SYSTEM_PATH)/terminal.c		\
+								$(SYSTEM_PATH)/io.c	\
+								$(KERNEL_PATH)/irq.c \
+								$(KERNEL_PATH)/isr.c \
+								$(KERNEL_PATH)/pic.c \
+								$(KERNEL_PATH)/pit.c \
+								$(SYSTEM_PATH)/system.c	\
+								$(SYSTEM_PATH)/terminal.c \
 								$(X86_PATH)/descriptor-tables.c	\
-								$(MEMORY_PATH)/paging.c			\
-								$(MATH_PATH)/math-util.c
+								$(MEMORY_PATH)/paging.c	\
+								$(MATH_PATH)/math-util.c \
+								$(STDLIB_PATH)/itoa.c \
+								$(STDLIB_PATH)/free.c \
+								$(STDLIB_PATH)/malloc.c \
+								$(STDLIB_PATH)/memchr.c \
+								$(STDLIB_PATH)/memcmp.c \
+								$(STDLIB_PATH)/memcpy.c \
+								$(STDLIB_PATH)/memmove.c \
+								$(STDLIB_PATH)/memset.c \
+								$(STRING_PATH)/str-backspace.c \
+								$(STRING_PATH)/strcat.c \
+								$(STRING_PATH)/strcmp.c \
+								$(STRING_PATH)/strcpy.c \
+								$(STRING_PATH)/strlen.c \
+								$(STRING_PATH)/strsplit.c \
+								$(STRING_PATH)/to-lower.c \
+								$(STRING_PATH)/to-upper.c
 
 # Put all input files here separated by a '\':
 OUTPUT_FILES 				:= 	boot.o			\
@@ -81,7 +96,6 @@ OUTPUT_FILES 				:= 	boot.o			\
 								aos-fs.o		\
 								ext2.o			\
 								vfs.o			\
-								string.o		\
 								mem-util.o		\
 								math-util.o		\
 								io.o			\
@@ -92,7 +106,23 @@ OUTPUT_FILES 				:= 	boot.o			\
 								system.o		\
 								terminal.o		\
 								descriptor-tables.o \
-								paging.o
+								paging.o		\
+								itoa.o			\
+								free.o \
+								malloc.o \
+								memchr.o \
+								memcmp.o \
+								memcpy.o \
+								memmove.o \
+								memset.o \
+								str-backspace.o \
+								strcat.o \
+								strcmp.o \
+								strcpy.o \
+								strlen.o \
+								strsplit.o \
+								to-lower.o \
+								to-upper.o
 
 # AOS_OUTPUT					:= 	$(AOS_DIR)/Adamantine.o	\
 # 								$(AOS_DIR)/Registry.o	
@@ -124,7 +154,6 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(KERNEL_PATH)/isr.c -o isr.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/pic.c -o pic.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
-	$(COMPILER_C) $(LIB_PATH)/string.c -o string.o $(C_FLAGS)
 	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)
@@ -134,7 +163,23 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(MEMORY_PATH)/paging.c -o paging.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/syscall.c -o syscall.o $(C_FLAGS)
- 
+	$(COMPILER_C) $(STDLIB_PATH)/itoa.c -o itoa.o $(C_FLAGS)
+	$(COMPILER_C) $(STDLIB_PATH)/free.c -o free.o $(C_FLAGS)
+	$(COMPILER_C) $(STDLIB_PATH)/malloc.c -o malloc.o $(C_FLAGS)
+	$(COMPILER_C) $(STDLIB_PATH)/memchr.c -o memchr.o $(C_FLAGS)
+	$(COMPILER_C) $(STDLIB_PATH)/memcmp.c -o memcmp.o $(C_FLAGS)
+	$(COMPILER_C) $(STDLIB_PATH)/memcpy.c -o memcpy.o $(C_FLAGS)
+	$(COMPILER_C) $(STDLIB_PATH)/memmove.c -o memmove.o $(C_FLAGS)
+	$(COMPILER_C) $(STDLIB_PATH)/memset.c -o memset.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/str-backspace.c -o str-backspace.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strcat.c -o strcat.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strcmp.c -o strcmp.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strcpy.c -o strcpy.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strlen.c -o strlen.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strsplit.c -o strsplit.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/to-lower.c -o to-lower.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/to-upper.c -o to-upper.o $(C_FLAGS)
+	 
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)
 	$(LINKER) -o $(BIN) $(C_FLAGS) $(OUTPUT_FILES) -lgcc

@@ -10,7 +10,8 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <kernel/pit.h>
+#include <kernel/isr.h>
 
 uint32_t tick;
 

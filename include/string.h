@@ -23,7 +23,6 @@ size_t strlen(const char *s);
 size_t str_backspace(char *str, char c);
 size_t strsplit(char *str, char delim);
 
-
 #if defined(__cplusplus)
 }
 #endif

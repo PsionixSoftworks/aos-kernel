@@ -19,7 +19,7 @@
 #include "keys.h"
 
 #ifndef KEYBOARD_DRIVER
-#define KEYBOARD_DRIVER						(BASE_ADDR - 0x67)
+#define KEYBOARD_DRIVER						(0x67)
 #define KEYBOARD_DATA						(KEYBOARD_DRIVER << 2)
 #define KEYBOARD_PORT						((KEYBOARD_DRIVER + 1) << 2)
 #endif

@@ -13,6 +13,7 @@
 #ifndef _VGA_
 #define _VGA_
 
+#include <adamantine/aos-defs.h>
 #include <stdint.h>
 
 #if !defined(VGA_MODE)

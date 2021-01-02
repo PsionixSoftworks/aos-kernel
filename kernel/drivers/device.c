@@ -10,7 +10,7 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <kernel/drivers/device.h>
 
 typedef struct aos_device device_t;
 static device_t *device = 0;

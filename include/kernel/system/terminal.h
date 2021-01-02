@@ -14,6 +14,7 @@
 #define _AOS_TERMINAL_
 
 #include <adamantine/aos-defs.h>
+#include <kernel/drivers/vga.h>
 
 #define DEFAULT_BACKGROUND_COLOR	SYSTEM_COLOR_BLACK
 #define DEFAULT_FOREGROUND_COLOR	SYSTEM_COLOR_LT_GREEN

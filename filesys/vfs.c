@@ -10,7 +10,7 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <filesys/vfs.h>
 
 static struct filesystem *virt_fs;
 
@@ -21,20 +21,23 @@ vfs_set_root_directory(struct filesystem *fs, char *root)
 }
 
 void
-vfs_init(const struct filesystem *fs)
+vfs_init(struct filesystem *fs, char *name, char *sysroot)
 {
     terminal_printf("Initializing Virtual Filesystem...\n");
-    virt_fs = fs->current;
-    virt_fs->name = "Virtual Filesystem";
+    virt_fs->current = fs;
+    virt_fs->current->name = name;
 
-    const char *root = "$0:/root/";
+    const char *root = sysroot;
     vfs_set_root_directory(virt_fs, root);
 }
 
 void
 vfs_install(void)
 {
-
+    if (!virt_fs->current->installed)
+    {
+        virt_fs->current->installed = true;
+    }
 }
 
 int
@@ -46,7 +49,7 @@ vfs_mount(struct filesystem *fs)
 void *
 vfs_directory_create(struct filesystem *fs, char *dirname)
 {
-
+    
 }
 
 void *
@@ -61,32 +64,42 @@ vfs_directory_rename(struct filesystem *fs, char *dirname, char *newname)
 
 }
 
-struct filesystem *
+static int32_t file_id = 0;
+
+struct file_struct *
 vfs_file_open(char *filename, uint8_t mode)
 {
-    terminal_printf("%s has been created!", filename);
+
+    
+    
 }
 
 void *
-vfs_file_write(struct filesystem *fs, void *data)
+vfs_file_write(struct file_struct *file, void *data)
+{
+    
+}
+
+void *
+vfs_file_read(struct file_struct *file)
 {
 
 }
 
 void *
-vfs_file_read(struct filesystem *fs)
+vfs_file_append(struct file_struct *file, void *data)
 {
 
 }
 
 void *
-vfs_file_append(struct filesystem *fs, void *data)
+vfs_file_close(struct file_struct *file)
 {
 
 }
 
-void *
-vfs_file_close(struct filesystem *fs)
+char *
+vfs_get_root_directory(struct filesystem *fs)
 {
-
+    return ((char *)fs->root);
 }

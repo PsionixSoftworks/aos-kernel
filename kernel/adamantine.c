@@ -16,6 +16,11 @@
 #define _
 
 #include <adamantine/adamantine.h>
+#include <kernel/system/terminal.h>
+#include <kernel/x86/descriptor-tables.h>
+#include <kernel/pit.h>
+#include <kernel/memory/mm.h>
+#include <kernel/memory/paging.h>
 
 extern uint32_t kernel_end;
 
@@ -94,10 +99,6 @@ aos_init(void)
 	aos.kernel_stop = &kernel_stop;
 }
 
-extern uint32_t get_num(int);
-
-typedef struct file FILE;
-
 kernel_t
 kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 {
@@ -108,20 +109,6 @@ kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 	aos.kernel_setup();
 	aos.kernel_start();
 
-	terminal_printf("Done! Preparing for next phase...\n\n");
-	
-	struct filesystem *vfs;
-        vfs_init(vfs);
-        vfs_install();
-        vfs_mount(&vfs);
-
-	char *filename = "test.txt";
-	terminal_printf("Creating a new file called \"%s\".\n", filename);
-
-	FILE *f = vfs_file_open(filename, FS_WRITE);
-	vfs_file_write(&f, "Testing123");
-	vfs_file_close(&f);
-	
 	aos.kernel_stop();
 
 	return;

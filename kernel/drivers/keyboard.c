@@ -11,16 +11,14 @@
  */
 
 /* Includes go here: */
-#include <adamantine/adamantine.h>
-
-MODULE("Keyboard", "0.01a");
+#include <kernel/drivers/keyboard.h>
 
 /* Define the keyboard. */
 keyboard_t keyboard;
 
 // Declare local functions:
-static inline SET_VOID(Keyboard_irq(void));									// keyboard irq.
-static inline SET_VOID(keyboard_read(void));								// read the keyboard on key press.
+static inline int Keyboard_irq(void);							// keyboard irq.
+static inline void keyboard_read(void);								// read the keyboard on key press.
 
 /* Initialize the keyboard */
 inline void 
@@ -29,7 +27,7 @@ keyboard_init(void)
 	keyboard.key_map = (char *)malloc(256);
 	memset(keyboard.key_map, 0, 256);
 	
-	register_interrupt_handler(33, (isr_t)&Keyboard_irq);
+	//register_interrupt_handler(33, (isr_t)&Keyboard_irq);
 	keyboard.is_initialized = TRUE;
 }
 
@@ -76,7 +74,7 @@ keyboard_get_key_last(void)
 }
 
 /* Set the keyboard interrupt */
-static inline void
+static inline int
 Keyboard_irq(void) 
 {
 	return;

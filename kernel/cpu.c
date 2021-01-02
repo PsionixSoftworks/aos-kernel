@@ -10,9 +10,12 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <kernel/cpu.h>
+#include <kernel/cpuid.h>
+#include <adamantine/aos-defs.h>
+#include <stdbool.h>
 
-EXTERN uint32_t cpuid_supported(void);
+extern uint32_t cpuid_supported(void);
 
 static inline uint32_t
 ProcessorIndex(void)

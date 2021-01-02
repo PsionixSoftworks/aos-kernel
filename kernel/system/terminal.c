@@ -11,7 +11,8 @@
  */
 
 /* Include anything the terminal requires here */
-#include <adamantine/adamantine.h>
+#include <kernel/system/terminal.h>
+#include <kernel/drivers/vga.h>
 #include <stdarg.h>
 
 #if (OS_VERSION_NUMBER >= 40)

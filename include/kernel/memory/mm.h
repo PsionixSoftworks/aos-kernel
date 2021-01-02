@@ -10,10 +10,18 @@
  *
  */
 
-#ifndef ADAMANTINE_memORY_UTILITY
-#define ADAMANTINE_memORY_UTILITY
+#ifndef _MEMORY_UTIL_H
+#define _MEMORY_UTIL_H
 
 #include <stdint.h>
+
+static uint32_t last_alloc 	= 0;
+static uint32_t heap_end	= 0;
+static uint32_t heap_begin 	= 0;
+static uint32_t pheap_begin = 0;
+static uint32_t pheap_end 	= 0;
+static uint32_t memory_used = 0;
+static uint8_t *pheap_desc 	= 0;
 
 // Declare the allocation type:
 typedef struct 
@@ -26,22 +34,10 @@ typedef struct
 extern "C" {
 #endif
 
+typedef unsigned int uint32_t;
+
 void mm_init(uint32_t kernel_end);
 void paging_map_virtual_to_physical(uint32_t virt, uint32_t physical);
-
-void *pmalloc(size_t size);
-void *malloc(size_t size);
-void pfree(void *mem);
-void free(void *mem);
-
-/*
-void *memchr(const void *str, int c, size_t n);
-int memcmp(const void *str1, const void *str2, size_t n);
-void *memcpy(void *dest, const void *src, size_t n);
-void *memmove(void *dest, const void *src, size_t n);
-void *memset(void *dest, int c, size_t n);
-void *memset16(void *pointer,  uint32_t value, size_t size);
-*/
 
 uint32_t	kmalloc_int(uint32_t size, uint32_t align, uint32_t *physical_address);
 uint32_t	kmalloc_a(uint32_t size);
@@ -50,7 +46,7 @@ uint32_t	kmalloc_ap(uint32_t size, uint32_t *physical_address);
 uint32_t	kmalloc(uint32_t size);
 
 #if defined(__cplusplus)
-extern "C" {
+}
 #endif
 
-#endif	// !ADAMANTINE_memORY_UTILITY
+#endif	// !ADAMANTINE_MEMORY_UTILITY

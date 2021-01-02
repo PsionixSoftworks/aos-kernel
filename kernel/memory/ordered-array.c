@@ -1,4 +1,4 @@
-#include <adamantine/adamantine.h>
+#include <kernel/memory/ordered-array.h>
 
 int8_t standard_lessthan_predicate(type_t a, type_t b)
 {

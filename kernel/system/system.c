@@ -10,7 +10,8 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <kernel/system/system.h>
+#include <kernel/drivers/vga.h>
 
 void 
 system_enable_cursor(uint8_t cursor_start, uint8_t cursor_end) 

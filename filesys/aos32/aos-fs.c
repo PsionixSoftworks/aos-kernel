@@ -10,6 +10,48 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <filesys/aos-fs.h>
 
+static struct aos_filesystem *fs;
+static struct aos_directory *main_dir;
 
+struct aos_filesystem *
+aosfs_init(const char *name)
+{
+    terminal_printf("%s Filesystem Initializing...\n", name);
+
+    char *root;
+    root = "$0://";
+
+    fs->root = malloc(strlen(root) + 1);
+    fs->root = strcpy(fs->root, root);
+
+    fs->dir = main_dir;
+    fs->dir->name = malloc(strlen(root) + 1);
+    fs->dir->name = strcpy(fs->dir->name, fs->root);
+
+    terminal_printf("%s initialized!\n", name);
+
+    return (fs);
+}
+
+int8_t
+aosfs_create_directory(struct aos_filesystem *aosfs, struct aos_directory *dir, char *dirname)
+{
+    terminal_printf("Creating directory \"%s\" in \"%s\"...", dirname, aosfs->dir->name);
+    aosfs->dir->name = strcat(aosfs->dir->name, dirname);
+
+    terminal_printf("Entering directory \"%s\"\n", aosfs->dir->name);
+}
+
+char *
+aosfs_directory_get_current(struct aos_filesystem *aosfs)
+{
+    return (aosfs->dir->name);
+}
+
+const char *
+aosfs_get_sysroot(void)
+{
+    return (fs->root);
+}

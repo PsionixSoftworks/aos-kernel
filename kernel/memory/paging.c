@@ -1,7 +1,8 @@
-#include <adamantine/adamantine.h>
+#include <kernel/memory/paging.h>
+#include <stddef.h>
 
-page_directory_t *kernel_directory = 0;
-page_directory_t *current_directory = 0;
+page_directory_t *kernel_directory = NULL;
+page_directory_t *current_directory = NULL;
 
 uint32_t *frames;
 uint32_t nframes;
@@ -73,7 +74,7 @@ alloc_frame(page_t *page, int is_kernel, int is_writable)
         uint32_t idx = first_frame();
         if (idx == (uint32_t)-1)
         {
-            PANIC("No free frames!");
+            terminal_printf("No free frames!");
         }
         set_frame(idx * 0x1000);
         page->present = 1;
@@ -175,5 +176,5 @@ page_fault(registers_t regs)
     if (us) {terminal_print("user-mode ");}
     if (reserved) {terminal_print("reserved ");}
     terminal_printf(") at 0x%X\n", faulting_address);
-    PANIC("Page fault");
+    terminal_printf("Page fault!");
 }

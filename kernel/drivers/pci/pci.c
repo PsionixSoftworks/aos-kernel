@@ -10,4 +10,4 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <kernel/drivers/pci/pci.h>

@@ -1,6 +1,7 @@
 #ifndef _ADAMANTINE_DESCRIPTOR_TABLES_H
 #define _ADAMANTINE_DESCRIPTOR_TABLES_H
 
+#include <adamantine/aos-defs.h>
 #include <stdint.h>
 
 struct gdt_entry_struct

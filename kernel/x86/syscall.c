@@ -10,7 +10,8 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <kernel/system/syscall.h>
+#include <kernel/isr.h>
 
 static void SyscallHandler(registers_t *registers);
 

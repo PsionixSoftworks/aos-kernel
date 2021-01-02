@@ -1,4 +1,4 @@
-#include <adamantine/adamantine.h>
+#include <kernel/drivers/vga.h>
 
 uint16_t
 find_mode(int x, int y, int d)

@@ -1,4 +1,4 @@
-#include <adamantine/adamantine.h>
+#include <math/math-util.h>
 
 /* Defined in "math-util.h" */
 inline uint32_t

@@ -10,7 +10,7 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <kernel/irq.h>
 
 uint8_t 
 are_interrupts_enabled(void) 

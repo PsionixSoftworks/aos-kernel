@@ -10,7 +10,8 @@
  *
  */
 
-#include <adamantine/adamantine.h>
+#include <kernel/isr.h>
+#include <adamantine/aos-defs.h>
 
 isr_t interrupt_handlers[256];
 

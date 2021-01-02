@@ -13,6 +13,7 @@
 #ifndef ADAMANTINE_STANDARD_DEFINITIONS
 #define ADAMANTINE_STANDARD_DEFINITIONS
 
+#include <adamantine/version.h>
 #include <stdint.h>
 
 // Define the boolean operators true and false:
