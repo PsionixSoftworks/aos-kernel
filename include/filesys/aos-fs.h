@@ -26,7 +26,7 @@ struct aos_directory;
 
 struct aos_filesystem {
     const char *name;
-    const char *root;
+    char *root;
     struct aos_directory *dir;
 } __attribute__((packed));
 
@@ -36,7 +36,7 @@ struct aos_directory {
 };
 
 struct aos_filesystem *aosfs_init(const char *name);
-int8_t aosfs_create_directory(struct aos_filesystem *aosfs, struct aos_directory *dir, char *dirname);
+int8_t aosfs_create_directory(struct aos_filesystem *aosfs, char *dirname);
 char *aosfs_directory_get_current(struct aos_filesystem *aosfs);
 
 const char *aosfs_get_sysroot(void);

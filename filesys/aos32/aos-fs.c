@@ -11,6 +11,9 @@
  */
 
 #include <filesys/aos-fs.h>
+#include <kernel/system/terminal.h>
+#include <stdlib.h>
+#include <string.h>
 
 static struct aos_filesystem *fs;
 static struct aos_directory *main_dir;
@@ -23,8 +26,8 @@ aosfs_init(const char *name)
     char *root;
     root = "$0://";
 
-    fs->root = malloc(strlen(root) + 1);
-    fs->root = strcpy(fs->root, root);
+    fs->root = (char *)malloc(strlen(root) + 1);
+    fs->root = (char *)strcpy(fs->root, root);
 
     fs->dir = main_dir;
     fs->dir->name = malloc(strlen(root) + 1);
@@ -36,12 +39,14 @@ aosfs_init(const char *name)
 }
 
 int8_t
-aosfs_create_directory(struct aos_filesystem *aosfs, struct aos_directory *dir, char *dirname)
+aosfs_create_directory(struct aos_filesystem *aosfs, char *dirname)
 {
     terminal_printf("Creating directory \"%s\" in \"%s\"...", dirname, aosfs->dir->name);
     aosfs->dir->name = strcat(aosfs->dir->name, dirname);
 
     terminal_printf("Entering directory \"%s\"\n", aosfs->dir->name);
+
+    return (SUCCESS);
 }
 
 char *

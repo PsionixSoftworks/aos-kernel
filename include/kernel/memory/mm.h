@@ -15,14 +15,6 @@
 
 #include <stdint.h>
 
-static uint32_t last_alloc 	= 0;
-static uint32_t heap_end	= 0;
-static uint32_t heap_begin 	= 0;
-static uint32_t pheap_begin = 0;
-static uint32_t pheap_end 	= 0;
-static uint32_t memory_used = 0;
-static uint8_t *pheap_desc 	= 0;
-
 // Declare the allocation type:
 typedef struct 
 {

@@ -12,6 +12,9 @@
 
 /* Includes go here: */
 #include <kernel/drivers/keyboard.h>
+#include <stdlib.h>
+#include <string.h>
+#include <kernel/system/io.h>
 
 /* Define the keyboard. */
 keyboard_t keyboard;
@@ -77,7 +80,7 @@ keyboard_get_key_last(void)
 static inline int
 Keyboard_irq(void) 
 {
-	return;
+	return 0;
 }
 
 /* read keys as they're pressed */

@@ -22,6 +22,9 @@
 #include <kernel/memory/mm.h>
 #include <kernel/memory/paging.h>
 
+#include <filesys/vfs.h>
+#include <assert.h>
+
 extern uint32_t kernel_end;
 
 static inline void write_aos_message(void);
@@ -99,6 +102,8 @@ aos_init(void)
 	aos.kernel_stop = &kernel_stop;
 }
 
+struct file_struct *file;
+
 kernel_t
 kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 {
@@ -108,6 +113,11 @@ kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 	/* Call kernel_setup & kernel_start */
 	aos.kernel_setup();
 	aos.kernel_start();
+
+	char *fname = "$0://test.txt";
+	file = vfs_file_open(fname, 'w');
+	
+	vfs_file_close(file);
 
 	aos.kernel_stop();
 

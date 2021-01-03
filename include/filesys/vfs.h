@@ -17,9 +17,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define FS_WRITE    0
-#define FS_READ     1
-#define FS_APPEND   2
+#define FS_READ     0x72
+#define FS_WRITE    0x77
 
 #define PATH_SEP    '/'
 
@@ -39,12 +38,15 @@ struct filesystem {
     char *root;
     char *name;
     char *filename;
+    char *dirname;
     bool installed;
+    bool mounted;
     struct filesystem *current;
 } PACKED;
 
 struct file_struct {
     char *name;
+    void *data;
     unsigned long flags;
 };
 

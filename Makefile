@@ -49,6 +49,7 @@ ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
 C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c		\
 								$(KERNEL_PATH)/cpu.c			\
 								$(KERNEL_PATH)/mutex.c			\
+								$(KERNEL_PATH)/assert.c \
 								$(DRIVER_PATH)/device.c			\
 								$(DRIVER_PATH)/keyboard.c		\
 								$(FS_PATH)/aos32/aos-fs.c		\
@@ -91,6 +92,7 @@ OUTPUT_FILES 				:= 	boot.o			\
 								timer.o			\
 								cpu.o			\
 								mutex.o			\
+								assert.o \
 								device.o		\
 								keyboard.o		\
 								aos-fs.o		\
@@ -154,6 +156,7 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(KERNEL_PATH)/isr.c -o isr.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/pic.c -o pic.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/assert.c -o assert.o $(C_FLAGS)
 	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)

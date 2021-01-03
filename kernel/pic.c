@@ -15,7 +15,7 @@
 void 
 pic_send_eoi(uint8_t irq) 
 {
-	if (irq >= 0x8) 
+	if (irq > 7) 
 	{
 		write_portb(PIC2_COMMAND, PIC_EOI);
 	}
