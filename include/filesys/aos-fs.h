@@ -21,6 +21,20 @@
 #define AOS_READ                    0x72
 #define AOS_WRITE                   0x77
 
+#define DRIVE0                      "$0://"
+#define DRIVE1                      "$1://"
+#define DRIVE2                      "$2://"
+#define DRIVE3                      "$3://"
+#define DRIVE4                      "$4://"
+
+#ifndef ROOT_DRIVE
+#define ROOT_DRIVE                  DRIVE0
+#endif
+
+#ifndef SYSROOT_DIRECTORY
+#define SYSROOT_DIRECTORY           ROOT_DRIVE##"sysroot/"
+#endif
+
 struct aos_filesystem;
 struct aos_directory;
 
