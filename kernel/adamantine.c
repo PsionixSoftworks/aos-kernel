@@ -78,18 +78,22 @@ kernel_setup(void)
 	terminal_clear();
 
 	write_aos_message();
+
+	return ((void *)SUCCESS);
 }
 
 static inline kernel_t
 kernel_start(void)
 {
 	start_modules();
+	return ((void *)SUCCESS);
 }
 
 static inline kernel_t
 kernel_stop(void)
 {
 	stop_modules();
+	return ((void *)SUCCESS);
 }
 
 static aos_base_t aos;
@@ -105,7 +109,7 @@ aos_init(void)
 struct file_struct *file;
 
 kernel_t
-kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
+kernel_sys_entry(void)
 {
 	/* Initialize the kernel */
 	aos_init();
@@ -121,7 +125,7 @@ kernel_sys_entry(unsigned int *MultiBootHeaderStruct)
 
 	aos.kernel_stop();
 
-	return;
+	return ((void *)SUCCESS);
 }
 
 static inline void

@@ -13,6 +13,7 @@
 #include <kernel/cpu.h>
 #include <kernel/cpuid.h>
 #include <adamantine/aos-defs.h>
+#include <kernel/system/terminal.h>
 #include <stdbool.h>
 
 extern uint32_t cpuid_supported(void);

@@ -13,7 +13,10 @@
 /* Include anything the terminal requires here */
 #include <kernel/system/terminal.h>
 #include <kernel/drivers/vga.h>
+#include <kernel/system/io.h>
+#include <kernel/cpu.h>
 #include <stdarg.h>
+#include <string.h>
 
 #if (OS_VERSION_NUMBER <= 150)
 

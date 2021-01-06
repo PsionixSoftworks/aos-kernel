@@ -54,7 +54,7 @@ void *
 vfs_directory_create(struct filesystem *fs, char *dirname)
 {
     fs->dirname = dirname;
-    return (SUCCESS);
+    return ((void *)SUCCESS);
 }
 
 void *
@@ -63,9 +63,9 @@ vfs_directory_delete(struct filesystem *fs, char *dirname)
     if (fs->dirname == dirname)
     {
         fs->dirname = NULL;
-        return (SUCCESS);
+        return ((void *)SUCCESS);
     }
-    return (FAILURE);
+    return ((void *)FAILURE);
 }
 
 void *
@@ -74,12 +74,10 @@ vfs_directory_rename(struct filesystem *fs, char *dirname, char *newname)
     if (fs->dirname == dirname)
     {
         fs->dirname = newname;
-        return (SUCCESS);
+        return ((void *)SUCCESS);
     }
-    return (FAILURE);
+    return ((void *)FAILURE);
 }
-
-static int32_t file_id = 0;
 
 struct file_struct *
 vfs_file_open(char *filename, uint8_t mode)
@@ -88,6 +86,8 @@ vfs_file_open(char *filename, uint8_t mode)
 
     tmpfile = (struct file_struct *)malloc(sizeof(struct file_struct));
     tmpfile->name = filename;
+
+    terminal_printf("File Mode: %c.\n", mode);
     
     return (tmpfile);
 }
@@ -99,9 +99,9 @@ vfs_file_write(struct file_struct *file, void *data)
     {
         terminal_printf("Writing data: \"%s\"; To File: \"%s\".\n", data, file->name);
         file->data = data;
-        return (SUCCESS);
+        return ((void *)SUCCESS);
     }
-    return (FAILURE);
+    return ((void *)FAILURE);
 }
 
 void *
@@ -110,9 +110,9 @@ vfs_file_read(struct file_struct *file)
     if (vfs_file_exists(file, file->name))
     {
         terminal_printf("Reading data from \"%s\": %s", file->name, file->data);
-        return (SUCCESS);
+        return ((void *)SUCCESS);
     }
-    return (FAILURE);
+    return ((void *)FAILURE);
 }
 
 void *
@@ -120,6 +120,8 @@ vfs_file_close(struct file_struct *file)
 {
     file->name = NULL;
     file = NULL;
+
+    return ((void *)SUCCESS);
 }
 
 char *

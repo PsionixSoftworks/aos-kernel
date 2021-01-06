@@ -11,6 +11,7 @@
  */
 
 #include <kernel/pic.h>
+#include <kernel/system/io.h>
 
 void 
 pic_send_eoi(uint8_t irq) 

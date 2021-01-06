@@ -12,6 +12,9 @@
 
 #include <kernel/isr.h>
 #include <adamantine/aos-defs.h>
+#include <kernel/system/terminal.h>
+#include <kernel/system/io.h>
+#include <kernel/cpu.h>
 
 isr_t interrupt_handlers[256];
 
@@ -41,7 +44,7 @@ char *exception_messages[] =
 	"AOS_INTERRUPT Raised! : [Control Protection Exception]",
 };
 
-DEPRECATED void
+void
 fault_handler(registers_t registers) 
 {
 	if (registers.INT_NO < 32) 

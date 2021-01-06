@@ -1,4 +1,6 @@
 #include <kernel/x86/descriptor-tables.h>
+#include <kernel/system/terminal.h>
+#include <kernel/pic.h>
 #include <string.h>
 
 extern void gdt_flush(uint32_t);
