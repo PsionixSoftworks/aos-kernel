@@ -197,13 +197,13 @@ iso: kernel
 	$(CP) $(CFG) $(GRUB_PATH)
 	grub-file --is-x86-multiboot $(BOOT_PATH)/$(BIN)
 	grub-mkrescue -o $(ISO_FILE) $(ISO_PATH)
-	$(MKDIR) $(ISO_OUTPUT_PATH)
-	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
+#	$(MKDIR) $(ISO_OUTPUT_PATH)
+#	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
 #	qemu-system-x86_64 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
 	qemu-system-i386 -cdrom $(ISO_FILE)
-	$(RM) *.o $(BIN) *iso
+	$(RM) *.o $(BIN) *iso/
 
 # This might need to get updated...
 .PHONY: clean
 clean:
-	$(RM) *.o $(BIN) *iso
+	$(RM) *.o $(BIN) *iso/

@@ -53,5 +53,4 @@ dkms.conf
 
 # Other
 *.vscode
-*.iso
 *.bin
