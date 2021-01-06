@@ -21,6 +21,7 @@
 #include <kernel/pit.h>
 #include <kernel/memory/mm.h>
 #include <kernel/memory/paging.h>
+#include <kernel/drivers/keyboard.h>
 
 #include <filesys/vfs.h>
 #include <assert.h>
@@ -52,7 +53,7 @@ static inline void
 start_modules(void)
 {
 	init_descriptor_tables();
-	pit_init(50);
+	pit_init(100);
 	mm_init((uint32_t)&kernel_end);
 	initialize_paging();
 }
@@ -118,10 +119,7 @@ kernel_sys_entry(void)
 	aos.kernel_setup();
 	aos.kernel_start();
 
-	char *fname = "$0://test.txt";
-	file = vfs_file_open(fname, 'w');
-	
-	vfs_file_close(file);
+	kkybrd_set_leds(true, true, true);
 
 	aos.kernel_stop();
 

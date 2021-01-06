@@ -16,11 +16,12 @@
 %endmacro
 
 %macro IRQ 2
-GLOBAL irq_%1
-irq_%1:
-	push byte 0
-	push byte %2
-	jmp irq_common_stub
+  global irq_%1
+  irq_%1:
+    cli
+	  push byte 0
+	  push byte %2
+	  jmp irq_common_stub
 %endmacro
 
 ISR_ERRCODE 	  0
@@ -85,10 +86,10 @@ isr_common_stub:
     push eax                    ; save the data segment descriptor
 
     mov ax, 0x10                ; load the kernel data segment descriptor
-    MOV ds, ax
-    MOV es, ax
-    MOV fs, ax
-    MOV gs, ax
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
 
     call isr_handler
 
@@ -110,10 +111,10 @@ irq_common_stub:
 	  push eax
 	
 	  mov ax, 0x10
-	  MOV ds, ax
-	  MOV es, ax
-	  MOV fs, ax
-	  MOV gs, ax
+	  mov ds, ax
+	  mov es, ax
+	  mov fs, ax
+	  mov gs, ax
 	
 	  call irq_handler
 	
@@ -125,4 +126,5 @@ irq_common_stub:
 	
 	  popa
 	  add esp, 8
+    sti
 	  iret

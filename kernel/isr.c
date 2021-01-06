@@ -16,8 +16,6 @@
 #include <kernel/system/io.h>
 #include <kernel/cpu.h>
 
-isr_t interrupt_handlers[256];
-
 char *exception_messages[] =
 {
 	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",
@@ -44,19 +42,7 @@ char *exception_messages[] =
 	"AOS_INTERRUPT Raised! : [Control Protection Exception]",
 };
 
-void
-fault_handler(registers_t registers) 
-{
-	if (registers.INT_NO < 32) 
-	{
-		terminal_printf("%s, INT_NO: 0x%X.\n", exception_messages[registers.INT_NO], registers.INT_NO);
-		if (registers.ERR_CODE)
-		{
-			terminal_printf("ERROR_CODE: 0x%X.\n");
-			cpu_halt();
-		}
-	}
-}
+isr_t interrupt_handlers[256];
 
 void 
 register_interrupt_handler(uint8_t n, isr_t handler) 
@@ -65,31 +51,45 @@ register_interrupt_handler(uint8_t n, isr_t handler)
 }
 
 void
-isr_handler(registers_t registers)
+fault_handler(registers_t regs) 
 {
-	if (interrupt_handlers[registers.INT_NO] != 0)
+	if (regs.int_no < 32) 
 	{
-		isr_t handler = interrupt_handlers[registers.INT_NO];
-		handler(registers);
+		terminal_printf("%s, int_no: 0x%X.\n", exception_messages[regs.int_no], regs.int_no);
+		if (regs.err_code)
+		{
+			terminal_printf("ERROR_CODE: 0x%X.\n");
+			cpu_halt();
+		}
+	}
+}
+
+void
+isr_handler(registers_t regs)
+{
+	if (interrupt_handlers[regs.int_no] != 0)
+	{
+		isr_t handler = interrupt_handlers[regs.int_no];
+		handler(regs);
 	}
 	else
 	{
-		fault_handler(registers);
+		fault_handler(regs);
 	}
 }
 
 void 
-irq_handler(registers_t registers) 
+irq_handler(registers_t regs) 
 {
-	if (registers.INT_NO >= 40) 
+	if (regs.int_no >= 40) 
 	{
 		outb(0xA0, 0x20);
 	}
 	outb(0x20, 0x20);	/* EOI */
 	
-	if (interrupt_handlers[registers.INT_NO] != 0) 
+	if (interrupt_handlers[regs.int_no] != 0) 
 	{
-		isr_t handler = interrupt_handlers[registers.INT_NO];
-		handler(registers);
+		isr_t handler = interrupt_handlers[regs.int_no];
+		handler(regs);
 	}
 }

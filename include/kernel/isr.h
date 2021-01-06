@@ -34,10 +34,10 @@
 
 typedef struct aos_registers 
 {
-	uint32_t DS;                  // data segment selector
-   	uint32_t EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX; // Pushed by pusha.
-   	uint32_t INT_NO, ERR_CODE;    // Interrupt number and error code (if applicable)
-   	uint32_t EIP, CS, EFLAGS, USERESP, SS;
+	uint32_t ds;                  // data segment selector
+   	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Pushed by pusha.
+   	uint32_t int_no, err_code;    // Interrupt number and error code (if applicable)
+   	uint32_t eip, cs, eflags, useresp, ss;
 } registers_t;
 
 #if defined(__cplusplus)

@@ -167,11 +167,11 @@ page_fault(registers_t regs)
     uint32_t faulting_address;
     asm volatile("mov %%cr2, %0" : "=r"(faulting_address));
 
-    int present     = !(regs.ERR_CODE & 0x1);
-    int rw          = regs.ERR_CODE & 0x2;
-    int us          = regs.ERR_CODE & 0x4;
-    int reserved    = regs.ERR_CODE & 0x8;
-    // int id          = regs.ERR_CODE & 0x10;
+    int present     = !(regs.err_code & 0x1);
+    int rw          = regs.err_code & 0x2;
+    int us          = regs.err_code & 0x4;
+    int reserved    = regs.err_code & 0x8;
+    // int id          = regs.err_code & 0x10;
 
     terminal_print("Page fault! ( ");
     if (present) {terminal_print("present ");}

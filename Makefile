@@ -15,10 +15,10 @@ C_FLAGS						:= 	-std=gnu99 $(CPP_FLAGS)
 
 
 # Set the basic paths and compilation:
-BIN 						:= 	aos32.bin
+BIN 						:= 	aos32
 CFG 						:= 	grub.cfg
 ISO_PATH 					:= 	iso
-ISO_FILE					:= 	AdamantineOS_0.04-4a.iso
+ISO_FILE					:= 	AdamantineOS.iso
 ISO_OUTPUT_PATH				:= 	build/
 ISO_OUTPUT					:= 	$(ISO_OUTPUT_PATH)/$(ISO_FILE)
 BOOT_PATH					:= 	$(ISO_PATH)/boot

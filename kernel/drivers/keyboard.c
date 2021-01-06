@@ -1,101 +1,78 @@
-/*
- *  File: keyboard.c
- *  Author: Vincent Cupo
- *  
- * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
- * 	WRITTEN CONSENT OF PSIONIX SOFTWORKS LLC.
- * 
- *  PROPERTY OF PSIONIX SOFTWORKS LLC.
- *  Copyright (c) 2018-2020, Psionix Softworks LLC.
- *
- */
-
-/* Includes go here: */
 #include <kernel/drivers/keyboard.h>
-#include <stdlib.h>
-#include <string.h>
+#include <kernel/drivers/keys.h>
 #include <kernel/system/io.h>
 
-/* Define the keyboard. */
-keyboard_t keyboard;
+static bool _kybrd_disabled = false;
 
-// Declare local functions:
-static inline int Keyboard_irq(void);							// keyboard irq.
-static inline void keyboard_read(void);								// read the keyboard on key press.
+enum KYBRD_ENCODER_IO {
+    KYBRD_ENC_INPUT_BUF     = 0x60,
+    KYBRD_ENC_CMD_REG       = 0x60
+};
 
-/* Initialize the keyboard */
-inline void 
-keyboard_init(void) 
+enum KYBRD_CTRL_IO {
+    KYBRD_CTRL_STATS_REG    = 0x64,
+    KYBRD_CTRL_CMD_REG      = 0x64
+};
+
+enum KYBRD_CTRL_STATUS_MASK {
+    KYBRD_CTRL_STATS_MASK_OUT_BUF = 1,
+    KYBRD_CTRL_STATS_MASK_IN_BUF = 2,
+    KYBRD_CTRL_STATS_MASK_SYSTEM = 4,
+    KYBRD_CTRL_STATS_MASK_CMD_DATA = 8,
+    KYBRD_CTRL_STATS_MASK_LOCKED = 0x10,
+    KYBRD_CTRL_STATS_MASK_AUX_BUF = 0x20,
+    KYBRD_CTRL_STATS_MASK_TIMEOUT = 0x40,
+    KYBRD_CTRL_STATS_MASK_PARITY = 0x80
+};
+
+uint8_t
+kkybrd_enc_read_buf(void)
 {
-	keyboard.key_map = (char *)malloc(256);
-	memset(keyboard.key_map, 0, 256);
-	
-	//register_interrupt_handler(33, (isr_t)&Keyboard_irq);
-	keyboard.is_initialized = TRUE;
+    return (inb(KYBRD_CTRL_STATS_REG));
 }
 
-/* free the keyboard. */
-inline void
-keyboard_free(void) 
+void
+kkybrd_ctrl_send_cmd(uint8_t cmd)
 {
-	free(keyboard.key_map);
+    while (1)
+        if ((kkybrd_enc_read_buf() & KYBRD_CTRL_STATS_MASK_IN_BUF) == 0)
+            break;
+    outb(KYBRD_CTRL_CMD_REG, cmd);
 }
 
-/* Checks if the keyboard is initialized */
-inline bool
-keyboard_is_enabled(void) 
+void
+kkybrd_set_leds(bool num, bool caps, bool scroll)
 {
-	keyboard.key_last = KEYBOARD_KEY_DOWN_NONE;
-	return (keyboard.is_initialized);
+    uint8_t data = 0;
+
+    data = (scroll) ? (data | 1) : (data & 1);
+    data = (num) ? (num | 2) : (num & 2);
+    data = (caps) ? (caps | 4) : (caps & 4);
+
+    kkybrd_ctrl_send_cmd(KYBRD_ENC_CMD_SET_LED);
+    kkybrd_ctrl_send_cmd(data);
 }
 
-/* Get the key as a character */
-inline char * 
-keyboard_get_key(void) 
+bool
+kkybrd_self_test(void)
 {
-	keyboard_read();
-	if ((keyboard.key_last != KEYBOARD_KEY_DOWN_NONE)) 
-		return (keys_normal[keyboard.key_last]);
-	return (KEYBOARD_KEY_DOWN_NONE);
+    kkybrd_ctrl_send_cmd(KYBRD_CTRL_CMD_SELF_TEST);
+    while (1)
+        if ((kkybrd_enc_read_buf() & KYBRD_CTRL_STATS_MASK_IN_BUF) == 0)
+            break;
+    return (kkybrd_enc_read_buf() == 0x55) ? true : false;
 }
 
-/* Get the key code */
-inline uint8_t
-keyboard_get_keycode(void) 
+void
+kkybrd_disable(void)
 {
-	keyboard_read();
-	if (keyboard.key_last > KEYBOARD_KEY_DOWN_NONE) 
-		return (keyboard.key_last);
-	return (KEYBOARD_KEY_DOWN_NONE);
+    kkybrd_ctrl_send_cmd(KYBRD_CTRL_CMD_DISABLE);
+    _kybrd_disabled = true;
 }
 
-/* Get the numeric last key pressed. */
-inline uint8_t 
-keyboard_get_key_last(void) 
+void
+kkybrd_reset_system(void)
 {
-	return (keyboard.key_last);
-}
-
-/* Set the keyboard interrupt */
-static inline int
-Keyboard_irq(void) 
-{
-	return 0;
-}
-
-/* read keys as they're pressed */
-static inline void 
-keyboard_read(void) 
-{
-	keyboard.status = inb(KEYBOARD_PORT);
-	keyboard.key_last = KEYBOARD_KEY_DOWN_NONE;
-	if ((keyboard.status & 0x01) == 1) 
-		keyboard.key_last = inb(KEYBOARD_DATA);
-}
-
-/* Get the keyboard char * (last char * of characters typed before <ENTER> key is pressed). */
-inline char *
-keyboard_get_string(void) 
-{
-	return (keyboard.buffer);
+    kkybrd_ctrl_send_cmd(KYBRD_CTRL_CMD_WRITE_OUT_PORT);
+    kkybrd_ctrl_send_cmd(0xFE);
 }
