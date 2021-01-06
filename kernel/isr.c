@@ -83,9 +83,9 @@ irq_handler(registers_t registers)
 {
 	if (registers.INT_NO >= 40) 
 	{
-		write_portb(0xA0, 0x20);
+		outb(0xA0, 0x20);
 	}
-	write_portb(0x20, 0x20);	/* EOI */
+	outb(0x20, 0x20);	/* EOI */
 	
 	if (interrupt_handlers[registers.INT_NO] != 0) 
 	{

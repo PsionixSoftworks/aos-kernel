@@ -15,26 +15,26 @@
 
 // Write to the io port :
 void 
-write_portb(uint16_t port, uint8_t value) 
+outb(uint16_t port, uint8_t value) 
 {
 	asm volatile("OUTB %0, %1" : : "a"(value), "Nd"(port));
 }
 
 void
-write_portw(uint16_t port, uint16_t value)
+outw(uint16_t port, uint16_t value)
 {
 	asm volatile("OUTW %0, %1" : : "a"(value), "Nd"(port));
 }
 
 void
-write_portdw(uint16_t port, uint32_t value)
+outl(uint16_t port, uint32_t value)
 {
 	asm volatile("OUTL %0, %1" : : "a"(value), "Nd"(port));
 }
 
 // read from the io port:
 uint8_t 
-read_portb(uint16_t port)
+inb(uint16_t port)
 {
 	uint8_t value = 0;
 	asm volatile("INB %1, %0" : "=a"(value) : "dN"(port));
@@ -43,7 +43,7 @@ read_portb(uint16_t port)
 }
 
 uint16_t 
-read_portw(uint16_t port) 
+inw(uint16_t port) 
 {
 	uint16_t value = 0;
 	asm volatile("INW %1, %0" : "=a" (value) : "dN" (port));
@@ -52,7 +52,7 @@ read_portw(uint16_t port)
 }
 
 uint32_t
-read_portdw(uint16_t port)
+inl(uint16_t port)
 {
 	uint32_t value = 0;
 	asm volatile("INL %1, %0" : "=a"(value) : "dN"(port));

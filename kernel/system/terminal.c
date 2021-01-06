@@ -12,8 +12,9 @@
 
 /* Include anything the terminal requires here */
 #include <kernel/system/terminal.h>
-#include <kernel/drivers/vga.h>
+#include <kernel/system/cursor.h>
 #include <kernel/system/io.h>
+#include <kernel/drivers/vga.h>
 #include <kernel/cpu.h>
 #include <stdarg.h>
 #include <string.h>
@@ -28,11 +29,6 @@ static uint32_t y;
 
 static inline void terminal_putchar(char c);
 static inline void terminal_scroll(void);
-
-static inline void cursor_enable(uint8_t start, uint8_t end);
-static inline void cursor_disable(void);
-static inline void cursor_update(int x, int y);
-static inline uint16_t cursor_get_pos(void);
 
 void
 terminal_init(void)
@@ -224,52 +220,7 @@ terminal_scroll(void)
 	}
 }
 
-static inline void
-cursor_enable(uint8_t start, uint8_t end)
-{
-	const uint8_t start_address = read_portb(0x3D5);
-	write_portb(0x3D4, 0x0A);
-	write_portb(0x3D5, (start_address & 0xC0) | start);
-
-	const uint8_t end_address = read_portb(0x3D5);
-	write_portb(0x3D4, 0x0B);
-	write_portb(0x3D5, (end_address & 0xE0) | end);
-}
-
-static inline void
-cursor_disable(void)
-{
-	write_portb(0x3D4, 0x0A);
-	write_portb(0x3D5, 0x20);
-}
-
-static inline void
-cursor_update(int x, int y)
-{
-	uint16_t pos = y * VGA_WIDTH + x;
-
-	write_portb(0x3D4, 0x0F);
-	write_portb(0x3D5, (uint8_t)(pos & 0xFF));
-
-	write_portb(0x3D4, 0x0E);
-	write_portb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
-}
-
-static inline uint16_t
-cursor_get_pos(void)
-{
-	uint16_t pos = 0;
-
-	write_portb(0x3D4, 0x0F);
-	pos |= read_portb(0x3D5);
-
-	write_portb(0x3D4, 0x0E);
-	pos |= ((uint16_t)read_portb(0x3D5)) << 8;
-
-	return (pos);
-}
-
-void 
+DEPRECATED void 
 panic(const char *msg, const char *file, uint32_t line) 
 {
 	__asm__ __volatile__("CLI");

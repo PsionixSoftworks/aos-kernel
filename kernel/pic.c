@@ -18,24 +18,24 @@ pic_send_eoi(uint8_t irq)
 {
 	if (irq > 7) 
 	{
-		write_portb(PIC2_COMMAND, PIC_EOI);
+		outb(PIC2_COMMAND, PIC_EOI);
 	}
-	write_portb(PIC1_COMMAND, PIC_EOI);
+	outb(PIC1_COMMAND, PIC_EOI);
 }
 
 void 
 pic_remap(void) 
 {
-	write_portb(0x20, 0x11);
-	write_portb(0xA0, 0x11);
-	write_portb(0x21, 0x20);
-	write_portb(0xA1, 0x28);
-	write_portb(0x21, 0x04);
-	write_portb(0xA1, 0x02);
-	write_portb(0x21, 0x01);
-	write_portb(0xA1, 0x01);
-	write_portb(0x21, 0x0);
-	write_portb(0xA1, 0x0);
+	outb(0x20, 0x11);
+	outb(0xA0, 0x11);
+	outb(0x21, 0x20);
+	outb(0xA1, 0x28);
+	outb(0x21, 0x04);
+	outb(0xA1, 0x02);
+	outb(0x21, 0x01);
+	outb(0xA1, 0x01);
+	outb(0x21, 0x0);
+	outb(0xA1, 0x0);
 }
 
 void 
@@ -53,8 +53,8 @@ irq_set_mask(uint8_t irq_Line)
 		port = PIC2_DATA;
 		irq_Line -= 0x8;
 	}
-	value = read_portb(port) | (1 << irq_Line);
-	write_portb(port, value);
+	value = inb(port) | (1 << irq_Line);
+	outb(port, value);
 }
 
 void 
@@ -72,8 +72,8 @@ irq_clear_mask(uint8_t irq_Line)
 		port = PIC2_DATA;
 		irq_Line -= 0x8;
 	}
-	value = read_portb(port) | ~(1 << irq_Line);
-	write_portb(port, value);
+	value = inb(port) | ~(1 << irq_Line);
+	outb(port, value);
 }
 
 uint16_t
@@ -90,8 +90,8 @@ pic_get_isr(void)
 
 uint16_t pic_get_irq_register(int8_t ocw3) 
 {
-	write_portb(PIC1_COMMAND, ocw3);
-	write_portb(PIC2_COMMAND, ocw3);
+	outb(PIC1_COMMAND, ocw3);
+	outb(PIC2_COMMAND, ocw3);
 	
-	return ((read_portb(PIC2_COMMAND) << 0x8) | read_portb(PIC1_COMMAND));
+	return ((inb(PIC2_COMMAND) << 0x8) | inb(PIC1_COMMAND));
 }

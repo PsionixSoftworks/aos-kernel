@@ -50,6 +50,7 @@ C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c		\
 								$(KERNEL_PATH)/cpu.c			\
 								$(KERNEL_PATH)/mutex.c			\
 								$(KERNEL_PATH)/assert.c \
+								$(SYSTEM_PATH)/cursor.c \
 								$(DRIVER_PATH)/device.c			\
 								$(DRIVER_PATH)/keyboard.c		\
 								$(FS_PATH)/aos32/aos-fs.c		\
@@ -93,6 +94,7 @@ OUTPUT_FILES 				:= 	boot.o			\
 								cpu.o			\
 								mutex.o			\
 								assert.o \
+								cursor.o \
 								device.o		\
 								keyboard.o		\
 								aos-fs.o		\
@@ -162,6 +164,7 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/system.c -o system.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/terminal.c -o terminal.o $(C_FLAGS)
+	$(COMPILER_C) $(SYSTEM_PATH)/cursor.c -o cursor.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/descriptor-tables.c -o descriptor-tables.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/paging.c -o paging.o $(C_FLAGS)
 	$(COMPILER_C) $(X86_PATH)/tss.c -o tss.o $(C_FLAGS)

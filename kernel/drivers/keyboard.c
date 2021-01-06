@@ -87,10 +87,10 @@ Keyboard_irq(void)
 static inline void 
 keyboard_read(void) 
 {
-	keyboard.status = read_portb(KEYBOARD_PORT);
+	keyboard.status = inb(KEYBOARD_PORT);
 	keyboard.key_last = KEYBOARD_KEY_DOWN_NONE;
 	if ((keyboard.status & 0x01) == 1) 
-		keyboard.key_last = read_portb(KEYBOARD_DATA);
+		keyboard.key_last = inb(KEYBOARD_DATA);
 }
 
 /* Get the keyboard char * (last char * of characters typed before <ENTER> key is pressed). */
