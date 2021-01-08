@@ -17,20 +17,25 @@
 
 uint32_t tick;
 
-void 
-timer_callback(registers_t *regs) 
+static void
+timer_callback(registers_t regs)
 {
 	tick++;
-	terminal_printf("tick: %d\n", tick);
+	terminal_printf("Ticks: %d\n", tick);
 }
 
-void 
-pit_init(uint32_t frequency) 
-{	
-	uint32_t divisor = 1193180 / frequency;
-	outb(PIT_CMD_PORT, 0x36);
-	outb(PIT_CHANNEL_0, divisor & 0xFF);
-	outb(PIT_CHANNEL_0, divisor >> 8);
+void
+pit_init(uint32_t freq)
+{
+	//terminal_printf("[INFO]: PIT is initialized!\n");
 
-	register_interrupt_handler(0, timer_callback);
+	register_interrupt_handler(IRQ0, &timer_callback);
+	uint32_t divisor = 1193180 / freq;
+	outb(0x43, 0x36);
+
+	uint8_t l = (uint8_t)(divisor & 0xFF);
+	uint8_t h = (uint8_t)((divisor >> 8) & 0xFF);
+
+	outb(0x40, l);
+	outb(0x40, h);
 }

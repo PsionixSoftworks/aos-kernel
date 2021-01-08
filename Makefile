@@ -5,7 +5,7 @@ MKDIR 						:= 	mkdir -pv
 
 INCLUDE_PATH				:= 	-Iinclude
 DEFAULT_INCLUDE_PATH		:= 	$(INCLUDE_PATH)
-LINKER						:= 	i686-elf-gcc -T linker.ld
+LINKER						:= 	ld -m elf_i386 -T linker.ld
 NASM						:=	nasm -f elf32
 ASM							:= 	i686-elf-as
 COMPILER_C					:= 	i686-elf-gcc -c
@@ -139,7 +139,7 @@ all: bootloader kernel linker iso
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
 	$(ASM) $(ASSEMB_PATH)/boot/boot.S				-o boot.o
-	$(ASM) $(ASSEMB_PATH)/descriptors.S				-o descriptors.o
+	$(ASM) $(ASSEMB_PATH)/descriptors.S			-o descriptors.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o
 	$(NASM)	$(ASSEMB_PATH)/timer.asm				-o timer.o
@@ -188,7 +188,7 @@ kernel: $(C_FILES_IN)
 	 
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)
-	$(LINKER) -o $(BIN) $(C_FLAGS) $(OUTPUT_FILES) -lgcc
+	$(LINKER) -o $(BIN) $(OUTPUT_FILES)
 
 # Build the Kernel iso:
 iso: kernel
@@ -200,7 +200,7 @@ iso: kernel
 #	$(MKDIR) $(ISO_OUTPUT_PATH)
 #	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
 #	qemu-system-x86_64 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
-	qemu-system-i386 -cdrom $(ISO_FILE)
+	qemu-system-x86_64 -cdrom $(ISO_FILE)
 	$(RM) *.o $(BIN) *iso/
 
 # This might need to get updated...

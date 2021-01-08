@@ -17,6 +17,13 @@
 .LONG FLAGS
 .LONG CHECKSUM
 
+.SET ALIGN,     (1 << 0)
+.SET MEM_INFO,  (1 << 1)
+.SET GFX_EN,    (1 << 2)
+.SET FLAGS,     (ALIGN | MEM_INFO)
+.SET MAGIC,     (0x1BADB002)
+.SET CHECKSUM,  -(MAGIC + FLAGS)
+
 /* Declare the .text section for the entry point and other functions. */
 .SECTION .text
 .TYPE _init, @function
@@ -35,21 +42,6 @@ _start:
 1:  HLT
     JMP 1b
 .SIZE _start, . - _start
-
-/* Initialize static functions that will not change during runtime. */
-.SECTION .data
-
-/* Special section for read-only data. */
-.SECTION .special
-
-/* Place the Multiboot stuff in read-only data because it'll never change. */
-.SECTION .rodata
-.SET ALIGN,     (1 << 0)
-.SET MEM_INFO,  (1 << 1)
-.SET GFX_EN,    (1 << 2)
-.SET FLAGS,     (ALIGN | MEM_INFO)
-.SET MAGIC,     (0x1BADB002)
-.SET CHECKSUM,  -(MAGIC + FLAGS)
 
 /* Declare the stack pointer info. */
 .SECTION .bss

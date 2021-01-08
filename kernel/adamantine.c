@@ -13,8 +13,6 @@
  *
  */
 
-#define _
-
 #include <adamantine/adamantine.h>
 #include <kernel/system/terminal.h>
 #include <kernel/x86/descriptor-tables.h>
@@ -25,6 +23,8 @@
 
 #include <filesys/vfs.h>
 #include <assert.h>
+#include <kernel/cpu.h>
+#include <kernel/cpuid.h>
 
 extern uint32_t kernel_end;
 
@@ -52,10 +52,9 @@ static char *msg[] = {
 static inline void
 start_modules(void)
 {
-	init_descriptor_tables();
-	pit_init(100);
-	mm_init((uint32_t)&kernel_end);
-	initialize_paging();
+	
+	//mm_init((uint32_t)&kernel_end);
+	//initialize_paging();
 }
 
 static inline void
@@ -80,21 +79,21 @@ kernel_setup(void)
 
 	write_aos_message();
 
-	return ((void *)SUCCESS);
+	return (SUCCESS);
 }
 
 static inline kernel_t
 kernel_start(void)
 {
 	start_modules();
-	return ((void *)SUCCESS);
+	return (SUCCESS);
 }
 
 static inline kernel_t
 kernel_stop(void)
 {
 	stop_modules();
-	return ((void *)SUCCESS);
+	return (SUCCESS);
 }
 
 static aos_base_t aos;
@@ -107,23 +106,17 @@ aos_init(void)
 	aos.kernel_stop = &kernel_stop;
 }
 
-struct file_struct *file;
-
-kernel_t
+void
 kernel_sys_entry(void)
 {
-	/* Initialize the kernel */
-	aos_init();
+	terminal_init();
+	terminal_clear();
+	
+	init_descriptor_tables();
+	cpu_init();
 
-	/* Call kernel_setup & kernel_start */
-	aos.kernel_setup();
-	aos.kernel_start();
-
-	kkybrd_set_leds(true, true, true);
-
-	aos.kernel_stop();
-
-	return ((void *)SUCCESS);
+	cpu_set_interrupts();
+	pit_init(50);
 }
 
 static inline void

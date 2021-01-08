@@ -32,8 +32,8 @@
 #ifndef ADAMANTINE_MACROS
 #define FAILSAFE
 #define NULL								0
-#define FAILURE								FALSE
-#define SUCCESS								TRUE
+#define FAILURE								((void *)FALSE)
+#define SUCCESS								((void *)TRUE)
 #endif
 
 // Define the module naming system for later use:

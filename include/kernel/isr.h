@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE_isr
-#define ADAMANTINE_isr
+#ifndef ADAMANTINE_ISR
+#define ADAMANTINE_ISR
 
 #include <stdint.h>
 
@@ -32,7 +32,7 @@
 #define IRQ14		46
 #define IRQ15		47
 
-typedef struct aos_registers 
+typedef struct registers 
 {
 	uint32_t ds;                  // data segment selector
    	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Pushed by pusha.
@@ -40,15 +40,7 @@ typedef struct aos_registers
    	uint32_t eip, cs, eflags, useresp, ss;
 } registers_t;
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 typedef void(*isr_t)(registers_t);
 void register_interrupt_handler(uint8_t n, isr_t handler);
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif	// !ADAMANTINE_isr

@@ -17,19 +17,19 @@
 void 
 outb(uint16_t port, uint8_t value) 
 {
-	asm volatile("OUTB %0, %1" : : "a"(value), "Nd"(port));
+	__asm__ __volatile__("OUTB %0, %1" : : "a"(value), "Nd"(port));
 }
 
 void
 outw(uint16_t port, uint16_t value)
 {
-	asm volatile("OUTW %0, %1" : : "a"(value), "Nd"(port));
+	__asm__ __volatile__("OUTW %0, %1" : : "a"(value), "Nd"(port));
 }
 
 void
 outl(uint16_t port, uint32_t value)
 {
-	asm volatile("OUTL %0, %1" : : "a"(value), "Nd"(port));
+	__asm__ __volatile__("OUTL %0, %1" : : "a"(value), "Nd"(port));
 }
 
 // read from the io port:
@@ -37,7 +37,7 @@ uint8_t
 inb(uint16_t port)
 {
 	uint8_t value = 0;
-	asm volatile("INB %1, %0" : "=a"(value) : "dN"(port));
+	__asm__ __volatile__("INB %1, %0" : "=a"(value) : "dN"(port));
 
 	return (value);
 }
@@ -46,7 +46,7 @@ uint16_t
 inw(uint16_t port) 
 {
 	uint16_t value = 0;
-	asm volatile("INW %1, %0" : "=a" (value) : "dN" (port));
+	__asm__ __volatile__("INW %1, %0" : "=a" (value) : "dN" (port));
 
 	return (value);
 }
@@ -55,7 +55,7 @@ uint32_t
 inl(uint16_t port)
 {
 	uint32_t value = 0;
-	asm volatile("INL %1, %0" : "=a"(value) : "dN"(port));
+	__asm__ __volatile__("INL %1, %0" : "=a"(value) : "dN"(port));
 
 	return (value);
 }
@@ -64,5 +64,5 @@ inl(uint16_t port)
 void 
 io_wait(void) 
 {
-	asm volatile("JMP 1f\n\t" "1:JMP 2f\n\t" "2:");
+	__asm__ __volatile__("JMP 1f\n\t" "1:JMP 2f\n\t" "2:");
 }

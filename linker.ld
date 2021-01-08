@@ -1,29 +1,26 @@
 /* Define the entrypoint of the kernel */
-OUTPUT_FORMAT("elf32-i386")
+OUTPUT_FORMAT(elf32-i386)
 ENTRY(_start)
 SECTIONS
 {
-	. = 1M;					/* Kernel start address */
-	kernel_base = .;
+	. = 1M;
 	.text BLOCK(4K) : ALIGN(4K)
 	{
-		*(.prereq)
 		*(.multiboot)
 		*(.text)
 	}
 	.data BLOCK(4K) : ALIGN(4K)
-	{ 
-		*(.data) 
+	{
+		*(.data)
 	}
 	.rodata BLOCK(4K) : ALIGN(4K)
 	{
-		*(.special)
 		*(.rodata)
 	}
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
 		*(COMMON)
-		*(.bss)  
+		*(.bss)
 	}
 	kernel_end = .;
 }
