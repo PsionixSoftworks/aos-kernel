@@ -43,7 +43,7 @@ char *exception_messages[] =
 };
 
 isr_t interrupt_handlers[256];
-/*
+
 static void
 fault_handler(registers_t regs) 
 {
@@ -55,9 +55,10 @@ fault_handler(registers_t regs)
 			terminal_printf("ERROR_CODE: 0x%X.\n");
 			cpu_halt();
 		}
+		cpu_halt();
 		return;
 	}
-}*/
+}
 
 void
 register_interrupt_handler(uint8_t n, isr_t handler)
@@ -73,10 +74,10 @@ isr_handler(registers_t regs)
 		isr_t handler = interrupt_handlers[regs.int_no];
 		handler(regs);
 	}
-	/*else
+	else
 	{
 		fault_handler(regs);
-	}*/
+	}
 }
 
 void 

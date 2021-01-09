@@ -35,9 +35,9 @@ _init:
 .GLOBL _start
 .TYPE _start @function
 _start:
-    MOV $_init, %ESP
+    /*MOV $_init, %ESP*/
     MOV $stack_top, %ESP
-    CALL kernel_sys_entry
+    CALL kmain
     CLI
 1:  HLT
     JMP 1b

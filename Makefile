@@ -42,20 +42,20 @@ USER_PATH					:= 	user
 MATH_PATH					:= 	math
 STRING_PATH					:= 	string
 
-ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S		\
-								$(ASSEMB_PATH)/descriptors.S	\
-								$(ASSEMB_PATH)/interrupt.asm	\
-								$(ASSEMB_PATH)/cpuid.asm		
-C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c		\
-								$(KERNEL_PATH)/cpu.c			\
-								$(KERNEL_PATH)/mutex.c			\
+ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.asm \
+								$(ASSEMB_PATH)/descriptors.S \
+								$(ASSEMB_PATH)/interrupt.asm \
+								$(ASSEMB_PATH)/cpuid.asm
+C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c	\
+								$(KERNEL_PATH)/cpu.c \
+								$(KERNEL_PATH)/mutex.c \
 								$(KERNEL_PATH)/assert.c \
 								$(SYSTEM_PATH)/cursor.c \
-								$(DRIVER_PATH)/device.c			\
-								$(DRIVER_PATH)/keyboard.c		\
-								$(FS_PATH)/aos32/aos-fs.c		\
-								$(FS_PATH)/ext2/ext2.c			\
-								$(FS_PATH)/vfs.c				\
+								$(DRIVER_PATH)/device.c	\
+								$(DRIVER_PATH)/keyboard.c \
+								$(FS_PATH)/aos32/aos-fs.c \
+								$(FS_PATH)/ext2/ext2.c \
+								$(FS_PATH)/vfs.c \
 								$(MEMORY_PATH)/mem-util.c		\
 								$(SYSTEM_PATH)/io.c	\
 								$(KERNEL_PATH)/irq.c \
@@ -138,7 +138,7 @@ all: bootloader kernel linker iso
 
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
-	$(ASM) $(ASSEMB_PATH)/boot/boot.S				-o boot.o
+	$(NASM) $(ASSEMB_PATH)/boot/boot.asm				-o boot.o
 	$(ASM) $(ASSEMB_PATH)/descriptors.S			-o descriptors.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o
@@ -146,12 +146,12 @@ bootloader: $(ASM_FILES_IN)
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)
+	$(COMPILER_C) $(KERNEL_PATH)/adamantine.c -o adamantine.o $(C_FLAGS)
 	$(COMPILER_C) $(DRIVER_PATH)/device.c -o device.o $(C_FLAGS)
 	$(COMPILER_C) $(DRIVER_PATH)/keyboard.c -o keyboard.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/aos32/aos-fs.c -o aos-fs.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/ext2/ext2.c -o ext2.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/vfs.c -o vfs.o $(C_FLAGS)
-	$(COMPILER_C) $(KERNEL_PATH)/adamantine.c -o adamantine.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/irq.c -o irq.o $(C_FLAGS)
