@@ -191,6 +191,14 @@ terminal_putchar(char c)
 	{
 		x = (x + 5) - 1;
 	}
+	else if (c == '\b')
+	{
+		if (x > 0)
+		{
+			x--;
+			video_buffer[y * VGA_WIDTH + x] = ' ' | attrib;
+		}
+	}
 	else
 	{
 		video_buffer[y * VGA_WIDTH + x] = c | attrib;

@@ -17,6 +17,7 @@
 #include <kernel/system/terminal.h>
 #include <kernel/x86/descriptor-tables.h>
 #include <kernel/pit.h>
+#include <kernel/cpu.h>
 #include <kernel/memory/mm.h>
 #include <kernel/memory/paging.h>
 #include <kernel/drivers/keyboard.h>
@@ -34,5 +35,5 @@ kmain(void)
 	mm_init(&kernel_end);
 	initialize_paging();
 
-	return;
+	keyboard_init();
 }

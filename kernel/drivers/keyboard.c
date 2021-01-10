@@ -5,42 +5,55 @@
 #include <kernel/isr.h>
 #include <kernel/pic.h>
 
-static uint8_t keyboard_read_status(void);
+static inline void keyboard_handler(void);
+static inline uint8_t keyboard_read(void);
+static inline void keyboard_write_command(uint8_t cmd);
+static inline char *keyboard_get_key(void);
 
-static void
-keyboard_send_command(uint8_t cmd)
-{
-    outb(KEYBOARD_DATA, cmd);
-}
-
-static void
-keyboard_handler(registers_t regs)
-{
-    unsigned char scancode = keyboard_read_scancode();
-    terminal_printf("Scancode: 0x%x\n", scancode);
-}
+static bool initialized = false;
+static bool shift_press = false;
+static uint8_t key_last = NULL;
 
 void
 keyboard_init(void)
 {
-    outb(0x21, 0xFD);
-    uint8_t status = keyboard_read_status();
+    register_interrupt_handler(IRQ1, &keyboard_handler);
 
-    register_interrupt_handler(IRQ1, keyboard_handler);
-    pic_send_eoi(IRQ1);
-
-    terminal_printf("[INFO]: Keyboard is initialized.\n");
+    terminal_printf("[INFO]: Keyboard is initialized!\n");
+    initialized = true;
 }
 
-unsigned char
-keyboard_read_scancode(void)
+static inline void
+keyboard_handler(void)
 {
-    //if (inb(KEYBOARD_DATA))
+    uint8_t key = keyboard_read();
 
+    if (!(key & 0x80) == 1)
+        terminal_printf("%s", keys_normal[key]);
+}        
+
+static inline uint8_t
+keyboard_read(void)
+{
+    uint8_t status = (uint8_t)inb(KEYBOARD_COMMAND);
+    if ((status & 0x01) == 1)
+       return (inb(KEYBOARD_DATA));
 }
 
-static uint8_t
-keyboard_read_status(void)
+static inline void
+keyboard_write_command(uint8_t cmd)
 {
-    return (inb(KEYBOARD_STATUS));
+    if (initialized)
+        outb(KEYBOARD_COMMAND, cmd);
+    else
+        terminal_printf("[ERROR]: Keyboard has not been initialized...\n");
+}
+
+static inline char *
+keyboard_get_key(void)
+{
+    keyboard_read();
+    if (key_last > KEYBOARD_KEY_DOWN_NONE)
+        return (key_last);
+    return (KEYBOARD_KEY_DOWN_NONE);
 }

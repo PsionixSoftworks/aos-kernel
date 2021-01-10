@@ -16,22 +16,22 @@
 #include <kernel/system/terminal.h>
 #include <kernel/system/io.h>
 
-uint32_t tick;
+uint32_t tick = 0;
 
 static void
 timer_callback(registers_t regs)
 {
-	tick++;
 	//terminal_printf("Ticks: %d\n", tick);
+	if (tick == 100)
+		terminal_printf("PIT reached 100!\n");
+	tick++;
 }
 
 void
 pit_init(uint32_t freq)
 {
 	terminal_printf("[INFO]: PIT is initialized!\n");
-
 	cpu_set_interrupts();
-
 	register_interrupt_handler(IRQ0, &timer_callback);
 	uint32_t divisor = 1193180 / freq;
 	outb(PIT_CMD_PORT, 0x36);

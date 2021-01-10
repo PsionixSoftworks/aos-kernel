@@ -226,7 +226,6 @@ static char *keys_normal[256] =
 	"", "",																// <Windows key>, <Windows key>,
 };
 
-/*
 // Define for keys when shift is held:
 static char * keys_caps[256] = 
 {
@@ -251,7 +250,6 @@ static char * keys_caps[256] =
 	"", "", "",															// <NONE>, <NONE>, "<NONE>"
 	"<ADM>", "<ADM>",													// <Windows key>, <Windows key>,
 };
-*/
 
 #if defined(__cplusplus)
 }

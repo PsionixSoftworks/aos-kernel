@@ -11,7 +11,7 @@
  */
 
 /* Includes go here: */
-#include <kernel/drivers/keyboard.h>
+#include <kernel/drivers/keyboard_old.h>
 #include <kernel/system/io.h>
 #include <kernel/system/terminal.h>
 #include <kernel/isr.h>
