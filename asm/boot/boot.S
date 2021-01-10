@@ -11,41 +11,33 @@
  */
 
 /* The .multiboot section is used to initalize GRUB and start the kernel. */
-.SECTION .multiboot
-.ALIGN 4
-.LONG MAGIC
-.LONG FLAGS
-.LONG CHECKSUM
+.section .multiboot
+.align 4
+.long MAGIC
+.long FLAGS
+.long CHECKSUM
 
-.SET ALIGN,     (1 << 0)
-.SET MEM_INFO,  (1 << 1)
-.SET GFX_EN,    (1 << 2)
-.SET FLAGS,     (ALIGN | MEM_INFO)
-.SET MAGIC,     (0x1BADB002)
-.SET CHECKSUM,  -(MAGIC + FLAGS)
+.set ALIGN,     (1 << 0)
+.set MEM_INFO,  (1 << 1)
+.set GFX_EN,    (1 << 2)
+.set FLAGS,     (ALIGN | MEM_INFO)
+.set MAGIC,     (0x1BADB002)
+.set CHECKSUM,  -(MAGIC + FLAGS)
 
 /* Declare the .text section for the entry point and other functions. */
-.SECTION .text
-.TYPE _init, @function
-_init:
-    MOV $0x1FFF, %EAX
-    MOV %EAX, %ECX
-    RET
-
-.GLOBL _start
-.TYPE _start @function
+.section .text
+.globl _start
+.type _start @function
 _start:
-    /*MOV $_init, %ESP*/
-    MOV $stack_top, %ESP
-    CALL kmain
-    CLI
-1:  HLT
-    JMP 1b
-.SIZE _start, . - _start
+    mov $stack_top, %esp
+    call kmain
+1:  hlt
+    jmp 1b
+.size _start, . - _start
 
 /* Declare the stack pointer info. */
-.SECTION .bss
-.ALIGN 16
+.section .bss
+.align 16
 stack_bottom:
-    .SKIP 16384
+    .skip 16384
 stack_top:

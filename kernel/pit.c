@@ -22,9 +22,8 @@ static void
 timer_callback(registers_t regs)
 {
 	//terminal_printf("Ticks: %d\n", tick);
-	if (tick == 100)
-		terminal_printf("PIT reached 100!\n");
-	tick++;
+	if (tick < UINT32_SIZE_MAX)
+		tick++;
 }
 
 void
