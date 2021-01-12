@@ -51,7 +51,7 @@ keyboard_handler(void)
             capslock = !capslock;
         if (scancode == KEYBOARD_KEY_DOWN_SCROLL_LOCK)
             scrllock = !scrllock;
-        keyboard_set_leds(numlock, capslock, scrllock);
+        keyboard_set_leds(numlock, capslock, 0);
     }
     /*if (!(scancode & 0x80) == 1) {
         terminal_printf("%s", keys_normal[scancode]);
