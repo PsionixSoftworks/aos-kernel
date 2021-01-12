@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE_KEYS
-#define ADAMANTINE_KEYS
+#ifndef _AOS_KEYS_H
+#define _AOS_KEYS_H
 
 // Define the keys for down state:
 #ifndef KEYBOARD_KEY_DOWN
@@ -254,4 +254,4 @@ static char * keys_caps[256] =
 #if defined(__cplusplus)
 }
 #endif
-#endif 	// !ADAMANTINE_KEYS
+#endif 	// !_AOS_KEYS_H

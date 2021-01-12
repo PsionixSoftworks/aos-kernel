@@ -5,6 +5,8 @@
 #include <kernel/isr.h>
 #include <kernel/pic.h>
 
+// Nested conditional statement= var = (expr1 == val ? expr2 : expr3);
+
 static inline void keyboard_handler(void);
 static inline uint8_t keyboard_read(void);
 static inline void keyboard_write_command(uint8_t cmd);
@@ -24,35 +26,48 @@ keyboard_init(void)
     initialized = true;
 }
 
+unsigned char
+keyboard_read_scancode(void)
+{
+    uint8_t status = keyboard_read();
+    if ((status & 0x01) == 1)
+        return (inb(KEYBOARD_DATA));
+}
+
 static inline void
 keyboard_handler(void)
 {
-    uint8_t key;
-    
-    keyboard_set_leds(true, true, true);
-
-    key = keyboard_read();
-    if (!(key & 0x80) == 1)
-        terminal_printf("%s", keys_normal[key]);
+    static unsigned char scancode = NULL;
+    scancode = keyboard_read_scancode();
+    if ((scancode >= KEYBOARD_KEY_DOWN_NONE) && (!(scancode & 0x80)))
+        keyboard_set_leds(0, 1, 0);
+    /*if (!(scancode & 0x80) == 1) {
+        terminal_printf("%s", keys_normal[scancode]);
+    }*/
 }        
 
 static inline uint8_t
 keyboard_read(void)
 {
     if (initialized) {
-        uint8_t status = (uint8_t)inb(KEYBOARD_COMMAND);
-        if ((status & 0x01) == 1)
-        return (inb(KEYBOARD_DATA));
+        uint8_t status = inb(KEYBOARD_COMMAND);
+        return (status);
     }
 }
 
 static inline void
 keyboard_write_command(uint8_t cmd)
 {
-    if (initialized)
-        outb(KEYBOARD_COMMAND, cmd);
+    if (initialized) {
+        while (1)
+            if (!(keyboard_read() & 0x2))
+                break;
+        outb(0x60, cmd);
+    }
     else
+    {
         terminal_printf("[ERROR]: Keyboard has not been initialized...\n");
+    }
 }
 
 static inline char *
@@ -75,6 +90,6 @@ keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock)
     data = (num_lock) ? (num_lock | 2) : (num_lock & 2);
     data = (caps_lock) ? (caps_lock | 4) : (caps_lock & 4);
 
-    keyboard_write_command(0xED);
-    keyboard_write_command(data);
+    outb(0x60, 0xED);
+    outb(0x60, data);
 }

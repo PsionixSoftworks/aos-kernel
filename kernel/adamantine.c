@@ -21,6 +21,8 @@
 #include <kernel/memory/mm.h>
 #include <kernel/memory/paging.h>
 #include <kernel/drivers/keyboard.h>
+#include <stdlib.h>
+#include <string.h>
 
 extern uint32_t kernel_end;
 
