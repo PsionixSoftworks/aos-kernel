@@ -15,6 +15,9 @@ static inline void keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_
 
 static bool initialized = false;
 static bool shift_press = false;
+static bool numlock;
+static bool capslock;
+static bool scrllock;
 static uint8_t key_last = NULL;
 
 void
@@ -40,7 +43,16 @@ keyboard_handler(void)
     static unsigned char scancode = NULL;
     scancode = keyboard_read_scancode();
     if ((scancode >= KEYBOARD_KEY_DOWN_NONE) && (!(scancode & 0x80)))
-        keyboard_set_leds(0, 1, 0);
+    {
+        terminal_printf("%s", keys_normal[scancode]);
+        if (scancode == KEYBOARD_KEY_DOWN_NUM_LOCK)
+            numlock = !numlock;
+        if (scancode == KEYBOARD_KEY_DOWN_CAPS_LOCK)
+            capslock = !capslock;
+        if (scancode == KEYBOARD_KEY_DOWN_SCROLL_LOCK)
+            scrllock = !scrllock;
+        keyboard_set_leds(numlock, capslock, scrllock);
+    }
     /*if (!(scancode & 0x80) == 1) {
         terminal_printf("%s", keys_normal[scancode]);
     }*/
