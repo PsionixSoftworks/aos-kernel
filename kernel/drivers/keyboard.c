@@ -13,7 +13,7 @@ static inline void keyboard_write_command(uint8_t cmd);
 static inline char *keyboard_get_key(void);
 static inline void keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock);
 
-static bool initialized = false;
+static bool init = false;
 static bool shift_press = false;
 static bool numlock;
 static bool capslock;
@@ -23,10 +23,13 @@ static uint8_t key_last = NULL;
 void
 keyboard_init(void)
 {
-    register_interrupt_handler(IRQ1, &keyboard_handler);
+    if (!init)
+    {
+        register_interrupt_handler(IRQ1, &keyboard_handler);
 
-    terminal_printf("[INFO]: Keyboard is initialized!\n");
-    initialized = true;
+        terminal_printf("[INFO]: Keyboard is initialized!\n");
+        init = true;
+    }
 }
 
 unsigned char
@@ -37,31 +40,30 @@ keyboard_read_scancode(void)
         return (inb(KEYBOARD_DATA));
 }
 
+static void
+keyboard_set_typematic_byte(void)
+{
+    outb(KEYBOARD_DATA, 0xF3);
+    outb(KEYBOARD_DATA, 0);
+}
+
 static inline void
 keyboard_handler(void)
 {
-    static unsigned char scancode = NULL;
+    static unsigned char scancode;
     scancode = keyboard_read_scancode();
-    if ((scancode >= KEYBOARD_KEY_DOWN_NONE) && (!(scancode & 0x80)))
-    {
-        terminal_printf("%s", keys_normal[scancode]);
-        if (scancode == KEYBOARD_KEY_DOWN_NUM_LOCK)
-            numlock = !numlock;
-        if (scancode == KEYBOARD_KEY_DOWN_CAPS_LOCK)
-            capslock = !capslock;
-        if (scancode == KEYBOARD_KEY_DOWN_SCROLL_LOCK)
-            scrllock = !scrllock;
-        keyboard_set_leds(numlock, capslock, 0);
-    }
-    /*if (!(scancode & 0x80) == 1) {
-        terminal_printf("%s", keys_normal[scancode]);
-    }*/
+    
+    if ((scancode) && (!(scancode & 0x80)))
+        if (capslock)
+            terminal_printf("%s", keys_caps[scancode]);
+        else
+            terminal_printf("%s", keys_normal[scancode]);
 }        
 
 static inline uint8_t
 keyboard_read(void)
 {
-    if (initialized) {
+    if (init) {
         uint8_t status = inb(KEYBOARD_COMMAND);
         return (status);
     }
@@ -70,22 +72,22 @@ keyboard_read(void)
 static inline void
 keyboard_write_command(uint8_t cmd)
 {
-    if (initialized) {
+    if (init) {
         while (1)
             if (!(keyboard_read() & 0x2))
                 break;
-        outb(0x60, cmd);
+        outb(KEYBOARD_DATA, cmd);
     }
     else
     {
-        terminal_printf("[ERROR]: Keyboard has not been initialized...\n");
+        terminal_printf("[ERROR]: Keyboard has not been init...\n");
     }
 }
 
 static inline char *
 keyboard_get_key(void)
 {
-    if (initialized) {
+    if (init) {
         keyboard_read();
         if (key_last > KEYBOARD_KEY_DOWN_NONE)
             return (key_last);
@@ -102,6 +104,6 @@ keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock)
     data = (num_lock) ? (num_lock | 2) : (num_lock & 2);
     data = (caps_lock) ? (caps_lock | 4) : (caps_lock & 4);
 
-    outb(0x60, 0xED);
-    outb(0x60, data);
+    outb(KEYBOARD_DATA, 0xED);
+    outb(KEYBOARD_DATA, data);
 }

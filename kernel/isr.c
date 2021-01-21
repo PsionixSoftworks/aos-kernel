@@ -45,7 +45,7 @@ char *exception_messages[] =
 isr_t interrupt_handlers[256];
 
 static void
-fault_handler(registers_t regs) 
+fault_handler(registers_t regs)
 {
 	if (regs.int_no < 32) 
 	{

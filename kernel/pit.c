@@ -29,7 +29,6 @@ timer_callback(registers_t regs)
 void
 pit_init(uint32_t freq)
 {
-	terminal_printf("[INFO]: PIT is initialized!\n");
 	cpu_set_interrupts();
 	register_interrupt_handler(IRQ0, &timer_callback);
 	uint32_t divisor = 1193180 / freq;
@@ -40,4 +39,6 @@ pit_init(uint32_t freq)
 
 	outb(PIT_CHANNEL_0, l);
 	outb(PIT_CHANNEL_0, h);
+
+	terminal_printf("[INFO]: PIT is initialized!\n");
 }

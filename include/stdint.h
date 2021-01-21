@@ -16,4 +16,8 @@ typedef unsigned int    uint32_t;
 // Size Integer:
 typedef unsigned long   size_t;
 
+// Integer Pointer:
+typedef int             intptr_t;
+typedef unsigned int    uintptr_t;
+
 #endif

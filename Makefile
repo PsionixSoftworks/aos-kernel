@@ -82,7 +82,8 @@ C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c	\
 								$(STRING_PATH)/strlen.c \
 								$(STRING_PATH)/strsplit.c \
 								$(STRING_PATH)/to-lower.c \
-								$(STRING_PATH)/to-upper.c
+								$(STRING_PATH)/to-upper.c \
+								$(MEMORY_PATH)/kheap.c
 
 # Put all input files here separated by a '\':
 OUTPUT_FILES 				:= 	boot.o			\
@@ -126,7 +127,8 @@ OUTPUT_FILES 				:= 	boot.o			\
 								strlen.o \
 								strsplit.o \
 								to-lower.o \
-								to-upper.o
+								to-upper.o \
+								kheap.o
 
 # AOS_OUTPUT					:= 	$(AOS_DIR)/Adamantine.o	\
 # 								$(AOS_DIR)/Registry.o	
@@ -185,6 +187,7 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(STRING_PATH)/strsplit.c -o strsplit.o $(C_FLAGS)
 	$(COMPILER_C) $(STRING_PATH)/to-lower.c -o to-lower.o $(C_FLAGS)
 	$(COMPILER_C) $(STRING_PATH)/to-upper.c -o to-upper.o $(C_FLAGS)
+	$(COMPILER_C) $(MEMORY_PATH)/kheap.c -o kheap.o $(C_FLAGS)
 	 
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)
@@ -197,10 +200,9 @@ iso: kernel
 	$(CP) $(CFG) $(GRUB_PATH)
 	grub-file --is-x86-multiboot $(BOOT_PATH)/$(BIN)
 	grub-mkrescue -o $(ISO_FILE) $(ISO_PATH)
-#	$(MKDIR) $(ISO_OUTPUT_PATH)
-#	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
-#	qemu-system-x86_64 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
-	qemu-system-x86_64 -cdrom $(ISO_FILE)
+	$(MKDIR) $(ISO_OUTPUT_PATH)
+	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
+	qemu-system-i386 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
 	$(RM) *.o $(BIN) *iso/
 
 # This might need to get updated...

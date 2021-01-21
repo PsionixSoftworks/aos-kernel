@@ -18,13 +18,19 @@
 #include <kernel/x86/descriptor-tables.h>
 #include <kernel/pit.h>
 #include <kernel/cpu.h>
+#include <kernel/system/io.h>
 #include <kernel/memory/mm.h>
 #include <kernel/memory/paging.h>
 #include <kernel/drivers/keyboard.h>
+#include <kernel/drivers/keys.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <adamantine/message_dispatcher.h>
+
 extern uint32_t kernel_end;
+
+static inline void test_code(void);
 
 kernel_t
 kmain(void)
@@ -34,8 +40,18 @@ kmain(void)
 
 	init_descriptor_tables();
 	pit_init(60);
-	mm_init(&kernel_end);
+	mm_init((uint32_t)&kernel_end);
 	initialize_paging();
 
 	keyboard_init();
+	
+	test_code();
+
+	return (SUCCESS);
+}
+
+static inline void
+test_code(void)
+{
+	
 }

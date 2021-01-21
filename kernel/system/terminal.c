@@ -106,7 +106,6 @@ terminal_print(char *str)
 void
 terminal_printf(const char *restrict format, ...)
 {
-	char buffer[256];
 	va_list ap;
 	va_start(ap, format);
 	for (size_t i = 0; i < strlen(format); ++i)
@@ -122,7 +121,8 @@ terminal_printf(const char *restrict format, ...)
 					continue;
 				}
 				case 'b': {
-					int32_t __input = va_arg(ap, int32_t);
+					uint32_t __input = va_arg(ap, uint32_t);
+					char buffer[16];
 					terminal_print(itoa(__input, buffer, 2));
 					i++;
 					continue;
@@ -134,19 +134,22 @@ terminal_printf(const char *restrict format, ...)
 					continue;
 				}
 				case 'd': {
-					uint32_t __input = va_arg(ap, uint32_t);
+					unsigned long __input = va_arg(ap, unsigned long);
+					char buffer[16];
 					terminal_print(itoa(__input, buffer, 10));
 					i++;
 					continue;
 				}
 				case 'o': {
-					int32_t __input = va_arg(ap, int32_t);
+					long __input = va_arg(ap, long);
+					char buffer[16];
 					terminal_print(itoa(__input, buffer, 8));
 					i++;
 					continue;
 				}
 				case 'x': {
-					int32_t __input = va_arg(ap, int32_t);
+					unsigned long __input = va_arg(ap, unsigned long);
+					char buffer[16];
 					char *result = itoa(__input, buffer, 16);
 					to_lower(result);
 					terminal_print(result);
@@ -154,7 +157,8 @@ terminal_printf(const char *restrict format, ...)
 					continue;
 				}
 				case 'X': {
-					int32_t __input = va_arg(ap, int32_t);
+					unsigned long __input = va_arg(ap, unsigned long);
+					char buffer[16];
 					char *result = itoa(__input, buffer, 16);
 					to_upper(result);
 					terminal_print(result);

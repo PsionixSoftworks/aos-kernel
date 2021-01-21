@@ -15,6 +15,10 @@
 
 #include <stdint.h>
 
+#ifndef intn
+#define intn(n) __asm__ volatile ("int $" #n);
+#endif
+
 #define IRQ0		32
 #define IRQ1		33
 #define IRQ2		34

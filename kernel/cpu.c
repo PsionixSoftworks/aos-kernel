@@ -19,8 +19,6 @@
 extern uint32_t cpuid_supported(void);
 extern uint32_t cpuid_get_property(uint32_t);
 
-static void cpu_check_features(void);
-
 void
 cpu_init(void)
 {
@@ -29,8 +27,6 @@ cpu_init(void)
 		return;
 	terminal_printf("[INFO]: CPU is initialized!\n");
 	terminal_printf("[INFO]: CPU Manufacturer: %s.\n", cpu_vendor_string());
-
-	cpu_check_features();
 }
 
 inline void
@@ -112,61 +108,4 @@ cpu_check_is_supported(void)
 	if (result == false)
 		terminal_printf("[ERROR]: CPUID is not supported!\n");
 	return (result);
-}
-
-static void
-cpu_check_features(void)
-{
-	if (!cpuid_get_property(CPUID_FEAT_ECX_SSE3))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_SSE3 is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_PLCMUL))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_PLCMUL is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_DTES64))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_DTES64 is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_MONITOR))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_MONITOR is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_DS_CPL))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_DS_CPL is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_VMX))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_VMX is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_SMX))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_SMX is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_EST))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_EST is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_TM2))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_TM2 is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_SSSE3))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_SSSE3 is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_CID))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_CID is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_FMA))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_FMA is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_CX16))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_CX16 is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_ETPRD))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_ETPRD is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_PDCM))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_PDCM is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_PCIDE))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_PCIDE is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_DCA))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_DCA is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_SSE4_1))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_SSE4_1 is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_SSE4_2))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_SSE4_2 is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_x2APIC))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_x2APIC is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_MOVBE))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_MOVBE is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_POPCNT))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_POPCNT is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_AES))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_AES is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_XSAVE))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_XSAVE is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_OSXSAVE))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_OSXSAVE is not supported...\n");
-	if (!cpuid_get_property(CPUID_FEAT_ECX_AVX))
-		terminal_printf("[WARNING]: CPUID_FEAT_ECX_AVX is not supported...\n");	
 }

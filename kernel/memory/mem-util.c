@@ -49,7 +49,7 @@ malloc(size_t size)
 {
 	if (!size) return 0;
 	uint8_t *mem = (uint8_t *)heap_begin;
-	while ((uint32_t)mem < last_alloc) 
+	while ((uint32_t)mem < last_alloc)
 	{
 		alloc_t *a = (alloc_t *)mem;
 		if (!a->size)
@@ -119,9 +119,9 @@ kmalloc_int(uint32_t size, uint32_t align, uint32_t *physical_address)
 	{
 		*physical_address = placement_address;
 	}
-	uint32_t Temp = placement_address;
+	uint32_t temp = placement_address;
 	placement_address += size;
-	return (Temp);
+	return (temp);
 }
 
 uint32_t
