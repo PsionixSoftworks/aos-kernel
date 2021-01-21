@@ -1,14 +1,20 @@
 #include <kernel/task.h>
+#include <string.h>
+#include <adamantine/aos-defs.h>
 
-task_t new_task;
-task_t current_task;
+process_t *pqueue;
+process_t *current_proc;
 
-void *
-task_create(uint32_t task_id, char * task_name)
+volatile void
+switch_task(registers_t *regs)
 {
-    new_task.task_id = task_id;
-    new_task.task_name = task_name;
-    current_task = new_task;
+    memcpy(&current_proc->regs, regs, sizeof(registers_t));
 
-    return (0);
+    if (current_proc->next != NULL)
+        current_proc = current_proc->next;
+    else
+        current_proc = pqueue;
+    
+    memcpy(regs, &current_proc->regs, sizeof(registers_t));
+    switch_page_directory(current_proc->cr3);
 }

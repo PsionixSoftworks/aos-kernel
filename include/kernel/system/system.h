@@ -16,14 +16,11 @@
 // Includes go here:
 #include <stdint.h>
 
-#if defined(__cplusplus)
-extern "C" {
+#if defined(__x86_SYSTEM_CORE__)
 #endif
 
-
-
-#if defined(__cplusplus)
-}
-#endif
+void system_init(void);
+void handle_dispatched_message(uint8_t severity, char *msg);
+char *get_system_log(uint32_t index);
 
 #endif	// !_AOS_SYSTEM_H

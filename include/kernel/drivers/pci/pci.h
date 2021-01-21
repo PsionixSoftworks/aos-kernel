@@ -29,18 +29,18 @@
 
 struct aos_pci_device
 {
-    uint32_t                    vendor;
-    uint32_t                    device;
-    uint32_t                    sub_vendor;
-    uint32_t                    sub_device;
-    uint32_t                    class;
-    uint32_t                    class_mask;
+    uint32_t                vendor;
+    uint32_t                device;
+    uint32_t                sub_vendor;
+    uint32_t                sub_device;
+    uint32_t                class;
+    uint32_t                class_mask;
 } pci_device_t;
 
 /* define the pci struct. */
 typedef struct aos_pci
 {
-    struct aos_pci_device device_id;
+    struct aos_pci_device   device_id;
 } pci_t;
 
 #endif  // !_AOS_PCI_H

@@ -40,13 +40,13 @@
 #include <centrix/centrix.h>
 #endif
 
-typedef void *kernel_t;
+typedef void(*kernel_t)(void);
 
 typedef struct
 {
-    kernel_t (*kernel_setup)(void);
-    kernel_t (*kernel_start)(void);
-    kernel_t (*kernel_stop)(void);
+    kernel_t                (*kernel_setup)(void);
+    kernel_t                (*kernel_start)(void);
+    kernel_t                (*kernel_stop)(void);
 } aos_base_t;
 
 #ifndef ADAMANTINE_VER

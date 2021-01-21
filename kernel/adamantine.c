@@ -25,8 +25,13 @@
 #include <kernel/drivers/keys.h>
 #include <stdlib.h>
 #include <string.h>
+#include <adamantine/message-dispatcher.h>
+#include <kernel/system/system.h>
 
 extern uint32_t kernel_end;
+
+static const char *username;
+static const char *password;
 
 static inline void test_code(void);
 
@@ -42,7 +47,8 @@ kmain(void)
 	initialize_paging();
 
 	keyboard_init();
-	
+	system_init();
+
 	test_code();
 
 	return (SUCCESS);
@@ -51,5 +57,6 @@ kmain(void)
 static inline void
 test_code(void)
 {
-
+	username = "admin";
+	password = "12345";
 }

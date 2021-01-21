@@ -21,31 +21,23 @@
 #define REPLACE_KERNEL_STACK_ADDR   0x20
 
 struct tss {
-    unsigned long link;
-    unsigned long esp0, ss0;
-    unsigned long esp1, ss1;
-    unsigned long esp2, ss2;
-    unsigned long cr3;
-    unsigned long eip;
-    unsigned long eflags;
-    unsigned long eax, ecx, edx, ebx, esp, ebp;
-    unsigned long esi, edi;
-    unsigned long es, cs, ss, ds, fs, gs;
-    unsigned long ldt;
-    unsigned long iomap;
+    unsigned long           link;
+    unsigned long           esp0, ss0;
+    unsigned long           esp1, ss1;
+    unsigned long           esp2, ss2;
+    unsigned long           cr3;
+    unsigned long           eip;
+    unsigned long           eflags;
+    unsigned long           eax, ecx, edx, ebx, esp, ebp;
+    unsigned long           esi, edi;
+    unsigned long           es, cs, ss, ds, fs, gs;
+    unsigned long           ldt;
+    unsigned long           iomap;
 };
-
-#if defined(__cplusplus)
-extern "C" {
-#endif
 
 void tss_init(void);
 void tss_user_mode_switch(void);
 void tss_reenable_interrupts(void);
 void tss_set_kernel_stack(uint32_t stack);
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif  // !_AOS_TSS_H

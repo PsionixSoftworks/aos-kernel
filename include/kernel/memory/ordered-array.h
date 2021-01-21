@@ -5,13 +5,13 @@
 
 typedef void *type_t;
 
-typedef int8_t (*lessthan_predicate_t)(type_t, type_t);
+typedef int8_t(*lessthan_predicate_t)(type_t, type_t);
 typedef struct
 {
-    type_t *array;
-    uint32_t size;
-    uint32_t max_size;
-    lessthan_predicate_t less_than;
+    type_t                  *array;
+    uint32_t                size;
+    uint32_t                max_size;
+    lessthan_predicate_t    less_than;
 } ordered_array_t;
 
 int8_t standard_lessthan_predicate(type_t a, type_t b);

@@ -29,14 +29,4 @@
 #define INODE_TYPE_SYMLINK      0xA000
 #define INODE_TYPE_SOCKET       0xC000
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-
-
-#if defined(__cplusplus)
-}
-#endif
-
 #endif  // !_EXT2_H

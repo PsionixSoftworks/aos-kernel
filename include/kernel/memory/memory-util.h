@@ -18,13 +18,9 @@
 // Declare the allocation type:
 typedef struct 
 {
-	uint8_t				status;
-	size_t 				size;
+	uint8_t					status;
+	size_t 					size;
 } alloc_t;
-
-#if defined(__cplusplus)
-extern "C" {
-#endif
 
 typedef unsigned int uint32_t;
 
@@ -36,9 +32,5 @@ uint32_t	kmalloc_a(uint32_t size);
 uint32_t	kmalloc_p(uint32_t size_t, uint32_t *physical_address);
 uint32_t	kmalloc_ap(uint32_t size, uint32_t *physical_address);
 uint32_t	kmalloc(uint32_t size);
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif	// !_MEMORY_UTIL_H

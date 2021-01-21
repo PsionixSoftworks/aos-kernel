@@ -39,13 +39,13 @@ struct aos_filesystem;
 struct aos_directory;
 
 struct aos_filesystem {
-    const char *name;
-    char *root;
-    struct aos_directory *dir;
+    const char              *name;
+    char                    *root;
+    struct aos_directory    *dir;
 } __attribute__((packed));
 
 struct aos_directory {
-    char *name;
+    char                    *name;
     struct aos_directory *current;
 };
 

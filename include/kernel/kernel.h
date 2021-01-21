@@ -23,31 +23,23 @@
 typedef struct aos_system_information
 {
     /* cpu Specs */
-    uint8_t       cpu_cores;
-    uint8_t       cpu_temperature;
-    uint32_t     cpu_id;
-    float      cpu_frequency;
-    char *     cpu_manufacturer;
-    char *     cpu_name;
+    uint8_t                 cpu_cores;
+    uint8_t                 cpu_temperature;
+    uint32_t                cpu_id;
+    float                   cpu_frequency;
+    char                    *cpu_manufacturer;
+    char                    *cpu_name;
 
     /* memory Specs */
-    uint32_t     memory_installed;
-    uint32_t     memory_available;
-    uint8_t       memory_speed;
+    uint32_t                memory_installed;
+    uint32_t                memory_available;
+    uint8_t                 memory_speed;
 
     /* Other Info */
-    long       up_time;
+    long                    up_time;
 } system_info_t;
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 // Declare the global functions used by the kernel:
-void kernel_run(void);						// The kernel's init function for startup.
-
-#if defined(__cplusplus)
-}
-#endif
+void kernel_run(void);						                // The kernel's init function for startup.
 
 #endif	// !_AOS_KERNEL_H

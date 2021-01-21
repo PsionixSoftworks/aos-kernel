@@ -32,6 +32,9 @@
 #ifndef ADAMANTINE_MACROS
 #define FAILSAFE
 #define NULL								0
+#define NULLPTR                             (void *)0
+#define NULLSTR                             ""
+#define NULLTERM                            '\0'
 #define FAILURE								((void *)FALSE)
 #define SUCCESS								((void *)TRUE)
 #endif

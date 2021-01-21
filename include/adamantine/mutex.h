@@ -6,7 +6,7 @@
 #include <stdint.h>
 
 typedef struct {
-	uint8_t						locked;
+	uint8_t					locked;
 } mutex;
 
 #define DEFINE_MUTEX(name) static mutex name = { .locked=0 };

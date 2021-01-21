@@ -15,17 +15,9 @@
 
 #include <stdint.h>
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 uint8_t are_interrupts_enabled(void);
 unsigned long irq_disable(void);
 void irq_restore(unsigned long flags);
 void clear_interrupts(void);
-
-#if defined(__cplusplus)
-extern "C" {
-#endif
 
 #endif  // !_AOS_IRQ_H

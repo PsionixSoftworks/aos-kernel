@@ -50,6 +50,7 @@ C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c	\
 								$(KERNEL_PATH)/cpu.c \
 								$(KERNEL_PATH)/mutex.c \
 								$(KERNEL_PATH)/assert.c \
+								$(KERNEL_PATH)/message-dispatcher.c \
 								$(SYSTEM_PATH)/cursor.c \
 								$(DRIVER_PATH)/device.c	\
 								$(DRIVER_PATH)/keyboard.c \
@@ -128,7 +129,8 @@ OUTPUT_FILES 				:= 	boot.o			\
 								strsplit.o \
 								to-lower.o \
 								to-upper.o \
-								kheap.o
+								kheap.o \
+								message-dispatcher.o
 
 # AOS_OUTPUT					:= 	$(AOS_DIR)/Adamantine.o	\
 # 								$(AOS_DIR)/Registry.o	
@@ -161,6 +163,7 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(KERNEL_PATH)/pic.c -o pic.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/assert.c -o assert.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/message-dispatcher.c -o message-dispatcher.o $(C_FLAGS)
 	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)

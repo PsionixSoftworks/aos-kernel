@@ -1,6 +1,7 @@
 #include <kernel/memory/paging.h>
 #include <kernel/system/terminal.h>
 #include <kernel/memory/memory-util.h>
+#include <kernel/cpu.h>
 #include <string.h>
 #include <stddef.h>
 
@@ -179,5 +180,6 @@ page_fault(registers_t regs)
     if (us) {terminal_print("user-mode ");}
     if (reserved) {terminal_print("reserved ");}
     terminal_printf(") at 0x%X\n", faulting_address);
-    terminal_printf("Page fault!");
+
+    cpu_halt();
 }
