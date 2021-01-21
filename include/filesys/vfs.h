@@ -17,6 +17,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+struct filesystem
+{
+    char *name;
+};
 
+extern void *filesystem_register(struct filesystem *fs, char *name);
+extern void *filesystem_unregister(struct filesystem *fs);
+extern int filesystem_mount(struct filesystem *fs);
+extern int filesystem_unmount(struct filesystem *fs);
 
 #endif  // !_AOS_VFS_H
