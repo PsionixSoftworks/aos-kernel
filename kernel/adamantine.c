@@ -53,5 +53,5 @@ kmain(void)
 static inline void
 test_code(void)
 {
-	
+
 }

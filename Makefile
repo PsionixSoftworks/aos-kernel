@@ -203,9 +203,9 @@ iso: kernel
 	$(MKDIR) $(ISO_OUTPUT_PATH)
 	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
 	qemu-system-i386 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
-	$(RM) *.o $(BIN) *iso/
+	$(RM) *.o $(BIN) *iso/ *.iso
 
 # This might need to get updated...
 .PHONY: clean
 clean:
-	$(RM) *.o $(BIN) *iso/
+	$(RM) *.o $(BIN) *iso/ *.iso
