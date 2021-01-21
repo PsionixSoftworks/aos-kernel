@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _DEVICE_
-#define _DEVICE_
+#ifndef _DEVICE_H
+#define _DEVICE_H
 
 #include <stdint.h>
 
@@ -48,4 +48,4 @@ struct aos_device aos_device_get(uint32_t);
 }
 #endif
 
-#endif
+#endif  // !_DEVICE_H

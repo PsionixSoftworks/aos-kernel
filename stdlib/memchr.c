@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stddef.h>
-#include <kernel/memory/mm.h>
+#include <kernel/memory/memory-util.h>
 
 void *
 memchr(register const void *str, int c, size_t n)

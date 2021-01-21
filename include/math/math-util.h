@@ -1,5 +1,5 @@
-#ifndef _AOS_MATH_UTIL_
-#define _AOS_MATH_UTIL_
+#ifndef _AOS_MATH_UTIL_H
+#define _AOS_MATH_UTIL_H
 
 #include <math/simple-math.h>
 
@@ -38,4 +38,4 @@ double radtodeg(double x);
 }
 #endif
 
-#endif
+#endif  // !_AOS_MATH_UTIL_H

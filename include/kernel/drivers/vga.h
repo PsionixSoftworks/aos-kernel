@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _VGA_
-#define _VGA_
+#ifndef _AOS_VGA_H
+#define _AOS_VGA_H
 
 #include <adamantine/aos-defs.h>
 #include <stdint.h>
@@ -100,4 +100,4 @@ struct vbe_mode_info_structure {
 
 uint16_t find_mode(int x, int y, int d);
 
-#endif
+#endif  // !_AOS_VGA_H

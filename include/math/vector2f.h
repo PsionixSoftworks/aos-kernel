@@ -1,5 +1,5 @@
-#ifndef _AOS_C_VECTOR2F_
-#define _AOS_C_VECTOR2F_
+#ifndef _AOS_VECTOR2F_H
+#define _AOS_VECTOR2F_H
 
 #include <stdint.h>
 
@@ -16,4 +16,4 @@ struct aos_vector2
     
 };
 
-#endif
+#endif  // !_AOS_VECTOR2F_H

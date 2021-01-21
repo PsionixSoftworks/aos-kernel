@@ -27,4 +27,4 @@ size_t strsplit(char *str, char delim);
 }
 #endif
 
-#endif
+#endif  // !_AOS_STRING_H

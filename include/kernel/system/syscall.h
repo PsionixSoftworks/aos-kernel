@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _SYSCALL_
-#define _SYSCALL_
+#ifndef _SYSCALL_H
+#define _SYSCALL_H
 
 #include <adamantine/adamantine.h>
 
@@ -60,4 +60,4 @@ void syscall_init(void);
 }
 #endif
 
-#endif
+#endif  // !_SYSCALL_H

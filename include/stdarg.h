@@ -12,4 +12,4 @@ typedef char *va_list;
 #define va_arg(ap, t)   (*(t *)((ap += _INTSIZEOF(t)) - _INTSIZEOF(t)))
 #define va_end(ap)      (ap = (va_list) 0)
 
-#endif
+#endif  // !_AOS_STDARG_H

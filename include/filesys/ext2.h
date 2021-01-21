@@ -10,13 +10,13 @@
  *
  */
 
-#ifndef _EXT2_
-#define _EXT2_
+#ifndef _EXT2_H
+#define _EXT2_H
 
 #include <stdint.h>
 
-#ifndef EXT2_FILESYSTEM
-#define EXT2_FILESYSTEM
+#ifndef _EXT2_H
+#define _EXT2_H
 #endif
 
 #define EXT2_SIGNATURE      0xEF53
@@ -39,4 +39,4 @@ extern "C" {
 }
 #endif
 
-#endif
+#endif  // !_EXT2_H

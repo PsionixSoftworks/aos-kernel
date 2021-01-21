@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _INTERRUPT_REQUESTS_
-#define _INTERRUPT_REQUESTS_
+#ifndef _AOS_IRQ_H
+#define _AOS_IRQ_H
 
 #include <stdint.h>
 
@@ -28,4 +28,4 @@ void clear_interrupts(void);
 extern "C" {
 #endif
 
-#endif
+#endif  // !_AOS_IRQ_H

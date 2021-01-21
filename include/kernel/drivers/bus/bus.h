@@ -10,12 +10,11 @@
  *
  */
 
-#ifndef _AOS_BUS_
-#define _AOS_BUS_
+#ifndef _AOS_BUS_H
+#define _AOS_BUS_H
 
 #include <adamantine/aos-defs.h>
-#include <drivers/driver.h>
 
 #define BUS_ENABLE                          0x1C0000007FUL
 
-#endif
+#endif  // !_AOS_BUS_H

@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_FILE_SYSTEM_H
-#define _AOS_FILE_SYSTEM_H
+#ifndef _AOS_FS_H
+#define _AOS_FS_H
 
 #include <stdint.h>
 
@@ -55,4 +55,4 @@ char *aosfs_directory_get_current(struct aos_filesystem *aosfs);
 
 const char *aosfs_get_sysroot(void);
 
-#endif
+#endif  // !_AOS_FS_H

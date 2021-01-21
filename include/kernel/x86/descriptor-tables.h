@@ -1,5 +1,5 @@
-#ifndef _ADAMANTINE_DESCRIPTOR_TABLES_H
-#define _ADAMANTINE_DESCRIPTOR_TABLES_H
+#ifndef _DESCRIPTOR_TABLES_H
+#define _DESCRIPTOR_TABLES_H
 
 #include <adamantine/aos-defs.h>
 #include <stdint.h>
@@ -105,4 +105,4 @@ extern void irq13(void);
 extern void irq14(void);
 extern void irq15(void);
 
-#endif
+#endif  // !_DESCRIPTOR_TABLES_H

@@ -10,9 +10,9 @@
  *
  */
 
-#ifndef _DRIVER_
-#define _DRIVER_
+#ifndef _DRIVER_H
+#define _DRIVER_H
 
 #define BASE_ADDR       0x7F
 
-#endif
+#endif  // !_DRIVER_H

@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_TERMINAL_
-#define _AOS_TERMINAL_
+#ifndef _AOS_TERMINAL_H
+#define _AOS_TERMINAL_H
 
 #include <adamantine/aos-defs.h>
 #include <kernel/drivers/vga.h>
@@ -44,4 +44,4 @@ void panic_assert(const char * file, uint32_t line, const char * description);
 }
 #endif
 
-#endif
+#endif  // !_AOS_TERMINAL_H

@@ -22,4 +22,4 @@ void insert_ordered_array(type_t item, ordered_array_t *array);
 type_t lookup_ordered_array(uint32_t i, ordered_array_t *array);
 void remove_ordered_array(uint32_t i, ordered_array_t *array);
 
-#endif
+#endif  // !_ORDERED_ARRAY_H

@@ -15,4 +15,4 @@
 typedef enum { false, true } bool;
 #endif
 
-#endif
+#endif  // !_AOS_STDBOOL_H

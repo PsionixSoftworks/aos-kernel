@@ -11,7 +11,7 @@
  */
 
 // Includes go here:
-#include <kernel/memory/mm.h>
+#include <kernel/memory/memory-util.h>
 #include <kernel/system/terminal.h>
 #include <string.h>
 #include <stdlib.h>

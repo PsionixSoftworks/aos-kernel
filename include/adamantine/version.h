@@ -1,5 +1,5 @@
-#ifndef _ADAMANTINE_VERSION_H
-#define _ADAMANTINE_VERSION_H
+#ifndef _AOS_VERSION_H
+#define _AOS_VERSION_H
 
 #define OS_NAME             "AdamantineOS"
 #define OS_VERSION_STRING   "0.5.20.2a"
@@ -10,4 +10,4 @@
 
 #define OS_VERSION_NUMBER   (OS_VERSION_MAJOR * OS_VERSION_MINOR + OS_VERSION_BUILD * OS_VERSION_RELEASE)
 #define AOSAPI_VER  (OS_VERSION_NUMBER >> 2)
-#endif
+#endif  // !_AOS_VERSION_H

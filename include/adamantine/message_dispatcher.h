@@ -11,4 +11,4 @@ MESSAGE(msg_t cbfun, uint8_t type, char *msg)
     cbfun(type, msg);
 }
 
-#endif
+#endif  // !_AOS_MESSAGE_DISPATCHER_H

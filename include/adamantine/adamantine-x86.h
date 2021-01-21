@@ -10,11 +10,11 @@
  *
  */
 
-#ifndef ADAMANTINE_X86
-#define ADAMANTINE_X86
+#ifndef _ADAMANTINE_X86_H
+#define _ADAMANTINE_X86_H
 
 #include <stddef.h>
 #include <stdint.h>
 #include <adamantine/aos-defs.h>
 
-#endif	// !ADAMANTINE_X86
+#endif	// !_ADAMANTINE_X86_H

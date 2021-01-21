@@ -1,5 +1,5 @@
-#ifndef _KHEAP_H
-#define _KHEAP_H
+#ifndef _AOS_KHEAP_H
+#define _AOS_KHEAP_H
 
 #include <stdint.h>
 
@@ -22,4 +22,4 @@ int k_heapbm_add_block(kheapbm *heap, uintptr_t addr, uint32_t size, uint32_t bs
 void *k_heapbm_alloc(kheapbm *heap, uint32_t size);
 void k_heapbm_free(kheapbm *heap, void *ptr);
 
-#endif
+#endif  // !_AOS_KHEAP_H

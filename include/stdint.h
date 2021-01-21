@@ -20,4 +20,4 @@ typedef unsigned long   size_t;
 typedef int             intptr_t;
 typedef unsigned int    uintptr_t;
 
-#endif
+#endif  // !_AOS_STDINT_H

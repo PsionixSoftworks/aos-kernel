@@ -41,4 +41,4 @@ uint32_t	kmalloc(uint32_t size);
 }
 #endif
 
-#endif	// !ADAMANTINE_MEMORY_UTILITY
+#endif	// !_MEMORY_UTIL_H

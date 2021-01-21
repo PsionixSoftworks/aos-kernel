@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _virtual_FILESYS_
-#define _virtual_FILESYS_
+#ifndef _AOS_VFS_H
+#define _AOS_VFS_H
 
 #include <adamantine/aos-defs.h>
 #include <stdint.h>
@@ -70,4 +70,4 @@ char *vfs_get_root_directory(struct filesystem *fs);
 
 int8_t vfs_check_permission(struct filesystem *fs, struct file *f, unsigned long flags);
 
-#endif
+#endif  // !_AOS_VFS_H

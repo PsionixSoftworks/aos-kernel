@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE_SYSTEM
-#define ADAMANTINE_SYSTEM
+#ifndef _AOS_SYSTEM_H
+#define _AOS_SYSTEM_H
 
 // Includes go here:
 #include <stdint.h>
@@ -26,4 +26,4 @@ extern "C" {
 }
 #endif
 
-#endif	// !ADAMANTINE_SYSTEM
+#endif	// !_AOS_SYSTEM_H

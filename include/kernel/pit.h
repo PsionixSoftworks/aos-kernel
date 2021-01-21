@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef SYSTEM_TIMER
-#define SYSTEM_TIMER
+#ifndef _AOS_PIT_H
+#define _AOS_PIT_H
 
 #include <stdint.h>
 
@@ -34,4 +34,4 @@ void pit_wait(int t);
 }
 #endif
 
-#endif	// !SYSTEM_TIMER
+#endif	// !_AOS_PIT_H

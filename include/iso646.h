@@ -16,4 +16,4 @@
 #define compl       ~
 #endif
 
-#endif
+#endif  // !_AOS_ISO646_H

@@ -10,10 +10,8 @@
  *
  */
 
-#ifndef _AOS_KERNEL_
-#define _AOS_KERNEL_
-
-#define _
+#ifndef _AOS_KERNEL_H
+#define _AOS_KERNEL_H
 
 // Handle other includes here:
 #include <stdint.h>
@@ -52,4 +50,4 @@ void kernel_run(void);						// The kernel's init function for startup.
 }
 #endif
 
-#endif	// !ADAMANTINE_KERNEL
+#endif	// !_AOS_KERNEL_H

@@ -14,4 +14,4 @@ bool keyboard_key_down(uint8_t key);
 bool keyboard_key_up(uint8_t key);
 bool keyboard_key_press(uint8_t key);
 
-#endif
+#endif  // !_AOS_KEYBOARD_H

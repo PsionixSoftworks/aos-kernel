@@ -9,4 +9,4 @@
 #endif
 #endif
 
-#endif
+#endif  // !_AOS_STDDEF_H

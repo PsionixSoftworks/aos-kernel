@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_TASK_STATE_SEGMENT_
-#define _AOS_TASK_STATE_SEGMENT_
+#ifndef _AOS_TSS_H
+#define _AOS_TSS_H
 
 #define KERNEL32    1
 
@@ -48,4 +48,4 @@ void tss_set_kernel_stack(uint32_t stack);
 }
 #endif
 
-#endif
+#endif  // !_AOS_TSS_H

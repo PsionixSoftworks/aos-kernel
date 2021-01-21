@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE_CPU
-#define ADAMANTINE_CPU
+#ifndef _AOS_CPU_H
+#define _AOS_CPU_H
 
 #include <stdint.h>
 
@@ -24,4 +24,4 @@ int32_t cpu_broke_a_sweat(void);            // Checks CPU performance against he
 char *cpu_vendor_string(void);              // Gets the CPU vendor in char * format.
 uint32_t cpu_check_is_supported(void);      // Checks if the current CPU architecture is supported.
 
-#endif	// !ADAMANTINE_CPU
+#endif	// !_AOS_CPU_H

@@ -19,4 +19,4 @@ char *itoa(int value, char * str, int base);
 }
 #endif
 
-#endif
+#endif  // !_AOS_STDLIB_H

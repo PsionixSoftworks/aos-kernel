@@ -1,5 +1,5 @@
-#ifndef AOS_TASK_H
-#define AOS_TASK_H
+#ifndef _AOS_TASK_H
+#define _AOS_TASK_H
 
 #include <stdint.h>
 
@@ -26,4 +26,4 @@ void task_end(task_type_t *task);
 }
 #endif
 
-#endif
+#endif  // !_AOS_TASK_H

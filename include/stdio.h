@@ -13,4 +13,4 @@ int puts(const char *);
 }
 #endif
 
-#endif
+#endif  // !_AOS_STDIO_H

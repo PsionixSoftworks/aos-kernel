@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_PCI_
-#define _AOS_PCI_
+#ifndef _AOS_PCI_H
+#define _AOS_PCI_H
 
 /* Includes go here. */
 #include <adamantine/aos-defs.h>
@@ -43,4 +43,4 @@ typedef struct aos_pci
     struct aos_pci_device device_id;
 } pci_t;
 
-#endif
+#endif  // !_AOS_PCI_H

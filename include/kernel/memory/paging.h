@@ -1,5 +1,5 @@
-#ifndef _ADAMANTINE_PAGING_H
-#define _ADAMANTINE_PAGING_H
+#ifndef _PAGING_H
+#define _PAGING_H
 
 #include <stdint.h>
 #include <kernel/isr.h>
@@ -40,4 +40,4 @@ void page_fault(registers_t regs);
 }
 #endif
 
-#endif
+#endif  //!_PAGING_H

@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER
-#define ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER
+#ifndef _AOS_PIC_H
+#define _AOS_PIC_H
 
 // Includes go here:
 #include <stdint.h>
@@ -60,4 +60,4 @@ uint16_t pic_get_irq_register(int8_t ocw3);				        // Get the irq registers.
 }
 #endif
 
-#endif	// !ADAMANTINE_PROGRAMMABLE_INTERRUPT_CONTROLLER
+#endif	// !_AOS_PIC_H

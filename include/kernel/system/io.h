@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE_IO
-#define ADAMANTINE_IO
+#ifndef _AOS_IO_H
+#define _AOS_IO_H
 
 // Include files go here:
 #include <stdint.h>
@@ -24,4 +24,4 @@ uint16_t inw(uint16_t);
 uint32_t inl(uint16_t);
 void io_wait(void);
 
-#endif	// !ADAMANTINE_IO
+#endif	// !_AOS_IO_H

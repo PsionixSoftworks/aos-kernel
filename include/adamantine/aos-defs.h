@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef ADAMANTINE_STANDARD_DEFINITIONS
-#define ADAMANTINE_STANDARD_DEFINITIONS
+#ifndef _AOS_DEFS_H
+#define _AOS_DEFS_H
 
 #include <adamantine/version.h>
 #include <stdint.h>
@@ -94,4 +94,4 @@
 #define CGUARD_BEGIN
 #define CGUARD_END
 #endif
-#endif	// !ADAMANTINE_STANDARD_DEFINITIONS
+#endif	// !_AOS_DEFS_H

@@ -1,4 +1,5 @@
 #include <kernel/system/cursor.h>
+#include <kernel/system/io.h>
 #include <kernel/drivers/vga.h>
 
 void

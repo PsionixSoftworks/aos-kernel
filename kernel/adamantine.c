@@ -19,14 +19,12 @@
 #include <kernel/pit.h>
 #include <kernel/cpu.h>
 #include <kernel/system/io.h>
-#include <kernel/memory/mm.h>
+#include <kernel/memory/memory-util.h>
 #include <kernel/memory/paging.h>
 #include <kernel/drivers/keyboard.h>
 #include <kernel/drivers/keys.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <adamantine/message_dispatcher.h>
 
 extern uint32_t kernel_end;
 
