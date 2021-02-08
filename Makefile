@@ -142,7 +142,7 @@ all: bootloader kernel linker iso
 
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
-	$(ASM) $(ASSEMB_PATH)/boot/boot.S				-o boot.o
+	$(NASM) $(ASSEMB_PATH)/boot/boot.asm -o boot.o
 	$(ASM) $(ASSEMB_PATH)/descriptors.S			-o descriptors.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o

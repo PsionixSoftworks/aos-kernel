@@ -236,7 +236,7 @@ static char * keys_caps[256] =
 	"",																	// <Control>,
 	"A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",				// A, S, D, F, G, H, J, K, L, ;, ',
 	"~", "", "|",														// `, <Left Shift>, \,
-	"Z", "X", "C", "V", "B", "N", "m", ",", ".", "/", "",				// Z, X, C, V, B, N, m, ',', ., /, <Right Shift>, <Alt>
+	"Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "",				// Z, X, C, V, B, N, m, ',', ., /, <Right Shift>, <Alt>
 	"*", "", " ", "",													// *, <Alt>, <Space Bar>, <Caps Lock>,
 	"", "", "", "", "", "", "", "", "", "",								// F1, F2, F3, F4, F5, F6, F7, F8, F9, F10,
 	"", 																// <Numlock (On?)>,

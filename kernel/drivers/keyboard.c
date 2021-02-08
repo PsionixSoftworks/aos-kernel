@@ -15,6 +15,9 @@ static inline void keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_
 
 static bool init = false;
 static bool shift_press = false;
+static bool ctrl_press = false;
+static bool system_press = false;
+static bool alt_press = false;
 static bool numlock;
 static bool capslock;
 static bool scrllock;
@@ -52,9 +55,46 @@ keyboard_handler(void)
 {
     static unsigned char scancode;
     scancode = keyboard_read_scancode();
-    
-    if ((scancode) && (!(scancode & 0x80)))
-        if (capslock)
+    if (scancode)
+        // Check for Escape:
+        if (scancode == KEYBOARD_KEY_DOWN_ESCAPE)
+            terminal_printf("Cannot exit from current mode!\n");
+        if ((scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_RIGHT))
+            terminal_printf("[WindowsKey]: ");
+
+        // Check for Left Shift:
+        if ((scancode == KEYBOARD_KEY_DOWN_LEFT_SHIFT) || (scancode == KEYBOARD_KEY_DOWN_RIGHT_SHIFT))
+            shift_press = true;
+        else if ((scancode == KEYBOARD_KEY_UP_LEFT_SHIFT) || (scancode == KEYBOARD_KEY_UP_RIGHT_SHIFT))
+            shift_press = false;
+
+        // Check for Control Key:
+        if ((scancode == KEYBOARD_KEY_DOWN_CONTROL))
+            ctrl_press = true;
+        else if (scancode == KEYBOARD_KEY_UP_CONTROL)
+            ctrl_press = false;
+
+        // Check for Alt Key:
+        if (scancode == KEYBOARD_KEY_DOWN_ALT)
+            alt_press = true;
+        else if (scancode == KEYBOARD_KEY_UP_ALT)
+            alt_press = false;
+
+        // Check for System Key:
+        if ((scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_RIGHT))
+            system_press = true;
+        else if ((scancode == KEYBOARD_KEY_UP_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_UP_WINDOWS_KEY_RIGHT))
+            system_press = false;
+
+        // Check for Caps lock:
+        if (scancode == KEYBOARD_KEY_DOWN_CAPS_LOCK)
+            shift_press = !shift_press;
+        
+        if ((ctrl_press) && (scancode == KEYBOARD_KEY_DOWN_S))
+            terminal_printf("Nothing to save!\n");
+        else if ((system_press) && (scancode == KEYBOARD_KEY_DOWN_W))
+            terminal_printf("System test...\n");
+        else if (shift_press)
             terminal_printf("%s", keys_caps[scancode]);
         else
             terminal_printf("%s", keys_normal[scancode]);

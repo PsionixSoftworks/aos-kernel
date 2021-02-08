@@ -29,10 +29,6 @@
 #include <kernel/system/system.h>
 
 extern uint32_t kernel_end;
-
-static const char *username;
-static const char *password;
-
 static inline void test_code(void);
 
 kernel_t
@@ -45,6 +41,7 @@ kmain(void)
 	pit_init(60);
 	mm_init((uint32_t)&kernel_end);
 	initialize_paging();
+    cpu_init();
 
 	keyboard_init();
 	system_init();
@@ -57,6 +54,4 @@ kmain(void)
 static inline void
 test_code(void)
 {
-	username = "admin";
-	password = "12345";
 }
