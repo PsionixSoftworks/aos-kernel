@@ -40,14 +40,9 @@
 #include <centrix/centrix.h>
 #endif
 
+#if defined(__KERNEL)
 typedef void(*kernel_t)(void);
-
-typedef struct
-{
-    kernel_t                (*kernel_setup)(void);
-    kernel_t                (*kernel_start)(void);
-    kernel_t                (*kernel_stop)(void);
-} aos_base_t;
+#endif
 
 #ifndef ADAMANTINE_VER
 #define ADAMANTINE_VER 	OS_VERSION_NUMBER

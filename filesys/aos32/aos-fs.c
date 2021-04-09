@@ -15,13 +15,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-static struct aos_filesystem *fs;
+static aosfs_t *fs;
 static struct aos_directory *main_dir;
 
-struct aos_filesystem *
+aosfs_t *
 aosfs_init(const char *name)
 {
-    terminal_printf("%s Filesystem Initializing...\n", name);
+    terminal_printf("[INFO]: %s Filesystem Initializing...\n", name);
 
     char *root;
     root = "$0://";
@@ -33,7 +33,7 @@ aosfs_init(const char *name)
     fs->dir->name = malloc(strlen(root) + 1);
     fs->dir->name = strcpy(fs->dir->name, fs->root);
 
-    terminal_printf("%s initialized!\n", name);
+    terminal_printf("[INFO]: %s initialized!\n", name);
 
     return (fs);
 }

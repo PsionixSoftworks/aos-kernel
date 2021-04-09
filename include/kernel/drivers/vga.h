@@ -16,14 +16,15 @@
 #include <adamantine/aos-defs.h>
 #include <stdint.h>
 
-#if !defined(VGA_MODE)
-#define VGA_GRAPHICS_MODE           0xA0000
-#define VGA_TEXT_MODE_MONOCHROME    0xB0000
-#define VGA_TEXT_MODE_COLOR         0xB8000
-#endif
-
 #define VGA_WIDTH                   80
 #define VGA_HEIGHT                  25
+
+enum video_mode
+{
+    VGA_GRAPHICS_MODE           =0xA0000,
+    VGA_TEXT_MODE_MONOCHROME    =0xB0000,
+    VGA_TEXT_MODE_COLOR         =0xB8000,
+};
 
 enum vga_color 
 {
@@ -98,6 +99,8 @@ struct vbe_mode_info_structure {
     uint8_t                 reserved1[206];
 } PACKED;
 
+void vga_init(enum video_mode vmode);
+void vga_clear_screen(void);
 uint16_t find_mode(int x, int y, int d);
 
 #endif  // !_AOS_VGA_H

@@ -19,6 +19,13 @@
 #if defined(__x86_SYSTEM_CORE__)
 #endif
 
+enum msg_severity
+{
+    NO_SEVERITY,
+    SOME_SEVERITY,
+    FULL_SEVERITY,
+};
+
 void system_init(void);
 void handle_dispatched_message(uint8_t severity, char *msg);
 char *get_system_log(uint32_t index);

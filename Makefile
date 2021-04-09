@@ -45,15 +45,18 @@ STRING_PATH					:= 	string
 ASM_FILES_IN				:=	$(ASSEMB_PATH)/boot/boot.S \
 								$(ASSEMB_PATH)/descriptors.S \
 								$(ASSEMB_PATH)/interrupt.asm \
-								$(ASSEMB_PATH)/cpuid.asm
+								$(ASSEMB_PATH)/cpuid.asm \
+								$(ASSEMB_PATH)/math.asm
 C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c	\
 								$(KERNEL_PATH)/cpu.c \
 								$(KERNEL_PATH)/mutex.c \
 								$(KERNEL_PATH)/assert.c \
 								$(KERNEL_PATH)/message-dispatcher.c \
+								$(KERNEL_PATH)/console.c \
 								$(SYSTEM_PATH)/cursor.c \
 								$(DRIVER_PATH)/device.c	\
 								$(DRIVER_PATH)/keyboard.c \
+								$(DRIVER_PATH)/vga.c \
 								$(FS_PATH)/aos32/aos-fs.c \
 								$(FS_PATH)/ext2/ext2.c \
 								$(FS_PATH)/vfs.c \
@@ -84,12 +87,17 @@ C_FILES_IN					:=	$(KERNEL_PATH)/adamantine.c	\
 								$(STRING_PATH)/strsplit.c \
 								$(STRING_PATH)/to-lower.c \
 								$(STRING_PATH)/to-upper.c \
+								$(STRING_PATH)/strcspn.c \
+								$(STRING_PATH)/strspn.c \
+								$(STRING_PATH)/strtok.c \
+								$(STRING_PATH)/strchr.c \
 								$(MEMORY_PATH)/kheap.c
 
 # Put all input files here separated by a '\':
 OUTPUT_FILES 				:= 	boot.o			\
 								descriptors.o	\
 								interrupt.o		\
+								math.o \
 								adamantine.o	\
 								cpuid.o			\
 								timer.o			\
@@ -97,8 +105,10 @@ OUTPUT_FILES 				:= 	boot.o			\
 								mutex.o			\
 								assert.o \
 								cursor.o \
+								console.o \
 								device.o		\
 								keyboard.o		\
+								vga.o \
 								aos-fs.o		\
 								ext2.o			\
 								vfs.o			\
@@ -129,6 +139,10 @@ OUTPUT_FILES 				:= 	boot.o			\
 								strsplit.o \
 								to-lower.o \
 								to-upper.o \
+								strcspn.o \
+								strspn.o \
+								strtok.o \
+								strchr.o \
 								kheap.o \
 								message-dispatcher.o
 
@@ -147,12 +161,14 @@ bootloader: $(ASM_FILES_IN)
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm			-o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm				-o cpuid.o
 	$(NASM)	$(ASSEMB_PATH)/timer.asm				-o timer.o
+	$(NASM) $(ASSEMB_PATH)/math.asm -o math.o
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(KERNEL_PATH)/adamantine.c -o adamantine.o $(C_FLAGS)
 	$(COMPILER_C) $(DRIVER_PATH)/device.c -o device.o $(C_FLAGS)
 	$(COMPILER_C) $(DRIVER_PATH)/keyboard.c -o keyboard.o $(C_FLAGS)
+	$(COMPILER_C) $(DRIVER_PATH)/vga.c -o vga.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/aos32/aos-fs.c -o aos-fs.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/ext2/ext2.c -o ext2.o $(C_FLAGS)
 	$(COMPILER_C) $(FS_PATH)/vfs.c -o vfs.o $(C_FLAGS)
@@ -164,6 +180,7 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/assert.c -o assert.o $(C_FLAGS)
 	$(COMPILER_C) $(KERNEL_PATH)/message-dispatcher.c -o message-dispatcher.o $(C_FLAGS)
+	$(COMPILER_C) $(KERNEL_PATH)/console.c -o console.o $(C_FLAGS)
 	$(COMPILER_C) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
 	$(COMPILER_C) $(SYSTEM_PATH)/io.c -o io.o $(C_FLAGS)
@@ -190,6 +207,10 @@ kernel: $(C_FILES_IN)
 	$(COMPILER_C) $(STRING_PATH)/strsplit.c -o strsplit.o $(C_FLAGS)
 	$(COMPILER_C) $(STRING_PATH)/to-lower.c -o to-lower.o $(C_FLAGS)
 	$(COMPILER_C) $(STRING_PATH)/to-upper.c -o to-upper.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strcspn.c -o strcspn.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strspn.c -o strspn.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strtok.c -o strtok.o $(C_FLAGS)
+	$(COMPILER_C) $(STRING_PATH)/strchr.c -o strchr.o $(C_FLAGS)
 	$(COMPILER_C) $(MEMORY_PATH)/kheap.c -o kheap.o $(C_FLAGS)
 	 
 # Link all input files into one file:

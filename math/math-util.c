@@ -1,5 +1,9 @@
 #include <math/math-util.h>
 
+extern double __cos(double);
+extern double __sin(double);
+extern double __tan(double);
+
 /* Defined in "math-util.h" */
 inline uint32_t
 abs(int32_t x)
@@ -34,24 +38,26 @@ sign(double x)
     return (x);
 }
 
-static inline double
-calculate_hypotenuse(double x)
+inline double
+cos(double x)
 {
-    return (x);
+    /* Adjacent / Hypotenuse */
+    double value = __cos(x);
+    return (value);
 }
 
 inline double
 sin(double x)
 {
-    /* Opposite / hypotenuse */
-    return (x);
+    double value = __sin(x);
+    return (value);
 }
 
 inline double
-cos(double x)
+tan(double x)
 {
-    /* Adjacent / Hypotenuse */
-    return (x);
+    double value = __tan(x);
+    return (value);
 }
 
 inline double

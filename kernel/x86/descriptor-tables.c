@@ -9,7 +9,7 @@ extern void idt_flush(uint32_t);
 //extern void ldt_flush(uint32_t);
 
 static void init_gdt(void);
-static void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
+//static void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
 static void init_idt(void);
 static void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
 //static void init_ldt(void);
@@ -23,6 +23,12 @@ idt_ptr_t idt_ptr;
 //ldt_ptr_t ldt_ptr;
 
 extern isr_t interrupt_handlers[];
+
+static inline void gdt_set_null_segment(void);
+static inline void gdt_set_code_segment(void);
+static inline void gdt_set_data_segment(void);
+static inline void gdt_set_user_code_segment(void);
+static inline void gdt_set_user_data_segment(void);
 
 void
 init_descriptor_tables(void)
@@ -41,16 +47,16 @@ init_gdt(void)
     gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
     gdt_ptr.base = (uint32_t)&gdt_entries;
 
-    gdt_set_gate(0, 0, 0, 0, 0);
-    gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
-    gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
-    gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
-    gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
+    gdt_set_null_segment();
+    gdt_set_code_segment();
+    gdt_set_data_segment();
+    gdt_set_user_code_segment();
+    gdt_set_user_data_segment();
 
     gdt_flush((uint32_t)&gdt_ptr);
 }
 
-static void
+/*static void
 gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
 {
     gdt_entries[num].base_low       = (base & 0xFFFF);
@@ -62,7 +68,7 @@ gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t
 
     gdt_entries[num].granularity    |= gran & 0xF0;
     gdt_entries[num].access         = access;
-}
+}*/
 
 /* This is a test for the Local Descriptor Table and may be changed or removed at any time. \/\/ */
 /*void
@@ -93,18 +99,8 @@ init_idt(void)
 
     memset(&idt_entries, 0, sizeof(idt_entry_t) * 256);
 
-    //pic_remap();
-    outb(0x20, 0x11);
-	outb(0xA0, 0x11);
-	outb(0x21, 0x20);
-	outb(0xA1, 0x28);
-	outb(0x21, 0x04);
-	outb(0xA1, 0x02);
-	outb(0x21, 0x01);
-	outb(0xA1, 0x01);
-	outb(0x21, 0x0);
-	outb(0xA1, 0x0);
-
+    pic_remap();
+    
     idt_set_gate(0, (uint32_t)isr0, 0x08, 0x8E);
     idt_set_gate(1, (uint32_t)isr1, 0x08, 0x8E);
     idt_set_gate(2, (uint32_t)isr2, 0x08, 0x8E);
@@ -167,4 +163,59 @@ idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags)
     idt_entries[num].always0    = 0;
 
     idt_entries[num].flags      = flags /* | 0x60 */;
+}
+
+static inline void
+gdt_set_null_segment(void)
+{
+    gdt_entries[0].base_low     = 0x00;
+    gdt_entries[0].base_middle  = 0x00;
+    gdt_entries[0].base_high    = 0x00;
+    gdt_entries[0].granularity  = 0x00;
+    gdt_entries[0].access       = 0x00;
+    gdt_entries[0].limit_low    = 0x00;
+}
+
+static inline void
+gdt_set_code_segment(void)
+{
+    gdt_entries[1].base_low     = 0x00;
+    gdt_entries[1].base_middle  = 0x00;
+    gdt_entries[1].base_high    = 0x00;
+    gdt_entries[1].granularity  = 0xCF;
+    gdt_entries[1].access       = 0x9A;
+    gdt_entries[1].limit_low    = 0xFFFF;
+}
+
+static inline void
+gdt_set_data_segment(void)
+{
+    gdt_entries[2].base_low     = 0x00;
+    gdt_entries[2].base_middle  = 0x00;
+    gdt_entries[2].base_high    = 0x00;
+    gdt_entries[2].granularity  = 0xCF;
+    gdt_entries[2].access       = 0x92;
+    gdt_entries[2].limit_low    = 0xFFFF;
+}
+
+static inline void
+gdt_set_user_code_segment(void)
+{
+    gdt_entries[3].base_low     = 0x00;
+    gdt_entries[3].base_middle  = 0x00;
+    gdt_entries[3].base_high    = 0x00;
+    gdt_entries[3].granularity  = 0xCF;
+    gdt_entries[3].access       = 0xFA;
+    gdt_entries[3].limit_low    = 0xFFFF;
+}
+
+static inline void
+gdt_set_user_data_segment(void)
+{
+    gdt_entries[4].base_low     = 0x00;
+    gdt_entries[4].base_middle  = 0x00;
+    gdt_entries[4].base_high    = 0x00;
+    gdt_entries[4].granularity  = 0xCF;
+    gdt_entries[4].access       = 0xF2;
+    gdt_entries[4].limit_low    = 0xFFFF;
 }

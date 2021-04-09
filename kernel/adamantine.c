@@ -13,7 +13,13 @@
  *
  */
 
+#if !defined(__AOS32__)
+#define __AOS32__
+#define __KERNEL	__AOS32__
+#endif
+
 #include <adamantine/adamantine.h>
+#include <kernel/drivers/vga.h>
 #include <kernel/system/terminal.h>
 #include <kernel/x86/descriptor-tables.h>
 #include <kernel/pit.h>
@@ -23,19 +29,27 @@
 #include <kernel/memory/paging.h>
 #include <kernel/drivers/keyboard.h>
 #include <kernel/drivers/keys.h>
-#include <stdlib.h>
-#include <string.h>
 #include <adamantine/message-dispatcher.h>
 #include <kernel/system/system.h>
+#include <kernel/cmd-line.h>
+#include <filesys/aos-fs.h>
+
+#include <math/math-util.h>
+
+#include <stdlib.h>
+#include <string.h>
 
 extern uint32_t kernel_end;
 static inline void test_code(void);
+static aosfs_t *aosfs;
 
 kernel_t
 kmain(void)
 {
-	terminal_init();
-	terminal_clear();
+	//vga_init(VGA_TEXT_MODE_COLOR);
+
+	terminal_init(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_CYAN);
+	terminal_clear();  
 
 	init_descriptor_tables();
 	pit_init(60);
@@ -43,15 +57,18 @@ kmain(void)
 	initialize_paging();
     cpu_init();
 
+	test_code();
+
 	keyboard_init();
 	system_init();
-
-	test_code();
 
 	return (SUCCESS);
 }
 
+//==========================================================================//
+
 static inline void
 test_code(void)
 {
+	
 }

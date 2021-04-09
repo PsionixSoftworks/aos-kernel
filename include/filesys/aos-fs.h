@@ -35,8 +35,7 @@
 #define SYSROOT_DIRECTORY           ROOT_DRIVE##"sysroot/"
 #endif
 
-struct aos_filesystem;
-struct aos_directory;
+typedef struct aos_filesystem aosfs_t;
 
 struct aos_filesystem {
     const char              *name;
@@ -49,9 +48,9 @@ struct aos_directory {
     struct aos_directory *current;
 };
 
-struct aos_filesystem *aosfs_init(const char *name);
-int8_t aosfs_create_directory(struct aos_filesystem *aosfs, char *dirname);
-char *aosfs_directory_get_current(struct aos_filesystem *aosfs);
+aosfs_t *aosfs_init(const char *name);
+int8_t aosfs_create_directory(aosfs_t *aosfs, char *dirname);
+char *aosfs_directory_get_current(aosfs_t *aosfs);
 
 const char *aosfs_get_sysroot(void);
 

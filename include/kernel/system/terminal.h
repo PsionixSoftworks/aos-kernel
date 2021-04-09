@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-void terminal_init(void);
+void terminal_init(const uint8_t back_color, const uint8_t fore_color);
 void terminal_clear(void);
 void terminal_set_background_color(uint8_t color);
 void terminal_set_foreground_color(uint8_t color);

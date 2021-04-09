@@ -22,6 +22,9 @@ void to_upper(char *str);
 size_t strlen(const char *s);
 size_t str_backspace(char *str, char c);
 size_t strsplit(char *str, char delim);
+char *strtok(char *string, const char *delim);
+size_t strspn(const char *s1, const char *s2);
+size_t strcspn(const char *s1, const char *s2);
 
 #if defined(__cplusplus)
 }

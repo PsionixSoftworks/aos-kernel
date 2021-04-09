@@ -6,6 +6,11 @@
 #define PI          3.1415926535897932385       // For Trigonometric functions
 #define E           2.7182818284590452354       // For Log e.
 
+#ifndef MATH_OPS
+#define div         /
+#define mod         %
+#endif
+
 #if defined(__cplusplus)
 extern "C" {
 #endif

@@ -31,11 +31,11 @@ static inline void terminal_putchar(char c);
 static inline void terminal_scroll(void);
 
 void
-terminal_init(void)
+terminal_init(const uint8_t back_color, const uint8_t fore_color)
 {
 	video_buffer = (uint16_t *)VGA_TEXT_MODE_COLOR;
-	background_color = DEFAULT_BACKGROUND_COLOR;
-	foreground_color = DEFAULT_FOREGROUND_COLOR;
+	background_color = back_color;
+	foreground_color = fore_color;
 	x = 0;
 	y = 0;
 	
@@ -197,7 +197,7 @@ terminal_putchar(char c)
 	}
 	else if (c == '\b')
 	{
-		if (x > 0)
+		if (x > 14)
 		{
 			x--;
 			video_buffer[y * VGA_WIDTH + x] = ' ' | attrib;

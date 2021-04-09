@@ -18,11 +18,9 @@
 
 // Define the boolean operators true and false:
 #ifndef BOOLEAN_OPS
-
 #ifndef FALSE
 #define FALSE								0
 #endif
-
 #ifndef TRUE
 #define TRUE								1
 #endif
@@ -31,12 +29,15 @@
 // Define Adamantine API macros:
 #ifndef ADAMANTINE_MACROS
 #define FAILSAFE
+#ifndef NULL
 #define NULL								0
-#define NULLPTR                             (void *)0
-#define NULLSTR                             ""
-#define NULLTERM                            '\0'
+#endif
+#define NULL_PTR                            (void *)0
+#define NULL_STR                            ""
+#define NULL_TERM                           '\0'
 #define FAILURE								((void *)FALSE)
 #define SUCCESS								((void *)TRUE)
+#define __AOS_API                           
 #endif
 
 // Define the module naming system for later use:
@@ -45,6 +46,7 @@
 #define MODULE(a, b)
 #endif	// !MODULE_DESCRIPTOR
 
+#if defined(__GNUC__) && __GNUC__ > 3
 #ifndef __STANDARD_ATTRIBUTES__
 #define __STANDARD_ATTRIBUTES__
 #define PACKED				            __attribute__((__packed__))
@@ -61,6 +63,7 @@
 #define _BSS                            SECTION(".bss")
 #define ACCESS(mode)	                __attribute__((access(mode)))
 #endif	// !__STANDARD_ATTRIBUTES__
+#endif
 
 /* Setters for types. */
 #define SET_VOID(name)                  void name

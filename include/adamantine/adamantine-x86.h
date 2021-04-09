@@ -17,4 +17,8 @@
 #include <stdint.h>
 #include <adamantine/aos-defs.h>
 
+#define INFINITY    0xFFFFFFFF      /* Max 32-bit value. */
+
+
+
 #endif	// !_ADAMANTINE_X86_H

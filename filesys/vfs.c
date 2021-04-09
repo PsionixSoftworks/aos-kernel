@@ -14,7 +14,3 @@
 #include <kernel/system/terminal.h>
 #include <string.h>
 #include <stdlib.h>
-
-#define MAX_MOUNTABLE_DEVICES   24
-
-

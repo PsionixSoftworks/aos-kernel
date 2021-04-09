@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <kernel/cmd-line.h>
 
 #define KEYBOARD_DATA       0x60    // Read/Write
 #define KEYBOARD_STATUS     0x64    // Read

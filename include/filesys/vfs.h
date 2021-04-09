@@ -13,18 +13,15 @@
 #ifndef _AOS_VFS_H
 #define _AOS_VFS_H
 
-#include <adamantine/aos-defs.h>
-#include <stdint.h>
-#include <stdbool.h>
+#include "file.h"
 
-struct filesystem
+#define MAX_MOUNTABLE_DEVICES   16
+
+struct virtual_filesystem
 {
-    char *name;
+    char name[10];
+    uint8_t max_file_length;
+    uint32_t max_file_size;
 };
-
-extern void *filesystem_register(struct filesystem *fs, char *name);
-extern void *filesystem_unregister(struct filesystem *fs);
-extern int filesystem_mount(struct filesystem *fs);
-extern int filesystem_unmount(struct filesystem *fs);
 
 #endif  // !_AOS_VFS_H

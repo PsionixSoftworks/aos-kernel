@@ -15,13 +15,6 @@
 #include <kernel/cpu.h>
 #include <string.h>
 
-enum msg_severity
-{
-    NO_SEVERITY,
-    SOME_SEVERITY,
-    FULL_SEVERITY,
-};
-
 struct system_logger
 {
     char                    *message[1024];
@@ -72,11 +65,11 @@ char *
 get_system_log(uint32_t index)
 {
     if (logger->message[index] == NULL)
-        return (NULLSTR);
+        return (NULL_STR);
     if (index >= 1024)
     {
         terminal_printf("Error: Logger cannot be a null pointer  (i.e. less than 0 or exceed 1024) or\nexceed 1024 entries at a time...\n");
-        return (NULLSTR);
+        return (NULL_STR);
     }
     return (logger->message[index]);
 }
