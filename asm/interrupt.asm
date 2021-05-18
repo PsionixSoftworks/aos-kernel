@@ -91,11 +91,11 @@ isr_common_stub:
 
     call isr_handler
 
-	  pop ebx
-	  mov ds, bx
-	  mov es, bx
-	  mov fs, bx
-	  mov gs, bx
+	pop ebx
+	mov ds, bx
+	mov es, bx
+	mov fs, bx
+	mov gs, bx
 
     popa                        ; Pops edi, esi, ebp...
     add esp, 8                  ; Cleans up the pushed error code and pushed ISR number

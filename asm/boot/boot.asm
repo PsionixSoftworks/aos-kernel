@@ -1,7 +1,7 @@
 MBALIGN     equ 1 << 0
 MEMINFO     equ 1 << 1
 GFX_MODE    equ 1 << 2
-FLAGS       equ MBALIGN | MEMINFO; | GFX_MODE
+FLAGS       equ MBALIGN | MEMINFO ;| GFX_MODE
 MAGIC       equ 0x1BADB002
 CHECKSUM    equ -(MAGIC + FLAGS)
 

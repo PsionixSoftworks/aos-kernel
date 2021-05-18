@@ -16,16 +16,16 @@ static inline uint8_t keyboard_read(void);
 static inline void keyboard_write_command(uint8_t cmd);
 static inline char *keyboard_get_key(void);
 static inline void keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock);
-static inline char keyboard_get_keylast(void);
+static inline char *keyboard_get_keylast(void);
 
 static bool init = false;
 static bool shift_press = false;
 static bool ctrl_press = false;
 static bool system_press = false;
 static bool alt_press = false;
-static bool numlock;
-static bool capslock;
-static bool scrllock;
+static bool numlock UNUSED;
+static bool capslock UNUSED;
+static bool scrllock UNUSED;
 static char *key_last = NULL;
 
 static volatile char *key_buffer;
@@ -38,7 +38,7 @@ keyboard_init(void)
         key_buffer = (char *)malloc(sizeof(char *));
         //memset(key_buffer, 0, sizeof(char) * 40);
 
-        register_interrupt_handler(IRQ1, &keyboard_handler);
+        register_interrupt_handler(IRQ1, (isr_t)&keyboard_handler);
         //key_buffer = keyboard_get_keylast();
 
         terminal_printf("[INFO]: Keyboard is initialized!\n");
@@ -54,9 +54,10 @@ keyboard_read_scancode(void)
     uint8_t status = keyboard_read();
     if ((status & 0x01) == 1)
         return (inb(KEYBOARD_DATA));
+    return 0;
 }
 
-static void
+static void UNUSED
 keyboard_set_typematic_byte(void)
 {
     outb(KEYBOARD_DATA, 0xF3);
@@ -64,7 +65,6 @@ keyboard_set_typematic_byte(void)
 }
 
 char keypresses;
-static int i = 0;
 
 static inline void
 keyboard_handler(void)
@@ -127,7 +127,7 @@ keyboard_handler(void)
     }
 }
 
-static inline char 
+static inline char *
 keyboard_get_keylast(void)
 {
     return (key_last);
@@ -140,6 +140,7 @@ keyboard_read(void)
         uint8_t status = inb(KEYBOARD_COMMAND);
         return (status);
     }
+    return 0;
 }
 
 static inline void
@@ -162,7 +163,7 @@ keyboard_get_key(void)
 {
     if (init) {
         keyboard_read();
-        if (key_last > KEYBOARD_KEY_DOWN_NONE)
+        if (key_last != KEYBOARD_KEY_DOWN_NONE)
             return (key_last);
         return (KEYBOARD_KEY_DOWN_NONE);
     }

@@ -40,8 +40,15 @@
 #include <string.h>
 
 extern uint32_t kernel_end;
-static inline void test_code(void);
-static aosfs_t *aosfs;
+static inline int32_t test_code(void);
+
+static void putpixel(unsigned char *screen, int x, int y, int color)
+{
+	unsigned where = x * 4 + y * 3200;
+	screen[where] = color & 255;
+	screen[where + 1] = (color >> 8) & 255;
+	screen[where + 2] = (color >> 16) & 255;
+}
 
 kernel_t
 kmain(void)
@@ -67,8 +74,28 @@ kmain(void)
 
 //==========================================================================//
 
-static inline void
+static inline int32_t
 test_code(void)
 {
-	
+	for (int i = 0; i < 800; i++)
+	{
+		for (int j = 0; j < 16; j++)
+		{
+			putpixel((unsigned char *)VGA_GRAPHICS_MODE, i, j, 0x007F7F);
+		}
+	}
+
+	for (size_t i = 4; i < 12; i++)
+	{
+		putpixel((unsigned char *)VGA_GRAPHICS_MODE, i, 4, 0xFFFFFF);
+		putpixel((unsigned char *)VGA_GRAPHICS_MODE, i, 5, 0xFFFFFF);
+
+		putpixel((unsigned char *)VGA_GRAPHICS_MODE, i, 7, 0xFFFFFF);
+		putpixel((unsigned char *)VGA_GRAPHICS_MODE, i, 8, 0xFFFFFF);
+
+		putpixel((unsigned char *)VGA_GRAPHICS_MODE, i, 10, 0xFFFFFF);
+		putpixel((unsigned char *)VGA_GRAPHICS_MODE, i, 11, 0xFFFFFF);
+	}
+	return 0;
 }
+
