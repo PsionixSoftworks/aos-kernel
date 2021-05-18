@@ -46,7 +46,7 @@ aosfs_create_directory(struct aos_filesystem *aosfs, char *dirname)
 
     terminal_printf("Entering directory \"%s\"\n", aosfs->dir->name);
 
-    return (SUCCESS);
+    return (1);
 }
 
 char *

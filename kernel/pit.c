@@ -21,9 +21,11 @@ uint32_t tick = 0;
 static void
 timer_callback(registers_t regs)
 {
-	//terminal_printf("Ticks: %d\n", tick);
-	if (tick < UINT32_SIZE_MAX)
-		tick++;
+	if (!regs.err_code)
+	{
+		if (tick < UINT32_SIZE_MAX)
+			tick++;
+	}
 }
 
 void

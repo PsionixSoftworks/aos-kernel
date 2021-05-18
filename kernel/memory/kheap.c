@@ -37,6 +37,7 @@ k_heapbm_add_block(kheapbm *heap, uintptr_t addr, uint32_t size, uint32_t bsize)
     return (1);
 }
 
+/*
 static uint8_t
 k_heapbm_get_nid(uint8_t a, uint8_t b)
 {
@@ -45,16 +46,17 @@ k_heapbm_get_nid(uint8_t a, uint8_t b)
 
     return (c);
 }
+*/
 
 void *
 k_heapbm_alloc(kheapbm *heap, uint32_t size)
 {
     kheapblockbm *b;
-    uint8_t *bm;
-    uint32_t bcnt;
-    uint32_t x, y, z;
-    uint32_t bneed;
-    uint8_t nid;
+    uint8_t *bm UNUSED;
+    uint32_t bcnt UNUSED;
+    uint32_t x UNUSED, y UNUSED, z UNUSED;
+    uint32_t bneed UNUSED;
+    uint8_t nid UNUSED;
 
     for (b = heap->fblock; b; b = b->next)
     {
@@ -63,4 +65,6 @@ k_heapbm_alloc(kheapbm *heap, uint32_t size)
             
         }
     }
+
+    return 0;
 }
