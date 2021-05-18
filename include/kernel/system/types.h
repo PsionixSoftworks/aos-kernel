@@ -6,4 +6,8 @@
 typedef unsigned long time_t;
 #endif
 
+#ifndef _KERNEL_T
+#define _KERNEL_T
+typedef void kernel_t;
+#endif
 #endif

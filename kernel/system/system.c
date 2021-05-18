@@ -65,11 +65,11 @@ char *
 get_system_log(uint32_t index)
 {
     if (logger->message[index] == NULL)
-        return (NULL_STR);
+        return "";
     if (index >= 1024)
     {
         terminal_printf("Error: Logger cannot be a null pointer  (i.e. less than 0 or exceed 1024) or\nexceed 1024 entries at a time...\n");
-        return (NULL_STR);
+        return "";
     }
     return (logger->message[index]);
 }

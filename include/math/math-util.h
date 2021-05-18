@@ -24,18 +24,12 @@ uint32_t sign(double x);
 double sin(double x);
 double cos(double x);
 double tan(double x);
-double asin(double x);
-double acos(double x);
-double atan(double x);
-double sinh(double x);
-double cosh(double x);
-double tanh(double x);
-double log(double x);
-double log10(double x);
-double exp(double x);
-double sqrt(double x);
+double log(double x);			// Not yet implemented...
+double log10(double x);			// Not yet implemented...
+double exp(double x);			// Not yet implemented...
+double sqrt(double x);			
 double pow(double x, double y);
-uint32_t trunc(double x);
+uint32_t trunc(double x);		// Not yet implemented...
 double degtorad(double x);
 double radtodeg(double x);
 

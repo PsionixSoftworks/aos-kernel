@@ -5,7 +5,6 @@
 #include <kernel/isr.h>
 #include <kernel/pic.h>
 
-#include <kernel/cmd-line.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -187,7 +186,7 @@ static inline uint8_t
 keyboard_read(void)
 {
     if (init) {
-        uint8_t status = inb(KEYBOARD_COMMAND);
+        uint8_t status = inb(KEYBOARD_CMD);
         return (status);
     }
     return 0;

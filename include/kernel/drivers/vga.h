@@ -13,7 +13,7 @@
 #ifndef _AOS_VGA_H
 #define _AOS_VGA_H
 
-#include <adamantine/aos-defs.h>
+#include <adamantine/compiler.h>
 #include <stdint.h>
 
 #define VGA_WIDTH                   80

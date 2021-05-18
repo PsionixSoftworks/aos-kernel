@@ -61,42 +61,6 @@ tan(double x)
 }
 
 inline double
-asin(double x)
-{
-    return (x);
-}
-
-inline double
-acos(double x)
-{
-    return (x);
-}
-
-inline double
-atan(double x)
-{
-    return (x);
-}
-
-inline double
-sinh(double x)
-{
-    return (x);
-}
-
-inline double
-cosh(double x)
-{
-    return (x);
-}
-
-inline double
-tanh(double x)
-{
-    return (x);
-}
-
-inline double
 log(double x)
 {
     return (x);

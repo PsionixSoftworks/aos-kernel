@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #if defined(__cplusplus)
-"C" {
+extern "C" {
 #endif
 
 /* Simple addition */

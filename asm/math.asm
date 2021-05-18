@@ -1,10 +1,7 @@
 section .text
 
-global _cos
 global __cos
-global _sin
 global __sin
-global _tan
 global __tan
 
 _cos:

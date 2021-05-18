@@ -1,5 +1,5 @@
 #include <kernel/drivers/vga.h>
-#include <kernel/console.h>
+#include <adamantine/aos-defs.h>
 #include <string.h>
 
 static uint16_t *video_buffer = NULL;

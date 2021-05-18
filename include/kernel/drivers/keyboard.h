@@ -3,11 +3,10 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <kernel/cmd-line.h>
 
 #define KEYBOARD_DATA       0x60    // Read/Write
 #define KEYBOARD_STATUS     0x64    // Read
-#define KEYBOARD_COMMAND    0x64    // Write
+#define KEYBOARD_CMD    	0x64    // Write
 
 void keyboard_init(void);
 unsigned char keyboard_read_scancode(void);

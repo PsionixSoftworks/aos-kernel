@@ -43,4 +43,4 @@ _start:
         call kmain
 .hang:  hlt
         jmp .hang
-.end
+.end:

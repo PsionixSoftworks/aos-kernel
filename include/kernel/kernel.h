@@ -15,10 +15,7 @@
 
 // Handle other includes here:
 #include <stdint.h>
-
-#define KERNEL_MODE_NORMAL		0x0
-#define KERNEL_MODE_SAFE		0x1
-#define KERNEL_MODE_NO_GUI		0x2
+#include <kernel/system/types.h>
 
 typedef struct aos_system_information
 {
@@ -36,8 +33,10 @@ typedef struct aos_system_information
     uint8_t                 memory_speed;
 
     /* Other Info */
-    long                    up_time;
+    time_t                  up_time;
 } system_info_t;
+
+#endif
 
 // Declare the global functions used by the kernel:
 void kernel_run(void);						                // The kernel's init function for startup.

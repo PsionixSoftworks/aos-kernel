@@ -23,8 +23,7 @@ timer_callback(registers_t regs)
 {
 	if (!regs.err_code)
 	{
-		if (tick < UINT32_SIZE_MAX)
-			tick++;
+		
 	}
 }
 

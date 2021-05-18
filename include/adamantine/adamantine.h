@@ -21,15 +21,6 @@
 #endif
 
 #include <adamantine/aos-defs.h>
-#include <adamantine/version.h>
-
-#include <iso646.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #ifndef ADAMANTINE
 #define ADAMANTINE  1
@@ -40,8 +31,8 @@
 #include <centrix/centrix.h>
 #endif
 
-#if defined(__KERNEL)
-typedef void(*kernel_t)(void);
+#ifdef KERNEL_VERSION_NUMBER
+#define KERNEL_VERSION		KERNEL_VERSION_NUMBER
 #endif
 
 #ifndef ADAMANTINE_VER

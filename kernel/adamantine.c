@@ -31,10 +31,10 @@
 #include <kernel/drivers/keys.h>
 #include <adamantine/message-dispatcher.h>
 #include <kernel/system/system.h>
-#include <kernel/cmd-line.h>
-#include <filesys/aos-fs.h>
+#include <kernel/system/types.h>
+#include <kernel/version.h>
 
-#include <math/math-util.h>
+#include <kernel/irq.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -42,19 +42,9 @@
 extern uint32_t kernel_end;
 static inline int32_t test_code(void);
 
-static void putpixel(unsigned char *screen, int x, int y, int color)
-{
-	unsigned where = x * 4 + y * 3200;
-	screen[where] = color & 255;
-	screen[where + 1] = (color >> 8) & 255;
-	screen[where + 2] = (color >> 16) & 255;
-}
-
 kernel_t
 kmain(void)
 {
-	//vga_init(VGA_TEXT_MODE_COLOR);
-
 	terminal_init(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_CYAN);
 	terminal_clear();  
 
@@ -68,11 +58,18 @@ kmain(void)
 
 	keyboard_init();
 	system_init();
-
-	return (SUCCESS);
 }
 
 //==========================================================================//
+
+static inline void 
+putpixel(unsigned char *screen, int x, int y, int color)
+{
+	unsigned where = x * 4 + y * 3200;
+	screen[where] = color & 255;
+	screen[where + 1] = (color >> 8) & 255;
+	screen[where + 2] = (color >> 16) & 255;
+}
 
 static inline int32_t
 test_code(void)
@@ -98,4 +95,3 @@ test_code(void)
 	}
 	return 0;
 }
-

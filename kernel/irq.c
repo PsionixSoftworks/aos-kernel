@@ -20,7 +20,7 @@ are_interrupts_enabled(void)
     ( 
         "PUSHF\n\t"
         "POP %0"
-        : "=g"(flags) 
+        : "=g"(flags)
     );
 
     return flags & (0x1 << 0x9);
