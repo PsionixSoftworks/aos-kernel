@@ -1,12 +1,15 @@
 #include <kernel/drivers/keyboard.h>
 #include <kernel/drivers/keys.h>
 #include <kernel/system/io.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/tty.h>
+#include <kernel/drivers/vga.h>
 #include <kernel/isr.h>
 #include <kernel/pic.h>
+#include <compiler.h>
 
 #include <string.h>
 #include <stdlib.h>
+#include <stddef.h>
 
 // Nested conditional statement= var = (expr1 == val ? expr2 : expr3);
 
@@ -90,9 +93,11 @@ keyboard_init(void)
         register_interrupt_handler(IRQ1, (isr_t)&keyboard_handler);
         //key_buffer = keyboard_get_keylast();
 
-        terminal_printf("[INFO]: Keyboard is initialized!\n");
-        terminal_printf("%s", "[ADAMANTINE]: ");
+        tty_puts("[INFO]: Keyboard is initialized!\n");
 
+        tty_puts("[ADAMANTINE]: ");
+        tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
+        
         init = true;
     }
 }
@@ -125,9 +130,9 @@ keyboard_handler(void)
     {
         // Check for Escape:
         if (scancode == KEYBOARD_KEY_DOWN_ESCAPE)
-            terminal_printf("Cannot exit from current mode!\n[ADAMANTINE]: ");
+            tty_puts("Cannot exit from current mode!\n[ADAMANTINE]: ");
         if ((scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_RIGHT))
-            terminal_printf("[WindowsKey]: ");
+            tty_puts("[WindowsKey]: ");
 
         // Check for Left Shift:
         if ((scancode == KEYBOARD_KEY_DOWN_LEFT_SHIFT) || (scancode == KEYBOARD_KEY_DOWN_RIGHT_SHIFT))
@@ -158,20 +163,23 @@ keyboard_handler(void)
             shift_press = !shift_press;
         
         if ((ctrl_press) && (scancode == KEYBOARD_KEY_DOWN_S))
-            terminal_printf("Nothing to save!\n%s", "[ADAMANTINE]: ");
+        {
+            tty_puts("Nothing to save!\n");
+            tty_puts("[ADAMANTINE]: ");
+        }
         else if ((system_press) && (scancode == KEYBOARD_KEY_DOWN_W))
-            terminal_printf("System test...\n");
+            tty_puts("System test...\n");
         else if (scancode == KEYBOARD_KEY_DOWN_ENTER)
         {
-            terminal_printf("\n[ADAMANTINE]: ");
+            tty_puts("\n[ADAMANTINE]: ");
         }
         else if (shift_press)
         {
-            terminal_printf("%s", keys_caps[scancode]);
+            tty_puts(keys_caps[scancode]);
         }
         else
         {
-            terminal_printf("%s", keys_normal[scancode]);
+            tty_puts(keys_normal[scancode]);
         }
     }
 }
@@ -203,7 +211,7 @@ keyboard_write_command(uint8_t cmd)
     }
     else
     {
-        terminal_printf("[ERROR]: Keyboard has not been init...\n");
+        tty_printf("[ERROR]: Keyboard has not been init...\n");
     }
 }
 

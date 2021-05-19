@@ -1,5 +1,5 @@
 #include <kernel/x86/descriptor-tables.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/tty.h>
 #include <kernel/pic.h>
 #include <kernel/isr.h>
 #include <string.h>
@@ -38,7 +38,8 @@ init_descriptor_tables(void)
     //init_ldt();
 
     memset(&interrupt_handlers, 0, sizeof(isr_t) * 256);
-    terminal_printf("[INFO]: Descriptor tables initialized!\n");
+    //terminal_printf("[INFO]: Descriptor tables initialized!\n");
+    tty_puts("[INFO]: Descriptor tables initialized!\n");
 }
 
 static void

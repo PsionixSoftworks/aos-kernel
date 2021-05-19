@@ -12,7 +12,7 @@
 
 // Includes go here:
 #include <kernel/memory/memory-util.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/tty.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -40,8 +40,7 @@ mm_init(uint32_t kernel_end)
 	memset((char *)heap_begin, 0, heap_end - heap_begin);
 	pheap_desc = (uint8_t *)malloc(MAX_PAGE_ALLOCS);
 
-	terminal_printf("[INFO]: Memory Module is initialized!\n");
-	terminal_printf("[INFO]: Kernel heap begins at 0x%x\n", last_alloc);
+	tty_puts("[INFO]: Memory Module is initialized!\n");
 }
 
 void *
@@ -80,7 +79,7 @@ malloc(size_t size)
 	nalloc:;
 	if (last_alloc + size + sizeof(alloc_t) >= heap_end) 
 	{
-		terminal_printf("Cannot allocate. Out of memory...\n");
+		tty_puts("Cannot allocate. Out of memory...\n");
 	}
 	alloc_t *alloc = (alloc_t *)last_alloc;
 	alloc->status = 1;

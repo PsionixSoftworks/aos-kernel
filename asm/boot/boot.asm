@@ -39,8 +39,11 @@ _start:
         and esp, 0FFFFFFF0h
         mov [mboot_ptr], ebx
 
-        push ebx
+        ;push ebx
+        mov eax, 0xB8000
+        push eax
         call kmain
+        pop eax
 .hang:  hlt
         jmp .hang
 .end:

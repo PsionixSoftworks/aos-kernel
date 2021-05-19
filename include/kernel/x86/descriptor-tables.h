@@ -1,7 +1,7 @@
 #ifndef _DESCRIPTOR_TABLES_H
 #define _DESCRIPTOR_TABLES_H
 
-#include <adamantine/compiler.h>
+#include <compiler.h>
 #include <stdint.h>
 
 void init_descriptor_tables(void);

@@ -36,9 +36,4 @@ typedef struct aos_system_information
     time_t                  up_time;
 } system_info_t;
 
-#endif
-
-// Declare the global functions used by the kernel:
-void kernel_run(void);						                // The kernel's init function for startup.
-
 #endif	// !_AOS_KERNEL_H

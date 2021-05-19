@@ -12,7 +12,7 @@
 
 #include <kernel/isr.h>
 #include <adamantine/aos-defs.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/tty.h>
 #include <kernel/system/io.h>
 #include <kernel/cpu.h>
 
@@ -49,10 +49,10 @@ fault_handler(registers_t regs)
 {
 	if (regs.int_no < 32) 
 	{
-		terminal_printf("%s, int_no: 0x%X.\n", exception_messages[regs.int_no], regs.int_no);
+		tty_printf("%s, int_no: 0x%X.\n", exception_messages[regs.int_no], regs.int_no);
 		if (regs.err_code)
 		{
-			terminal_printf("ERROR_CODE: 0x%X.\n");
+			tty_printf("ERROR_CODE: 0x%X.\n");
 			cpu_halt();
 		}
 		cpu_halt();

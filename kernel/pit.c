@@ -13,7 +13,7 @@
 #include <kernel/pit.h>
 #include <kernel/isr.h>
 #include <kernel/cpu.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/tty.h>
 #include <kernel/system/io.h>
 
 uint32_t tick = 0;
@@ -41,5 +41,5 @@ pit_init(uint32_t freq)
 	outb(PIT_CHANNEL_0, l);
 	outb(PIT_CHANNEL_0, h);
 
-	terminal_printf("[INFO]: PIT is initialized!\n");
+	tty_puts("[INFO]: PIT is initialized!\n");
 }

@@ -13,7 +13,7 @@
 #include <kernel/cpu.h>
 #include <kernel/cpuid.h>
 #include <adamantine/aos-defs.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/tty.h>
 #include <stdbool.h>
 
 extern uint32_t cpuid_supported(void);
@@ -25,14 +25,16 @@ cpu_init(void)
 	bool is_supported = (cpuid_supported() > 0);
 	if (!is_supported)
 		return;
-	terminal_printf("[INFO]: CPU is initialized!\n");
-	terminal_printf("[INFO]: CPU Manufacturer: %s.\n", cpu_vendor_string());
+	tty_puts("[INFO]: CPU is initialized!\n");
+	tty_puts("[INFO]: CPU Manufacturer: ");
+	tty_puts(cpu_vendor_string());
+	tty_puts("\n");
 }
 
 inline void
 cpu_halt(void) 
 {
-	terminal_printf("System halted...\n");
+	tty_puts("System halted...\n");
 	asm volatile(
 		"cli\n\t"	
 		"hlt\n\t"
@@ -106,6 +108,6 @@ cpu_check_is_supported(void)
 {
 	bool result = cpuid_supported();
 	if (result == false)
-		terminal_printf("[ERROR]: CPUID is not supported!\n");
+		tty_puts("[ERROR]: CPUID is not supported!\n");
 	return (result);
 }

@@ -11,9 +11,11 @@
  */
 
 #include <kernel/system/system.h>
-#include <kernel/system/terminal.h>
 #include <kernel/cpu.h>
+#include <adamantine/tty.h>
+
 #include <string.h>
+#include <stddef.h>
 
 struct system_logger
 {
@@ -54,8 +56,8 @@ handle_dispatched_message(uint8_t severity, char *msg)
     
     if (logger->exit)
     {
-        terminal_printf("System has reached a fatal error and cannot continue execution of the kernel.\n");
-        terminal_printf("We are sorry for the inconvenience.\n");
+        tty_printf("System has reached a fatal error and cannot continue execution of the kernel.\n");
+        tty_printf("We are sorry for the inconvenience.\n");
 
         cpu_halt();
     }
@@ -68,7 +70,7 @@ get_system_log(uint32_t index)
         return "";
     if (index >= 1024)
     {
-        terminal_printf("Error: Logger cannot be a null pointer  (i.e. less than 0 or exceed 1024) or\nexceed 1024 entries at a time...\n");
+        tty_printf("Error: Logger cannot be a null pointer  (i.e. less than 0 or exceed 1024) or\nexceed 1024 entries at a time...\n");
         return "";
     }
     return (logger->message[index]);

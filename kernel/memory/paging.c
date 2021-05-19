@@ -1,5 +1,5 @@
 #include <kernel/memory/paging.h>
-#include <kernel/system/terminal.h>
+#include <adamantine/tty.h>
 #include <kernel/memory/memory-util.h>
 #include <kernel/cpu.h>
 #include <string.h>
@@ -78,7 +78,7 @@ alloc_frame(page_t *page, int is_kernel, int is_writable)
         uint32_t idx = first_frame();
         if (idx == (uint32_t)-1)
         {
-            terminal_printf("No free frames!");
+            tty_puts("No free frames!");
         }
         set_frame(idx * 0x1000);
         page->present = 1;
@@ -125,7 +125,7 @@ initialize_paging(void)
 
     switch_page_directory(kernel_directory);
 
-    terminal_printf("[INFO]: Paging is initialized!\n");
+    tty_puts("[INFO]: Paging is initialized!\n");
 }
 
 void
@@ -174,12 +174,15 @@ page_fault(registers_t regs)
     int reserved    = regs.err_code & 0x8;
     // int id          = regs.err_code & 0x10;
 
-    terminal_print("Page fault! ( ");
-    if (present) {terminal_print("present ");}
-    if (rw) {terminal_print("read-only ");}
-    if (us) {terminal_print("user-mode ");}
-    if (reserved) {terminal_print("reserved ");}
-    terminal_printf(") at 0x%X\n", faulting_address);
+    tty_puts("Page fault! ( ");
+    if (present) {tty_puts("present ");}
+    if (rw) {tty_puts("read-only ");}
+    if (us) {tty_puts("user-mode ");}
+    if (reserved) {tty_puts("reserved ");}
+    tty_puts(") at 0x");
+    char buffer[64];
+    tty_puts(itoa(faulting_address, buffer, 16));
+    tty_puts("\n");
 
     cpu_halt();
 }
