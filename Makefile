@@ -36,7 +36,7 @@ STDLIB_PATH			:= 	stdlib
 MATH_PATH			:= 	math
 STRING_PATH			:= 	string
 
-ASM_FILES_IN		:=	asm/boot/boot.asm \
+ASM_FILES_IN		:=	asm/boot/boot.S \
 						asm/descriptors.S \
 						asm/interrupt.asm \
 						asm/cpuid.asm
@@ -127,7 +127,7 @@ all: bootloader kernel linker iso clean
 
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
-	$(NASM) asm/boot/boot.asm -o asm/boot/boot.o
+	$(ASM) asm/boot/boot.S -o asm/boot/boot.o
 	$(ASM) asm/descriptors.S -o asm/descriptors.o
 	$(NASM) asm/interrupt.asm -o asm/interrupt.o
 	$(NASM)	asm/cpuid.asm -o asm/cpuid.o

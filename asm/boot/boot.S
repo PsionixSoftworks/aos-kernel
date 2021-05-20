@@ -19,10 +19,26 @@
 
 .set ALIGN,     (1 << 0)
 .set MEM_INFO,  (1 << 1)
-.set GFX_EN,    (1 << 2)
-.set FLAGS,     (ALIGN | MEM_INFO)
+.set GFX_MODE,  (1 << 2)
+.set FLAGS,     ALIGN | MEM_INFO #| GFX_MODE
 .set MAGIC,     (0x1BADB002)
 .set CHECKSUM,  -(MAGIC + FLAGS)
+
+.section .multiboot
+.long  MAGIC
+.long FLAGS
+.long CHECKSUM
+
+.long 0
+.long 0
+.long 0
+.long 0
+.long 0
+
+.long 0
+.long 800
+.long 600
+.long 32
 
 /* Declare the .text section for the entry point and other functions. */
 .section .text
@@ -30,7 +46,10 @@
 .type _start @function
 _start:
     mov $stack_top, %esp
-    call kmain
+    mov $0xB8000, %eax
+    push %eax
+    call k_main
+    pop %eax
 1:  hlt
     jmp 1b
 .size _start, . - _start
