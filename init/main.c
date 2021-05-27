@@ -18,14 +18,13 @@
 extern uint32_t kernel_end;
 
 kernel_t
-k_main(uint16_t *mode)
+k_main(void)
 {
-	tty_init(mode);
-	tty_set_foreground(SYSTEM_COLOR_LT_BLUE);
+	tty_init((uint16_t *)VGA_TEXT_MODE_COLOR);
+	tty_set_foreground(SYSTEM_COLOR_LT_CYAN);
 	tty_cursor_enable(CURSOR_START, CURSOR_END);
 	tty_clear();
 	
-	tty_set_foreground(SYSTEM_COLOR_LT_BLUE);
 	init_descriptor_tables();
 	pit_init(50);
 	mm_init((uint32_t)&kernel_end);					// The cast is mandatory to avoid warnings.

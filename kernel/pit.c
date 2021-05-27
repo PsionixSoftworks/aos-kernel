@@ -23,7 +23,7 @@ timer_callback(registers_t regs)
 {
 	if (!regs.err_code)
 	{
-		tty_printf("Ticks: %d\n", tick++);
+		//tty_printf("Ticks: %d\n", tick++);
 	}
 }
 

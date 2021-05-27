@@ -96,7 +96,6 @@ keyboard_init(void)
         tty_puts("[INFO]: Keyboard is initialized!\n");
 
         tty_puts("[ADAMANTINE]: ");
-        tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
         
         init = true;
     }
