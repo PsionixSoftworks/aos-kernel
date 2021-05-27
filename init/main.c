@@ -21,7 +21,7 @@ kernel_t
 k_main(void)
 {
 	tty_init((uint16_t *)VGA_TEXT_MODE_COLOR);
-	tty_set_foreground(SYSTEM_COLOR_LT_CYAN);
+	tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
 	tty_cursor_enable(CURSOR_START, CURSOR_END);
 	tty_clear();
 	
