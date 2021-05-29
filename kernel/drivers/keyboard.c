@@ -119,7 +119,21 @@ keyboard_set_typematic_byte(void)
 static inline void
 user_input(char *buffer)
 {
-    tty_printf("\nResult: '%s'", buffer);
+    //tty_printf("\nResult: '%s'", buffer);
+
+    char *token = strtok(buffer, " ");
+    while (token != NULL)
+    {
+        if (strcmp(token, "test") == 0)
+        {
+            tty_printf("\nRecognized token: %s", token);
+        }
+        else
+        {
+            tty_printf("\nOutput: %s", token);
+        }
+        token = strtok(NULL, " ");
+    }
 }
 
 static inline void

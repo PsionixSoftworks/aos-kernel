@@ -15,6 +15,8 @@
 #include <compiler.h>
 #include <string.h>
 
+#include <stddef.h>
+
 #define CURSOR_START	0x0
 #define CURSOR_END		0xF
 
