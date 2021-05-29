@@ -1,5 +1,5 @@
-#ifndef _AOS_SIMPLE_MATH_H
-#define _AOS_SIMPLE_MATH_H
+#ifndef _ADAMANTINE_SIMPLE_MATH_H
+#define _ADAMANTINE_SIMPLE_MATH_H
 
 #include <stdint.h>
 
@@ -55,4 +55,4 @@ double quotient4d(double x, double y, double z, double w);
 }
 #endif
 
-#endif  // !_AOS_SIMPLE_MATH_H
+#endif  // !_ADAMANTINE_SIMPLE_MATH_H

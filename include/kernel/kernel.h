@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_KERNEL_H
-#define _AOS_KERNEL_H
+#ifndef _ADAMANTINE_KERNEL_H
+#define _ADAMANTINE_KERNEL_H
 
 // Handle other includes here:
 #include <stdint.h>
@@ -36,4 +36,4 @@ typedef struct aos_system_information
     time_t                  up_time;
 } system_info_t;
 
-#endif	// !_AOS_KERNEL_H
+#endif	// !_ADAMANTINE_KERNEL_H

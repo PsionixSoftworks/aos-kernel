@@ -103,8 +103,6 @@ free(void *mem)
 	alloc->status = 0;
 }
 
-
-
 /* James Molloy... */
 uint32_t
 kmalloc_int(uint32_t size, uint32_t align, uint32_t *physical_address)

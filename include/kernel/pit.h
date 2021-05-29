@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_PIT_H
-#define _AOS_PIT_H
+#ifndef _ADAMANTINE_PIT_H
+#define _ADAMANTINE_PIT_H
 
 #include <stdint.h>
 
@@ -26,4 +26,4 @@ void pit_init(uint32_t fq);
 void pit_install(int hz);
 void pit_wait(int t);
 
-#endif	// !_AOS_PIT_H
+#endif	// !_ADAMANTINE_PIT_H

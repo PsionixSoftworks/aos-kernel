@@ -1,5 +1,5 @@
-#ifndef _AOS_ASSERT_H
-#define _AOS_ASSERT_H
+#ifndef _ADAMANTINE_ASSERT_H
+#define _ADAMANTINE_ASSERT_H
 
 #if defined(__cplusplus)
 extern "C" {
@@ -15,4 +15,4 @@ void __assert(char *msg, char *filename, unsigned int lineno);
 #define assert(msg)     __assert(msg, __FILE__, __LINE__);
 #endif
 
-#endif  // !_AOS_ASSERT_H
+#endif  // !_ADAMANTINE_ASSERT_H

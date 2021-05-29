@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _MEMORY_UTIL_H
-#define _MEMORY_UTIL_H
+#ifndef _ADAMANTINE_MEMORY_UTIL_H
+#define _ADAMANTINE_MEMORY_UTIL_H
 
 #include <stdint.h>
 
@@ -33,4 +33,17 @@ uint32_t	kmalloc_p(uint32_t size_t, uint32_t *physical_address);
 uint32_t	kmalloc_ap(uint32_t size, uint32_t *physical_address);
 uint32_t	kmalloc(uint32_t size);
 
-#endif	// !_MEMORY_UTIL_H
+// Read a value at a given memory location:
+static inline uint32_t
+far_peekl(uint16_t selector, void *offset)
+{
+	uint32_t value = 0;
+	__asm__ ( 	"push %%fs\n\t"
+				"mov %1, %%fs\n\t"
+				"mov %%fs:(%2), %0\n\t"
+				"pop %%fs"
+				: "=r"(value) : "g"(selector), "r"(offset));
+	return value;
+}
+
+#endif	// !_ADAMANTINE_MEMORY_UTIL_H

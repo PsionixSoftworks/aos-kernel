@@ -20,7 +20,7 @@
 #define CURSOR_END		0xF
 
 extern uint32_t kernel_end;
-extern isr_t interrupt_handlers[];
+extern isr_t interrupt_handlers[256];
 
 HOT kernel_t k_main(void);
 

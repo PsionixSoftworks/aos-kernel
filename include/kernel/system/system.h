@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_SYSTEM_H
-#define _AOS_SYSTEM_H
+#ifndef _ADAMANTINE_SYSTEM_H
+#define _ADAMANTINE_SYSTEM_H
 
 // Includes go here:
 #include <stdint.h>
@@ -30,4 +30,4 @@ void system_init(void);
 void handle_dispatched_message(uint8_t severity, char *msg);
 char *get_system_log(uint32_t index);
 
-#endif	// !_AOS_SYSTEM_H
+#endif	// !_ADAMANTINE_SYSTEM_H

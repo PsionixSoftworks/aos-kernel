@@ -1,5 +1,5 @@
-#ifndef _AOS_STDBOOL_H
-#define _AOS_STDBOOL_H      1
+#ifndef _ADAMANTINE_STDBOOL_H
+#define _ADAMANTINE_STDBOOL_H      1
 
 #ifndef BOOLEAN_OPS
 #ifndef FALSE
@@ -15,4 +15,4 @@
 typedef enum { false, true } bool;
 #endif
 
-#endif  // !_AOS_STDBOOL_H
+#endif  // !_ADAMANTINE_STDBOOL_H

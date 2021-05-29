@@ -1,5 +1,5 @@
-#ifndef _AOS_KEYBOARD_H
-#define _AOS_KEYBOARD_H
+#ifndef _ADAMANTINE_KEYBOARD_H
+#define _ADAMANTINE_KEYBOARD_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -14,4 +14,4 @@ bool keyboard_key_down(uint8_t key);
 bool keyboard_key_up(uint8_t key);
 bool keyboard_key_press(uint8_t key);
 
-#endif  // !_AOS_KEYBOARD_H
+#endif  // !_ADAMANTINE_KEYBOARD_H

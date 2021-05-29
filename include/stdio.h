@@ -1,5 +1,5 @@
-#ifndef _AOS_STDIO_H
-#define _AOS_STDIO_H        1
+#ifndef _ADAMANTINE_STDIO_H
+#define _ADAMANTINE_STDIO_H        1
 
 #if defined(__cplusplus)
 extern "C" {
@@ -13,4 +13,4 @@ int puts(const char *);
 }
 #endif
 
-#endif  // !_AOS_STDIO_H
+#endif  // !_ADAMANTINE_STDIO_H

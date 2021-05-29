@@ -1,5 +1,5 @@
-#ifndef _AOS_MESSAGE_DISPATCHER_H
-#define _AOS_MESSAGE_DISPATCHER_H
+#ifndef _ADAMANTINE_MESSAGE_DISPATCHER_H
+#define _ADAMANTINE_MESSAGE_DISPATCHER_H
 
 #include <stdint.h>
 #include <adamantine/aos-defs.h>

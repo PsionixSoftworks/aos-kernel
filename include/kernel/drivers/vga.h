@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_VGA_H
-#define _AOS_VGA_H
+#ifndef _ADAMANTINE_VGA_H
+#define _ADAMANTINE_VGA_H
 
 #include <compiler.h>
 #include <stdint.h>
@@ -103,4 +103,4 @@ void vga_init(enum video_mode vmode);
 void vga_clear_screen(void);
 uint16_t find_mode(int x, int y, int d);
 
-#endif  // !_AOS_VGA_H
+#endif  // !_ADAMANTINE_VGA_H

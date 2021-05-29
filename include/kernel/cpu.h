@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_CPU_H
-#define _AOS_CPU_H
+#ifndef _ADAMANTINE_CPU_H
+#define _ADAMANTINE_CPU_H
 
 #include <stdint.h>
 
@@ -23,4 +23,4 @@ void cpu_set_interrupts(void);
 char *cpu_vendor_string(void);              // Gets the CPU vendor in char * format.
 uint32_t cpu_check_is_supported(void);      // Checks if the current CPU architecture is supported.
 
-#endif	// !_AOS_CPU_H
+#endif	// !_ADAMANTINE_CPU_H

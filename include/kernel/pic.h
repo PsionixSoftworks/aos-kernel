@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_PIC_H
-#define _AOS_PIC_H
+#ifndef _ADAMANTINE_PIC_H
+#define _ADAMANTINE_PIC_H
 
 // Includes go here:
 #include <stdint.h>
@@ -52,4 +52,4 @@ uint16_t pic_get_irr(void);						                // Get (IRR?).
 uint16_t pic_get_isr(void);						                // Get the interrupt service routine.
 uint16_t pic_get_irq_register(int8_t ocw3);				        // Get the irq registers.
 
-#endif	// !_AOS_PIC_H
+#endif	// !_ADAMANTINE_PIC_H

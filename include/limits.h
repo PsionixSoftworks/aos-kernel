@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_LIMITS_H
-#define _AOS_LIMITS_H
+#ifndef _ADAMANTINE_LIMITS_H
+#define _ADAMANTINE_LIMITS_H
 
 /* size of "char" type. */
 #define SIGNED_CHAR_SIZE_MIN                0x7F - 0xFF
@@ -57,4 +57,4 @@
 #define UINT32_SIZE_MIN                      UNSIGNED_INT_SIZE_MIN  
 #define UINT32_SIZE_MAX                      UNSIGNED_INT_SIZE_MAX
 
-#endif  // !_AOS_LIMITS_H
+#endif  // !_ADAMANTINE_LIMITS_H

@@ -12,12 +12,12 @@
 
 #include <kernel/irq.h>
 
-uint8_t 
+bool 
 are_interrupts_enabled(void) 
 {
     unsigned long flags;
     asm volatile 
-    ( 
+    (
         "PUSHF\n\t"
         "POP %0"
         : "=g"(flags)
@@ -32,7 +32,7 @@ irq_disable(void)
     unsigned long flags;
     asm volatile
     (
-        "PUSHF\n\tCLI\n\tPOP %0" : "=r"(flags) : : "memory"
+        "pushf\n\tCLI\n\pop %0" : "=r"(flags) : : "memory"
     );
 
     return (flags);
@@ -42,7 +42,7 @@ void
 irq_restore(unsigned long flags) {
     asm volatile
     (
-        "PUSH %0\n\tPOPF" : : "rm"(flags) : "memory", "cc"
+        "push %0\n\popf" : : "rm"(flags) : "memory", "cc"
     );
 }
 
@@ -51,6 +51,6 @@ clear_interrupts(void)
 {
     asm volatile
     (
-        "CLI\n\t"
+        "cli\n\t"
     );
 }

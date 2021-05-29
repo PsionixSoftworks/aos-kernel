@@ -1,5 +1,5 @@
-#ifndef _AOS_STRING_H
-#define _AOS_STRING_H       1
+#ifndef _ADAMANTINE_STRING_H
+#define _ADAMANTINE_STRING_H       1
 
 #include <stdint.h>
 
@@ -30,4 +30,4 @@ size_t strcspn(const char *s1, const char *s2);
 }
 #endif
 
-#endif  // !_AOS_STRING_H
+#endif  // !_ADAMANTINE_STRING_H

@@ -13,33 +13,33 @@
 #include <kernel/isr.h>
 #include <adamantine/aos-defs.h>
 #include <adamantine/tty.h>
-#include <kernel/system/io.h>
+#include <kernel/system/ioctrl.h>>
 #include <kernel/cpu.h>
 
 char *exception_messages[] =
 {
-	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",
-	"AOS_INTERRUPT Raised! : [Single-Step Interrupt Exception]",
-	"AOS_INTERRUPT Raised! : [Non-Maskable Interrupt Exception]",
-	"AOS_INTERRUPT Raised! : [Breakpoint Exception]",
-	"AOS_INTERRUPT Raised! : [Detected Overflow Exception]",
-	"AOS_INTERRUPT Raised! : [Out Of Bounds Exception]",
-	"AOS_INTERRUPT Raised! : [Invalid Opcode Exception]",
-	"AOS_INTERRUPT Raised! : [No Available Coprocessor Exception]",
-	"AOS_INTERRUPT Raised! : [Double Fault Exception]",
-	"AOS_INTERRUPT Raised! : [Coprocessor Segment Overrun Exception]",
-	"AOS_INTERRUPT Raised! : [Invalid TSS Exception]",
-	"AOS_INTERRUPT Raised! : [Segment Not Present Exception]",
-	"AOS_INTERRUPT Raised! : [Stack Fault Exception]",
-	"AOS_INTERRUPT Raised! : [General Protection Fault Exception]",
-	"AOS_INTERRUPT Raised! : [Page Fault Exception]",
-	"AOS_INTERRUPT Raised! : [Reserved Interrupt Exception]",
-	"AOS_INTERRUPT Raised! : [Math Fault Exception]",
-	"AOS_INTERRUPT Raised! : [Alignment Check Exception]",
-	"AOS_INTERRUPT Raised! : [Machine Check Exception]",
-	"AOS_INTERRUPT Raised! : [SIMD Floating-Point Exception]",
-	"AOS_INTERRUPT Raised! : [Virtualization Exception]",
-	"AOS_INTERRUPT Raised! : [Control Protection Exception]",
+	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",				// int $0x00
+	"AOS_INTERRUPT Raised! : [Single-Step Interrupt Exception]",		// int $0x01
+	"AOS_INTERRUPT Raised! : [Non-Maskable Interrupt Exception]",		// int $0x02
+	"AOS_INTERRUPT Raised! : [Breakpoint Exception]",					// int $0x03
+	"AOS_INTERRUPT Raised! : [Detected Overflow Exception]",			// int $0x04
+	"AOS_INTERRUPT Raised! : [Out Of Bounds Exception]",				// int $0x05
+	"AOS_INTERRUPT Raised! : [Invalid Opcode Exception]",				// int $0x06
+	"AOS_INTERRUPT Raised! : [No Available Coprocessor Exception]",		// int $0x07
+	"AOS_INTERRUPT Raised! : [Double Fault Exception]",					// int $0x08
+	"AOS_INTERRUPT Raised! : [Coprocessor Segment Overrun Exception]",	// int $0x09
+	"AOS_INTERRUPT Raised! : [Invalid TSS Exception]",					// int $0x0A
+	"AOS_INTERRUPT Raised! : [Segment Not Present Exception]",			// int $0x0B
+	"AOS_INTERRUPT Raised! : [Stack Fault Exception]",					// int $0x0C
+	"AOS_INTERRUPT Raised! : [General Protection Fault Exception]",		// int $0x0D
+	"AOS_INTERRUPT Raised! : [Page Fault Exception]",					// int $0x0E
+	"AOS_INTERRUPT Raised! : [Reserved Interrupt Exception]",			// int $0x0F
+	"AOS_INTERRUPT Raised! : [Math Fault Exception]",					// int $0x10
+	"AOS_INTERRUPT Raised! : [Alignment Check Exception]",				// int $0x11
+	"AOS_INTERRUPT Raised! : [Machine Check Exception]",				// int $0x12
+	"AOS_INTERRUPT Raised! : [SIMD Floating-Point Exception]",			// int $0x13
+	"AOS_INTERRUPT Raised! : [Virtualization Exception]",				// int $0x14
+	"AOS_INTERRUPT Raised! : [Control Protection Exception]",			// int $0x15
 };
 
 isr_t interrupt_handlers[256];

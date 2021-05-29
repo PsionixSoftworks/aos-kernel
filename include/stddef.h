@@ -1,5 +1,5 @@
-#ifndef _AOS_STDDEF_H
-#define _AOS_STDDEF_H       1
+#ifndef _ADAMANTINE_STDDEF_H
+#define _ADAMANTINE_STDDEF_H       1
 
 #ifndef NULL
 #if !defined(__cplusplus)
@@ -9,4 +9,4 @@
 #endif
 #endif
 
-#endif  // !_AOS_STDDEF_H
+#endif  // !_ADAMANTINE_STDDEF_H

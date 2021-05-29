@@ -1,5 +1,5 @@
-#ifndef _PAGING_H
-#define _PAGING_H
+#ifndef _ADAMANTINE_PAGING_H
+#define _ADAMANTINE_PAGING_H
 
 #include <stdint.h>
 #include <kernel/isr.h>
@@ -32,4 +32,4 @@ void switch_page_directory(page_directory_t *dir);
 page_t *get_page(uint32_t address, int make, page_directory_t *dir);
 void page_fault(registers_t regs);
 
-#endif  //!_PAGING_H
+#endif  //!_ADAMANTINE_PAGING_H

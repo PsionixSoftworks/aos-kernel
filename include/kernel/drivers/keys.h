@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_KEYS_H
-#define _AOS_KEYS_H
+#ifndef _ADAMANTINE_KEYS_H
+#define _ADAMANTINE_KEYS_H
 
 // Define the keys for down state:
 #ifndef KEYBOARD_KEY_DOWN
@@ -196,4 +196,4 @@
 #define KEYBOARD_KEY_UP_WINDOWS_KEY_LEFT						0xDB
 #define KEYBOARD_KEY_UP_WINDOWS_KEY_RIGHT						0xDC
 #endif	// KEYBOARD_KEY_UP
-#endif 	// !_AOS_KEYS_H
+#endif 	// !_ADAMANTINE_KEYS_H

@@ -1,5 +1,5 @@
-#ifndef _AOS_STDARG_H
-#define _AOS_STDARG_H       1
+#ifndef _ADAMANTINE_STDARG_H
+#define _ADAMANTINE_STDARG_H       1
 
 #ifndef _VA_LIST_DEFINED
 #define _VA_LIST_DEFINED
@@ -12,4 +12,4 @@ typedef char *va_list;
 #define va_arg(ap, t)   (*(t *)((ap += _INTSIZEOF(t)) - _INTSIZEOF(t)))
 #define va_end(ap)      (ap = (va_list) 0)
 
-#endif  // !_AOS_STDARG_H
+#endif  // !_ADAMANTINE_STDARG_H

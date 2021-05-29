@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_CPUID_H
-#define _AOS_CPUID_H
+#ifndef _ADAMANTINE_CPUID_H
+#define _ADAMANTINE_CPUID_H
 
 #include <stdint.h>
 
@@ -110,4 +110,4 @@ uint32_t cpuid(void);
 uint32_t cpuid_string(uint32_t code, uint32_t *Location);
 char * cpuid_is_supported(void);
 
-#endif  // !_AOS_CPUID_H
+#endif  // !_ADAMANTINE_CPUID_H

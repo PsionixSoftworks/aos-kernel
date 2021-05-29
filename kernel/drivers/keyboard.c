@@ -1,6 +1,6 @@
 #include <kernel/drivers/keyboard.h>
 #include <kernel/drivers/keys.h>
-#include <kernel/system/io.h>
+#include <kernel/system/ioctrl.h>>
 #include <adamantine/tty.h>
 #include <kernel/drivers/vga.h>
 #include <kernel/isr.h>

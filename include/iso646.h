@@ -1,5 +1,5 @@
-#ifndef _AOS_ISO646_H
-#define _AOS_ISO646_H       1
+#ifndef _ADAMANTINE_ISO646_H
+#define _ADAMANTINE_ISO646_H       1
 
 #ifndef OPS
 #define OPS
@@ -16,4 +16,4 @@
 #define compl       ~
 #endif
 
-#endif  // !_AOS_ISO646_H
+#endif  // !_ADAMANTINE_ISO646_H

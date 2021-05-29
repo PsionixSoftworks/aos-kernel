@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef _AOS_ISR_H
-#define _AOS_ISR_H
+#ifndef _ADAMANTINE_ISR_H
+#define _ADAMANTINE_ISR_H
 
 #include <stdint.h>
 
@@ -47,4 +47,4 @@ typedef struct registers
 typedef void(*isr_t)(registers_t);
 void register_interrupt_handler(uint8_t n, isr_t handler);
 
-#endif	// !_AOS_ISR_H
+#endif	// !_ADAMANTINE_ISR_H

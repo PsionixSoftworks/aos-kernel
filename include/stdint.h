@@ -1,5 +1,5 @@
-#ifndef _AOS_STDINT_H
-#define _AOS_STDINT_H       1
+#ifndef _ADAMANTINE_STDINT_H
+#define _ADAMANTINE_STDINT_H       1
 
 #include <limits.h>
 
@@ -20,4 +20,4 @@ typedef unsigned long   size_t;
 typedef int             intptr_t;
 typedef unsigned int    uintptr_t;
 
-#endif  // !_AOS_STDINT_H
+#endif  // !_ADAMANTINE_STDINT_H

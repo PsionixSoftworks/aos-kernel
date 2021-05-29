@@ -10,14 +10,15 @@
  *
  */
 
-#ifndef _AOS_IRQ_H
-#define _AOS_IRQ_H
+#ifndef _ADAMANTINE_IRQ_H
+#define _ADAMANTINE_IRQ_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
-uint8_t are_interrupts_enabled(void);
+bool are_interrupts_enabled(void);
 unsigned long irq_disable(void);
 void irq_restore(unsigned long flags);
 void clear_interrupts(void);
 
-#endif  // !_AOS_IRQ_H
+#endif  // !_ADAMANTINE_IRQ_H

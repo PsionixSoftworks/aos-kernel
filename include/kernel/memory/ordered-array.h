@@ -1,5 +1,5 @@
-#ifndef _ORDERED_ARRAY_H
-#define _ORDERED_ARRAY_H
+#ifndef _ADAMANTINE_ORDERED_ARRAY_H
+#define _ADAMANTINE_ORDERED_ARRAY_H
 
 #include <stdint.h>
 
@@ -22,4 +22,4 @@ void insert_ordered_array(type_t item, ordered_array_t *array);
 type_t lookup_ordered_array(uint32_t i, ordered_array_t *array);
 void remove_ordered_array(uint32_t i, ordered_array_t *array);
 
-#endif  // !_ORDERED_ARRAY_H
+#endif  // !_ADAMANTINE_ORDERED_ARRAY_H

@@ -1,5 +1,5 @@
-#ifndef _AOS_STDLIB_H
-#define _AOS_STDLIB_H       1
+#ifndef _ADAMANTINE_STDLIB_H
+#define _ADAMANTINE_STDLIB_H       1
 
 #include <stdint.h>
 
@@ -19,4 +19,4 @@ char *itoa(int value, char * str, int base);
 }
 #endif
 
-#endif  // !_AOS_STDLIB_H
+#endif  // !_ADAMANTINE_STDLIB_H
