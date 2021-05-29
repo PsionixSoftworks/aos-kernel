@@ -46,6 +46,8 @@ tty_clear(void)
 	for (size_t i = 0; i < TERMINAL_HEIGHT * TERMINAL_WIDTH; ++i)
 	{
 		tty.mode_addr[i] = ' ' | color << 8;
+		tty.x = 0;
+		tty.y = 0;
 	}
 }
 

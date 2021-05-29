@@ -116,23 +116,71 @@ keyboard_set_typematic_byte(void)
     outb(KEYBOARD_DATA, 0);
 }
 
+const char *cmd_list[] =
+{
+    "adm",
+    "push",
+    "pop",
+    "ccmd",
+    "decl",
+    "pout",
+    "clear",
+};
+
+static inline bool
+process_commands(char *cmd)
+{
+    for (size_t i = 0; i < 7; i++)
+    {
+        if (strcmp(cmd, cmd_list[i]) == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+static inline void
+pout(void)
+{
+    tty_printf("\nPrint Out!\n");
+}
+
 static inline void
 user_input(char *buffer)
 {
-    //tty_printf("\nResult: '%s'", buffer);
-
     char *token = strtok(buffer, " ");
     while (token != NULL)
     {
-        if (strcmp(token, "test") == 0)
+        if (process_commands(token) == true)
+        {
+            if (strcmp(token, "pout") == 0)
+            {
+                pout();
+            }
+            else if (strcmp(token, "clear") == 0)
+            {
+                tty_clear();
+            }
+            else
+            {
+                tty_printf("\nRecognized Token: %s\n", token);
+            }
+        }
+        else
+        {
+            tty_printf("\nError: Unrcognized token '%s'\n", token);
+        }
+        token = strtok(NULL, " ");
+
+        /*if (strcmp(token, "test") == 0)
         {
             tty_printf("\nRecognized token: %s", token);
         }
         else
         {
             tty_printf("\nOutput: %s", token);
-        }
-        token = strtok(NULL, " ");
+        }*/
     }
 }
 
@@ -199,7 +247,7 @@ keyboard_handler(void)
                 user_input(key_buffer);
                 key_buffer[0] = '\0';
             }
-            tty_puts("\n[ADAMANTINE]: ");
+            tty_puts("[ADAMANTINE]: ");
         }
         else if (shift_press)
         {
