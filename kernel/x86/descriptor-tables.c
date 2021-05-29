@@ -4,29 +4,24 @@
 #include <kernel/isr.h>
 #include <string.h>
 
-extern void gdt_flush(uint32_t);
-extern void idt_flush(uint32_t);
-//extern void ldt_flush(uint32_t);
-
 static void init_gdt(void);
-//static void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
 static void init_idt(void);
 static void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
-//static void init_ldt(void);
-//static void ldt_set_gate(uint32_t, uint8_t, uint8_t);
+static void init_ldt(void);
+static void ldt_set_gate(uint32_t, uint8_t, uint8_t);
 
 gdt_entry_t gdt_entries[5];
 gdt_ptr_t gdt_ptr;
 idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
-//ldt_entry_t ldt_entries[2];
-//ldt_ptr_t ldt_ptr;
+ldt_entry_t ldt_entries[2];
+ldt_ptr_t ldt_ptr;
 
 extern isr_t interrupt_handlers[];
 
 static inline void gdt_set_null_segment(void);
-static inline void gdt_set_code_segment(void);
-static inline void gdt_set_data_segment(void);
+static inline void gdt_set_kernel_code_segment(void);
+static inline void gdt_set_kernel_data_segment(void);
 static inline void gdt_set_user_code_segment(void);
 static inline void gdt_set_user_data_segment(void);
 
@@ -35,10 +30,8 @@ init_descriptor_tables(void)
 {
     init_gdt();
     init_idt();
-    //init_ldt();
 
     memset(&interrupt_handlers, 0, sizeof(isr_t) * 256);
-    //terminal_printf("[INFO]: Descriptor tables initialized!\n");
     tty_puts("[INFO]: Descriptor tables initialized!\n");
 }
 
@@ -48,40 +41,38 @@ init_gdt(void)
     gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
     gdt_ptr.base = (uint32_t)&gdt_entries;
 
+    init_ldt();
+
     gdt_set_null_segment();
-    gdt_set_code_segment();
-    gdt_set_data_segment();
+    gdt_set_kernel_code_segment();
+    gdt_set_kernel_data_segment();
     gdt_set_user_code_segment();
     gdt_set_user_data_segment();
 
-    gdt_flush((uint32_t)&gdt_ptr);
+    __asm__ volatile ( "lgdt (%0)" : : "m"(gdt_ptr));
+    __asm__ volatile (
+        "   movw $0x10, %ax     \n \
+            movw %ax, %ds       \n \
+            movw %ax, %es       \n \
+            movw %ax, %fs       \n \
+            movw %ax, %gs       \n \
+            movw %ax, %ss       \n \
+            ljmp $0x08, $flush  \n \
+            flush: "
+    );
 }
 
-/*static void
-gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
-{
-    gdt_entries[num].base_low       = (base & 0xFFFF);
-    gdt_entries[num].base_middle    = (base >> 16) & 0xFF;
-    gdt_entries[num].base_high      = (base >> 24) & 0xFF;
-
-    gdt_entries[num].limit_low      = (limit & 0xFFFF);
-    gdt_entries[num].granularity    = (limit >> 16) & 0x0F;
-
-    gdt_entries[num].granularity    |= gran & 0xF0;
-    gdt_entries[num].access         = access;
-}*/
-
 /* This is a test for the Local Descriptor Table and may be changed or removed at any time. \/\/ */
-/*void
+void
 init_ldt(void)
 {
     ldt_ptr.limit = sizeof(ldt_entry_t) - 1;
     ldt_ptr.base = (uint32_t)&ldt_entries;
 
     ldt_set_gate(0, 0, 0);
-    ldt_set_gate(1, 2, 10);
+    ldt_set_gate(1, 2, 0xA);
 
-    ldt_flush((uint32_t)&ldt_ptr);
+    __asm__ volatile ("lldt (%0)" : : "m"(ldt_ptr));
 }
 
 static void
@@ -89,7 +80,7 @@ ldt_set_gate(uint32_t num, uint8_t table, uint8_t rpl)
 {
     ldt_entries[num].table = table;
     ldt_entries[num].rpl = rpl;
-}*/
+}
 /* This is a test for the Local Descriptor Table and may be changed or removed at any time. ^^ */
 
 void
@@ -101,7 +92,7 @@ init_idt(void)
     memset(&idt_entries, 0, sizeof(idt_entry_t) * 256);
 
     pic_remap();
-    
+
     idt_set_gate(0, (uint32_t)isr0, 0x08, 0x8E);
     idt_set_gate(1, (uint32_t)isr1, 0x08, 0x8E);
     idt_set_gate(2, (uint32_t)isr2, 0x08, 0x8E);
@@ -151,7 +142,7 @@ init_idt(void)
     idt_set_gate(46, (uint32_t)irq14, 0x08, 0x8E);
     idt_set_gate(47, (uint32_t)irq15, 0x08, 0x8E);
     
-    idt_flush((uint32_t)&idt_ptr);
+    __asm__ volatile ( "lidt (%0)" : : "m"(idt_ptr) );
 }
 
 static void
@@ -163,7 +154,7 @@ idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags)
     idt_entries[num].sel        = sel;
     idt_entries[num].always0    = 0;
 
-    idt_entries[num].flags      = flags /* | 0x60 */;
+    idt_entries[num].flags      = flags | 0x60;
 }
 
 static inline void
@@ -178,7 +169,7 @@ gdt_set_null_segment(void)
 }
 
 static inline void
-gdt_set_code_segment(void)
+gdt_set_kernel_code_segment(void)
 {
     gdt_entries[1].base_low     = 0x00;
     gdt_entries[1].base_middle  = 0x00;
@@ -189,7 +180,7 @@ gdt_set_code_segment(void)
 }
 
 static inline void
-gdt_set_data_segment(void)
+gdt_set_kernel_data_segment(void)
 {
     gdt_entries[2].base_low     = 0x00;
     gdt_entries[2].base_middle  = 0x00;

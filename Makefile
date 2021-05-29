@@ -37,7 +37,6 @@ MATH_PATH			:= 	math
 STRING_PATH			:= 	string
 
 ASM_FILES_IN		:=	asm/boot/boot.S \
-						asm/descriptors.S \
 						asm/interrupt.asm \
 						asm/cpuid.asm
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
@@ -79,7 +78,6 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 # Put all input files here separated by a '\':
 OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						asm/cpuid.o \
-						asm/descriptors.o \
 						asm/interrupt.o \
 						asm/math.o \
 						init/main.o \
@@ -128,7 +126,6 @@ all: bootloader kernel linker iso clean
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
 	$(ASM) asm/boot/boot.S -o asm/boot/boot.o
-	$(ASM) asm/descriptors.S -o asm/descriptors.o
 	$(NASM) asm/interrupt.asm -o asm/interrupt.o
 	$(NASM)	asm/cpuid.asm -o asm/cpuid.o
 	$(NASM) asm/math.asm -o asm/math.o
