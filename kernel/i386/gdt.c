@@ -2,31 +2,91 @@
 #include <adamantine/tty.h>
 #include <stddef.h>
 
-static inline void gdt_add_entry(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
+gdt_entry_t gdt_entries[5];
+gdt_ptr_t gdt_ptr;
 
-static gdt_entry_t gdt_entries[5];
+static inline void gdt_set_null_segment(void);
+static inline void gdt_set_kernel_code_segment(void);
+static inline void gdt_set_kernel_data_segment(void);
+static inline void gdt_set_user_code_segment(void);
+static inline void gdt_set_user_data_segment(void);
 
 void
 gdt_init(void)
 {
-	static 	gdt_ptr_t gdt_ptr;
-			gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
-			gdt_ptr.base = (unsigned int)&gdt_entries;
-	gdt_add_entry(0, NULL, NULL, NULL, NULL);
-	gdt_add_entry(1, GDT_MEMORY_START, GDT_MEMORY_END, GDT_KERNEL_CODE, GDT_GRANULARITY);
-	gdt_add_entry(2, GDT_MEMORY_START, GDT_MEMORY_END, GDT_KERNEL_DATA, GDT_GRANULARITY);
-	gdt_add_entry(3, GDT_MEMORY_START, GDT_MEMORY_END, GDT_USER_CODE, GDT_GRANULARITY);
-	gdt_add_entry(4, GDT_MEMORY_START, GDT_MEMORY_END, GDT_USER_DATA, GDT_GRANULARITY);
-	__asm__ volatile ( "lgdt (%0)" : : "m"(gdt_ptr));
+    gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
+    gdt_ptr.base = (uint32_t)&gdt_entries;
 
-	tty_printf("The GDT is installed.\n");
+    gdt_set_null_segment();
+    gdt_set_kernel_code_segment();
+    gdt_set_kernel_data_segment();
+    gdt_set_user_code_segment();
+    gdt_set_user_data_segment();
+
+    __asm__ volatile ( "lgdt (%0)" : : "m"(gdt_ptr));
+    __asm__ volatile (
+        "   movw $0x10, %ax     \n \
+            movw %ax, %ds       \n \
+            movw %ax, %es       \n \
+            movw %ax, %fs       \n \
+            movw %ax, %gs       \n \
+            movw %ax, %ss       \n \
+            ljmp $0x08, $flush  \n \
+            flush: "
+    );
 }
 
 static inline void
-gdt_add_entry(int32_t num, uint32_t gdt_base, uint32_t gdt_limit, uint8_t access, uint8_t gran)
+gdt_set_null_segment(void)
 {
-	gdt_entries[num].base			= (gdt_base 	& 0xFFFF);
-	gdt_entries[num].limit			= (gdt_limit 	& 0xFFFF);
-	gdt_entries[num].granularity	= gran;
-	gdt_entries[num].access			= access;
+    gdt_entries[0].base_low     = 0x00;
+    gdt_entries[0].base_middle  = 0x00;
+    gdt_entries[0].base_high    = 0x00;
+    gdt_entries[0].granularity  = 0x00;
+    gdt_entries[0].access       = 0x00;
+    gdt_entries[0].limit_low    = 0x00;
+}
+
+static inline void
+gdt_set_kernel_code_segment(void)
+{
+    gdt_entries[1].base_low     = 0x00;
+    gdt_entries[1].base_middle  = 0x00;
+    gdt_entries[1].base_high    = 0x00;
+    gdt_entries[1].granularity  = 0xCF;
+    gdt_entries[1].access       = 0x9A;
+    gdt_entries[1].limit_low    = 0xFFFF;
+}
+
+static inline void
+gdt_set_kernel_data_segment(void)
+{
+    gdt_entries[2].base_low     = 0x00;
+    gdt_entries[2].base_middle  = 0x00;
+    gdt_entries[2].base_high    = 0x00;
+    gdt_entries[2].granularity  = 0xCF;
+    gdt_entries[2].access       = 0x92;
+    gdt_entries[2].limit_low    = 0xFFFF;
+}
+
+static inline void
+gdt_set_user_code_segment(void)
+{
+    gdt_entries[3].base_low     = 0x00;
+    gdt_entries[3].base_middle  = 0x00;
+    gdt_entries[3].base_high    = 0x00;
+    gdt_entries[3].granularity  = 0xCF;
+    gdt_entries[3].access       = 0xFA;
+    gdt_entries[3].limit_low    = 0xFFFF;
+}
+
+static inline void
+gdt_set_user_data_segment(void)
+{
+    gdt_entries[4].base_low     = 0x00;
+    gdt_entries[4].base_middle  = 0x00;
+    gdt_entries[4].base_high    = 0x00;
+    gdt_entries[4].granularity  = 0xCF;
+    gdt_entries[4].access       = 0xF2;
+    gdt_entries[4].limit_low    = 0xFFFF;
 }

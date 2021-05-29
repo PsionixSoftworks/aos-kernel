@@ -4,7 +4,9 @@
 #include <adamantine/tty.h>
 #include <kernel/drivers/vga.h>
 
-#include <kernel/x86/descriptor-tables.h>
+#include <i386/gdt.h>
+#include <i386/ldt.h>
+#include <i386/idt.h>
 #include <kernel/pit.h>
 #include <kernel/memory/memory-util.h>
 #include <kernel/memory/paging.h>
@@ -12,12 +14,28 @@
 #include <kernel/drivers/keyboard.h>
 #include <kernel/system/system.h>
 
+#include <string.h>
+
 #define CURSOR_START	0x0
 #define CURSOR_END		0xF
 
 extern uint32_t kernel_end;
+extern isr_t interrupt_handlers[];
 
-kernel_t
+HOT kernel_t k_main(void);
+
+static inline void
+descriptor_tables_init(void)
+{
+	gdt_init();
+	ldt_init();
+	idt_init();
+
+	memset(&interrupt_handlers, 0, sizeof(isr_t) * 256);
+    tty_puts("[INFO]: Descriptor tables initialized!\n");
+}
+
+HOT kernel_t
 k_main(void)
 {
 	tty_init((uint16_t *)VGA_TEXT_MODE_COLOR);
@@ -25,7 +43,7 @@ k_main(void)
 	tty_cursor_enable(CURSOR_START, CURSOR_END);
 	tty_clear();
 	
-	init_descriptor_tables();
+	descriptor_tables_init();
 	pit_init(50);
 	mm_init((uint32_t)&kernel_end);					// The cast is mandatory to avoid warnings.
 	initialize_paging();

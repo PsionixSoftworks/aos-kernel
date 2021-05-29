@@ -42,7 +42,9 @@ ASM_FILES_IN		:=	asm/boot/boot.S \
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(KERNEL_PATH)/tty.c \
 						$(DRIVER_PATH)/vga.c \
-						$(X86_PATH)/descriptor-tables.c \
+						$(KERNEL_PATH)/i386/gdt.c \
+						$(KERNEL_PATH)/i386/ldt.c \
+						$(KERNEL_PATH)/i386/idt.c \
 						$(KERNEL_PATH)/pit.c \
 						$(MEMORY_PATH)/mem-util.c \
 						$(MEMORY_PATH)/paging.c \
@@ -94,7 +96,9 @@ OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						kernel/pic.o \
 						kernel/pit.o \
 						kernel/system/system.o \
-						kernel/x86/descriptor-tables.o \
+						kernel/i386/gdt.o \
+						kernel/i386/ldt.o \
+						kernel/i386/idt.o \
 						kernel/memory/paging.o \
 						stdlib/itoa.o \
 						stdlib/free.o \
@@ -148,7 +152,9 @@ kernel: $(C_FILES_IN)
 	$(CC) $(MEMORY_PATH)/mem-util.c -o $(MEMORY_PATH)/mem-util.o $(C_FLAGS)
 	$(CC) $(SYSTEM_PATH)/system.c -o $(SYSTEM_PATH)/system.o $(C_FLAGS)
 	$(CC) $(SYSTEM_PATH)/cursor.c -o $(SYSTEM_PATH)/cursor.o $(C_FLAGS)
-	$(CC) $(X86_PATH)/descriptor-tables.c -o $(X86_PATH)/descriptor-tables.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/i386/gdt.c -o $(KERNEL_PATH)/i386/gdt.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/i386/ldt.c -o $(KERNEL_PATH)/i386/ldt.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/i386/idt.c -o $(KERNEL_PATH)/i386/idt.o $(C_FLAGS)
 	$(CC) $(MEMORY_PATH)/paging.c -o $(MEMORY_PATH)/paging.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/itoa.c -o $(STDLIB_PATH)/itoa.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/free.c -o $(STDLIB_PATH)/free.o $(C_FLAGS)

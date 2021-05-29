@@ -14,20 +14,22 @@
 
 struct gdt_entry_struct
 {
-	uint16_t limit;
-	uint32_t base;
-	uint8_t access;
-	uint8_t granularity;
+    uint16_t	limit_low;
+    uint16_t    base_low;
+    uint8_t     base_middle;
+    uint8_t     access;
+    uint8_t     granularity;
+    uint8_t     base_high;
 } PACKED;
 typedef struct gdt_entry_struct gdt_entry_t;
 
 struct gdt_ptr_struct
 {
-	unsigned short limit;
-	unsigned int base;
+    uint16_t    limit;
+    uint32_t    base;
 } PACKED;
 typedef struct gdt_ptr_struct gdt_ptr_t;
 
-void gdt_init(void);
+extern void gdt_init(void);
 
 #endif

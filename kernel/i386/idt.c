@@ -1,14 +1,12 @@
 #include <i386/idt.h>
-#include <kernel/pic.h>
 #include <adamantine/tty.h>
+#include <kernel/pic.h>
 #include <string.h>
-
-static void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
 
 idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
 
-extern void idt_flush(uint32_t);
+static inline void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
 
 void
 idt_init(void)
@@ -19,7 +17,7 @@ idt_init(void)
     memset(&idt_entries, 0, sizeof(idt_entry_t) * 256);
 
     pic_remap();
-    
+
     idt_set_gate(0, (uint32_t)isr0, 0x08, 0x8E);
     idt_set_gate(1, (uint32_t)isr1, 0x08, 0x8E);
     idt_set_gate(2, (uint32_t)isr2, 0x08, 0x8E);
@@ -68,12 +66,11 @@ idt_init(void)
     idt_set_gate(45, (uint32_t)irq13, 0x08, 0x8E);
     idt_set_gate(46, (uint32_t)irq14, 0x08, 0x8E);
     idt_set_gate(47, (uint32_t)irq15, 0x08, 0x8E);
-	__asm__ volatile ("lidt (%0)" : : "m"(idt_ptr));
-
-	tty_printf("The IDT is installed.\n");
+    
+    __asm__ volatile ( "lidt (%0)" : : "m"(idt_ptr) );
 }
 
-static void
+static inline void
 idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags)
 {
     idt_entries[num].base_lo    = base & 0xFFFF;
@@ -82,5 +79,5 @@ idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags)
     idt_entries[num].sel        = sel;
     idt_entries[num].always0    = 0;
 
-    idt_entries[num].flags      = flags;
+    idt_entries[num].flags      = flags | 0x60;
 }
