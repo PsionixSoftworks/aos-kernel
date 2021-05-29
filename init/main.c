@@ -1,6 +1,3 @@
-#include <kernel/kernel.h>
-#include <compiler.h>
-
 #include <adamantine/tty.h>
 #include <kernel/drivers/vga.h>
 #include <i386/gdt.h>
@@ -8,19 +5,21 @@
 #include <i386/idt.h>
 #include <kernel/irq.h>
 #include <kernel/pit.h>
-#include <kernel/memory/memory-util.h>
-#include <kernel/memory/paging.h>
 #include <kernel/cpu.h>
 #include <kernel/drivers/keyboard.h>
 #include <kernel/system/system.h>
+#include <kernel/memory/memory-util.h>
+#include <kernel/memory/paging.h>
+#include <kernel/kernel.h>
 
+#include <compiler.h>
 #include <string.h>
 
 #define CURSOR_START	0x0
 #define CURSOR_END		0xF
 
 extern uint32_t kernel_end;
-extern isr_t interrupt_handlers[256];
+extern isr_t interrupt_handlers[MAX_INTERRUPTS];
 
 HOT kernel_t k_main(void);
 

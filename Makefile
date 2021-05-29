@@ -76,7 +76,8 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(STRING_PATH)/strcspn.c \
 						$(STRING_PATH)/strspn.c \
 						$(STRING_PATH)/strtok.c \
-						$(STRING_PATH)/strchr.c 
+						$(STRING_PATH)/strchr.c \
+						$(STRING_PATH)/append.c
 # Put all input files here separated by a '\':
 OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						asm/cpuid.o \
@@ -120,6 +121,7 @@ OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						string/strspn.o \
 						string/strtok.o \
 						string/strchr.o \
+						string/append.o \
 						kernel/message-dispatcher.o
 
 # Compile all of the files into the iso:
@@ -176,7 +178,8 @@ kernel: $(C_FILES_IN)
 	$(CC) $(STRING_PATH)/strspn.c -o $(STRING_PATH)/strspn.o $(C_FLAGS)
 	$(CC) $(STRING_PATH)/strtok.c -o $(STRING_PATH)/strtok.o $(C_FLAGS)
 	$(CC) $(STRING_PATH)/strchr.c -o $(STRING_PATH)/strchr.o $(C_FLAGS)
-	 
+	$(CC) $(STRING_PATH)/append.c -o $(STRING_PATH)/append.o $(C_FLAGS)
+
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)
 	$(LINKER) -o $(BIN) $(OUTPUT_FILES)

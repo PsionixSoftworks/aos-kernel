@@ -17,6 +17,8 @@
 
 #include <stdint.h>
 
+#define MAX_INTERRUPTS		256
+
 #ifndef intn
 #define intn(n) __asm__ volatile ("int $" #n);
 #endif

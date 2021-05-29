@@ -16,7 +16,7 @@
 #include <kernel/system/ioctrl.h>
 #include <kernel/cpu.h>
 
-char *exception_messages[] =
+char *exception_messages[MAX_INTERRUPTS] =
 {
 	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",				// int $0x00
 	"AOS_INTERRUPT Raised! : [Single-Step Interrupt Exception]",		// int $0x01

@@ -14,53 +14,53 @@
 // Nested conditional statement= var = (expr1 == val ? expr2 : expr3);
 
 // Define for normal keys:
-static char *keys_normal[256] = 
+const char keys_normal[256] = 
 {
-	"", "", 															// <None>, <Escape>,
-	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
-	"-", "=", "\b", "\t",												// -, =, <Backspace>, <Tab>,
-	"q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n",	// Q, W, E, R, T, Y, U, I, O, P, [, ], <Enter>,
-	"",																	// <Control>,
-	"a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",				// A, S, D, F, G, H, J, K, L, ;, ',
-	"`", "", "\\",														// `, <Left Shift>, \,
-	"z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "",				// Z, X, C, V, B, N, m, ',', ., /, <Right Shift>, <Alt>
-	"*", "", " ", "",													// *, <Alt>, <Space Bar>, <Caps Lock>,
-	"", "", "", "", "", "", "", "", "", "",								// F1, F2, F3, F4, F5, F6, F7, F8, F9, F10,
-	"", 																// <Numlock (On?)>,
-	"",																	// <Scroll Lock>,
-	"", "", "",															// Numpad 7, Numpad 8, Numpad 9
-	"-", 																// Numpad -,
-	"", "", "",															// Numpad 4, Numpad 5, Numpad 6,
-	"+",																// Numpad +,
-	"", "", "",															// Numpad 1, Numpad 2, Numpad 3,
-	"", "",																// Numpad 0, Numpad Del,
-	"", "", "",															// <NONE>, <NONE>, "<NONE>"
-	"", "",																// <Windows key>, <Windows key>,
+	0x00, 0x00,				                                            // <None>, <Escape>,
+	'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+	'-', '=', '\b', '\t',												// -, =, <Backspace>, <Tab>,
+	'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	// Q, W, E, R, T, Y, U, I, O, P, [, ], <Enter>,
+	0x00,  										                        // <Control>,
+	'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',				// A, S, D, F, G, H, J, K, L, ;, ',
+	'`', 0x00, '\\',    						                        // `, <Left Shift>, \,
+	'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0x00,				// Z, X, C, V, B, N, m, ',', ., /, <Right Shift>, <Alt>
+	'*', 0x00, ' ', 0x00,											    // *, <Alt>, <Space Bar>, <Caps Lock>,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,			// F1, F2, F3, F4, F5, F6, F7, F8, F9, F10,
+	0x00, 																// <Numlock (On?)>,
+	0x00,																// <Scroll Lock>,
+	'7', '8', '9',	    												// Numpad 7, Numpad 8, Numpad 9
+	'-', 																// Numpad -,
+    '4', '5', '6',  													// Numpad 4, Numpad 5, Numpad 6,
+	'+',																// Numpad +,
+	'1', '2', '3',  													// Numpad 1, Numpad 2, Numpad 3,
+	'0', 0x00, 															// Numpad 0, Numpad Del,
+	0x00, 0x00,	0x00,													// <NONE>, <NONE>, "<NONE>"
+	0x00, 0x00,															// <Windows key>, <Windows key>,
 };
 
 // Define for keys when shift is held:
-static char * keys_caps[256] = 
+const char keys_caps[256] = 
 {
-	"", "", 															// <None>, <Escape>,
-	"!", "@", "#", "$", "%", "^", "&", "*", "(", ")",					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
-	"_", "+", "\b", "\t",												// -, =, <Backspace>, <Tab>,
-	"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}", "\n",	// Q, W, E, R, T, Y, U, I, O, P, [, ], <Enter>,
-	"",																	// <Control>,
-	"A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",				// A, S, D, F, G, H, J, K, L, ;, ',
-	"~", "", "|",														// `, <Left Shift>, \,
-	"Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "",				// Z, X, C, V, B, N, m, ',', ., /, <Right Shift>, <Alt>
-	"*", "", " ", "",													// *, <Alt>, <Space Bar>, <Caps Lock>,
-	"", "", "", "", "", "", "", "", "", "",								// F1, F2, F3, F4, F5, F6, F7, F8, F9, F10,
-	"", 																// <Numlock (On?)>,
-	"",																	// <Scroll Lock>,
-	"7", "8", "9",														// Numpad 7, Numpad 8, Numpad 9
-	"-", 																// Numpad -,
-	"4", "5", "6",														// Numpad 4, Numpad 5, Numpad 6,
-	"+",																// Numpad +,
-	"1", "2", "3",														// Numpad 1, Numpad 2, Numpad 3,
-	"0", ".",															// Numpad 0, Numpad Del,
-	"", "", "",															// <NONE>, <NONE>, "<NONE>"
-	"<ADM>", "<ADM>",													// <Windows key>, <Windows key>,
+	0x00, 0x00, 														// <None>, <Escape>,
+	'!', '@', '#', '$', '%', '^', '&', '*', '(', ')',					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+	'_', '+', '\b', '\t',												// -, =, <Backspace>, <Tab>,
+	'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n',	// Q, W, E, R, T, Y, U, I, O, P, [, ], <Enter>,
+	0x00,																// <Control>,
+	'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"',				// A, S, D, F, G, H, J, K, L, ;, ',
+	'~', 0x00, '|',														// `, <Left Shift>, \,
+	'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 0x00,				// Z, X, C, V, B, N, m, ',', ., /, <Right Shift>, <Alt>
+	'*', 0x00, ' ', 0x00,												// *, <Alt>, <Space Bar>, <Caps Lock>,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,			// F1, F2, F3, F4, F5, F6, F7, F8, F9, F10,
+	0x00, 																// <Numlock (On?)>,
+	0x00,																// <Scroll Lock>,
+	'7', '8', '9',														// Numpad 7, Numpad 8, Numpad 9
+	'-', 																// Numpad -,
+	'4', '5', '6',														// Numpad 4, Numpad 5, Numpad 6,
+	'+',																// Numpad +,
+	'1', '2', '3',														// Numpad 1, Numpad 2, Numpad 3,
+	'0', '.',															// Numpad 0, Numpad Del,
+	0x00, 0x00, 0x00,															// <NONE>, <NONE>, "<NONE>"
+	0x00, 0x00,													// <Windows key>, <Windows key>,
 };
 
 static inline void keyboard_handler(void);
@@ -79,15 +79,14 @@ static bool numlock UNUSED;
 static bool capslock UNUSED;
 static bool scrllock UNUSED;
 static char *key_last = NULL;
-
-static volatile char *key_buffer;
+static char key_buffer[256];
 
 void
 keyboard_init(void)
 {
     if (!init)
     {
-        key_buffer = (char *)malloc(sizeof(char *));
+        //key_buffer = (char *)malloc(sizeof(char *));
         //memset(key_buffer, 0, sizeof(char) * 40);
 
         register_interrupt_handler(IRQ1, (isr_t)&keyboard_handler);
@@ -117,7 +116,18 @@ keyboard_set_typematic_byte(void)
     outb(KEYBOARD_DATA, 0);
 }
 
-char keypresses;
+static inline void
+user_input(char *buffer)
+{
+    tty_printf("\nResult: '%s'", buffer);
+}
+
+static inline void
+backspace(char s[])
+{
+    int len = strlen(s);
+    s[len - 1] = '\0';
+}
 
 static inline void
 keyboard_handler(void)
@@ -170,15 +180,33 @@ keyboard_handler(void)
             tty_puts("System test...\n");
         else if (scancode == KEYBOARD_KEY_DOWN_ENTER)
         {
+            if (key_buffer[0] != 0)
+            {
+                user_input(key_buffer);
+                key_buffer[0] = '\0';
+            }
             tty_puts("\n[ADAMANTINE]: ");
         }
         else if (shift_press)
         {
-            tty_puts(keys_caps[scancode]);
+            char c = keys_caps[(int)scancode];
+            char str[2] = {c, '\0'};
+            append(key_buffer, c);
+            tty_puts(str);
         }
         else
         {
-            tty_puts(keys_normal[scancode]);
+            if (scancode == KEYBOARD_KEY_DOWN_BACKSPACE)
+            {
+                backspace(key_buffer);
+                tty_putchar('\b');
+            } else
+            {
+                char c = keys_normal[(int)scancode];
+                char str[2] = {c, '\0'};
+                append(key_buffer, c);
+                tty_puts(str);
+            }
         }
     }
 }
