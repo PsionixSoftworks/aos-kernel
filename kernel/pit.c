@@ -14,7 +14,7 @@
 #include <kernel/isr.h>
 #include <kernel/cpu.h>
 #include <adamantine/tty.h>
-#include <kernel/system/ioctrl.h>>
+#include <kernel/system/ioctrl.h>
 
 uint32_t tick = 0;
 

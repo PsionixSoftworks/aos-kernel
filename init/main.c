@@ -3,10 +3,10 @@
 
 #include <adamantine/tty.h>
 #include <kernel/drivers/vga.h>
-
 #include <i386/gdt.h>
 #include <i386/ldt.h>
 #include <i386/idt.h>
+#include <kernel/irq.h>
 #include <kernel/pit.h>
 #include <kernel/memory/memory-util.h>
 #include <kernel/memory/paging.h>
@@ -48,6 +48,12 @@ k_main(void)
 	mm_init((uint32_t)&kernel_end);					// The cast is mandatory to avoid warnings.
 	initialize_paging();
 	cpu_init();
+
+	unsigned long test = irq_disable();
+	bool i = are_interrupts_enabled();
+	tty_printf("Interrupts Enabled: %d\n", i);
+	irq_restore(test);
+	tty_printf("Interrupts Enabled: %d\n", i);
 
 	keyboard_init();
 	system_init();

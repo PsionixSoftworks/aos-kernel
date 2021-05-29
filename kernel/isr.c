@@ -13,7 +13,7 @@
 #include <kernel/isr.h>
 #include <adamantine/aos-defs.h>
 #include <adamantine/tty.h>
-#include <kernel/system/ioctrl.h>>
+#include <kernel/system/ioctrl.h>
 #include <kernel/cpu.h>
 
 char *exception_messages[] =

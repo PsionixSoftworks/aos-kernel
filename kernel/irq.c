@@ -23,7 +23,7 @@ are_interrupts_enabled(void)
         : "=g"(flags)
     );
 
-    return flags & (0x1 << 0x9);
+    return flags & 0x200;
 }
 
 unsigned long
@@ -32,7 +32,7 @@ irq_disable(void)
     unsigned long flags;
     asm volatile
     (
-        "pushf\n\tCLI\n\pop %0" : "=r"(flags) : : "memory"
+        "pushf\n\tCLI\n\tpop %0" : "=r"(flags) : : "memory"
     );
 
     return (flags);
@@ -42,7 +42,7 @@ void
 irq_restore(unsigned long flags) {
     asm volatile
     (
-        "push %0\n\popf" : : "rm"(flags) : "memory", "cc"
+        "push %0\n\tpopf" : : "rm"(flags) : "memory", "cc"
     );
 }
 
