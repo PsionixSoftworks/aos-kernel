@@ -1,6 +1,8 @@
 #ifndef _ADAMANTINE_TYPES_H
 #define _ADAMANTINE_TYPES_H
 
+#define KERNEL_ONLY
+
 #ifndef _TIME_T_
 #define _TIME_T_
 typedef unsigned long time_t;

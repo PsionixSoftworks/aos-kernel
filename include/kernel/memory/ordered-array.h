@@ -1,6 +1,8 @@
 #ifndef _ADAMANTINE_ORDERED_ARRAY_H
 #define _ADAMANTINE_ORDERED_ARRAY_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 
 typedef void *type_t;

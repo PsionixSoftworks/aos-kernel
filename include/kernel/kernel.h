@@ -13,9 +13,12 @@
 #ifndef _ADAMANTINE_KERNEL_H
 #define _ADAMANTINE_KERNEL_H
 
+#define KERNEL_ONLY
+
 // Handle other includes here:
-#include <stdint.h>
 #include <kernel/system/types.h>
+
+#include <stdint.h>
 
 typedef struct aos_system_information
 {

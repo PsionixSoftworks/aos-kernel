@@ -1,6 +1,8 @@
 #ifndef _ADAMANTINE_CURSOR_H
 #define _ADAMANTINE_CURSOR_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 
 void cursor_enable(uint8_t start, uint8_t end);

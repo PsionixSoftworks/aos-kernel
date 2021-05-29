@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_KEYS_H
 #define _ADAMANTINE_KEYS_H
 
+#define KERNEL_ONLY
+
 // Define the keys for down state:
 #ifndef KEYBOARD_KEY_DOWN
 #define KEYBOARD_KEY_DOWN_NONE									0x00

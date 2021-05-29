@@ -1,6 +1,8 @@
 #ifndef _ADAMANTINE_KEYBOARD_H
 #define _ADAMANTINE_KEYBOARD_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 #include <stdbool.h>
 

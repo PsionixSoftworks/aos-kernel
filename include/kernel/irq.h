@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_IRQ_H
 #define _ADAMANTINE_IRQ_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 #include <stdbool.h>
 

@@ -49,12 +49,6 @@ k_main(void)
 	initialize_paging();
 	cpu_init();
 
-	unsigned long test = irq_disable();
-	bool i = are_interrupts_enabled();
-	tty_printf("Interrupts Enabled: %d\n", i);
-	irq_restore(test);
-	tty_printf("Interrupts Enabled: %d\n", i);
-
 	keyboard_init();
 	system_init();
 }

@@ -1,6 +1,8 @@
 #ifndef _ADAMANTINE_GDT_H
 #define _ADAMANTINE_GDT_H
 
+#define KERNEL_ONLY
+
 #include <compiler.h>
 #include <stdint.h>
 

@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_SYSTEM_H
 #define _ADAMANTINE_SYSTEM_H
 
+#define KERNEL_ONLY
+
 // Includes go here:
 #include <stdint.h>
 

@@ -1,6 +1,8 @@
 #ifndef _ADAMANTINE_PAGING_H
 #define _ADAMANTINE_PAGING_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 #include <kernel/isr.h>
 

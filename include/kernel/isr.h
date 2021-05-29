@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_ISR_H
 #define _ADAMANTINE_ISR_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 
 #ifndef intn

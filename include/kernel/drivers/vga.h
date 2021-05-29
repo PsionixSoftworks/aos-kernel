@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_VGA_H
 #define _ADAMANTINE_VGA_H
 
+#define KERNEL_ONLY
+
 #include <compiler.h>
 #include <stdint.h>
 

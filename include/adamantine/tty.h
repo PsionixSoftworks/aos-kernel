@@ -1,6 +1,8 @@
 #ifndef _ADAMANTINE_TTY_H
 #define _ADAMANTINE_TTY_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 
 #define CURSOR_CMD		0x3D4

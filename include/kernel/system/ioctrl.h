@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_IOCTRL_H
 #define _ADAMANTINE_IOCTRL_H
 
+#define KERNEL_ONLY
+
 // Include files go here:
 #include <stdint.h>
 

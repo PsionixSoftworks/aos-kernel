@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_CPU_H
 #define _ADAMANTINE_CPU_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 
 void cpu_init(void);                        // Initialize the CPU.

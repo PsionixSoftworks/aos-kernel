@@ -1,6 +1,8 @@
 #ifndef _ADAMANTINE_ASSERT_H
 #define _ADAMANTINE_ASSERT_H
 
+#define KERNEL_ONLY
+
 #if defined(__cplusplus)
 extern "C" {
 #endif

@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_PIT_H
 #define _ADAMANTINE_PIT_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 
 #define PIT_BASE_FREQ       0x1234DC

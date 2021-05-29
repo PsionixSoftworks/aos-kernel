@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_CPUID_H
 #define _ADAMANTINE_CPUID_H
 
+#define KERNEL_ONLY
+
 #include <stdint.h>
 
 enum cpuid_requests 

@@ -13,6 +13,8 @@
 #ifndef _ADAMANTINE_PIC_H
 #define _ADAMANTINE_PIC_H
 
+#define KERNEL_ONLY
+
 // Includes go here:
 #include <stdint.h>
 
