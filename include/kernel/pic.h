@@ -46,12 +46,12 @@
 #endif
 
 // Declare global functions:
-void pic_send_eoi(uint8_t irq);					                // Send the end of instruction to the PIC.
-void pic_remap(void);		                                    // Remap PIC.
-void irq_set_mask(uint8_t irq_Line);			                // Set the irq mask.
-void irq_clear_mask(uint8_t irq_Line);			                // Clear the irq mask.
-uint16_t pic_get_irr(void);						                // Get (IRR?).
-uint16_t pic_get_isr(void);						                // Get the interrupt service routine.
-uint16_t pic_get_irq_register(int8_t ocw3);				        // Get the irq registers.
+extern void pic_send_eoi(uint8_t irq);					                // Send the end of instruction to the PIC.
+extern void pic_remap(void);		                                    // Remap PIC.
+extern void irq_set_mask(uint8_t irq_Line);			                // Set the irq mask.
+extern void irq_clear_mask(uint8_t irq_Line);			                // Clear the irq mask.
+extern uint16_t pic_get_irr(void);						                // Get (IRR?).
+extern uint16_t pic_get_isr(void);						                // Get the interrupt service routine.
+extern uint16_t pic_get_irq_register(int8_t ocw3);				        // Get the irq registers.
 
 #endif	// !_ADAMANTINE_PIC_H

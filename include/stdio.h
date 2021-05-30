@@ -1,16 +1,10 @@
 #ifndef _ADAMANTINE_STDIO_H
 #define _ADAMANTINE_STDIO_H        1
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
+#include <adamantine/aos-defs.h>
 
-int printf(const char *__restrict, ...);
-int putchar(int);
-int puts(const char *);
-
-#if defined(__cplusplus)
-}
-#endif
+EXTERN int printf(const char *__restrict, ...);
+EXTERN int putchar(int);
+EXTERN int puts(const char *);
 
 #endif  // !_ADAMANTINE_STDIO_H

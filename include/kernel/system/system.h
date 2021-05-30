@@ -28,8 +28,8 @@ enum msg_severity
     FULL_SEVERITY,
 };
 
-void system_init(void);
-void handle_dispatched_message(uint8_t severity, char *msg);
-char *get_system_log(uint32_t index);
+extern void system_init(void);
+extern void handle_dispatched_message(uint8_t severity, char *msg);
+extern char *get_system_log(uint32_t index);
 
 #endif	// !_ADAMANTINE_SYSTEM_H

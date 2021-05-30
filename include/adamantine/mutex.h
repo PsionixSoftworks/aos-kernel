@@ -11,7 +11,7 @@ typedef struct {
 
 #define DEFINE_MUTEX(name) static mutex name = { .locked=0 };
 
-void mutex_lock(mutex	*m);
-void mutex_unlock(mutex* m);
+extern void mutex_lock(mutex	*m);
+extern void mutex_unlock(mutex* m);
 
 #endif	// !_MUTEX_H

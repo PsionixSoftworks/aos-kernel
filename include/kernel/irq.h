@@ -18,9 +18,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-bool are_interrupts_enabled(void);
-unsigned long irq_disable(void);
-void irq_restore(unsigned long flags);
-void clear_interrupts(void);
+extern bool are_interrupts_enabled(void);
+extern unsigned long irq_disable(void);
+extern void irq_restore(unsigned long flags);
+extern void clear_interrupts(void);
 
 #endif  // !_ADAMANTINE_IRQ_H

@@ -86,14 +86,10 @@ keyboard_init(void)
 {
     if (!init)
     {
-        //key_buffer = (char *)malloc(sizeof(char *));
-        //memset(key_buffer, 0, sizeof(char) * 40);
-
+        memset(key_buffer, 0, sizeof(char) * 40);
         register_interrupt_handler(IRQ1, (isr_t)&keyboard_handler);
-        //key_buffer = keyboard_get_keylast();
 
         tty_puts("[INFO]: Keyboard is initialized!\n");
-
         tty_puts("[ADAMANTINE]: ");
         
         init = true;

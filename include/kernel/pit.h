@@ -24,8 +24,8 @@
 #define PIT_CHANNEL_2       0x42
 #define PIT_CMD_PORT        0x43
 
-void pit_init(uint32_t fq);
-void pit_install(int hz);
-void pit_wait(int t);
+extern void pit_init(uint32_t fq);
+extern void pit_install(int hz);
+extern void pit_wait(int t);
 
 #endif	// !_ADAMANTINE_PIT_H

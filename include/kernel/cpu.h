@@ -17,12 +17,12 @@
 
 #include <stdint.h>
 
-void cpu_init(void);                        // Initialize the CPU.
-void cpu_halt(void);						// Halts the CPU from C.
-void cpu_suspend(void);					    // Suspends the CPU from C.
-void cpu_clear_interrupts(void);
-void cpu_set_interrupts(void);
-char *cpu_vendor_string(void);              // Gets the CPU vendor in char * format.
-uint32_t cpu_check_is_supported(void);      // Checks if the current CPU architecture is supported.
+extern void cpu_init(void);                        // Initialize the CPU.
+extern void cpu_halt(void);						// Halts the CPU from C.
+extern void cpu_suspend(void);					    // Suspends the CPU from C.
+extern void cpu_clear_interrupts(void);
+extern void cpu_set_interrupts(void);
+extern char *cpu_vendor_string(void);              // Gets the CPU vendor in char * format.
+extern uint32_t cpu_check_is_supported(void);      // Checks if the current CPU architecture is supported.
 
 #endif	// !_ADAMANTINE_CPU_H

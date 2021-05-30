@@ -101,8 +101,8 @@ struct vbe_mode_info_structure {
     uint8_t                 reserved1[206];
 } PACKED;
 
-void vga_init(enum video_mode vmode);
-void vga_clear_screen(void);
-uint16_t find_mode(int x, int y, int d);
+extern void vga_init(enum video_mode vmode);
+extern void vga_clear_screen(void);
+extern uint16_t find_mode(int x, int y, int d);
 
 #endif  // !_ADAMANTINE_VGA_H
