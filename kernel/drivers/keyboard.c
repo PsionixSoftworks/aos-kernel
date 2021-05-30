@@ -121,12 +121,22 @@ const char *cmd_list[] =
     "decl",
     "pout",
     "clear",
+    "fg1",
+    "fg2",
+    "fg3",
+    "fg4",
+    "fg5",
+    "fg6",
+    "fg7",
+    "fg8",
+    "fg9",
+    "fg10",
 };
 
 static inline bool
 process_commands(char *cmd)
 {
-    for (size_t i = 0; i < 7; i++)
+    for (size_t i = 0; i < 22; i++)
     {
         if (strcmp(cmd, cmd_list[i]) == 0)
         {
@@ -139,8 +149,25 @@ process_commands(char *cmd)
 static inline void
 pout(void)
 {
-    tty_printf("\nPrint Out!\n");
+    tty_set_foreground(SYSTEM_COLOR_LT_CYAN);
+    tty_printf("Print Out!\n");
+    tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
 }
+
+static inline bool
+change_fg(char *tok)
+{
+    for (size_t i = 7; i < 22; i++)
+    {
+        if (!strcmp(tok, cmd_list[i]))
+        {
+            return true;
+        }
+    }
+    return (false);
+}
+
+static uint8_t save_color = SYSTEM_COLOR_LT_GREEN;
 
 static inline void
 user_input(char *buffer)
@@ -158,14 +185,21 @@ user_input(char *buffer)
             {
                 tty_clear();
             }
+            else if (change_fg(token))
+            {
+                save_color = (int)token[2] - 48;
+                tty_set_foreground(save_color);
+            }
             else
             {
-                tty_printf("\nRecognized Token: %s\n", token);
+                tty_printf("Recognized Token: %s\n", token);
             }
         }
         else
         {
-            tty_printf("\nError: Unrcognized token '%s'\n", token);
+            tty_set_foreground(SYSTEM_COLOR_RED);
+            tty_printf("Error: Unrcognized token '%s'\n", token);
+            tty_set_foreground(save_color);
         }
         token = strtok(NULL, " ");
 
@@ -238,6 +272,7 @@ keyboard_handler(void)
             tty_puts("System test...\n");
         else if (scancode == KEYBOARD_KEY_DOWN_ENTER)
         {
+            tty_println();
             if (key_buffer[0] != 0)
             {
                 user_input(key_buffer);

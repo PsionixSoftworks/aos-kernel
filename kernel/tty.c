@@ -171,6 +171,12 @@ tty_printf(const char *restrict format, ...)
 }
 
 void
+tty_println(void)
+{
+	tty_putchar('\n');
+}
+
+void
 tty_cursor_enable(uint8_t a, uint8_t b)
 {
 	outb(CURSOR_CMD, 0x0A);

@@ -23,6 +23,7 @@ extern void tty_clear(void);
 extern void tty_putchar(char);
 extern void tty_puts(char *);
 extern void tty_printf(const char *__restrict, ...);
+extern void tty_println(void);
 extern void tty_cursor_enable(uint8_t, uint8_t);
 extern void tty_cursor_disable(void);
 extern void tty_cursor_update(void);

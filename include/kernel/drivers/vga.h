@@ -30,22 +30,22 @@ enum video_mode
 
 enum vga_color 
 {
-    SYSTEM_COLOR_BLACK,
-    SYSTEM_COLOR_BLUE,
-    SYSTEM_COLOR_GREEN,
-    SYSTEM_COLOR_CYAN,
-    SYSTEM_COLOR_RED,
-    SYSTEM_COLOR_MAGENTA,
-    SYSTEM_COLOR_BROWN,
-    SYSTEM_COLOR_GRAY,
-    SYSTEM_COLOR_DK_GRAY,
-    SYSTEM_COLOR_LT_BLUE,
-    SYSTEM_COLOR_LT_GREEN,
-    SYSTEM_COLOR_LT_CYAN,
-    SYSTEM_COLOR_LT_RED,
-    SYSTEM_COLOR_LT_MAGENTA,
-    SYSTEM_COLOR_YELLOW,
-    SYSTEM_COLOR_WHITE
+    SYSTEM_COLOR_BLACK,         // 0
+    SYSTEM_COLOR_BLUE,          // 1
+    SYSTEM_COLOR_GREEN,         // 2
+    SYSTEM_COLOR_CYAN,          // 3
+    SYSTEM_COLOR_RED,           // 4
+    SYSTEM_COLOR_MAGENTA,       // 5
+    SYSTEM_COLOR_BROWN,         // 6
+    SYSTEM_COLOR_GRAY,          // 7
+    SYSTEM_COLOR_DK_GRAY,       // 8
+    SYSTEM_COLOR_LT_BLUE,       // 9
+    SYSTEM_COLOR_LT_GREEN,      // A
+    SYSTEM_COLOR_LT_CYAN,       // B
+    SYSTEM_COLOR_LT_RED,        // C
+    SYSTEM_COLOR_LT_MAGENTA,    // D
+    SYSTEM_COLOR_YELLOW,        // E
+    SYSTEM_COLOR_WHITE,         // F
 };
 
 struct vbe_info_structure {
