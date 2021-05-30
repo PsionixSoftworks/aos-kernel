@@ -1,4 +1,4 @@
-# AdamantineOS
+# AOS Kernel
 The main repo for the AdamantineOS Kernel.
 
 # Contributing
@@ -17,4 +17,7 @@ Adamantine is a word for a nearly indestructable mythological material, usually 
 - You must abide by the terms of the license attached to this repo.
 
 # Current Issues
-- The IDT cannot process interrupts and triple faults whenever one is met. (Fixed again..!)
+- None
+
+# Current Objective
+To parse incoming tokens and process commands within the terminal.
