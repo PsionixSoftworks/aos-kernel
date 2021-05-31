@@ -12,6 +12,7 @@
 
 #include <kernel/pit.h>
 #include <kernel/isr.h>
+#include <kernel/irq.h>
 #include <kernel/cpu.h>
 #include <adamantine/tty.h>
 #include <kernel/system/ioctrl.h>

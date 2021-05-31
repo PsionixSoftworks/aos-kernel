@@ -5,6 +5,7 @@
 #include <kernel/drivers/vga.h>
 #include <kernel/isr.h>
 #include <kernel/pic.h>
+#include <kernel/irq.h>
 #include <compiler.h>
 
 #include <string.h>
@@ -295,8 +296,6 @@ keyboard_handler(void)
                 tty_puts(str);
             }
         }
-        
-        keyboard_set_leds(true, true, true);
     }
 }
 

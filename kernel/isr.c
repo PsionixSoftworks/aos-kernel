@@ -15,6 +15,7 @@
 #include <adamantine/tty.h>
 #include <kernel/system/ioctrl.h>
 #include <kernel/cpu.h>
+#include <kernel/pic.h>
 
 /* Define the exception message array */
 char *exception_messages[MAX_INTERRUPTS] =
@@ -62,7 +63,6 @@ fault_handler(registers_t regs)
 			tty_printf("ERROR_CODE: 0x%X.\n");
 			cpu_halt();
 		}
-		cpu_halt();
 		return;
 	}
 }
@@ -93,16 +93,12 @@ isr_handler(registers_t regs)
 void 
 irq_handler(registers_t regs) 
 {
-	if (regs.int_no >= 40) 
-	{
-		outb(0xA0, 0x20);
-	}
-	/* TODO: See if this can be replaced with pic_send_eoi() defined in "pic.c" */
-	outb(0x20, 0x20);	// Send EOI to PIC
-	
 	if (interrupt_handlers[regs.int_no] != 0) 
 	{
 		isr_t handler = interrupt_handlers[regs.int_no];
 		handler(regs);
 	}
+
+	/* Replace the old way of doing it */
+	pic_send_eoi(regs.int_no);
 }
