@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Insert a backspace */
 inline size_t
 str_backspace(char *str, char c) 
 {

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+/* Compare two memory values with a set size */
 int
 memcmp(const void *str1, const void *str2, size_t n)
 {

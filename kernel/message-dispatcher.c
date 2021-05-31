@@ -2,10 +2,11 @@
 #include <adamantine/tty.h>
 #include <kernel/system/system.h>
 
+/* Message dispatcher */
 static inline void
 dispatch_message(uint8_t type, char *msg)
 {
-    switch (type)
+    switch (type)                                       // The type of message received
     {
         case INFO:
             tty_printf("%s%s", "[INFO]: ", msg);
@@ -26,6 +27,7 @@ dispatch_message(uint8_t type, char *msg)
     };
 }
 
+/* Define the info dispatcher */
 void
 __dispatcher_info(char *msg)
 {
@@ -33,12 +35,14 @@ __dispatcher_info(char *msg)
 
 }
 
+/* Define the warning dispatcher */
 void
 __dispatcher_warn(char *msg)
 {
     MESSAGE(dispatch_message, WARNING, msg);
 }
 
+/* Define the error dispatcher */
 void
 __dispatcher_err(char *msg)
 {

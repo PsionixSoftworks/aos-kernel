@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Get span until character in string */
 size_t
 strcspn(const char *s1, const char *s2)
 {

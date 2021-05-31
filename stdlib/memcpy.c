@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+/* Copy the contents in memory with aset size */
 void *
 memcpy(void *restrict dstptr, const void *restrict srcptr, size_t size)
 {

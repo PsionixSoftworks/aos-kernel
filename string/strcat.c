@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Concatenate two strings */
 char *
 strcat(char *dest, char *src) 
 {

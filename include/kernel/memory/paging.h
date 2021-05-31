@@ -1,18 +1,19 @@
 #ifndef _ADAMANTINE_PAGING_H
 #define _ADAMANTINE_PAGING_H
 
-#define KERNEL_ONLY
+#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
 #include <stdint.h>
 #include <kernel/isr.h>
 
+/* Define the page struct */
 typedef struct page
 {
     uint32_t                present    :1;
     uint32_t                rw         :1;
     uint32_t                user       :1;
     uint32_t                accessed   :1;
-    uint32_t                dirty      :1;
+    uint32_t                dirty      :1;              // What is this, RubyDung? (Early Lame[Mine]craft Version)
     uint32_t                unused     :7;
     uint32_t                frame      :20;
 } page_t;

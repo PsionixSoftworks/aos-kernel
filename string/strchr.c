@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Locate a character within a string */
 char *
 strchr(const char *s, int c)
 {

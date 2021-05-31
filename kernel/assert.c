@@ -2,6 +2,7 @@
 #include <adamantine/tty.h>
 #include <kernel/cpu.h>
 
+/* Assert an error message or AOS ASSERTION FAIL */
 void
 __assert(char *msg, char *filename, unsigned int lineno)
 {

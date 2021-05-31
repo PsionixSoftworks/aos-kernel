@@ -1,3 +1,5 @@
+// WARNING: !!! THIS FILE MAY BE MODIFIED AND/OR REMOVED SOON !!!
+
 /** @author Levente Kurusa <levex@linux.com> **/
 /** Modified & updated by Vincent C. **/
 #ifndef _MUTEX_H

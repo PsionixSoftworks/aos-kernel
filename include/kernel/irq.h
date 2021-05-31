@@ -13,14 +13,16 @@
 #ifndef _ADAMANTINE_IRQ_H
 #define _ADAMANTINE_IRQ_H
 
-#define KERNEL_ONLY
+#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
 #include <stdint.h>
 #include <stdbool.h>
 
-extern bool are_interrupts_enabled(void);
-extern unsigned long irq_disable(void);
-extern void irq_restore(unsigned long flags);
-extern void clear_interrupts(void);
+/* Function Templates */
+extern bool are_interrupts_enabled(void);				// Checks if interrupts are enabled?
+extern unsigned long irq_disable(void);					// Disables IRQ's temporarily?
+extern void irq_restore(unsigned long);					// Restores disabled IRQ?
+extern void clear_interrupts(void);						// Clear interrupt flag (NASM 'cli')
+extern void set_interrupts(void);						// Set interrupt flag (NASM 'sti')
 
 #endif  // !_ADAMANTINE_IRQ_H

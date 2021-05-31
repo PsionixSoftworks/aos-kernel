@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <kernel/memory/memory-util.h>
 
+/* Locate a character within a block of memory */
 void *
 memchr(register const void *str, int c, size_t n)
 {

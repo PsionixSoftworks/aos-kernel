@@ -16,6 +16,7 @@
 #include <kernel/system/ioctrl.h>
 #include <kernel/cpu.h>
 
+/* Define the exception message array */
 char *exception_messages[MAX_INTERRUPTS] =
 {
 	"AOS_INTERRUPT Raised! : [Division By Zero Exception]",				// int $0x00
@@ -42,16 +43,22 @@ char *exception_messages[MAX_INTERRUPTS] =
 	"AOS_INTERRUPT Raised! : [Control Protection Exception]",			// int $0x15
 };
 
+/* Declare the interrupt handlers */
 isr_t interrupt_handlers[256];
 
+/* Handle fault/exception messages */
 static void
 fault_handler(registers_t regs)
 {
-	if (regs.int_no < 32) 
+	/* Make sure it's within the bounds of the ISR's (0-31) */
+	if (regs.int_no < 32)
 	{
 		tty_printf("%s, int_no: 0x%X.\n", exception_messages[regs.int_no], regs.int_no);
+
+		/* Check if the exception is an errcode */
 		if (regs.err_code)
 		{
+			/* If so, tell us */
 			tty_printf("ERROR_CODE: 0x%X.\n");
 			cpu_halt();
 		}
@@ -60,12 +67,14 @@ fault_handler(registers_t regs)
 	}
 }
 
+/* Register interrupts with callback functions */
 void
 register_interrupt_handler(uint8_t n, isr_t handler)
 {
 	interrupt_handlers[n] = handler;
 }
 
+/* Handle Interrupt Service Routine's (called in interrupt.asm) */
 void
 isr_handler(registers_t regs)
 {
@@ -80,6 +89,7 @@ isr_handler(registers_t regs)
 	}
 }
 
+/* Handle Interrupt Requests (called in interrupt.asm) */
 void 
 irq_handler(registers_t regs) 
 {
@@ -87,7 +97,8 @@ irq_handler(registers_t regs)
 	{
 		outb(0xA0, 0x20);
 	}
-	outb(0x20, 0x20);	/* EOI */
+	/* TODO: See if this can be replaced with pic_send_eoi() defined in "pic.c" */
+	outb(0x20, 0x20);	// Send EOI to PIC
 	
 	if (interrupt_handlers[regs.int_no] != 0) 
 	{

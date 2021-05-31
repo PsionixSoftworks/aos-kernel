@@ -16,62 +16,61 @@
 #include <adamantine/tty.h>
 #include <stdbool.h>
 
-extern uint32_t cpuid_supported(void);
-extern uint32_t cpuid_get_property(uint32_t);
+/* Grab external references */
+extern uint32_t cpuid_supported(void);					// Checks if CPUID is supported
+extern uint32_t cpuid_get_property(uint32_t);			// Gets CPUID properties?
 
+/* Initialize the CPU */
 void
 cpu_init(void)
 {
-	bool is_supported = (cpuid_supported() > 0);
-	if (!is_supported)
+	bool is_supported = (cpuid_supported() > 0);		// Check if CPUID is supported with this CPU
+	if (!is_supported)									// If not, return breaking flow
 		return;
-	tty_puts("[INFO]: CPU is initialized!\n");
-	tty_puts("[INFO]: CPU Manufacturer: ");
-	tty_puts(cpu_vendor_string());
-	tty_puts("\n");
+	tty_puts("[INFO]: CPU is initialized!\n");			// TODO: Change these to the message dispatcher...
+	tty_puts("[INFO]: CPU Manufacturer: ");				// TODO: Change these to the message dispatcher...
+	tty_puts(cpu_vendor_string());						// TODO: Change these to the message dispatcher...
+	tty_puts("\n");										// TODO: Change these to the message dispatcher...
 }
 
+/* Halt the CPU */
 inline void
 cpu_halt(void) 
 {
+	/* We have to print this before theCPU halts for obvious reasons */
 	tty_puts("System halted...\n");
-	asm volatile(
+	__asm__ (
 		"cli\n\t"	
 		"hlt\n\t"
 	);
 }
 
+/* Suspend the CPU */
 inline void
 cpu_suspend(void) 
 {
-	asm volatile(
-		"hlt\n\t"
-	);
+	__asm__ ( "hlt\n\t" );
 }
 
 /* Sets the interrupt flag (IF) to 0. */
 void
 cpu_clear_interrupts(void)
 {
-	asm volatile
-	(
-		"cli\n\t"
-	);
+	__asm__ ( "cli\n\t" );
 }
 
 /* Sets the interrupt flag (IF) to 1. */
 void
 cpu_set_interrupts(void)
 {
-	asm volatile
-	(
-		"sti\n\t"
-	);
+	__asm__ ( "sti\n\t" );
 }
 
+/* Return CPUID */
 inline uint32_t
 cpuid(void)
 {
+	/* Check if it's even supported */
 	uint32_t x = cpuid_supported();
 	asm volatile
 	(
@@ -81,6 +80,7 @@ cpuid(void)
 	return (x);
 }
 
+/* Get the CPU string */
 inline uint32_t 
 cpuid_string(uint32_t code, uint32_t *Location) 
 {
@@ -95,6 +95,7 @@ cpuid_string(uint32_t code, uint32_t *Location)
 	return ((uint32_t)Location[0]);
 }
 
+/* Get the CPU vendor string */
 inline char *
 cpu_vendor_string(void)
 {
@@ -103,6 +104,7 @@ cpu_vendor_string(void)
 	return (Str);
 }
 
+/* Checks if CPUID is even supported for this model */
 inline bool
 cpu_check_is_supported(void)
 {

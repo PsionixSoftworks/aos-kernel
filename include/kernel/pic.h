@@ -13,12 +13,12 @@
 #ifndef _ADAMANTINE_PIC_H
 #define _ADAMANTINE_PIC_H
 
-#define KERNEL_ONLY
+#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
 // Includes go here:
 #include <stdint.h>
 
-// Check if the PIC devices have been defined:
+/* Check if the PIC devices have been defined */
 #ifndef PIC_DEVICE
 #define PIC1				0x20
 #define PIC2				0xA0
@@ -45,13 +45,13 @@
 #define PIC_READ_isr		0x0B
 #endif
 
-// Declare global functions:
-extern void pic_send_eoi(uint8_t irq);					                // Send the end of instruction to the PIC.
-extern void pic_remap(void);		                                    // Remap PIC.
-extern void irq_set_mask(uint8_t irq_Line);			                // Set the irq mask.
-extern void irq_clear_mask(uint8_t irq_Line);			                // Clear the irq mask.
-extern uint16_t pic_get_irr(void);						                // Get (IRR?).
-extern uint16_t pic_get_isr(void);						                // Get the interrupt service routine.
-extern uint16_t pic_get_irq_register(int8_t ocw3);				        // Get the irq registers.
+/* Function Templates */
+extern void pic_send_eoi(uint8_t irq);					// Send the end of instruction to the PIC.
+extern void pic_remap(void);							// Remap PIC.
+extern void irq_set_mask(uint8_t irq_Line);				// Set the irq mask.
+extern void irq_clear_mask(uint8_t irq_Line);			// Clear the irq mask.
+extern uint16_t pic_get_irr(void);						// Get (IRR?).
+extern uint16_t pic_get_isr(void);						// Get the interrupt service routine.
+extern uint16_t pic_get_irq_register(int8_t ocw3);		// Get the irq registers.
 
 #endif	// !_ADAMANTINE_PIC_H

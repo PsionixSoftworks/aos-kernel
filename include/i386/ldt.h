@@ -1,25 +1,30 @@
 #ifndef _ADAMANTINE_LDT_H
 #define _ADAMANTINE_LDT_H
 
-#define KERNEL_ONLY
+#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
 #include <compiler.h>
 #include <stdint.h>
 
+/* Define the types for the LDT */
+typedef struct ldt_entry_struct ldt_entry_t;            // The physical LDT type
+typedef struct ldt_ptr_struct ldt_ptr_t;                // The ptr to the end-start of the LDT
+
+/* Define the LDT struct */
 struct ldt_entry_struct
 {
-    uint8_t                 table;
-    uint8_t                 rpl;
+    uint8_t                 table;                      // Does what exactly???
+    uint8_t                 rpl;                        // Ring Privelage Level
 } PACKED;
-typedef struct ldt_entry_struct ldt_entry_t;
 
+/* Define the LDT ptr struct */
 struct ldt_ptr_struct
 {
-    uint16_t                limit;
-    uint32_t                base;
+    uint16_t                limit;                      // LDT size max
+    uint32_t                base;                       // LDT base
 } PACKED;
-typedef struct ldt_ptr_struct ldt_ptr_t;
 
-extern void ldt_init(void);
+/* Function Templates */
+extern void ldt_init(void);                             // Initialize the Local Descriptor Table
 
-#endif
+#endif  // !_ADAMANTINE_LDT_H

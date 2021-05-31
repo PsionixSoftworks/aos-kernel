@@ -13,23 +13,22 @@
 #ifndef _ADAMANTINE_SYSTEM_H
 #define _ADAMANTINE_SYSTEM_H
 
-#define KERNEL_ONLY
+#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
 // Includes go here:
 #include <stdint.h>
 
-#if defined(__x86_SYSTEM_CORE__)
-#endif
-
+/* Define message dispatcher severities */
 enum msg_severity
 {
-    NO_SEVERITY,
-    SOME_SEVERITY,
-    FULL_SEVERITY,
+    NO_SEVERITY,                                        // In other words, info
+    SOME_SEVERITY,                                      // In other words, warning
+    FULL_SEVERITY,                                      // In other words, error
 };
 
-extern void system_init(void);
-extern void handle_dispatched_message(uint8_t severity, char *msg);
-extern char *get_system_log(uint32_t index);
+/* Function Templates */
+extern void system_init(void);                          // Initialize the system message dispatcher
+extern void handle_dispatched_message(uint8_t, char *); // Dispatch the message
+extern char *get_system_log(uint32_t);                  // Get a log at an index
 
 #endif	// !_ADAMANTINE_SYSTEM_H

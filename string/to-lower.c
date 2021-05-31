@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Make all characters in a string lowercase */
 inline void 
 to_lower(char *str)
 {

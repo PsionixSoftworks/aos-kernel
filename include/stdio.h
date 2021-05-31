@@ -3,8 +3,9 @@
 
 #include <adamantine/aos-defs.h>
 
-EXTERN int printf(const char *__restrict, ...);
-EXTERN int putchar(int);
-EXTERN int puts(const char *);
+/* Function Templates */
+EXTERN int printf(const char *__restrict, ...);			// Print formatted string
+EXTERN int putchar(int);								// Print single character
+EXTERN int puts(const char *);							// Print string
 
 #endif  // !_ADAMANTINE_STDIO_H

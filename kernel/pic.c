@@ -13,16 +13,18 @@
 #include <kernel/pic.h>
 #include <kernel/system/ioctrl.h>
 
+/* Send an End Of Instruction to the Programmable Interrupt Controller */
 void 
 pic_send_eoi(uint8_t irq) 
 {
-	if (irq > 7) 
+	if (irq > 7) 										// Check if we're using PIC2
 	{
-		outb(PIC2_COMMAND, PIC_EOI);
+		outb(PIC2_COMMAND, PIC_EOI);					// PIC2 EOI
 	}
-	outb(PIC1_COMMAND, PIC_EOI);
+	outb(PIC1_COMMAND, PIC_EOI);						// Otherwise PIC1 EOI
 }
 
+/* Remap the PIC to correctly display interrups as they are received */
 void 
 pic_remap(void) 
 {
@@ -38,25 +40,27 @@ pic_remap(void)
 	outb(0xA1, 0x0);
 }
 
+/* Set IRQ mask */
 void 
-irq_set_mask(uint8_t irq_Line) 
+irq_set_mask(uint8_t irq_line) 
 {
 	uint16_t port;
 	uint8_t value;
 	
-	if (irq_Line < 0x8) 
+	if (irq_line < 0x8) 
 	{
 		port = PIC1_DATA;
 	} 
 	else 
 	{
 		port = PIC2_DATA;
-		irq_Line -= 0x8;
+		irq_line -= 0x8;
 	}
-	value = inb(port) | (1 << irq_Line);
+	value = inb(port) | (1 << irq_line);
 	outb(port, value);
 }
 
+/* Clear IRQ mask */
 void 
 irq_clear_mask(uint8_t irq_Line) 
 {
@@ -76,18 +80,21 @@ irq_clear_mask(uint8_t irq_Line)
 	outb(port, value);
 }
 
+/* Return the combined value of the cascaded PIC's IRQ request register */
 uint16_t
 pic_get_irr(void) 
 {
 	return (pic_get_irq_register(PIC_READ_IRR));
 }
 
+/* Return the combined value of the cascaded PIC's in service register */
 uint16_t
 pic_get_isr(void) 
 {
 	return (pic_get_irq_register(PIC_READ_isr));
 }
 
+/* Yeah, I'll have to figure this one out... */
 uint16_t pic_get_irq_register(int8_t ocw3) 
 {
 	outb(PIC1_COMMAND, ocw3);

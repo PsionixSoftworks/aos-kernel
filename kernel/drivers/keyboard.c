@@ -11,9 +11,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-// Nested conditional statement= var = (expr1 == val ? expr2 : expr3);
-
-// Define for normal keys:
+/* Define for normal keys */
 const char keys_normal[256] = 
 {
 	0x00, 0x00,				                                            // <None>, <Escape>,
@@ -63,82 +61,81 @@ const char keys_caps[256] =
 	0x00, 0x00,													// <Windows key>, <Windows key>,
 };
 
-static inline void keyboard_handler(void);
-static inline uint8_t keyboard_read(void);
-static inline void keyboard_write_command(uint8_t cmd);
-static inline char *keyboard_get_key(void);
-static inline void keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock);
-static inline char *keyboard_get_keylast(void);
+static inline void keyboard_handler(void);              // The keyboard callback (tied to IRQ1)
+static inline uint8_t keyboard_read(void);              // Read keyboard command
+static inline void keyboard_write_command(uint8_t);     // Write keyboard command
+static inline char *keyboard_get_key(void);             // Get the keyboard key
+static inline void keyboard_set_leds(bool, bool, bool); // Set the keyboard LED's (numlock, caps lock, and scroll lock)
+static inline char *keyboard_get_keylast(void);         // Get the last key pressed
 
-static bool init = false;
-static bool shift_press = false;
-static bool ctrl_press = false;
-static bool system_press = false;
-static bool alt_press = false;
-static bool numlock UNUSED;
-static bool capslock UNUSED;
-static bool scrllock UNUSED;
-static char *key_last = NULL;
-static char key_buffer[256];
+static bool init = false;                               // Whether the keyboard is initialized
+static bool shift_press = false;                        // True if the shift key is being held
+static bool ctrl_press = false;                         // True if the control key is being held
+static bool system_press = false;                       // True if the "windows"/"command" key is being held
+static bool alt_press = false;                          // True if the alt key is being held
+static bool numlock;                                    // True if numlock is enabled
+static bool capslock;                                   // True if caps lock is enabled
+static bool scrllock;                                   // True if scroll lock is enabled
+static char *key_last = NULL;                           // The last key pressed
+static char key_buffer[256];                            // The key buffer (for command line functionality)
 
+/* Initialize the keyboard */
 void
 keyboard_init(void)
 {
-    if (!init)
+    if (!init)                                          // Check if the keyboard is initialized
     {
         memset(key_buffer, 0, sizeof(char) * 40);
-        register_interrupt_handler(IRQ1, (isr_t)&keyboard_handler);
+        register_interrupt_handler(                     // Register the keyboard callback  with IRQ1
+            IRQ1, 
+            (isr_t)&keyboard_handler
+        );
 
-        tty_puts("[INFO]: Keyboard is initialized!\n");
-        tty_puts("[ADAMANTINE]: ");
+        tty_puts("[INFO]: Keyboard is initialized!\n"); // Print the status
+        tty_puts("[ADAMANTINE]: ");                     // Print the command line "thing"
         
-        init = true;
+        init = true;                                    // Report that the keyboard is initialized
     }
 }
 
+/* Define the function that reads scancodes */
 unsigned char
 keyboard_read_scancode(void)
 {
-    uint8_t status = keyboard_read();
-    if ((status & 0x01) == 1)
-        return (inb(KEYBOARD_DATA));
-    return 0;
+    uint8_t status = keyboard_read();                   // Read the command bit
+    if ((status & 0x01) == 1)                           // If status is 1,
+        return (inb(KEYBOARD_DATA));                    // return the scancode,
+    return 0;                                           // otherwise, return 0 (failure)
 }
 
-static void UNUSED
-keyboard_set_typematic_byte(void)
-{
-    outb(KEYBOARD_DATA, 0xF3);
-    outb(KEYBOARD_DATA, 0);
-}
-
+/* Temporary storage for commands */
 const char *cmd_list[] =
 {
-    "adm",
-    "push",
-    "pop",
-    "ccmd",
-    "decl",
-    "pout",
-    "clear",
-    "fg1",
-    "fg2",
-    "fg3",
-    "fg4",
-    "fg5",
-    "fg6",
-    "fg7",
-    "fg8",
-    "fg9",
-    "fg10",
+    "adm",                                              // Main command for interacting with the terminal and files
+    "push",                                             // Push data onto the command line stack
+    "pop",                                              // Pop data off the command line stack
+    "ccmd",                                             // Create command
+    "decl",                                             // Declare varible=value
+    "pout",                                             // Print Out, DEBUG ONLY!
+    "clear",                                            // Clear the terminal
+    "fg1",                                              // Set the foreground color to 1 (blue)
+    "fg2",                                              // Set the foreground color to 2 (green)
+    "fg3",                                              // Set the foreground color to 3 (cyan)
+    "fg4",                                              // Set the foreground color to 4 (red)
+    "fg5",                                              // Set the foreground color to 5 (magenta)
+    "fg6",                                              // Set the foreground color to 6 (brown (or orange, unless I'm color blind!))
+    "fg7",                                              // Set the foreground color to 7 (gray)
+    "fg8",                                              // Set the foreground color to 8 (dark gray)
+    "fg9",                                              // Set the foreground color to 9 (light blue)
 };
 
+/* Process the commands as tokens */
 static inline bool
 process_commands(char *cmd)
 {
-    for (size_t i = 0; i < 22; i++)
+    for (size_t i = 0; i < 16; i++)                     // Cycle through all of the commands in the array
     {
-        if (strcmp(cmd, cmd_list[i]) == 0)
+        if (strcmp(cmd, cmd_list[i]) == 0)              // Check if the command(s) match
         {
             return true;
         }
@@ -146,20 +143,24 @@ process_commands(char *cmd)
     return false;
 }
 
+static uint8_t save_color = SYSTEM_COLOR_LT_GREEN;
+
+/* Print out a debug message (for testing purposes only) */
 static inline void
 pout(void)
 {
-    tty_set_foreground(SYSTEM_COLOR_LT_CYAN);
-    tty_printf("Print Out!\n");
-    tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
+    tty_set_foreground(SYSTEM_COLOR_LT_CYAN);           // Change the text color to light cyan
+    tty_printf("Print Out!\n");                         // Print the text
+    tty_set_foreground(save_color);                     // Revert the text color back
 }
 
+/* Commit the changes to the text color */ 
 static inline bool
 change_fg(char *tok)
 {
-    for (size_t i = 7; i < 22; i++)
+    for (size_t i = 7; i < 16; i++)                     // Cycle through the foreground colors
     {
-        if (!strcmp(tok, cmd_list[i]))
+        if (!strcmp(tok, cmd_list[i]))                  // Check if we have a match
         {
             return true;
         }
@@ -167,69 +168,45 @@ change_fg(char *tok)
     return (false);
 }
 
-static uint8_t save_color = SYSTEM_COLOR_LT_GREEN;
-
+/* Process user input */
 static inline void
 user_input(char *buffer)
 {
-    char *token = strtok(buffer, " ");
-    while (token != NULL)
+    char *token = strtok(buffer, " ");                  // Break the input string into seperate tokens
+    while (token != NULL)                               // Loop until we run out of tokens
     {
-        if (process_commands(token) == true)
+        /* Perform test functions here */
+        if (strcmp(token, "test") == 0)
         {
-            if (strcmp(token, "pout") == 0)
-            {
-                pout();
-            }
-            else if (strcmp(token, "clear") == 0)
-            {
-                tty_clear();
-            }
-            else if (change_fg(token))
-            {
-                save_color = (int)token[2] - 48;
-                tty_set_foreground(save_color);
-            }
-            else
-            {
-                tty_printf("Recognized Token: %s\n", token);
-            }
+            tty_printf("Recognized token: %s\n", token);
         }
         else
         {
-            tty_set_foreground(SYSTEM_COLOR_RED);
-            tty_printf("Error: Unrcognized token '%s'\n", token);
-            tty_set_foreground(save_color);
+            tty_printf("Output: %s\n", token);
         }
+        /* Set the next tojen to 'NULL' */
         token = strtok(NULL, " ");
-
-        /*if (strcmp(token, "test") == 0)
-        {
-            tty_printf("\nRecognized token: %s", token);
-        }
-        else
-        {
-            tty_printf("\nOutput: %s", token);
-        }*/
     }
 }
 
+/* Handle backspace (temporarily here) */
 static inline void
 backspace(char s[])
 {
-    int len = strlen(s);
-    s[len - 1] = '\0';
+    int len = strlen(s);                                // Get the length of the string?
+    s[len - 1] = '\0';                                  // Set the position -1 to null terminator (empty char)
 }
 
+/* Keyboard callback; where the magic happens (to be heavily modified...) */
 static inline void
 keyboard_handler(void)
 {
-    static unsigned char scancode;
-    scancode = keyboard_read_scancode();
+    static unsigned char scancode;                      // Key scancode
+    scancode = keyboard_read_scancode();                // Assign the scancode
 
-    if (scancode)
+    if (scancode)                                       // If it does not equal zero,
     {
-        // Check for Escape:
+        /* Check for Escape */
         if (scancode == KEYBOARD_KEY_DOWN_ESCAPE)
             tty_puts("Cannot exit from current mode!\n[ADAMANTINE]: ");
         if ((scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_RIGHT))
@@ -259,10 +236,27 @@ keyboard_handler(void)
         else if ((scancode == KEYBOARD_KEY_UP_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_UP_WINDOWS_KEY_RIGHT))
             system_press = false;
 
-        // Check for Caps lock:
+        /* Check for numlock */
+        if (scancode == KEYBOARD_KEY_DOWN_NUM_LOCK)
+        {
+            numlock = !numlock;
+            keyboard_set_leds(numlock, capslock, scrllock);
+        }
+
+        /* Check for Caps lock */
         if (scancode == KEYBOARD_KEY_DOWN_CAPS_LOCK)
-            shift_press = !shift_press;
+        {
+            capslock = !capslock;
+            keyboard_set_leds(numlock, capslock, scrllock);
+        }
         
+        /* Check for scroll lock */
+        if (scancode == KEYBOARD_KEY_DOWN_SCROLL_LOCK)
+        {
+            scrllock = !scrllock;
+            keyboard_set_leds(numlock, capslock, scrllock);
+        }
+
         if ((ctrl_press) && (scancode == KEYBOARD_KEY_DOWN_S))
         {
             tty_puts("Nothing to save!\n");
@@ -304,12 +298,14 @@ keyboard_handler(void)
     }
 }
 
+/* Get the last key pressed */
 static inline char *
 keyboard_get_keylast(void)
 {
     return (key_last);
 }
 
+/* Read the keyboard command port */
 static inline uint8_t
 keyboard_read(void)
 {
@@ -320,10 +316,11 @@ keyboard_read(void)
     return 0;
 }
 
+/* Write to the keyboard data port */
 static inline void
 keyboard_write_command(uint8_t cmd)
 {
-    if (init) {
+    if (init) {                                         // Make sure it's initialized first
         while (1)
             if (!(keyboard_read() & 0x2))
                 break;
@@ -331,10 +328,11 @@ keyboard_write_command(uint8_t cmd)
     }
     else
     {
-        tty_printf("[ERROR]: Keyboard has not been init...\n");
+        tty_printf("[ERROR]: Keyboard has not been initialized...\n");
     }
 }
 
+/* Get the keyboard key */
 static inline char *
 keyboard_get_key(void)
 {
@@ -346,6 +344,7 @@ keyboard_get_key(void)
     }
 }
 
+/* Set the keyboard LED's */
 static inline void
 keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock)
 {

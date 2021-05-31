@@ -17,16 +17,16 @@
 
 #include <stdint.h>
 
-// Declare the allocation type:
+/* Declare the allocation type struct */
 typedef struct 
 {
-	uint8_t					status;
-	size_t 					size;
+	uint8_t					status;						// ?
+	size_t 					size;						// ?
 } alloc_t;
 
+/* Function Templates */
 extern void mm_init(uint32_t kernel_end);
 extern void paging_map_virtual_to_physical(uint32_t virt, uint32_t physical);
-
 extern uint32_t	kmalloc_int(uint32_t size, uint32_t align, uint32_t *physical_address);
 extern uint32_t	kmalloc_a(uint32_t size);
 extern uint32_t	kmalloc_p(uint32_t size_t, uint32_t *physical_address);

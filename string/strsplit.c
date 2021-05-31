@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Split a string by delimeter */
 inline size_t 
 strsplit(char *str, char delim) 
 {

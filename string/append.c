@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Append a string */
 void
 append(char s[], char n)
 {

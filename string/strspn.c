@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Get the span of a character in a string */
 size_t
 strspn(const char *s1, const char *s2)
 {

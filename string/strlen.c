@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Get the length of a string */
 size_t
 strlen(const char *s) 
 {

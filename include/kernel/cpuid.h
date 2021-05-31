@@ -13,25 +13,27 @@
 #ifndef _ADAMANTINE_CPUID_H
 #define _ADAMANTINE_CPUID_H
 
-#define KERNEL_ONLY
+#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
 #include <stdint.h>
 
+/* Define 'cpuid_requests' enum */
 enum cpuid_requests 
 {
-	CPUID_GET_VENDOR_STRING,
-	CPUID_GET_FEATURES,
-	CPUID_GET_TLB,
-	CPUID_GET_SERIAL,
+	CPUID_GET_VENDOR_STRING,                            // The name/signature of the CPU (ex: GENUINEINTEL)
+	CPUID_GET_FEATURES,                                 // Features the CPU supports
+	CPUID_GET_TLB,                                      // ??
+	CPUID_GET_SERIAL,                                   // ??
 	
-	CPUID_INTEL_EXTENDED=0x80000000,
-	CPUID_INTEL_FEATURES,
-	CPUID_INTEL_BRAND_STRING,
-	CPUID_INTEL_BRAND_STRING_MORE,
-	CPUID_INTEL_BRAND_STRING_END
+	CPUID_INTEL_EXTENDED=0x80000000,                    // ??
+	CPUID_INTEL_FEATURES,                               // Intel specific features
+	CPUID_INTEL_BRAND_STRING,                           // The name of the CPU? (again?)
+	CPUID_INTEL_BRAND_STRING_MORE,                      // ??
+	CPUID_INTEL_BRAND_STRING_END                        // ??
 };
 
-enum cpuid_features 
+/* CPUID Features enum */
+enum cpuid_features                                     // These flags vary by manufacturer
 {
 	CPUID_FEAT_ECX_SSE3			= 1 << 0,
 	CPUID_FEAT_ECX_PLCMUL		= 1 << 1,
@@ -92,24 +94,25 @@ enum cpuid_features
     CPUID_FEAT_EDX_PBE          = 1 << 31
 };
 
-#define CPUID_VENDOR_OLD_AMD		"AMDisbetter!"
-#define CPUID_VENDOR_AMD			"AuthenticAMD"
-#define CPUID_VENDOR_INTEL			"GenuineIntel"
-#define CPUID_VENDOR_HAULS			"CentaurHauls"
-#define CPUID_VENDOR_OLDTRANSMETA	"TransmetaCPU"
-#define CPUID_VENDOR_TRANSMETA		"GenuineTMx86"
-#define CPUID_VENDOR_CYRIX			"CyrixInstead"
-#define CPUID_VENDOR_CENTAUR		"CentaurHauls"
-#define CPUID_VENDOR_NEXGEN			"NexGenDriven"
-#define CPUID_VENDOR_UMC			"UMC UMC UMC "
-#define CPUID_VENDOR_SIS			"SiS SiS SiS "
-#define CPUID_VENDOR_NSC			"Geode by NSC"
-#define CPUID_VENDOR_RISE			"RiseRiseRise"
-#define CPUID_VENDOR_VORTEX 		"Vortex86 SoC"
-#define CPUID_VENDOR_VIA			"VIA VIA VIA "
+#define CPUID_VENDOR_OLD_AMD		"AMDisbetter!"      // Old AMD CPU name
+#define CPUID_VENDOR_AMD			"AuthenticAMD"      // Modern AMD CPU name
+#define CPUID_VENDOR_INTEL			"GenuineIntel"      // Intel CPU name
+#define CPUID_VENDOR_HAULS			"CentaurHauls"      // Unused?
+#define CPUID_VENDOR_OLDTRANSMETA	"TransmetaCPU"      // Unused?
+#define CPUID_VENDOR_TRANSMETA		"GenuineTMx86"      // Unused?
+#define CPUID_VENDOR_CYRIX			"CyrixInstead"      // Unused?
+#define CPUID_VENDOR_CENTAUR		"CentaurHauls"      // Unused?
+#define CPUID_VENDOR_NEXGEN			"NexGenDriven"      // Unused?
+#define CPUID_VENDOR_UMC			"UMC UMC UMC "      // Unused?
+#define CPUID_VENDOR_SIS			"SiS SiS SiS "      // Unused?
+#define CPUID_VENDOR_NSC			"Geode by NSC"      // Unused?
+#define CPUID_VENDOR_RISE			"RiseRiseRise"      // Unused?
+#define CPUID_VENDOR_VORTEX 		"Vortex86 SoC"      // Unused?
+#define CPUID_VENDOR_VIA			"VIA VIA VIA "      // Unused?
 
-extern uint32_t cpuid(void);
-extern uint32_t cpuid_string(uint32_t code, uint32_t *Location);
-extern char * cpuid_is_supported(void);
+/* Function Templates */
+extern uint32_t cpuid(void);                            // CPUID?
+extern uint32_t cpuid_string(uint32_t, uint32_t *);     // The name of the CPU? (see above)
+extern char * cpuid_is_supported(void);                 // Checks if this CPU supports CPUID
 
 #endif  // !_ADAMANTINE_CPUID_H

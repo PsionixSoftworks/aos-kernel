@@ -12,6 +12,7 @@
 
 #include <kernel/irq.h>
 
+/* Checks if interrupts are enabled? */
 bool 
 are_interrupts_enabled(void) 
 {
@@ -26,6 +27,7 @@ are_interrupts_enabled(void)
     return flags & 0x200;
 }
 
+/* Temporarily disable IRQ's */
 unsigned long
 irq_disable(void) 
 {
@@ -38,6 +40,7 @@ irq_disable(void)
     return (flags);
 }
 
+/* Restore temporarily disabled IRQ's */
 void 
 irq_restore(unsigned long flags) {
     asm volatile
@@ -46,11 +49,16 @@ irq_restore(unsigned long flags) {
     );
 }
 
+/* Clear interrupts (again?) */
 void
 clear_interrupts(void) 
 {
-    asm volatile
-    (
-        "cli\n\t"
-    );
+    asm ( "cli\n\t" );
+}
+
+/* Set interrupts (again?) */
+void
+set_interrupts(void)
+{
+    asm ( "sti\n\t" );
 }

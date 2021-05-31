@@ -1,6 +1,7 @@
 #ifndef _ADAMANTINE_VERSION_H
 #define _ADAMANTINE_VERSION_H
 
+/* Define version macros */
 #define KERNEL_NAME             "adamantine"
 #define KERNEL_VERSION_STRING   "0.5.20.2a"
 #define KERNEL_VERSION_MAJOR    0

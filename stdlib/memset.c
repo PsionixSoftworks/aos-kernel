@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Set memory to up to a specified size to a specified value (usually zero) */
 void *
 memset(void *dest, int c, size_t n)
 {

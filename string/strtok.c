@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Split a string into tokens */
 char *
 strtok(char *string, const char *delim)
 {

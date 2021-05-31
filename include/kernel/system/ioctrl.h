@@ -13,29 +13,33 @@
 #ifndef _ADAMANTINE_IOCTRL_H
 #define _ADAMANTINE_IOCTRL_H
 
-#define KERNEL_ONLY
+#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
 // Include files go here:
 #include <stdint.h>
 
+/* Write to an 8-bit port */
 static inline void
 outb(uint16_t port, uint8_t value)
 {
 	__asm__ volatile ("outb %0, %1" : : "a"(value), "Nd"(port));
 }
 
+/* Write to a 16-bit port */
 static inline void
 outw(uint16_t port, uint16_t value)
 {
 	__asm__ volatile ("outw %0, %1" : : "a"(value), "Nd"(port));
 }
 
+/* Write to a 32-bit port */
 static inline void
 outl(uint16_t port, uint32_t value)
 {
 	__asm__ volatile ("outl %0, %1" : : "a"(value), "Nd"(port));
 }
 
+/* Read from an 8-bit port */
 static inline uint8_t 
 inb(uint16_t port)
 {
@@ -45,6 +49,7 @@ inb(uint16_t port)
 	return (value);
 }
 
+/* Read from a 16-bit port */
 static inline uint16_t
 inw(uint16_t port) 
 {
@@ -54,6 +59,7 @@ inw(uint16_t port)
 	return (value);
 }
 
+/* Read from a 32-bit port */
 static inline uint32_t
 inl(uint16_t port)
 {
@@ -63,8 +69,10 @@ inl(uint16_t port)
 	return (value);
 }
 
+/* Check if IRQ's are enabled (defined in "idt.h") */
 #ifndef IRQS_ENABLED
 
+/* Wait on an IO port */
 static inline void 
 io_wait(void) 
 {
@@ -72,15 +80,11 @@ io_wait(void)
 						"1:JMP 2f\n\t" 
 						"2:" );
 }
-
 #else
-
 static inline void
 io_wait(void)
 {
 	__asm__ volatile ( 	"outb %%al, $0x80" : : "a"(0) )
 }
-
-#endif
-
+#endif	// !IRQS_ENABLED
 #endif	// !_ADAMANTINE_IOCTRL_H

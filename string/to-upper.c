@@ -1,5 +1,6 @@
 #include <string.h>
 
+/* Make all characters in a string uppercase */
 inline void
 to_upper(char *str)
 {

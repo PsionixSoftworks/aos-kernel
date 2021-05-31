@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+/* Move memory from one location to another */
 void *
 memmove(void *dest, const void *src, size_t n)
 {

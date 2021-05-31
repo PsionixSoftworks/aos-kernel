@@ -1,13 +1,11 @@
 /*
- *  File: aos-defs.h
- *  Author: Vincent Cupo
- *  
- * 	THIS FILE IS NOT TO BE VIEWED BY THE GENERAL PUBLIC WITHOUT 
- * 	WRITTEN CONSENT OF ITS AUTHOR(S).
- * 
- *  PROPERTY OF PSIONIX SOFTWORKS LLC.
- *  Copyright (c) 2018-2020, Psionix Softworks LLC.
+ * File: aos-defs.h
+ * Author: Vincent C.
+ * Description:
+ * Commonly used macros.
  *
+ * Copyright (C) 2018-2021, Psionix Softworks LLC.
+ * 
  */
 
 #ifndef _AOS_DEFS_H
@@ -15,56 +13,42 @@
 
 #include <stdint.h>
 
-// Define the boolean operators true and false:
+/* Check if 'BOOLEAN_OPS' is defined elsewhere */
 #ifndef BOOLEAN_OPS
-#ifndef FALSE
-#define FALSE								0
-#endif
+#ifndef FALSE								// If not, check if the 'FALSE' macro is defined anywhere.
+#define FALSE			0					// If not, define it here.
+#endif	// !FALSE
 
-#ifndef TRUE
-#define TRUE								1
-#endif
-#endif
+#ifndef TRUE								// If not, check if the 'TRUE' macro is defined anywhere.
+#define TRUE			1					// If not, define it here.
+#endif	// !TRUE
+#endif	// !BOOLEAN_OPS
 
-// Define Adamantine API macros:
+/* Check if Adamantine macros are defined */
 #ifndef ADAMANTINE_MACROS
+
+/* Check if 'NULL' was previously defined */
 #ifndef NULL
+#ifndef __cplusplus							// If it wasn't and we're using C
+#define NULL		0						// just define it as '0'
+#else										// otherwise,
+#define NULL			((void *)0)			// define it as a null void ptr
+#endif
+
+#ifndef FAILURE								// Check if 'FAILURE' was defined. If not,
+#define FAILURE			((void *)FALSE)		// define it as a 'FALSE' void ptr.
+#endif	// !FAILURE
+
+#ifndef SUCCESS								// Check if 'SUCCESS' was defined. If not,
+#define SUCCESS			((void *)TRUE)		// define it as a 'TRUE' void ptr.
+#endif	// !SUCCESS
+#endif	// !NULL
+#endif	// !ADAMANTINE_MACROS
+
+/* Define a quick way to use 'extern "C"' on C++ files */
 #ifdef __cplusplus
-#define NULL								((void *)0)
+#define EXTERN 			extern "C"			// If C++ is defined, set 'EXTERN' to mean 'extern "C"'.
 #else
-#define NULL								0
-#endif
-#endif
-
-#define FAILURE								((void *)FALSE)
-#define SUCCESS								((void *)TRUE)
-#define __AOS_API                           
-#endif
-
-/* Setters for types. */
-#define SET_VOID(name)                  void name
-#define SET_BOOL(name)                  bool name
-#define SET_uint8_t(name)               uint8_t name
-#define SET_uint16_t(name)              uint16_t name
-#define SET_uint32_t(name)              uint32_t name
-#define SET_unsigned long(name)         unsigned long name
-#define SET_USHORT(name)                ushort name
-#define SET_BYTE(name)                  uint8_t name
-#define SET_WORD(name)                  word name
-#define SET_DWORD(name)                 dword name
-#define SET_LONG(name)                  long name
-#define SET_SHORT(name)                 short name
-#define SET_SIZE(name)                  size_t name
-#define SET_CHAR(name)                  char name
-#define SET_STRING(name)                char *name
-#define SET_FLOAT(name)                 float name
-#define SET_DOUBLE(name)                double name
-#define SET_STRUCT(name)                struct name
-#define SET_UNION(name)                 union name
-
-#ifdef __cplusplus
-#define EXTERN                          extern "C"
-#else
-#define EXTERN                          extern
+#define EXTERN 			extern				// Otherwise, it's just extern...
 #endif
 #endif
