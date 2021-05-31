@@ -295,6 +295,8 @@ keyboard_handler(void)
                 tty_puts(str);
             }
         }
+        
+        keyboard_set_leds(true, true, true);
     }
 }
 
@@ -350,9 +352,9 @@ keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock)
 {
     uint8_t data = 0;
 
-    data = (scroll_lock) ? (data | 1) : (data & 1);
-    data = (num_lock) ? (num_lock | 2) : (num_lock & 2);
-    data = (caps_lock) ? (caps_lock | 4) : (caps_lock & 4);
+    data = (scroll_lock) ? (data | 0) : (data & 0);
+    data = (num_lock) ? (num_lock | 1) : (num_lock & 1);
+    data = (caps_lock) ? (caps_lock | 2) : (caps_lock & 2);
 
     outb(KEYBOARD_DATA, 0xED);
     outb(KEYBOARD_DATA, data);
