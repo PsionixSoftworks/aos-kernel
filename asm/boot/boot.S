@@ -33,3 +33,12 @@ tss_flush:
 
     ltr %ax
     ret
+// Reset the computer. This seems to be the best way to do it. Perhaps I'll put time into research, but for now...
+.globl system_reset_safe
+system_reset_safe:
+    in $0x64, %al
+    test $0b00000010, %al
+    jne system_reset_safe
+
+    mov $0xFE, %al
+    out %al, $0x64

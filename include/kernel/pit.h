@@ -28,5 +28,7 @@
 extern void pit_init(uint32_t);							// Initialize the Programmable Interval Timer
 extern void pit_install(int);							// Install the PIT
 extern void pit_wait(int);								// Tell the PIT to wait
+extern void pit_beep_start(uint32_t);					// Tell channel 2 of the pit to 'beep' the speaker
+extern void pit_beep_stop(void);						// Tell channel 2 of the pit to stop the beep noise
 
 #endif	// !_ADAMANTINE_PIT_H

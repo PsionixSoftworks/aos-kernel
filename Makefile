@@ -40,8 +40,9 @@ ASM_FILES_IN		:=	asm/boot/boot.S \
 						asm/interrupt.asm \
 						asm/cpuid.asm
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
-						$(KERNEL_PATH)/tty.c \
 						$(DRIVER_PATH)/vga.c \
+						$(DRIVER_PATH)/i8042.c \
+						$(KERNEL_PATH)/tty.c \
 						$(KERNEL_PATH)/i386/gdt.c \
 						$(KERNEL_PATH)/i386/ldt.c \
 						$(KERNEL_PATH)/i386/idt.c \
@@ -84,6 +85,7 @@ OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						asm/interrupt.o \
 						asm/math.o \
 						init/main.o \
+						kernel/drivers/i8042.o \
 						kernel/tty.o \
 						kernel/cpu.o \
 						kernel/mutex.o \
@@ -142,6 +144,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(KERNEL_PATH)/tty.c -o $(KERNEL_PATH)/tty.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/keyboard.c -o $(DRIVER_PATH)/keyboard.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/vga.c -o $(DRIVER_PATH)/vga.o $(C_FLAGS)
+	$(CC) $(DRIVER_PATH)/i8042.c -o $(DRIVER_PATH)/i8042.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/cpu.c -o $(KERNEL_PATH)/cpu.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/mutex.c -o $(KERNEL_PATH)/mutex.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/irq.c -o $(KERNEL_PATH)/irq.o $(C_FLAGS)
@@ -192,7 +195,7 @@ iso: kernel
 	grub-mkrescue -o $(ISO_FILE) $(ISO_PATH)
 	$(MKDIR) $(ISO_OUTPUT_PATH)
 	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
-	qemu-system-i386 -machine ubuntu -drive format=raw,file=$(ISO_FILE)
+	qemu-system-i386 -soundhw pcspk -machine ubuntu -drive format=raw,file=$(ISO_FILE)
 clean:
 	$(RM) *.o $(BIN) *iso/ *.iso \
 	asm/boot/*.o \

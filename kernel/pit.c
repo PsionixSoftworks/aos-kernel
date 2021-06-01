@@ -20,6 +20,37 @@
 /* Number of ticks since startup */
 uint32_t tick = 0;
 
+static void
+play_sound(uint32_t nfreq)
+{
+	uint32_t div;
+	uint8_t tmp;
+
+	div = PIT_BASE_FREQ / nfreq;
+	outb(0x43, 0xB6);
+	outb(0x42, (uint8_t)div);
+	outb(0x42, (uint8_t)(div >> 8));
+
+	tmp = inb(0x61);
+	if (tmp != (tmp | 3))
+	{
+		outb(0x61, tmp | 3);
+	}
+}
+
+void
+pit_beep_start(uint32_t freq)
+{
+	play_sound(freq);
+}
+
+void
+pit_beep_stop(void)
+{
+	uint8_t tmp = inb(0x61) & 0xFC;
+	outb(0x61, tmp);
+}
+
 /* The timer callback function */
 static void
 timer_callback(registers_t regs)
@@ -27,8 +58,7 @@ timer_callback(registers_t regs)
 	/* Make sure we're not getting an error code */
 	if (!regs.err_code)
 	{
-		/* Prints the ticks (debug only!) */
-		//tty_printf("Ticks: %d\n", tick++);
+		tick++;
 	}
 }
 
@@ -46,6 +76,6 @@ pit_init(uint32_t freq)
 
 	outb(PIT_CHANNEL_0, l);
 	outb(PIT_CHANNEL_0, h);
-
+	
 	tty_puts("[INFO]: PIT is initialized!\n");
 }

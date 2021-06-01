@@ -14,6 +14,8 @@
 
 #include <math/math-util.h>
 
+#include <kernel/drivers/i8042.h>
+
 #include <compiler.h>
 #include <string.h>
 
@@ -53,6 +55,10 @@ k_main(void)
 	initialize_paging();								// Initialize memory paging
 	cpu_init();											// Initialize the CPU
 
-	keyboard_init();									// Initialize the keyboard
 	system_init();										// Initialize the system
+	if (!keyboard_init())								// Initialize the keyboard
+	{
+		tty_printf("[ERROR]: Keyboard could not be initialized...");
+		return;
+	}
 }
