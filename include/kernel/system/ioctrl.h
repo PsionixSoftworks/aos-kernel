@@ -40,7 +40,7 @@ outl(uint16_t port, uint32_t value)
 }
 
 /* Read from an 8-bit port */
-static inline uint8_t 
+static inline uint8_t
 inb(uint16_t port)
 {
 	uint8_t value = 0;
@@ -84,7 +84,7 @@ io_wait(void)
 static inline void
 io_wait(void)
 {
-	__asm__ volatile ( 	"outb %%al, $0x80" : : "a"(0) )
+	__asm__ volatile ( 	"outb %%al, $0x80" : : "a"(0) );
 }
 #endif	// !IRQS_ENABLED
 #endif	// !_ADAMANTINE_IOCTRL_H
