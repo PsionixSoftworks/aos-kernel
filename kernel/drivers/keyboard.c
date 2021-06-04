@@ -295,8 +295,6 @@ keyboard_handler(void)
                 tty_puts(str);
             }
         }
-        
-        keyboard_set_leds(true, true, true);
     }
 }
 

@@ -38,9 +38,8 @@ descriptor_tables_init(void)
 	memset(&interrupt_handlers, 0, sizeof(isr_t)*256);	// Clear the address of the interrupt handlers to zero
 }
 
-/* The entry point of the kernel (defined in "boot.S") */
-HOT kernel_t
-k_main(void)
+kernel_t
+init(void)
 {
 	tty_init((uint16_t *)VGA_TEXT_MODE_COLOR);			// Initialize the teletype with color Text Mode enabled
 	tty_set_foreground(SYSTEM_COLOR_LT_GREEN);			// Set the default text color to light green (the color of adamntine)
@@ -55,4 +54,13 @@ k_main(void)
 
 	keyboard_init();									// Initialize the keyboard
 	system_init();										// Initialize the system
+	
+	return;
+}
+
+/* The entry point of the kernel (defined in "boot.S") */
+HOT kernel_t
+k_main(void)
+{
+	
 }
