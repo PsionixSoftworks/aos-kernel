@@ -14,6 +14,8 @@
 
 #include <math/math-util.h>
 
+#include <kernel/drivers/i8042.h>
+
 #include <compiler.h>
 #include <string.h>
 
@@ -52,15 +54,12 @@ init(void)
 	initialize_paging();								// Initialize memory paging
 	cpu_init();											// Initialize the CPU
 
-	keyboard_init();									// Initialize the keyboard
 	system_init();										// Initialize the system
-	
-	return;
+	keyboard_init();
 }
 
-/* The entry point of the kernel (defined in "boot.S") */
 HOT kernel_t
 k_main(void)
 {
-	
+
 }
