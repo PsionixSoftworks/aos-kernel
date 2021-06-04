@@ -61,5 +61,5 @@ init(void)
 HOT kernel_t
 k_main(void)
 {
-
+	
 }

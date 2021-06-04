@@ -181,15 +181,20 @@ user_input(char *buffer)
     {
         if (strcmp(token, "test") == 0)
         {
+            tty_set_foreground(SYSTEM_COLOR_GREEN);
             tty_printf("Recognized token: %s\n", token);
+            tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
         }
         else if (strcmp(token, "restart") == 0)
         {
+            tty_printf("Adamantine is restarting...\n");
             system_restart_safe();
         }
         else
         {
-            tty_printf("Output: %s\n", token);
+            tty_set_foreground(SYSTEM_COLOR_RED);
+            tty_printf("[ERROR]: Unrecognized token: %s\n", token);
+            tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
         }
         token = strtok(NULL, " ");
     }
