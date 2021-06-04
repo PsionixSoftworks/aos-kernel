@@ -152,9 +152,116 @@ backspace(char s[])
     s[len - 1] = '\0';                                  // Set the position -1 to null terminator (empty char)
 }
 
+<<<<<<< HEAD
 /* Define the function that reads scancodes */
 unsigned char
 keyboard_read_scancode(void)
+=======
+/* Keyboard callback; where the magic happens (to be heavily modified...) */
+static inline void
+keyboard_handler(void)
+{
+    static unsigned char scancode;                      // Key scancode
+    scancode = keyboard_read_scancode();                // Assign the scancode
+
+    if (scancode)                                       // If it does not equal zero,
+    {
+        /* Check for Escape */
+        if (scancode == KEYBOARD_KEY_DOWN_ESCAPE)
+            tty_puts("Cannot exit from current mode!\n[ADAMANTINE]: ");
+        if ((scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_RIGHT))
+            tty_puts("[WindowsKey]: ");
+
+        // Check for Left Shift:
+        if ((scancode == KEYBOARD_KEY_DOWN_LEFT_SHIFT) || (scancode == KEYBOARD_KEY_DOWN_RIGHT_SHIFT))
+            shift_press = true;
+        else if ((scancode == KEYBOARD_KEY_UP_LEFT_SHIFT) || (scancode == KEYBOARD_KEY_UP_RIGHT_SHIFT))
+            shift_press = false;
+
+        // Check for Control Key:
+        if ((scancode == KEYBOARD_KEY_DOWN_CONTROL))
+            ctrl_press = true;
+        else if (scancode == KEYBOARD_KEY_UP_CONTROL)
+            ctrl_press = false;
+
+        // Check for Alt Key:
+        if (scancode == KEYBOARD_KEY_DOWN_ALT)
+            alt_press = true;
+        else if (scancode == KEYBOARD_KEY_UP_ALT)
+            alt_press = false;
+
+        // Check for System Key:
+        if ((scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_DOWN_WINDOWS_KEY_RIGHT))
+            system_press = true;
+        else if ((scancode == KEYBOARD_KEY_UP_WINDOWS_KEY_LEFT) || (scancode == KEYBOARD_KEY_UP_WINDOWS_KEY_RIGHT))
+            system_press = false;
+
+        /* Check for numlock */
+        if (scancode == KEYBOARD_KEY_DOWN_NUM_LOCK)
+        {
+            numlock = !numlock;
+            keyboard_set_leds(numlock, capslock, scrllock);
+        }
+
+        /* Check for Caps lock */
+        if (scancode == KEYBOARD_KEY_DOWN_CAPS_LOCK)
+        {
+            capslock = !capslock;
+            keyboard_set_leds(numlock, capslock, scrllock);
+        }
+        
+        /* Check for scroll lock */
+        if (scancode == KEYBOARD_KEY_DOWN_SCROLL_LOCK)
+        {
+            scrllock = !scrllock;
+            keyboard_set_leds(numlock, capslock, scrllock);
+        }
+
+        if ((ctrl_press) && (scancode == KEYBOARD_KEY_DOWN_S))
+        {
+            tty_puts("Nothing to save!\n");
+            tty_puts("[ADAMANTINE]: ");
+        }
+        else if ((system_press) && (scancode == KEYBOARD_KEY_DOWN_W))
+            tty_puts("System test...\n");
+        else if (scancode == KEYBOARD_KEY_DOWN_ENTER)
+        {
+            tty_println();
+            if (key_buffer[0] != 0)
+            {
+                user_input(key_buffer);
+                key_buffer[0] = '\0';
+            }
+            tty_puts("[ADAMANTINE]: ");
+        }
+        else if (shift_press)
+        {
+            char c = keys_caps[(int)scancode];
+            char str[2] = {c, '\0'};
+            append(key_buffer, c);
+            tty_puts(str);
+        }
+        else
+        {
+            if (scancode == KEYBOARD_KEY_DOWN_BACKSPACE)
+            {
+                backspace(key_buffer);
+                tty_putchar('\b');
+            } else
+            {
+                char c = keys_normal[(int)scancode];
+                char str[2] = {c, '\0'};
+                append(key_buffer, c);
+                tty_puts(str);
+            }
+        }
+    }
+}
+
+/* Get the last key pressed */
+static inline char *
+keyboard_get_keylast(void)
+>>>>>>> master2
 {
     uint8_t status = i8042_read_status_register();      // Read the command bit
     if ((status & 0x01) == 1)                           // If status is 1,
