@@ -55,21 +55,11 @@ init(void)
 	cpu_init();											// Initialize the CPU
 
 	system_init();										// Initialize the system
-<<<<<<< HEAD
-	if (!keyboard_init())								// Initialize the keyboard
-	{
-		tty_printf("[ERROR]: Keyboard could not be initialized...");
-		return;
-	}
-=======
-	
-	return;
+	keyboard_init();
 }
 
-/* The entry point of the kernel (defined in "boot.S") */
 HOT kernel_t
 k_main(void)
 {
-	
->>>>>>> master2
+
 }
