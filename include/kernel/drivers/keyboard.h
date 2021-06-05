@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 /* Function Templates */
-extern void keyboard_init(void);						// Initalize the keyboard driver
+extern bool keyboard_init(void);						// Initalize the keyboard driver
 extern unsigned char keyboard_read_scancode(void);		// Read a scancode from the data port
 
 #endif  // !_ADAMANTINE_KEYBOARD_H

@@ -65,12 +65,7 @@ const char keys_caps[256] =
 	0x00, 0x00,													// <Windows key>, <Windows key>,
 };
 
-static inline void keyboard_handler(void);
-static inline uint8_t keyboard_read(void);
-static inline void keyboard_write_command(uint8_t cmd);
-static inline char *keyboard_get_key(void);
-static inline void keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock);
-static inline char *keyboard_get_keylast(void);
+static inline void keyboard_callback(void);
 
 static bool init = false;
 static bool shift_press = false;
@@ -80,98 +75,40 @@ static bool alt_press = false;
 static bool numlock UNUSED;
 static bool capslock UNUSED;
 static bool scrllock UNUSED;
-static char *key_last = NULL;
 static char key_buffer[256];
 
 extern void system_restart_safe(void);
 
-void
+bool
 keyboard_init(void)
 {
     if (!init)
     {
         memset(key_buffer, 0, sizeof(char) * 40);
-        register_interrupt_handler(IRQ1, (isr_t)&keyboard_handler);
-
+        register_interrupt_handler(IRQ1, (isr_t)&keyboard_callback);
+#if defined(__DEBUG__)
         tty_puts("[INFO]: Keyboard is initialized!\n");
+#endif
         tty_puts("[ADAMANTINE]: ");
-        
         init = true;
     }
+    return init;
 }
 
 unsigned char
 keyboard_read_scancode(void)
 {
-    uint8_t status = keyboard_read();
+    uint8_t status = i8042_read_status_register();
     if ((status & 0x01) == 1)
-        return (inb(DATA_PORT));
+        return i8042_read_data();
     return 0;
 }
 
-static void UNUSED
-keyboard_set_typematic_byte(void)
+static const char *commands[] =
 {
-    outb(DATA_PORT, 0xF3);
-    outb(DATA_PORT, 0);
-}
-
-const char *cmd_list[] =
-{
-    "adm",
-    "push",
-    "pop",
-    "ccmd",
-    "decl",
-    "pout",
-    "clear",
-    "fg1",
-    "fg2",
-    "fg3",
-    "fg4",
-    "fg5",
-    "fg6",
-    "fg7",
-    "fg8",
-    "fg9",
-    "fg10",
+    "restart",
+    "clr",
 };
-
-static inline bool
-process_commands(char *cmd)
-{
-    for (size_t i = 0; i < 22; i++)
-    {
-        if (strcmp(cmd, cmd_list[i]) == 0)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-static inline void
-pout(void)
-{
-    tty_set_foreground(SYSTEM_COLOR_LT_CYAN);
-    tty_printf("Print Out!\n");
-    tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
-}
-
-static inline bool
-change_fg(char *tok)
-{
-    for (size_t i = 7; i < 22; i++)
-    {
-        if (!strcmp(tok, cmd_list[i]))
-        {
-            return true;
-        }
-    }
-    return (false);
-}
-
-static uint8_t save_color = SYSTEM_COLOR_LT_GREEN;
 
 static inline void
 user_input(char *buffer)
@@ -179,16 +116,14 @@ user_input(char *buffer)
     char *token = strtok(buffer, " ");
     while (token != NULL)
     {
-        if (strcmp(token, "test") == 0)
-        {
-            tty_set_foreground(SYSTEM_COLOR_GREEN);
-            tty_printf("Recognized token: %s\n", token);
-            tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
-        }
-        else if (strcmp(token, "restart") == 0)
+        if (strcmp(token, commands[0]) == 0)
         {
             tty_printf("Adamantine is restarting...\n");
             system_restart_safe();
+        }
+        else if (strcmp(token, commands[1]) == 0)
+        {
+            tty_clear();
         }
         else
         {
@@ -208,7 +143,7 @@ backspace(char s[])
 }
 
 static inline void
-keyboard_handler(void)
+keyboard_callback(void)
 {
     static unsigned char scancode;
     scancode = keyboard_read_scancode();
@@ -288,59 +223,4 @@ keyboard_handler(void)
             }
         }
     }
-}
-
-static inline char *
-keyboard_get_keylast(void)
-{
-    return (key_last);
-}
-
-static inline uint8_t
-keyboard_read(void)
-{
-    if (init) {
-        uint8_t status = inb(COMMAND_REGISTER);
-        return (status);
-    }
-    return 0;
-}
-
-static inline void
-keyboard_write_command(uint8_t cmd)
-{
-    if (init) {
-        while (1)
-            if (!(keyboard_read() & 0x2))
-                break;
-        outb(DATA_PORT, cmd);
-    }
-    else
-    {
-        tty_printf("[ERROR]: Keyboard has not been init...\n");
-    }
-}
-
-static inline char *
-keyboard_get_key(void)
-{
-    if (init) {
-        keyboard_read();
-        if (key_last != KEYBOARD_KEY_DOWN_NONE)
-            return (key_last);
-        return (KEYBOARD_KEY_DOWN_NONE);
-    }
-}
-
-static inline void
-keyboard_set_leds(bool num_lock, bool caps_lock, bool scroll_lock)
-{
-    uint8_t data = 0;
-
-    data = (scroll_lock) ? (data | 1) : (data & 1);
-    data = (num_lock) ? (num_lock | 2) : (num_lock & 2);
-    data = (caps_lock) ? (caps_lock | 4) : (caps_lock & 4);
-
-    outb(DATA_PORT, 0xED);
-    outb(DATA_PORT, data);
 }

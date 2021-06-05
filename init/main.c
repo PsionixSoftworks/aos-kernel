@@ -40,7 +40,7 @@ descriptor_tables_init(void)
 	memset(&interrupt_handlers, 0, sizeof(isr_t)*256);	// Clear the address of the interrupt handlers to zero
 }
 
-kernel_t
+kernel_t HOT
 init(void)
 {
 	tty_init((uint16_t *)VGA_TEXT_MODE_COLOR);			// Initialize the teletype with color Text Mode enabled
@@ -58,7 +58,7 @@ init(void)
 	keyboard_init();
 }
 
-HOT kernel_t
+kernel_t HOT
 k_main(void)
 {
 	
