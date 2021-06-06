@@ -1,29 +1,22 @@
+#define CURSOR_TYPE 	1
+
 #include <adamantine/tty.h>
 #include <kernel/drivers/vga.h>
-#include <i386/gdt.h>
-#include <i386/ldt.h>
-#include <i386/idt.h>
-#include <kernel/irq.h>
-#include <kernel/pit.h>
-#include <kernel/cpu.h>
 #include <kernel/drivers/keyboard.h>
 #include <kernel/system/system.h>
 #include <kernel/memory/memory-util.h>
 #include <kernel/memory/paging.h>
 #include <kernel/kernel.h>
-
-#include <math/math-util.h>
-
-#include <kernel/drivers/i8042.h>
-
+#include <kernel/irq.h>
+#include <kernel/pit.h>
+#include <kernel/cpu.h>
+#include <i386/gdt.h>
+#include <i386/ldt.h>
+#include <i386/idt.h>
 #include <compiler.h>
 #include <string.h>
-
 #include <stddef.h>
-
-/* Define macros for the Text Mode cusror */
-#define CURSOR_START	0x0								// Top=0
-#define CURSOR_END		0xF								// Bottom=15
+#include <stdio.h>
 
 /* External references */
 extern uint32_t kernel_end;								// The end of the kernel memory (defined in "linker.ld")
@@ -61,5 +54,10 @@ init(void)
 kernel_t HOT
 k_main(void)
 {
-	
+	while (TRUE)
+	{
+		char c = getchar();
+		if (c != 0)
+			tty_putchar(c);
+	}
 }

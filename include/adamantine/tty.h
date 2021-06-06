@@ -9,6 +9,15 @@
 #define CURSOR_CMD		0x03D4							// Cursor Command
 #define CURSOR_DATA		0x03D5							// Cursor Data
 
+/* Define macros for the Text Mode cusror */
+#if defined(CURSOR_TYPE) && (CURSOR_TYPE == 0)			// This will make a block cursor, all others will be an underline (for now).
+#define CURSOR_START	0x0								// Top=0
+#define CURSOR_END		0xF								// Bottom=15
+#else
+#define CURSOR_START	0xE								// Top=0
+#define CURSOR_END		0xF								// Bottom=15
+#endif
+
 /* Define the type for the teletype struct */
 typedef struct TTY tty_t;
 struct TTY

@@ -66,6 +66,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(STDLIB_PATH)/memcpy.c \
 						$(STDLIB_PATH)/memmove.c \
 						$(STDLIB_PATH)/memset.c \
+						stdio/getchar.c \
 						$(STRING_PATH)/str-backspace.c \
 						$(STRING_PATH)/strcat.c \
 						$(STRING_PATH)/strcmp.c \
@@ -111,6 +112,7 @@ OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						stdlib/memcpy.o \
 						stdlib/memmove.o \
 						stdlib/memset.o \
+						stdio/getchar.o \
 						string/str-backspace.o \
 						string/strcat.o \
 						string/strcmp.o \
@@ -168,6 +170,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(STDLIB_PATH)/memcpy.c -o $(STDLIB_PATH)/memcpy.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/memmove.c -o $(STDLIB_PATH)/memmove.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/memset.c -o $(STDLIB_PATH)/memset.o $(C_FLAGS)
+	$(CC) stdio/getchar.c -o stdio/getchar.o $(C_FLAGS)
 	$(CC) $(STRING_PATH)/str-backspace.c -o $(STRING_PATH)/str-backspace.o $(C_FLAGS)
 	$(CC) $(STRING_PATH)/strcat.c -o $(STRING_PATH)/strcat.o $(C_FLAGS)
 	$(CC) $(STRING_PATH)/strcmp.c -o $(STRING_PATH)/strcmp.o $(C_FLAGS)

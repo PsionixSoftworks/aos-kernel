@@ -1,22 +1,19 @@
 #include <kernel/drivers/keyboard.h>
 #include <kernel/drivers/keys.h>
 #include <kernel/drivers/i8042.h>
+#include <kernel/drivers/vga.h>
 #include <kernel/system/ioctrl.h>
 #include <adamantine/tty.h>
-#include <kernel/drivers/vga.h>
 #include <kernel/isr.h>
 #include <kernel/irq.h>
 #include <kernel/pic.h>
 #include <compiler.h>
-
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
 
-// Nested conditional statement= var = (expr1 == val ? expr2 : expr3);
-
 // Define for normal keys:
-const char keys_normal[256] = 
+const char keys_normal[MAX_KEYS] = 
 {
 	0x00, 0x00,				                                            // <None>, <Escape>,
 	'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
@@ -41,7 +38,7 @@ const char keys_normal[256] =
 };
 
 // Define for keys when shift is held:
-const char keys_caps[256] = 
+const char keys_caps[MAX_KEYS] = 
 {
 	0x00, 0x00, 														// <None>, <Escape>,
 	'!', '@', '#', '$', '%', '^', '&', '*', '(', ')',					// 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
@@ -75,7 +72,8 @@ static bool alt_press = false;
 static bool numlock UNUSED;
 static bool capslock UNUSED;
 static bool scrllock UNUSED;
-static char key_buffer[256];
+
+char key_buffer[256];                                   // This can't be static anymore because it is needed for getchar (defined in stdio/getchar.c)
 
 extern void system_restart_safe(void);
 
@@ -111,6 +109,13 @@ static const char *commands[] =
 };
 
 static inline void
+backspace(char s[])
+{
+    int len = strlen(s);
+    s[len - 1] = '\0';
+}
+
+static inline void
 user_input(char *buffer)
 {
     char *token = strtok(buffer, " ");
@@ -136,19 +141,12 @@ user_input(char *buffer)
 }
 
 static inline void
-backspace(char s[])
-{
-    int len = strlen(s);
-    s[len - 1] = '\0';
-}
-
-static inline void
 keyboard_callback(void)
 {
     static unsigned char scancode;
     scancode = keyboard_read_scancode();
 
-    if (scancode)
+    if (scancode != KEYBOARD_KEY_DOWN_NONE)
     {
         // Check for Escape:
         if (scancode == KEYBOARD_KEY_DOWN_ESCAPE)
@@ -206,7 +204,7 @@ keyboard_callback(void)
             char c = keys_caps[(int)scancode];
             char str[2] = {c, '\0'};
             append(key_buffer, c);
-            tty_puts(str);
+            //tty_puts(str);
         }
         else
         {
@@ -219,7 +217,7 @@ keyboard_callback(void)
                 char c = keys_normal[(int)scancode];
                 char str[2] = {c, '\0'};
                 append(key_buffer, c);
-                tty_puts(str);
+                //tty_puts(str);
             }
         }
     }

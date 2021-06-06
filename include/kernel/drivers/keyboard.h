@@ -8,6 +8,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define MAX_KEYS			256							// Max number of keybinds (shouldn't exceed 256)
+
 /* Function Templates */
 extern bool keyboard_init(void);						// Initalize the keyboard driver
 extern unsigned char keyboard_read_scancode(void);		// Read a scancode from the data port
