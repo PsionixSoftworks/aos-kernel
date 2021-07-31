@@ -1,9 +1,11 @@
-#define CURSOR_TYPE 	1
+#define CURSOR_TYPE 	0
 
 #include <adamantine/tty.h>
+#include <adamantine/aos-defs.h>
+#include <adamantine/aos-int.h>
+#include <adamantine/aos-string.h>
 #include <kernel/drivers/vga.h>
 #include <kernel/drivers/keyboard.h>
-#include <kernel/system/system.h>
 #include <kernel/memory/memory-util.h>
 #include <kernel/memory/paging.h>
 #include <kernel/kernel.h>
@@ -14,9 +16,8 @@
 #include <i386/ldt.h>
 #include <i386/idt.h>
 #include <compiler.h>
-#include <string.h>
-#include <stddef.h>
-#include <stdio.h>
+
+#include <kernel/procmgr.h>
 
 /* External references */
 extern uint32_t kernel_end;								// The end of the kernel memory (defined in "linker.ld")
@@ -47,17 +48,11 @@ init(void)
 	initialize_paging();								// Initialize memory paging
 	cpu_init();											// Initialize the CPU
 
-	system_init();										// Initialize the system
 	keyboard_init();
 }
 
 kernel_t HOT
 k_main(void)
 {
-	while (TRUE)
-	{
-		char c = getchar();
-		if (c != 0)
-			tty_putchar(c);
-	}
+	init();
 }

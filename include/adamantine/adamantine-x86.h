@@ -16,7 +16,7 @@
 
 /* Define 'INFINITY' as the maximum 32-bit value */
 #ifndef INFINITY
-#define INFINITY    0xFFFFFFFF      					// Max 32-bit value
+#define INFINITY    	0xFFFFFFFF     					// Max 32-bit value
 #endif
 
 /* Check if Adamantine Standard Types were defined */

@@ -5,6 +5,8 @@
 
 #include <compiler.h>
 #include <stdint.h>
+#include <adamantine/aos-defs.h>
+#include <kernel/kernel.h>
 
 /* Define macros for the Global Descriptor Table */
 #define GDT_MEMORY_START		0x00000000              // Start of memory
@@ -38,6 +40,6 @@ struct gdt_ptr_struct
 } PACKED;
 
 /* Function Templates */
-extern void gdt_init(void);                             // Initialize the Global Descriptor Table
+EXTERN KERNEL_API void gdt_init(void);                             // Initialize the Global Descriptor Table
 
 #endif  // !_ADAMANTINE_GDT_H

@@ -18,6 +18,16 @@
 #include <kernel/system/types.h>
 #include <stdint.h>
 
+#include <compiler.h>
+
+#if !defined(KERNEL_API)
+#if !defined(KERNEL_STDCALL)
+#define KERNEL_API      __cdecl
+#else
+#define KERNEL_API      __stdcall
+#endif
+#endif
+
 /* Define the system info struct */
 typedef struct aos_system_information
 {

@@ -15,7 +15,13 @@
 #define SECTION(name)	__attribute__((section(name)))	// Change the section the code is placed under; Default is .text
 #define ALIGN(x)		__attribute__((aligned(x)))		// Specify minimum alignment (in bytes)
 #define ACCESS(mode)	__attribute__((access(mode)))	// ??
+#define __cdecl			__attribute__((__cdecl__))		// Code Call Convention
+#define __stdcall		__attribute__((__stdcall__))	// Standard Calling Convention
 #endif	// !__STANDARD_ATTRIBUTES__
+#endif
+
+#if defined(__ADM_COMPILER__)
+extern void compile(void *, char *);					// Compile the source code (void *) to the output file (char *)
 #endif
 
 #endif

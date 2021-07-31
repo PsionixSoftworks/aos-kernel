@@ -7,11 +7,13 @@
 #include <kernel/drivers/i8042.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <adamantine/aos-defs.h>
+#include <kernel/kernel.h>
 
 #define MAX_KEYS			256							// Max number of keybinds (shouldn't exceed 256)
 
 /* Function Templates */
-extern bool keyboard_init(void);						// Initalize the keyboard driver
-extern unsigned char keyboard_read_scancode(void);		// Read a scancode from the data port
+EXTERN KERNEL_API bool keyboard_init(void);						// Initalize the keyboard driver
+EXTERN KERNEL_API unsigned char keyboard_read_scancode(void);		// Read a scancode from the data port
 
 #endif  // !_ADAMANTINE_KEYBOARD_H

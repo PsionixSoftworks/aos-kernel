@@ -204,7 +204,7 @@ keyboard_callback(void)
             char c = keys_caps[(int)scancode];
             char str[2] = {c, '\0'};
             append(key_buffer, c);
-            //tty_puts(str);
+            tty_puts(str);
         }
         else
         {
@@ -217,7 +217,7 @@ keyboard_callback(void)
                 char c = keys_normal[(int)scancode];
                 char str[2] = {c, '\0'};
                 append(key_buffer, c);
-                //tty_puts(str);
+                tty_puts(str);
             }
         }
     }

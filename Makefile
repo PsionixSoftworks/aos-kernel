@@ -51,10 +51,8 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(MEMORY_PATH)/paging.c \
 						$(KERNEL_PATH)/cpu.c \
 						$(DRIVER_PATH)/keyboard.c \
-						$(SYSTEM_PATH)/system.c \
 						$(KERNEL_PATH)/mutex.c \
 						$(KERNEL_PATH)/assert.c \
-						$(KERNEL_PATH)/message-dispatcher.c \
 						$(KERNEL_PATH)/irq.c \
 						$(KERNEL_PATH)/isr.c \
 						$(KERNEL_PATH)/pic.c \
@@ -79,7 +77,8 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(STRING_PATH)/strspn.c \
 						$(STRING_PATH)/strtok.c \
 						$(STRING_PATH)/strchr.c \
-						$(STRING_PATH)/append.c
+						$(STRING_PATH)/append.c \
+						$(KERNEL_PATH)/procmgr.c
 # Put all input files here separated by a '\':
 OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						asm/cpuid.o \
@@ -99,7 +98,6 @@ OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						kernel/isr.o \
 						kernel/pic.o \
 						kernel/pit.o \
-						kernel/system/system.o \
 						kernel/i386/gdt.o \
 						kernel/i386/ldt.o \
 						kernel/i386/idt.o \
@@ -126,7 +124,7 @@ OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						string/strtok.o \
 						string/strchr.o \
 						string/append.o \
-						kernel/message-dispatcher.o
+						kernel/procmgr.o
 
 # Compile all of the files into the iso:
 .PHONY: all
@@ -154,10 +152,8 @@ kernel: $(C_FILES_IN)
 	$(CC) $(KERNEL_PATH)/pic.c -o $(KERNEL_PATH)/pic.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/pit.c -o $(KERNEL_PATH)/pit.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/assert.c -o $(KERNEL_PATH)/assert.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/message-dispatcher.c -o $(KERNEL_PATH)/message-dispatcher.o $(C_FLAGS)
 	$(CC) $(MATH_PATH)/math-util.c -o $(MATH_PATH)/math-util.o $(C_FLAGS)
 	$(CC) $(MEMORY_PATH)/mem-util.c -o $(MEMORY_PATH)/mem-util.o $(C_FLAGS)
-	$(CC) $(SYSTEM_PATH)/system.c -o $(SYSTEM_PATH)/system.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/i386/gdt.c -o $(KERNEL_PATH)/i386/gdt.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/i386/ldt.c -o $(KERNEL_PATH)/i386/ldt.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/i386/idt.c -o $(KERNEL_PATH)/i386/idt.o $(C_FLAGS)
@@ -184,6 +180,8 @@ kernel: $(C_FILES_IN)
 	$(CC) $(STRING_PATH)/strtok.c -o $(STRING_PATH)/strtok.o $(C_FLAGS)
 	$(CC) $(STRING_PATH)/strchr.c -o $(STRING_PATH)/strchr.o $(C_FLAGS)
 	$(CC) $(STRING_PATH)/append.c -o $(STRING_PATH)/append.o $(C_FLAGS)
+
+	$(CC) $(KERNEL_PATH)/procmgr.c -o $(KERNEL_PATH)/procmgr.o $(C_FLAGS)
 
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)

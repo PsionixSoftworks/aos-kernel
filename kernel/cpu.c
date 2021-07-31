@@ -105,7 +105,7 @@ cpu_vendor_string(void)
 }
 
 /* Checks if CPUID is even supported for this model */
-inline bool
+inline uint32_t
 cpu_check_is_supported(void)
 {
 	bool result = cpuid_supported();

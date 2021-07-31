@@ -5,6 +5,8 @@
 
 #include <compiler.h>
 #include <stdint.h>
+#include <adamantine/aos-defs.h>
+#include <kernel/kernel.h>
 
 /* Define the types for the LDT */
 typedef struct ldt_entry_struct ldt_entry_t;            // The physical LDT type
@@ -25,6 +27,6 @@ struct ldt_ptr_struct
 } PACKED;
 
 /* Function Templates */
-extern void ldt_init(void);                             // Initialize the Local Descriptor Table
+EXTERN KERNEL_API void ldt_init(void);                             // Initialize the Local Descriptor Table
 
 #endif  // !_ADAMANTINE_LDT_H

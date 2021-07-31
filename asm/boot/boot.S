@@ -21,7 +21,6 @@ stack_top:
 .type _start, @function
 _start:
     mov $stack_top, %esp
-    call init
     call k_main
 1:  hlt
     jmp 1b

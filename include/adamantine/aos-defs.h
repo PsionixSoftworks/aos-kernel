@@ -29,7 +29,7 @@
 
 /* Check if 'NULL' was previously defined */
 #ifndef NULL
-#ifndef __cplusplus							// If it wasn't and we're using C
+#ifdef __cplusplus							// If it wasn't and we're using C
 #define NULL		0						// just define it as '0'
 #else										// otherwise,
 #define NULL			((void *)0)			// define it as a null void ptr

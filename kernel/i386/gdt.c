@@ -1,5 +1,6 @@
 #include <i386/gdt.h>
 #include <adamantine/tty.h>
+#include <i386/tss.h>
 #include <stddef.h>
 
 /* Define the GDT enties and the pointer to the GDT */
@@ -12,6 +13,8 @@ static inline void gdt_set_kernel_code_segment(void);   // Kernel Code Segment
 static inline void gdt_set_kernel_data_segment(void);   // Kernel Data Segment
 static inline void gdt_set_user_code_segment(void);     // User Code Segment
 static inline void gdt_set_user_data_segment(void);     // User Data Segment
+
+static inline void tss_install(uint32_t, uint16_t, uint16_t);
 
 /* Initialize the Global Descriptot Table */
 void
