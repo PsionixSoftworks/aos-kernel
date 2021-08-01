@@ -48,6 +48,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(KERNEL_PATH)/i386/idt.c \
 						$(KERNEL_PATH)/pit.c \
 						$(MEMORY_PATH)/mem-util.c \
+						$(MEMORY_PATH)/ordered-array.c \
 						$(MEMORY_PATH)/paging.c \
 						$(KERNEL_PATH)/cpu.c \
 						$(DRIVER_PATH)/keyboard.c \
@@ -102,6 +103,7 @@ OUTPUT_FILES 		:= 	asm/boot/boot.o	\
 						kernel/i386/ldt.o \
 						kernel/i386/idt.o \
 						kernel/memory/paging.o \
+						kernel/memory/ordered-array.o \
 						stdlib/itoa.o \
 						stdlib/free.o \
 						stdlib/malloc.o \
@@ -154,6 +156,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(KERNEL_PATH)/assert.c -o $(KERNEL_PATH)/assert.o $(C_FLAGS)
 	$(CC) $(MATH_PATH)/math-util.c -o $(MATH_PATH)/math-util.o $(C_FLAGS)
 	$(CC) $(MEMORY_PATH)/mem-util.c -o $(MEMORY_PATH)/mem-util.o $(C_FLAGS)
+	$(CC) $(MEMORY_PATH)/ordered-array.c -o $(MEMORY_PATH)/ordered-array.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/i386/gdt.c -o $(KERNEL_PATH)/i386/gdt.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/i386/ldt.c -o $(KERNEL_PATH)/i386/ldt.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/i386/idt.c -o $(KERNEL_PATH)/i386/idt.o $(C_FLAGS)

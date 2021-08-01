@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include <stdarg.h>
+#include <assert.h>
 
 /* Declare static variables */
 static const size_t TERMINAL_WIDTH		= 80;			// Weren't these defined
@@ -302,4 +303,22 @@ tty_scroll(void)
 		}
 		tty.y = TERMINAL_HEIGHT - 1;
 	}
+}
+
+void
+panic(const char *message, const char *file, uint32_t line)
+{
+	asm volatile ( "cli" );
+
+	tty_printf("PANIC(%s) at %s:%d\n", message, file, line);
+	for (;;);
+}
+
+void
+panic_assert(const char *file, uint32_t line, const char *desc)
+{
+	asm volatile ( "cli" );
+
+	tty_printf("ASSERTION-FAILED(%s) at %s: Line %d\n", desc, file, line);
+	for (;;);
 }

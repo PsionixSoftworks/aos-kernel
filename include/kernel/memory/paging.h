@@ -33,6 +33,7 @@ typedef struct page_directory
 extern void initialize_paging();
 extern void switch_page_directory(page_directory_t *dir);
 extern page_t *get_page(uint32_t address, int make, page_directory_t *dir);
+extern void alloc_frame(page_t *page, int is_kernel, int is_writable);
 extern void page_fault(registers_t regs);
 
 #endif  //!_ADAMANTINE_PAGING_H

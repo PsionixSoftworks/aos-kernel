@@ -22,7 +22,7 @@
 
 /* Manually trigger an interrupt */
 #ifndef intn
-#define intn(n) __asm__ volatile ("int $" #n);
+#define intn(n) __asm__ ("int $" #n);
 #endif
 
 /* Define the register struct. They contain assembly registers in C */

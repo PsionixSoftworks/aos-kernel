@@ -4,14 +4,21 @@
 #include <kernel/cpu.h>
 #include <string.h>
 #include <stddef.h>
+#include <assert.h>
 
-page_directory_t *kernel_directory = NULL;
-page_directory_t *current_directory = NULL;
+// The kernel's page directory:
+page_directory_t *kernel_directory = 0;
 
+// The current page directory:
+page_directory_t *current_directory = 0;
+
+// A bitset of frames - used or free:
 uint32_t *frames;
 uint32_t nframes;
 
+// Defined in mem-util.c:
 extern uint32_t placement_address;
+extern heap_t *kheap;
 
 #define INDEX_FROM_BIT(a)   (a / (8 * 4))
 #define OFFSET_FROM_BIT(a)  (a % (8 * 4))
@@ -34,7 +41,6 @@ clear_frame(uint32_t frame_address)
     frames[idx] &= ~(0x1 << off);
 }
 
-/* Find out if we even need this... *
 static uint32_t
 test_frame(uint32_t frame_address)
 {
@@ -43,7 +49,6 @@ test_frame(uint32_t frame_address)
     uint32_t off = OFFSET_FROM_BIT(frame);
     return (frames[idx] & (0x1 << off));
 }
-*/
 
 static uint32_t
 first_frame(void)
@@ -115,17 +120,28 @@ initialize_paging(void)
     memset(kernel_directory, 0, sizeof(page_directory_t));
     current_directory = kernel_directory;
 
-    unsigned int i = 0;
-    while (i < placement_address)
+    int i = 0;
+    for (i = KHEAP_START; i < KHEAP_START + KHEAP_INITIAL_SIZE; i += 0x1000)
+        get_page(i, 1, kernel_directory);
+    
+    i = 0;
+    while (i < placement_address + 0x1000)
     {
         alloc_frame(get_page(i, 1, kernel_directory), 0, 0);
         i += 0x1000;
     }
+
+    for (i = KHEAP_START; i < KHEAP_START + KHEAP_INITIAL_SIZE; i += 0x1000)
+        alloc_frame(get_page(i, 1, kernel_directory), 0, 0);
+
     register_interrupt_handler(14, page_fault);
 
     switch_page_directory(kernel_directory);
 
+    kheap = create_heap(KHEAP_START, KHEAP_START + KHEAP_INITIAL_SIZE, 0xCFFFF000, 0, 0);
+#if defined(__DEBUG__)
     tty_puts("[INFO]: Paging is initialized!\n");
+#endif
 }
 
 void
@@ -172,7 +188,7 @@ page_fault(registers_t regs)
     int rw          = regs.err_code & 0x2;
     int us          = regs.err_code & 0x4;
     int reserved    = regs.err_code & 0x8;
-    // int id          = regs.err_code & 0x10;
+    int id          = regs.err_code & 0x10;
 
     tty_puts("Page fault! ( ");
     if (present) {tty_puts("present ");}
@@ -184,5 +200,5 @@ page_fault(registers_t regs)
     tty_puts(itoa(faulting_address, buffer, 16));
     tty_puts("\n");
 
-    cpu_halt();
+    PANIC("Page fault");
 }
