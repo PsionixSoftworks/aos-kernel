@@ -6,6 +6,8 @@
 #include <stdarg.h>
 #include <assert.h>
 
+#include <termios.h>
+
 /* Declare static variables */
 static const size_t TERMINAL_WIDTH		= 80;			// Weren't these defined
 static const size_t TERMINAL_HEIGHT		= 25;			// somewhere else???
@@ -308,7 +310,7 @@ tty_scroll(void)
 void
 panic(const char *message, const char *file, uint32_t line)
 {
-	asm volatile ( "cli" );
+	__asm__ volatile ( "cli" );
 
 	tty_printf("PANIC(%s) at %s:%d\n", message, file, line);
 	for (;;);
@@ -317,7 +319,7 @@ panic(const char *message, const char *file, uint32_t line)
 void
 panic_assert(const char *file, uint32_t line, const char *desc)
 {
-	asm volatile ( "cli" );
+	__asm__ volatile ( "cli" );
 
 	tty_printf("ASSERTION-FAILED(%s) at %s: Line %d\n", desc, file, line);
 	for (;;);

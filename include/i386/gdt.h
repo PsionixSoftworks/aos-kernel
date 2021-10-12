@@ -3,7 +3,7 @@
 
 #define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
-#include <compiler.h>
+#include <common.h>
 #include <stdint.h>
 #include <adamantine/aos-defs.h>
 #include <kernel/kernel.h>
@@ -40,6 +40,6 @@ struct gdt_ptr_struct
 } PACKED;
 
 /* Function Templates */
-EXTERN KERNEL_API void gdt_init(void);                             // Initialize the Global Descriptor Table
+EXTERN __GLOBAL KERNEL_API _PROTO(void gdt_init, (void));                             // Initialize the Global Descriptor Table
 
 #endif  // !_ADAMANTINE_GDT_H

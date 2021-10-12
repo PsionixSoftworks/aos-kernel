@@ -14,7 +14,7 @@ static inline void gdt_set_kernel_data_segment(void);   // Kernel Data Segment
 static inline void gdt_set_user_code_segment(void);     // User Code Segment
 static inline void gdt_set_user_data_segment(void);     // User Data Segment
 
-static inline void tss_install(uint32_t, uint16_t, uint16_t);
+//static inline void tss_install(uint32_t, uint16_t, uint16_t);
 
 /* Initialize the Global Descriptot Table */
 void

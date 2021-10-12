@@ -14,7 +14,7 @@ typedef unsigned short  uint16_t;						// 16-bit unsigned integer
 typedef unsigned int    uint32_t;						// 32-bit unsigned integer
 
 /* Size Integer: */
-typedef unsigned long   size_t;							// Size
+//typedef unsigned long   size_t;							// Size
 
 /* Integer Pointer */
 typedef int             intptr_t;						// Signed integer pointer

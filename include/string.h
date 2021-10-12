@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <adamantine/aos-defs.h>
+#include <sys/types.h>
 
 /* Function Templates */
 extern int memcmp(const void *, const void *, size_t);

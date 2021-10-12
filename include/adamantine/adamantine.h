@@ -38,6 +38,6 @@
 
 /* Check if the kernel version is defined */
 #ifdef KERNEL_VERSION_NUMBER				
-#define K_VERSION	KERNEL_VERSION_NUMBER				// Shorthand version of 'KERNEL_VERSION_NUMBER'
+#define K_VERSION	KERNEL_VERSION_NUMBER				// Short-hand version of 'KERNEL_VERSION_NUMBER'
 #endif	// !KERNEL_VERSION_NUMBER
 #endif	// !ADAMANTINE

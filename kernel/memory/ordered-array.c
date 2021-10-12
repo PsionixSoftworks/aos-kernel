@@ -1,5 +1,9 @@
 #include <kernel/memory/ordered-array.h>
+#include <string.h>
 #include <assert.h>
+
+extern uint32_t kmalloc(uint32_t sz);
+extern void kfree(void *p);
 
 int8_t standard_lessthan_predicate(type_t a, type_t b)
 {
@@ -36,7 +40,7 @@ void destroy_ordered_array(ordered_array_t *array)
 void insert_ordered_array(type_t item, ordered_array_t *array)
 {
    ASSERT(array->less_than);
-   uint32_t iterator = 0;
+   int32_t iterator = 0;
    while (iterator < array->size && array->less_than(array->array[iterator], item))
        iterator++;
    if (iterator == array->size) // just add at the end of the array.
@@ -56,13 +60,13 @@ void insert_ordered_array(type_t item, ordered_array_t *array)
    }
 }
 
-type_t lookup_ordered_array(uint32_t i, ordered_array_t *array)
+type_t lookup_ordered_array(int32_t i, ordered_array_t *array)
 {
    ASSERT(i < array->size);
    return array->array[i];
 }
 
-void remove_ordered_array(uint32_t i, ordered_array_t *array)
+void remove_ordered_array(int32_t i, ordered_array_t *array)
 {
    while (i < array->size)
    {

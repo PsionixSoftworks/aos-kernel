@@ -19,6 +19,8 @@ uint32_t placement_address = (uint32_t)&end;
 extern page_directory_t *kernel_directory;
 heap_t *kheap=0;
 
+extern void free_frame(page_t *page);
+
 uint32_t
 kmalloc_int(uint32_t sz, int align, uint32_t *phys)
 {
@@ -28,7 +30,7 @@ kmalloc_int(uint32_t sz, int align, uint32_t *phys)
 		if (phys != 0)
 		{
 			page_t *page = get_page((uint32_t)addr, 0, kernel_directory);
-			*phys = page->frame * 0x1000 + (uint32_t)addr & 0xFF;
+			*phys = page->frame * 0x1000 + ((uint32_t)addr & 0xFF);
 		}
 		return (uint32_t)addr;
 	}
@@ -86,7 +88,7 @@ expand(uint32_t new_size, heap_t *heap)
 	ASSERT(new_size > heap->end_address - heap->start_address);
 
 	// Get the nearest following page boundary:
-	if (new_size & 0xFFFFF000 != 0)
+	if ((new_size & 0xFFFFF000) != 0)
 	{
 		new_size &= 0xFFFFF000;
 		new_size += 0x1000;
@@ -137,7 +139,7 @@ static int32_t
 find_smallest_hole(uint32_t size, uint8_t page_align, heap_t *heap)
 {
 	// Find the smallest hole that will fit:
-	uint32_t iterator = 0;
+	int32_t iterator = 0;
 	while (iterator < heap->index.size)
 	{
 		header_t *header = (header_t *)lookup_ordered_array(iterator, &heap->index);
@@ -189,7 +191,7 @@ create_heap(uint32_t start, uint32_t end_addr, uint32_t max, uint8_t supervisor,
 	start += sizeof(type_t)*HEAP_INDEX_SIZE;
 
 	// Make sure the start address is page-aligned:
-	if (start & 0xFFFFF000 != 0)
+	if ((start & 0xFFFFF000) != 0)
 	{
 		start &= 0xFFFFF000;
 		start += 0x1000;
@@ -235,7 +237,7 @@ alloc(uint32_t size, uint8_t page_align, heap_t *heap)
 		iterator = 0;
 
 		// Vars to hold the index of, and value of, the endmost header found so far:
-		uint32_t idx = -1;	// << Bug waiting to happen! unsigned integers can't be negative!
+		int32_t idx = -1;	// << Bug waiting to happen! unsigned integers can't be negative!
 		uint32_t value = 0x0;
 		while (iterator < heap->index.size)
 		{
@@ -340,6 +342,8 @@ alloc(uint32_t size, uint8_t page_align, heap_t *heap)
 		// And we're done!:
 		return (void *)((uint32_t)block_header + sizeof(header_t));
 	}
+
+	return 0;
 }
 
 void
@@ -388,7 +392,7 @@ free(void *p, heap_t *heap)
 		footer = test_footer;
 
 		// Find and remove this header from the index:
-		uint32_t iterator = 0;
+		int32_t iterator = 0;
 		while ((iterator < heap->index.size) &&
 				(lookup_ordered_array(iterator, &heap->index) != (void *)test_header))
 			iterator++;
@@ -418,7 +422,7 @@ free(void *p, heap_t *heap)
 		else
 		{
 			// We will no longer exist :(. Remove us from the index:
-			uint32_t iterator = 0;
+			int32_t iterator = 0;
 			while ((iterator < heap->index.size) &&
 					(lookup_ordered_array(iterator, &heap->index) != (void *)test_header))
 				iterator++;

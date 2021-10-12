@@ -22,6 +22,8 @@
 #ifndef _ADAMANTINE_MEMORY_UTIL_H
 #define _ADAMANTINE_MEMORY_UTIL_H
 
+#include <common.h>
+#include <kernel/kernel.h>
 #include <kernel/memory/ordered-array.h>
 
 #define KHEAP_START			0xC0000000
@@ -59,24 +61,23 @@ typedef struct
 /**
  * Create a new heap
  **/
-heap_t *create_heap(uint32_t start, uint32_t end, uint32_t max, uint8_t supervisor, uint8_t readonly);
+EXTERN __GLOBAL KERNEL_API _PROTO(heap_t *create_heap, (uint32_t start, uint32_t end, uint32_t max, uint8_t supervisor, uint8_t readonly)	);
 
 /**
  * Allocates a contiguous region of memory 'size' in size. If page_align==1, it creates that block starting
  * on a page boundary.
  **/
-void *alloc(uint32_t size, uint8_t page_align, heap_t *heap);
+EXTERN __GLOBAL KERNEL_API _PROTO(void *alloc, (uint32_t size, uint8_t page_align, heap_t *heap)											);
 
 /**
  * Releases a block allocated with 'alloc'.
  **/
-void free(void *p, heap_t *heap);
-
-uint32_t kmalloc_int(uint32_t sz, int align, uint32_t *phys);
-uint32_t kmalloc_a(uint32_t sz);
-uint32_t kmalloc_p(uint32_t sz, uint32_t *phys);
-uint32_t kmalloc_ap(uint32_t sz, uint32_t *phys);
-uint32_t kmalloc(uint32_t sz);
-void kfree(void *p);
+EXTERN __GLOBAL KERNEL_API _PROTO(void free, (void *p, heap_t *heap)																		);
+EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc_int, (uint32_t sz, int align, uint32_t *phys)											);
+EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc_a, (uint32_t sz)																			);
+EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc_p, (uint32_t sz, uint32_t *phys)															);
+EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc_ap,(uint32_t sz, uint32_t *phys)															);
+EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc, (uint32_t sz)																			);
+EXTERN __GLOBAL KERNEL_API _PROTO(void kfree, (void *p)																						);
 
 #endif	// !_ADAMANTINE_MEMORY_UTIL_H

@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <adamantine/aos-defs.h>
+#include <sys/types.h>
 
 /* Function Templates */
 EXTERN void *malloc(size_t);							// Allocate memory

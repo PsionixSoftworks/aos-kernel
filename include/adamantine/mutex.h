@@ -5,7 +5,9 @@
 #ifndef _MUTEX_H
 #define _MUTEX_H
 
-#include <stdint.h>
+#define _USES_MACROS
+
+#include <common.h>
 #include <adamantine/aos-defs.h>
 #include <kernel/kernel.h>
 
@@ -15,7 +17,7 @@ typedef struct {
 
 #define DEFINE_MUTEX(name) static mutex name = { .locked=0 };
 
-EXTERN KERNEL_API void mutex_lock(mutex	*m);
-EXTERN KERNEL_API void mutex_unlock(mutex* m);
+EXTERN KERNEL_API __GLOBAL _PROTO(void mutex_lock, (mutex	*m)	);
+EXTERN KERNEL_API __GLOBAL _PROTO(void mutex_unlock, (mutex* m)	);
 
 #endif	// !_MUTEX_H

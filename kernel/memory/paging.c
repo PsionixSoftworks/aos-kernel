@@ -41,6 +41,7 @@ clear_frame(uint32_t frame_address)
     frames[idx] &= ~(0x1 << off);
 }
 
+/*
 static uint32_t
 test_frame(uint32_t frame_address)
 {
@@ -49,6 +50,7 @@ test_frame(uint32_t frame_address)
     uint32_t off = OFFSET_FROM_BIT(frame);
     return (frames[idx] & (0x1 << off));
 }
+*/
 
 static uint32_t
 first_frame(void)
@@ -120,7 +122,7 @@ initialize_paging(void)
     memset(kernel_directory, 0, sizeof(page_directory_t));
     current_directory = kernel_directory;
 
-    int i = 0;
+    uint32_t i = 0;
     for (i = KHEAP_START; i < KHEAP_START + KHEAP_INITIAL_SIZE; i += 0x1000)
         get_page(i, 1, kernel_directory);
     
@@ -139,7 +141,7 @@ initialize_paging(void)
     switch_page_directory(kernel_directory);
 
     kheap = create_heap(KHEAP_START, KHEAP_START + KHEAP_INITIAL_SIZE, 0xCFFFF000, 0, 0);
-#if defined(__DEBUG__)
+#ifdef __DEBUG__
     tty_puts("[INFO]: Paging is initialized!\n");
 #endif
 }
@@ -149,7 +151,7 @@ switch_page_directory(page_directory_t *dir)
 {
     current_directory = dir;
     asm volatile("mov %0, %%cr3":: "r"(&dir->tables_physical));
-    uint32_t cr0;
+    unsigned int cr0;
     asm volatile("mov %%cr0, %0": "=r"(cr0));
     cr0 |= 0x80000000;
     asm volatile("mov %0, %%cr0":: "r"(cr0));
@@ -188,7 +190,7 @@ page_fault(registers_t regs)
     int rw          = regs.err_code & 0x2;
     int us          = regs.err_code & 0x4;
     int reserved    = regs.err_code & 0x8;
-    int id          = regs.err_code & 0x10;
+    //int id          = regs.err_code & 0x10;
 
     tty_puts("Page fault! ( ");
     if (present) {tty_puts("present ");}

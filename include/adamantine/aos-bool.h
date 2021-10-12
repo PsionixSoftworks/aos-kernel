@@ -2,7 +2,9 @@
 #define _AOS_BOOL_H
 
 /* This can only be used in C. C++ already has a bool type built in */
-typedef enum {false, true} boolean;
+#if !defined(__cplusplus)
+typedef enum {false, true} bool;
+#endif
 
 /* Check if 'BOOLEAN_OPS' is defined elsewhere */
 #ifndef BOOLEAN_OPS

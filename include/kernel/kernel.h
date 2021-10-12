@@ -22,9 +22,9 @@
 
 #if !defined(KERNEL_API)
 #if !defined(KERNEL_STDCALL)
-#define KERNEL_API      __cdecl
+#define KERNEL_API      
 #else
-#define KERNEL_API      __stdcall
+#define KERNEL_API      __cdecl
 #endif
 #endif
 
@@ -45,7 +45,7 @@ typedef struct aos_system_information
     uint8_t                 memory_speed;               // Not crucial, but memory speed in (Hz)
 
     /* Other Info */
-    time_t                  up_time;                    // The time since the computer was turned on.
+    //time_t                  up_time;                    // The time since the computer was turned on.
 } system_info_t;
 
 #endif	// !_ADAMANTINE_KERNEL_H
