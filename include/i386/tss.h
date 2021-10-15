@@ -34,7 +34,7 @@ struct tss_entry_struct
 	uint32_t gs;			// Reserved
 	uint16_t ldtr;			// Reserved
 	uint16_t iopb_offset;	// Reserved
-} PACKED;
+} packed;
 
 static inline void
 tss_flush(uint16_t selector)

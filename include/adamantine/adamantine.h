@@ -36,6 +36,10 @@
 #include <centrix/centrix.h>
 #endif	// !USING_CENTRIX_CORE
 
+#ifndef MAX_NAME_LENGHT
+#define MAX_NAME_LENGTH     32
+#endif
+
 /* Check if the kernel version is defined */
 #ifdef KERNEL_VERSION_NUMBER				
 #define K_VERSION	KERNEL_VERSION_NUMBER				// Short-hand version of 'KERNEL_VERSION_NUMBER'

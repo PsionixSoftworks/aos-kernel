@@ -25,6 +25,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+#include <adamantine/tty.h>
+
 #if !defined(__cplusplus)
 #include <stdbool.h>
 #endif

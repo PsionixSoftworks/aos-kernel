@@ -30,16 +30,16 @@ struct gdt_entry_struct
     uint8_t     access;                                 // Kernel/User Mode
     uint8_t     granularity;                            // GDT Granularity
     uint8_t     base_high;                              // Top of the GDT base
-} PACKED;
+} __packed;
 
 /* Define the GDT ptr struct */
 struct gdt_ptr_struct
 {
     uint16_t    limit;                                  // GDT size max
     uint32_t    base;                                   // GDT base
-} PACKED;
+} __packed;
 
 /* Function Templates */
-EXTERN __GLOBAL KERNEL_API _PROTO(void gdt_init, (void));                             // Initialize the Global Descriptor Table
+EXTERN __GLOBAL KERNEL_API void gdt_init(void);                             // Initialize the Global Descriptor Table
 
 #endif  // !_ADAMANTINE_GDT_H

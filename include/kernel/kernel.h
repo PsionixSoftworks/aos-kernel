@@ -15,16 +15,17 @@
 
 #define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
-#include <kernel/system/types.h>
+#include <common.h>
+#include <system/types.h>
 #include <stdint.h>
 
 #include <compiler.h>
 
 #if !defined(KERNEL_API)
-#if !defined(KERNEL_STDCALL)
+#if !defined(KERNEL_CDECL)
 #define KERNEL_API      
 #else
-#define KERNEL_API      __cdecl
+#define KERNEL_API      __cdecl__
 #endif
 #endif
 

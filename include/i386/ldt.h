@@ -18,16 +18,16 @@ struct ldt_entry_struct
 {
     uint8_t                 table;                          // Does what exactly???
     uint8_t                 rpl;                            // Ring Privelage Level
-} PACKED;
+} __packed;
 
 /* Define the LDT ptr struct */
 struct ldt_ptr_struct
 {
     uint16_t                limit;                          // LDT size max
     uint32_t                base;                           // LDT base
-} PACKED;
+} __packed;
 
 /* Function Templates */
-EXTERN __GLOBAL KERNEL_API _PROTO(void ldt_init, (void));   // Initialize the Local Descriptor Table
+EXTERN __GLOBAL KERNEL_API void ldt_init(void);   // Initialize the Local Descriptor Table
 
 #endif  // !_ADAMANTINE_LDT_H

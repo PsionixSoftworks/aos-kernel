@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stddef.h>
-#include <kernel/memory/memory-util.h>
+#include <memory/memory-util.h>
 
 /* Locate a character within a block of memory */
 void *

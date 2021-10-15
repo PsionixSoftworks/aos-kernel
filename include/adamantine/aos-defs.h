@@ -49,6 +49,6 @@
 #ifdef __cplusplus
 #define EXTERN 			extern "C"			// If C++ is defined, set 'EXTERN' to mean 'extern "C"'.
 #else
-#define EXTERN 			extern				// Otherwise, it's just extern...
+#define EXTERN 			extern				/* Otherwise, it's just extern... */
 #endif
 #endif

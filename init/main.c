@@ -1,13 +1,15 @@
 #define CURSOR_TYPE 	1
 
-#include <adamantine/tty.h>
+#define __DEBUG__
+
+#include <adamantine/tty.h> 
 #include <adamantine/aos-defs.h>
 #include <adamantine/aos-int.h>
 #include <adamantine/aos-string.h>
-#include <kernel/drivers/vga.h>
-#include <kernel/drivers/keyboard.h>
-#include <kernel/memory/memory-util.h>
-#include <kernel/memory/paging.h>
+#include <drivers/vga.h>
+#include <drivers/keyboard.h>
+#include <memory/memory-util.h>
+#include <memory/paging.h>
 #include <kernel/kernel.h>
 #include <kernel/irq.h>
 #include <kernel/pit.h>
@@ -26,12 +28,12 @@ extern isr_t interrupt_handlers[MAX_INTERRUPTS];		// The interrupt handler (defi
 /* Initialize the GDT, LDT, and IDT */
 static inline void
 descriptor_tables_init(void)
-{void
+{
 	gdt_init();											// Defined in "gdt.c"
 	ldt_init();											// Defined in "ldt.c"
 	idt_init();											// Defined in "idt.c"
 
-	memset(&interrupt_handlers, 0, sizeof(isr_t)*256);	// Clear the address of the interrupt handlers to zero
+	memset(&interrupt_handlers, 0, sizeof(isr_t) * 256);	// Clear the address of the interrupt handlers to zero
 	tty_printf("Descriptor tables are initialized!\n");
 }
 
@@ -45,4 +47,7 @@ k_main(void)
 
 	descriptor_tables_init();
 	initialize_paging();
+
+	keyboard_init();
+	pit_init(50);
 }

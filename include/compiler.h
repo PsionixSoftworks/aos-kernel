@@ -5,18 +5,18 @@
 #if defined(__GNUC__) && __GNUC__ > 3
 #ifndef __STANDARD_ATTRIBUTES__							
 #define __STANDARD_ATTRIBUTES__
-#define NORETURN		__attribute__((noreturn))		// Used on functions that cannot return
-#define PACKED			__attribute__((packed))			// Pack to the smallest size/alignment 
-#define USED			__attribute__((used))			// Force the compiler to use function that does not appear to be used
-#define UNUSED			__attribute__((unused))			// Force the compiler to consider that the function is not used
-#define HOT         	__attribute__((hot))			// Hot spot of the compiled program
-#define COLD        	__attribute__((cold))			// Optimize for speed, unlikely to be executed
-#define DEPRECATED		__attribute__((deprecated))		// Mark function as deprecated, a function that is to be removed soon
-#define SECTION(name)	__attribute__((section(name)))	// Change the section the code is placed under; Default is .text
-#define ALIGN(x)		__attribute__((aligned(x)))		// Specify minimum alignment (in bytes)
-#define ACCESS(mode)	__attribute__((access(mode)))	// ??
-#define __cdecl			__attribute__((__cdecl__))		// Code Call Convention
-#define __stdcall		__attribute__((__stdcall__))	// Standard Calling Convention
+#define __noreturn		__attribute__((noreturn))		// Used on functions that cannot return
+#define __packed		__attribute__((packed))			// Pack to the smallest size/alignment 
+#define __used			__attribute__((used))			// Force the compiler to use function that does not appear to be used
+#define __unused		__attribute__((unused))			// Force the compiler to consider that the function is not used
+#define __hot         	__attribute__((hot))			// Hot spot of the compiled program
+#define __cold        	__attribute__((cold))			// Optimize for speed, unlikely to be executed
+#define __deprecated	__attribute__((deprecated))		// Mark function as deprecated, a function that is to be removed soon
+#define __section(name)	__attribute__((section(name)))	// Change the section the code is placed under; Default is .text
+#define __align(x)		__attribute__((aligned(x)))		// Specify minimum alignment (in bytes)
+#define __access(mode)	__attribute__((access(mode)))	// ??
+#define __cdecl__		__attribute__((__cdecl__))		// Code Call Convention
+#define __stdcall__		__attribute__((__stdcall__))	// Standard Calling Convention
 #endif	// !__STANDARD_ATTRIBUTES__
 #endif
 

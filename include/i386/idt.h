@@ -19,14 +19,14 @@ struct idt_entry_struct
     uint8_t                 always0;                    // This must always be zero
     uint8_t                 flags;                      // Flags for the IDT
     uint16_t                base_hi;                    // Top of the IDT base
-} PACKED;
+} __packed;
 
 /* Define the IDT ptr struct */
 struct idt_ptr_struct
 {
     uint16_t                limit;                      // IDT size max
     uint32_t                base;                       // IDT base
-} PACKED;
+} __packed;
 
 /* Function Templates */
 EXTERN __GLOBAL KERNEL_API _PROTO(void idt_init, (void)              ); // Initialize the Interrupt Descriptor Table

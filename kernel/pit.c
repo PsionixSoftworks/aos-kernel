@@ -15,7 +15,7 @@
 #include <kernel/irq.h>
 #include <kernel/cpu.h>
 #include <adamantine/tty.h>
-#include <kernel/system/ioctrl.h>
+#include <system/ioctrl.h>
 
 /* Number of ticks since startup */
 uint32_t tick = 0;
@@ -58,7 +58,7 @@ timer_callback(registers_t regs)
 	/* Make sure we're not getting an error code */
 	if (!regs.err_code)
 	{
-		tick++;
+		// Useful for timed interrupts...
 	}
 }
 
