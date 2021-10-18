@@ -111,7 +111,7 @@ free_frame(page_t *page)
 }
 
 void
-initialize_paging(void)
+paging_initialize(void)
 {
     uint32_t mem_end_page = 0x1000000;
     nframes = mem_end_page / 0x1000;

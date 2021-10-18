@@ -9,10 +9,14 @@
 #endif
 
 /* Define global and local for the OS */
-#define __GLOBAL
+#define __GLOBAL    EXTERN
 #define __LOCAL     static
 #define __ILOCAL    __LOCAL inline
 #define GLOBAL      __GLOBAL
 #define LOCAL       __LOCAL
+
+#ifndef _AOS_LENGTH_MACROS
+#define MAX_NAME_LENGTH         32
+#endif
 
 #endif

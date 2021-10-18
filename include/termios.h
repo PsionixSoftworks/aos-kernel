@@ -96,16 +96,16 @@ struct termios {
 #include <ansi.h>
 #endif
 
-_PROTO(int tcsendbreak,     (int _FileDes, int Duration)                                        );
-_PROTO(int tcdrain,         (int _FileDes)                                                      );
-_PROTO(int tcflush,         (int _FileDes, int _QueueSelector)                                  );
-_PROTO(int tcflow,          (int _FileDes, int _Action)                                         );
-_PROTO(speed_t cfgetispeed, (const struct termios *_Termios_p)                                  );
-_PROTO(speed_t cfgetospeed, (const struct termios *_Termios_p)                                  );
-_PROTO(int cfsetispeed,     (struct termios *_Termios_p, speed_t _speed)                        );
-_PROTO(int cfsetospeed,     (struct termios *_Termios_p, speed_t _speed)                        );
-_PROTO(int tcgetattr,       (int _FileDes, struct termios *_Termios_p)                          );
-_PROTO(int tcsetattr,       (int _FileDes, int _OptActions, const struct termios *_Termios_p)   );
+int tcsendbreak(int _FileDes, int Duration);
+int tcdrain(int _FileDes);
+int tcflush(int _FileDes, int _QueueSelector);
+int tcflow(int _FileDes, int _Action);
+speed_t cfgetispeed(const struct termios *_Termios_p);
+speed_t cfgetospeed(const struct termios *_Termios_p);
+int cfsetispeed(struct termios *_Termios_p, speed_t _speed);
+int cfsetospeed(struct termios *_Termios_p, speed_t _speed);
+int tcgetattr(int _FileDes, struct termios *_Termios_p);
+int tcsetattr(int _FileDes, int _OptActions, const struct termios *_Termios_p);
 
 #if defined(__ADAMANTINE__) || defined(_MINIX)
 struct winsize {

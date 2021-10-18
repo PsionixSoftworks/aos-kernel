@@ -7,33 +7,13 @@
 #ifndef _KERNEL_DRIVER_H
 #define _KERNEL_DRIVER_H
 
-#include <macros.h>
 #include <kernel/kernel.h>
-
-typedef struct driver driver_t;
-typedef struct device device_t;
+#include <drivers/device.h>
+#include <system/types.h>
+#include <macros.h>
 
 struct driver {
-    /* Initial device name & pointers to other devices */
-    char *name[MAX_NAME_LENGTH];
-    struct driver *prev;
-    struct driver *next;
-
-    /* Function pointers to universal driver bases */
-    char *(*driver_name)(void);
-    unsigned long (*driver_id)(void);
-    int (*driver_open)(struct driver *, void *);
-    unsigned int (*driver_read)(struct driver *, void *);
-    unsigned int (*driver_write)(struct driver *, void *, unsigned char);
-    void (*driver_close)(int, void *);
+    struct device *device;
 };
-
-struct device {
-    unsigned int device_base;
-    unsigned int device_size;
-};
-
-KERNEL_API __GLOBAL void driver_init(driver_t *d_ptr, char *name);
-KERNEL_API __GLOBAL unsigned long driver_get_id(void);
 
 #endif

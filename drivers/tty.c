@@ -1,6 +1,6 @@
 #include <adamantine/tty.h>
 #include <drivers/vga.h>
-#include <system/ioctrl.h>
+#include <system/portio.h>
 
 #include <string.h>
 #include <stdarg.h>

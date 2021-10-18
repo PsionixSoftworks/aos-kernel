@@ -13,7 +13,7 @@
 #include <kernel/isr.h>
 #include <adamantine/aos-defs.h>
 #include <adamantine/tty.h>
-#include <system/ioctrl.h>
+#include <system/portio.h>
 #include <kernel/cpu.h>
 #include <kernel/pic.h>
 

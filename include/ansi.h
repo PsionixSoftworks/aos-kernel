@@ -31,11 +31,7 @@
 
 #ifdef _ANSI
 
-/* Keep everything for ANSI prototypes */
-#define _PROTO(function, params)    function params
-#define _ARGS(params)                   params
-
-#define _VOIDSTAR                       void *
+#define _VOIDPTR                        void *
 #define _VOID                           void
 #define _CONST                          const
 #define _VOLATILE                       volatile
@@ -44,10 +40,7 @@
 #else
 
 /* Throw away the parameters for K&R prototypes */
-#define _PROTO(function, params)    function()
-#define _ARGS(params)                   ()
-
-#define _VOIDSTAR                       void *
+#define _VOIDPTR                        void *
 #define _VOID                           void
 #define _CONST
 #define _VOLATILE

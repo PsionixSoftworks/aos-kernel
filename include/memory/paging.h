@@ -30,7 +30,7 @@ typedef struct page_directory
     uint32_t                physical_address;
 } page_directory_t;
 
-extern void initialize_paging();
+extern void paging_initialize(void);
 extern void switch_page_directory(page_directory_t *dir);
 extern page_t *get_page(uint32_t address, int make, page_directory_t *dir);
 extern void alloc_frame(page_t *page, int is_kernel, int is_writable);

@@ -25,6 +25,7 @@
 #include <common.h>
 #include <kernel/kernel.h>
 #include <memory/ordered-array.h>
+#include <stdint.h>
 
 #define KHEAP_START			0xC0000000
 #define KHEAP_INITIAL_SIZE	0x100000
@@ -61,23 +62,23 @@ typedef struct
 /**
  * Create a new heap
  **/
-EXTERN __GLOBAL KERNEL_API _PROTO(heap_t *create_heap, (uint32_t start, uint32_t end, uint32_t max, uint8_t supervisor, uint8_t readonly)	);
+__GLOBAL KERNEL_API heap_t *create_heap(uint32_t start, uint32_t end, uint32_t max, uint8_t supervisor, uint8_t readonly);
 
 /**
  * Allocates a contiguous region of memory 'size' in size. If page_align==1, it creates that block starting
  * on a page boundary.
  **/
-EXTERN __GLOBAL KERNEL_API _PROTO(void *alloc, (uint32_t size, uint8_t page_align, heap_t *heap)											);
+__GLOBAL KERNEL_API void *alloc(uint32_t size, uint8_t page_align, heap_t *heap);
 
 /**
  * Releases a block allocated with 'alloc'.
  **/
-EXTERN __GLOBAL KERNEL_API _PROTO(void free, (void *p, heap_t *heap)																		);
-EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc_int, (uint32_t sz, int align, uint32_t *phys)											);
-EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc_a, (uint32_t sz)																			);
-EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc_p, (uint32_t sz, uint32_t *phys)															);
-EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc_ap,(uint32_t sz, uint32_t *phys)															);
-EXTERN __GLOBAL KERNEL_API _PROTO(uint32_t kmalloc, (uint32_t sz)																			);
-EXTERN __GLOBAL KERNEL_API _PROTO(void kfree, (void *p)																						);
+__GLOBAL KERNEL_API void free(void *p, heap_t *heap);
+__GLOBAL KERNEL_API uint32_t kmalloc_int(uint32_t sz, int align, uint32_t *phys);
+__GLOBAL KERNEL_API uint32_t kmalloc_a(uint32_t sz);
+__GLOBAL KERNEL_API uint32_t kmalloc_p(uint32_t sz, uint32_t *phys);
+__GLOBAL KERNEL_API uint32_t kmalloc_ap(uint32_t sz, uint32_t *phys);
+__GLOBAL KERNEL_API uint32_t kmalloc(uint32_t sz);
+__GLOBAL KERNEL_API void kfree(void *p);
 
 #endif	// !_ADAMANTINE_MEMORY_UTIL_H

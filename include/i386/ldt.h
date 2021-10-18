@@ -28,6 +28,6 @@ struct ldt_ptr_struct
 } __packed;
 
 /* Function Templates */
-EXTERN __GLOBAL KERNEL_API void ldt_init(void);   // Initialize the Local Descriptor Table
+__GLOBAL KERNEL_API void ldt_init(void);   // Initialize the Local Descriptor Table
 
 #endif  // !_ADAMANTINE_LDT_H

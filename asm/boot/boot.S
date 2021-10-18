@@ -26,13 +26,6 @@ _start:
     jmp 1b
 .size _start, . - _start
 
-// Handle the TSS in here for now until a better way is defined:
-.globl tss_flush
-tss_flush:
-    mov $0x2B, %ax
-
-    ltr %ax
-    ret
 // Reset the computer. This seems to be the best way to do it. Perhaps I'll put time into research, but for now...
 .globl system_restart_safe
 system_restart_safe:

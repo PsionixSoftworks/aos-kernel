@@ -15,7 +15,7 @@
 #include <kernel/irq.h>
 #include <kernel/cpu.h>
 #include <adamantine/tty.h>
-#include <system/ioctrl.h>
+#include <system/portio.h>
 
 /* Number of ticks since startup */
 uint32_t tick = 0;
@@ -64,7 +64,7 @@ timer_callback(registers_t regs)
 
 /* Initialize the Programmable Interval Timer */
 void
-pit_init(uint32_t freq)
+pit_initialize(uint32_t freq)
 {
 	cpu_set_interrupts();								// Make sure interrupts are enabled (won't work otherwise)
 	register_interrupt_handler(IRQ0, &timer_callback);	// Assign IRQ0 to the PIT callback function

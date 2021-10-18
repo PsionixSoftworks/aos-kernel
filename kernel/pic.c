@@ -11,7 +11,7 @@
  */
 
 #include <kernel/pic.h>
-#include <system/ioctrl.h>
+#include <system/portio.h>
 
 /* Send an End Of Instruction to the Programmable Interrupt Controller */
 void 
