@@ -38,7 +38,8 @@ STRING_PATH			:= 	string
 
 ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.S \
 						$(ASSEMB_PATH)/interrupt.asm \
-						$(ASSEMB_PATH)/cpuid.asm 
+						$(ASSEMB_PATH)/cpuid.asm \
+						$(ASSEMB_PATH)/A20.asm
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/vga.c \
 						$(DRIVER_PATH)/i8042.c \
@@ -82,111 +83,113 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(STRING_PATH)/append.c \
 						$(KERNEL_PATH)/procmgr.c
 # Put all input files here separated by a '\':
-OUTPUT_FILES 		:= 	$(ASSEMB_PATH)/boot/boot.o	\
-						$(ASSEMB_PATH)/cpuid.o \
-						$(ASSEMB_PATH)/interrupt.o \
-						$(ASSEMB_PATH)/math.o \
-						$(INIT_PATH)/main.o \
-						$(DRIVER_PATH)/i8042.o \
-						$(DRIVER_PATH)/tty.o \
-						$(KERNEL_PATH)/cpu.o \
-						$(KERNEL_PATH)/mutex.o \
-						$(KERNEL_PATH)/assert.o \
-						$(DRIVER_PATH)/driver.o \
-						$(DRIVER_PATH)/keyboard.o \
-						$(DRIVER_PATH)/vga.o \
-						$(MEMORY_PATH)/mem-util.o \
-						$(MATH_PATH)/math-util.o \
-						$(KERNEL_PATH)/irq.o \
-						$(KERNEL_PATH)/isr.o \
-						$(KERNEL_PATH)/pic.o \
-						$(KERNEL_PATH)/pit.o \
-						$(KERNEL_PATH)/i386/gdt.o \
-						$(KERNEL_PATH)/i386/ldt.o \
-						$(KERNEL_PATH)/i386/idt.o \
-						$(MEMORY_PATH)/paging.o \
-						$(MEMORY_PATH)/ordered-array.o \
-						$(STDLIB_PATH)/itoa.o \
-						$(STDLIB_PATH)/free.o \
-						$(STDLIB_PATH)/malloc.o \
-						$(STDLIB_PATH)/memchr.o \
-						$(STDLIB_PATH)/memcmp.o \
-						$(STDLIB_PATH)/memcpy.o \
-						$(STDLIB_PATH)/memmove.o \
-						$(STDLIB_PATH)/memset.o \
-						$(STDIO_PATH)/getchar.o \
-						$(STRING_PATH)/str-backspace.o \
-						$(STRING_PATH)/strcat.o \
-						$(STRING_PATH)/strcmp.o \
-						$(STRING_PATH)/strcpy.o \
-						$(STRING_PATH)/strlen.o \
-						$(STRING_PATH)/strsplit.o \
-						$(STRING_PATH)/to-lower.o \
-						$(STRING_PATH)/to-upper.o \
-						$(STRING_PATH)/strcspn.o \
-						$(STRING_PATH)/strspn.o \
-						$(STRING_PATH)/strtok.o \
-						$(STRING_PATH)/strchr.o \
-						$(STRING_PATH)/append.o \
-						$(KERNEL_PATH)/procmgr.o
+OUTPUT_FILES 		:= 	boot.o	\
+						cpuid.o \
+						interrupt.o \
+						math.o \
+						A20.o \
+						main.o \
+						i8042.o \
+						tty.o \
+						cpu.o \
+						mutex.o \
+						assert.o \
+						driver.o \
+						keyboard.o \
+						vga.o \
+						mem-util.o \
+						math-util.o \
+						irq.o \
+						isr.o \
+						pic.o \
+						pit.o \
+						gdt.o \
+						ldt.o \
+						idt.o \
+						paging.o \
+						ordered-array.o \
+						itoa.o \
+						free.o \
+						malloc.o \
+						memchr.o \
+						memcmp.o \
+						memcpy.o \
+						memmove.o \
+						memset.o \
+						getchar.o \
+						str-backspace.o \
+						strcat.o \
+						strcmp.o \
+						strcpy.o \
+						strlen.o \
+						strsplit.o \
+						to-lower.o \
+						to-upper.o \
+						strcspn.o \
+						strspn.o \
+						strtok.o \
+						strchr.o \
+						append.o \
+						procmgr.o
 
 # Compile all of the files into the iso:
 .PHONY: all
-all: bootloader kernel linker iso clean
+all: bootloader kernel linker iso
 	@echo Make has completed compilation of aos-kernel.
 
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
-	$(ASM) $(ASSEMB_PATH)/boot/boot.S -o $(ASSEMB_PATH)/boot/boot.o
-	$(NASM) $(ASSEMB_PATH)/interrupt.asm -o $(ASSEMB_PATH)/interrupt.o
-	$(NASM)	$(ASSEMB_PATH)/cpuid.asm -o $(ASSEMB_PATH)/cpuid.o
-	$(NASM) $(ASSEMB_PATH)/math.asm -o $(ASSEMB_PATH)/math.o
+	$(ASM) $(ASSEMB_PATH)/boot/boot.S -o boot.o
+	$(NASM) $(ASSEMB_PATH)/interrupt.asm -o interrupt.o
+	$(NASM)	$(ASSEMB_PATH)/cpuid.asm -o cpuid.o
+	$(NASM) $(ASSEMB_PATH)/math.asm -o math.o
+	$(NASM) $(ASSEMB_PATH)/A20.asm -o A20.o
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)
-	$(CC) $(INIT_PATH)/main.c -o $(INIT_PATH)/main.o $(C_FLAGS)
-	$(CC) $(DRIVER_PATH)/driver.c -o $(DRIVER_PATH)/driver.o $(C_FLAGS)
-	$(CC) $(DRIVER_PATH)/tty.c -o $(DRIVER_PATH)/tty.o $(C_FLAGS)
-	$(CC) $(DRIVER_PATH)/keyboard.c -o $(DRIVER_PATH)/keyboard.o $(C_FLAGS)
-	$(CC) $(DRIVER_PATH)/vga.c -o $(DRIVER_PATH)/vga.o $(C_FLAGS)
-	$(CC) $(DRIVER_PATH)/i8042.c -o $(DRIVER_PATH)/i8042.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/cpu.c -o $(KERNEL_PATH)/cpu.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/mutex.c -o $(KERNEL_PATH)/mutex.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/irq.c -o $(KERNEL_PATH)/irq.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/isr.c -o $(KERNEL_PATH)/isr.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/pic.c -o $(KERNEL_PATH)/pic.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/pit.c -o $(KERNEL_PATH)/pit.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/assert.c -o $(KERNEL_PATH)/assert.o $(C_FLAGS)
-	$(CC) $(MATH_PATH)/math-util.c -o $(MATH_PATH)/math-util.o $(C_FLAGS)
-	$(CC) $(MEMORY_PATH)/mem-util.c -o $(MEMORY_PATH)/mem-util.o $(C_FLAGS)
-	$(CC) $(MEMORY_PATH)/ordered-array.c -o $(MEMORY_PATH)/ordered-array.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/i386/gdt.c -o $(KERNEL_PATH)/i386/gdt.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/i386/ldt.c -o $(KERNEL_PATH)/i386/ldt.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/i386/idt.c -o $(KERNEL_PATH)/i386/idt.o $(C_FLAGS)
-	$(CC) $(MEMORY_PATH)/paging.c -o $(MEMORY_PATH)/paging.o $(C_FLAGS)
-	$(CC) $(STDLIB_PATH)/itoa.c -o $(STDLIB_PATH)/itoa.o $(C_FLAGS)
-	$(CC) $(STDLIB_PATH)/free.c -o $(STDLIB_PATH)/free.o $(C_FLAGS)
-	$(CC) $(STDLIB_PATH)/malloc.c -o $(STDLIB_PATH)/malloc.o $(C_FLAGS)
-	$(CC) $(STDLIB_PATH)/memchr.c -o $(STDLIB_PATH)/memchr.o $(C_FLAGS)
-	$(CC) $(STDLIB_PATH)/memcmp.c -o $(STDLIB_PATH)/memcmp.o $(C_FLAGS)
-	$(CC) $(STDLIB_PATH)/memcpy.c -o $(STDLIB_PATH)/memcpy.o $(C_FLAGS)
-	$(CC) $(STDLIB_PATH)/memmove.c -o $(STDLIB_PATH)/memmove.o $(C_FLAGS)
-	$(CC) $(STDLIB_PATH)/memset.c -o $(STDLIB_PATH)/memset.o $(C_FLAGS)
-	$(CC) $(STDIO_PATH)/getchar.c -o stdio/getchar.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/str-backspace.c -o $(STRING_PATH)/str-backspace.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strcat.c -o $(STRING_PATH)/strcat.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strcmp.c -o $(STRING_PATH)/strcmp.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strcpy.c -o $(STRING_PATH)/strcpy.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strlen.c -o $(STRING_PATH)/strlen.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strsplit.c -o $(STRING_PATH)/strsplit.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/to-lower.c -o $(STRING_PATH)/to-lower.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/to-upper.c -o $(STRING_PATH)/to-upper.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strcspn.c -o $(STRING_PATH)/strcspn.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strspn.c -o $(STRING_PATH)/strspn.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strtok.c -o $(STRING_PATH)/strtok.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/strchr.c -o $(STRING_PATH)/strchr.o $(C_FLAGS)
-	$(CC) $(STRING_PATH)/append.c -o $(STRING_PATH)/append.o $(C_FLAGS)
-	$(CC) $(KERNEL_PATH)/procmgr.c -o $(KERNEL_PATH)/procmgr.o $(C_FLAGS)
+	$(CC) $(INIT_PATH)/main.c -o main.o $(C_FLAGS)
+	$(CC) $(DRIVER_PATH)/driver.c -o driver.o $(C_FLAGS)
+	$(CC) $(DRIVER_PATH)/tty.c -o tty.o $(C_FLAGS)
+	$(CC) $(DRIVER_PATH)/keyboard.c -o keyboard.o $(C_FLAGS)
+	$(CC) $(DRIVER_PATH)/vga.c -o vga.o $(C_FLAGS)
+	$(CC) $(DRIVER_PATH)/i8042.c -o i8042.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/irq.c -o irq.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/isr.c -o isr.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/pic.c -o pic.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/assert.c -o assert.o $(C_FLAGS)
+	$(CC) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
+	$(CC) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
+	$(CC) $(MEMORY_PATH)/ordered-array.c -o ordered-array.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/i386/gdt.c -o gdt.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/i386/ldt.c -o ldt.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/i386/idt.c -o idt.o $(C_FLAGS)
+	$(CC) $(MEMORY_PATH)/paging.c -o paging.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/itoa.c -o itoa.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/free.c -o free.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/malloc.c -o malloc.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/memchr.c -o memchr.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/memcmp.c -o memcmp.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/memcpy.c -o memcpy.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/memmove.c -o memmove.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/memset.c -o memset.o $(C_FLAGS)
+	$(CC) $(STDIO_PATH)/getchar.c -o getchar.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/str-backspace.c -o str-backspace.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strcat.c -o strcat.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strcmp.c -o strcmp.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strcpy.c -o strcpy.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strlen.c -o strlen.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strsplit.c -o strsplit.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/to-lower.c -o to-lower.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/to-upper.c -o to-upper.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strcspn.c -o strcspn.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strspn.c -o strspn.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strtok.c -o strtok.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/strchr.c -o strchr.o $(C_FLAGS)
+	$(CC) $(STRING_PATH)/append.c -o append.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/procmgr.c -o procmgr.o $(C_FLAGS)
 
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)
@@ -203,15 +206,4 @@ iso: kernel
 	$(CP) $(ISO_FILE) $(ISO_OUTPUT)
 	qemu-system-i386 -soundhw pcspk -machine ubuntu -drive format=raw,file=$(ISO_FILE)
 clean:
-	$(RM) *.o $(BIN) *iso/ *.iso \
-	asm/boot/*.o \
-	asm/*.o \
-	init/*.o \
-	kernel/*.o \
-	kernel/drivers/*.o \
-	kernel/memory/*.o \
-	kernel/system/*.o \
-	kernel/x86/*.o \
-	math/*.o \
-	stdlib/*.o \
-	string/*.o
+	$(RM) *.o $(BIN) *iso/ *.iso
