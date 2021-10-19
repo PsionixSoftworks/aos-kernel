@@ -4,8 +4,6 @@
 #include <adamantine/aos-int.h>
 #include <compiler.h>
 
-typedef struct tss_entry_struct tss_t;
-
 struct tss_entry_struct
 {
    uint32_t prev_tss;   // The previous TSS - if we used hardware task switching this would form a linked list.
@@ -36,5 +34,6 @@ struct tss_entry_struct
    uint16_t trap;
    uint16_t iomap_base;
 } __packed;
+typedef struct tss_entry_struct tss_t;
 
 #endif

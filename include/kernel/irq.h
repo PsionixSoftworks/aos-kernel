@@ -39,7 +39,7 @@
 /* Function Templates */
 extern bool are_interrupts_enabled(void);				// Checks if interrupts are enabled?
 extern unsigned long irq_disable(void);					// Disables IRQ's temporarily?
-extern void irq_restore(unsigned long);					// Restores disabled IRQ?
+extern void irq_restore(unsigned long _flags);		    // Restores disabled IRQ?
 extern void clear_interrupts(void);						// Clear interrupt flag (NASM 'cli')
 extern void set_interrupts(void);						// Set interrupt flag (NASM 'sti')
 

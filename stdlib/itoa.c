@@ -2,34 +2,34 @@
 
 /* Convert integer to string internally */
 static void 
-xtoa(unsigned long val, char *buf, unsigned radix, int negative) {
+xtoa(unsigned long _val, char *_buf, unsigned _radix, int _negative) {
     char *p;
     char *firstdig;
     char temp;
-    unsigned digval;
+    unsigned dig_val;
 
-    p = buf;
+    p = _buf;
 
-    if (negative) {
+    if (_negative) {
         // Negative, so output '-' and negate
         *p++ = '-';
-        val = (unsigned long)(-(long) val);
+        _val = (unsigned long)(-(long) _val);
     }
 
     // Save pointer to first digit
     firstdig = p;
 
     do {
-        digval = (unsigned) (val % radix);
-        val /= radix;
+        dig_val = (unsigned) (_val % _radix);
+        _val /= _radix;
 
         // Convert to ascii and store
-        if (digval > 9) {
-            *p++ = (char) (digval - 10 + 'a');
+        if (dig_val > 9) {
+            *p++ = (char) (dig_val - 10 + 'a');
         } else {
-            *p++ = (char) (digval + '0');
+            *p++ = (char) (dig_val + '0');
         }
-    } while (val > 0);
+    } while (_val > 0);
 
     // We now have the digit of the number in the buffer, but in reverse
     // order.  Thus we reverse them now.
@@ -46,11 +46,11 @@ xtoa(unsigned long val, char *buf, unsigned radix, int negative) {
 
 /* Convert integer to string */
 char *
-itoa(int val, char *buf, int radix) {
-    if (radix == 10 && val < 0) {
-        xtoa((unsigned long) val, buf, radix, 1);
+itoa(int _val, char *_buf, int _radix) {
+    if (_radix == 10 && _val < 0) {
+        xtoa((unsigned long) _val, _buf, _radix, 1);
     } else {
-        xtoa((unsigned long)(unsigned int) val, buf, radix, 0);
+        xtoa((unsigned long)(unsigned int) _val, _buf, _radix, 0);
     }
-    return buf;
+    return _buf;
 }

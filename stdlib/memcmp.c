@@ -2,10 +2,10 @@
 
 /* Compare two memory values with a set size */
 int
-memcmp(const void *str1, const void *str2, size_t n)
+memcmp(const void *_str1, const void *_str2, size_t n)
 {
-    register const uint8_t *s1 = (const uint8_t *)str1;
-    register const uint8_t *s2 = (const uint8_t *)str2;
+    register const uint8_t *s1 = (const uint8_t *)_str1;
+    register const uint8_t *s2 = (const uint8_t *)_str2;
 
     while (n-- > 0)
     {

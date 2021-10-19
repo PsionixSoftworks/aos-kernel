@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include <kernel/irq.h>
 
+#include <i386/ldt.h>
+
 /* Define the GDT enties and the pointer to the GDT */
 gdt_entry_t gdt_entries[5];
 gdt_ptr_t gdt_ptr;
@@ -62,6 +64,12 @@ static inline void
 tss_install(void)
 {
 	__asm__ volatile ("ltr (%0)" : : "m"(tss_entry));
+}
+
+void
+set_kernel_stack(uint32_t stack)
+{
+	tss_entry.esp0 = stack;
 }
 
 /* MANDATORY Null Segment */

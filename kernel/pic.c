@@ -15,9 +15,9 @@
 
 /* Send an End Of Instruction to the Programmable Interrupt Controller */
 void 
-pic_send_eoi(uint8_t irq) 
+pic_send_eoi(uint8_t _irq) 
 {
-	if (irq > 7) 										// Check if we're using PIC2
+	if (_irq > 7) 										// Check if we're using PIC2
 	{
 		outb(PIC2_COMMAND, PIC_EOI);					// PIC2 EOI
 	}
@@ -42,41 +42,41 @@ pic_remap(void)
 
 /* Set IRQ mask */
 void 
-irq_set_mask(uint8_t irq_line) 
+irq_set_mask(uint8_t _irq_line) 
 {
 	uint16_t port;
 	uint8_t value;
 	
-	if (irq_line < 0x8) 
+	if (_irq_line < 0x8) 
 	{
 		port = PIC1_DATA;
 	} 
 	else 
 	{
 		port = PIC2_DATA;
-		irq_line -= 0x8;
+		_irq_line -= 0x8;
 	}
-	value = inb(port) | (1 << irq_line);
+	value = inb(port) | (1 << _irq_line);
 	outb(port, value);
 }
 
 /* Clear IRQ mask */
 void 
-irq_clear_mask(uint8_t irq_Line) 
+irq_clear_mask(uint8_t _irq_Line) 
 {
 	uint16_t port;
 	uint8_t value;
 	
-	if (irq_Line < 0x8) 
+	if (_irq_Line < 0x8) 
 	{
 		port = PIC1_DATA;
 	} 
 	else 
 	{
 		port = PIC2_DATA;
-		irq_Line -= 0x8;
+		_irq_Line -= 0x8;
 	}
-	value = inb(port) | ~(1 << irq_Line);
+	value = inb(port) | ~(1 << _irq_Line);
 	outb(port, value);
 }
 
@@ -95,10 +95,11 @@ pic_get_isr(void)
 }
 
 /* Yeah, I'll have to figure this one out... */
-uint16_t pic_get_irq_register(int8_t ocw3) 
+uint16_t
+pic_get_irq_register(int8_t _ocw3) 
 {
-	outb(PIC1_COMMAND, ocw3);
-	outb(PIC2_COMMAND, ocw3);
+	outb(PIC1_COMMAND, _ocw3);
+	outb(PIC2_COMMAND, _ocw3);
 	
 	return ((inb(PIC2_COMMAND) << 0x8) | inb(PIC1_COMMAND));
 }

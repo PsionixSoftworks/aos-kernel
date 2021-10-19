@@ -10,23 +10,26 @@
  *
  */
 
+#define __DEBUG__		1
+
 #include <kernel/pit.h>
 #include <kernel/isr.h>
 #include <kernel/irq.h>
 #include <kernel/cpu.h>
 #include <adamantine/tty.h>
 #include <system/portio.h>
+#include <debug.h>
 
 /* Number of ticks since startup */
 uint32_t tick = 0;
 
 static void
-play_sound(uint32_t nfreq)
+play_sound(uint32_t _nfreq)
 {
 	uint32_t div;
 	uint8_t tmp;
 
-	div = PIT_BASE_FREQ / nfreq;
+	div = PIT_BASE_FREQ / _nfreq;
 	outb(0x43, 0xB6);
 	outb(0x42, (uint8_t)div);
 	outb(0x42, (uint8_t)(div >> 8));
@@ -39,9 +42,9 @@ play_sound(uint32_t nfreq)
 }
 
 void
-pit_beep_start(uint32_t freq)
+pit_beep_start(uint32_t _freq)
 {
-	play_sound(freq);
+	play_sound(_freq);
 }
 
 void
@@ -53,10 +56,10 @@ pit_beep_stop(void)
 
 /* The timer callback function */
 static void
-timer_callback(registers_t regs)
+timer_callback(registers_t _regs)
 {
 	/* Make sure we're not getting an error code */
-	if (!regs.err_code)
+	if (!_regs.err_code)
 	{
 		// Useful for timed interrupts...
 	}
@@ -64,11 +67,11 @@ timer_callback(registers_t regs)
 
 /* Initialize the Programmable Interval Timer */
 void
-pit_initialize(uint32_t freq)
+pit_initialize(uint32_t _freq)
 {
 	cpu_set_interrupts();								// Make sure interrupts are enabled (won't work otherwise)
 	register_interrupt_handler(IRQ0, &timer_callback);	// Assign IRQ0 to the PIT callback function
-	uint32_t divisor = PIT_BASE_FREQ / freq;			// Set the PIT divisor
+	uint32_t divisor = PIT_BASE_FREQ / _freq;			// Set the PIT divisor
 	outb(PIT_CMD_PORT, 0x36);							// TODO: Figure this out...
 
 	uint8_t l = (uint8_t)(divisor & 0xFF);
@@ -77,5 +80,5 @@ pit_initialize(uint32_t freq)
 	outb(PIT_CHANNEL_0, l);
 	outb(PIT_CHANNEL_0, h);
 	
-	tty_puts("[INFO]: PIT is initialized!\n");
+	show_debug_info("PIT is initialized!");
 }

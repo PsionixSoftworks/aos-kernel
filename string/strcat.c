@@ -2,8 +2,8 @@
 
 /* Concatenate two strings */
 char *
-strcat(char *dest, char *src) 
+strcat(char *_dest, char *_src) 
 {
-	strcpy(dest + strlen(dest), src);
-    return (dest);
+	strcpy(_dest + strlen(_dest), _src);
+    return (_dest);
 }

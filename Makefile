@@ -38,8 +38,7 @@ STRING_PATH			:= 	string
 
 ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.S \
 						$(ASSEMB_PATH)/interrupt.asm \
-						$(ASSEMB_PATH)/cpuid.asm \
-						$(ASSEMB_PATH)/A20.asm
+						$(ASSEMB_PATH)/cpuid.asm 
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/vga.c \
 						$(DRIVER_PATH)/i8042.c \
@@ -56,6 +55,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/keyboard.c \
 						$(KERNEL_PATH)/mutex.c \
 						$(KERNEL_PATH)/assert.c \
+						$(KERNEL_PATH)/task.c \
 						$(KERNEL_PATH)/irq.c \
 						$(KERNEL_PATH)/isr.c \
 						$(KERNEL_PATH)/pic.c \
@@ -87,13 +87,13 @@ OUTPUT_FILES 		:= 	boot.o	\
 						cpuid.o \
 						interrupt.o \
 						math.o \
-						A20.o \
 						main.o \
 						i8042.o \
 						tty.o \
 						cpu.o \
 						mutex.o \
 						assert.o \
+						task.o \
 						driver.o \
 						keyboard.o \
 						vga.o \
@@ -143,7 +143,6 @@ bootloader: $(ASM_FILES_IN)
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm -o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm -o cpuid.o
 	$(NASM) $(ASSEMB_PATH)/math.asm -o math.o
-	$(NASM) $(ASSEMB_PATH)/A20.asm -o A20.o
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)
@@ -160,6 +159,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(KERNEL_PATH)/pic.c -o pic.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/assert.c -o assert.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/task.c -o task.o $(C_FLAGS)
 	$(CC) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	$(CC) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
 	$(CC) $(MEMORY_PATH)/ordered-array.c -o ordered-array.o $(C_FLAGS)

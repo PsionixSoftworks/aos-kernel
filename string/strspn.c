@@ -2,10 +2,10 @@
 
 /* Get the span of a character in a string */
 size_t
-strspn(const char *s1, const char *s2)
+strspn(const char *_s1, const char *_s2)
 {
     size_t ret = 0;
-    while (*s1 && strchr(s2, *s1++))
+    while (*_s1 && strchr(_s2, *_s1++))
         ret++;
     return (ret);
 }

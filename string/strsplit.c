@@ -2,15 +2,15 @@
 
 /* Split a string by delimeter */
 inline size_t 
-strsplit(char *str, char delim) 
+strsplit(char *_str, char _delim) 
 {
     size_t n = 0;
     uint32_t i = 0;
-    while (str[i]) 
+    while (_str[i]) 
     {
-        if (str[i] == delim) 
+        if (_str[i] == _delim) 
         {
-            str[i] = 0;
+            _str[i] = 0;
             n++;
         }
         i++;

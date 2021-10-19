@@ -13,34 +13,34 @@
 
 #include <adamantine/mutex.h>
 
-uint8_t Enabled = 0;
+uint8_t enabled = 0;
 
 static inline void 
 schedule_no_irq(void);
 
 inline void 
-mutex_lock(mutex* m) 
+mutex_lock(mutex* _mutex) 
 {
 	/* if the lock is locked, wait and set its locked state */
-	while(m->locked) schedule_no_irq();
-	m->locked = 1;
+	while(_mutex->locked) schedule_no_irq();
+	_mutex->locked = 1;
 }
 
 inline void 
-mutex_unlock(mutex* m) 
+mutex_unlock(mutex* _mutex) 
 {
 	/* this code can only be accessed by the holding thread, so unlock it */
-	m->locked = 0;
+	_mutex->locked = 0;
 	schedule_no_irq();
 }
 
 static inline void 
 schedule_no_irq(void) 
 {
-	if(!Enabled)
+	if(!enabled)
 		return;
 	
 	// Invoke system call to kernel interrupt:
-	asm volatile("INT $0x2E");
+	asm volatile("int $0x2E");
 	return;
 }

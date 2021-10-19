@@ -2,10 +2,10 @@
 
 /* Compare two strings */
 int
-strcmp(const char *str1, const char *str2) 
+strcmp(const char *_str1, const char *_str2) 
 {
-	register const uint8_t *s1 = (const uint8_t *)str1;
-    register const uint8_t *s2 = (const uint8_t *)str2;
+	register const uint8_t *s1 = (const uint8_t *)_str1;
+    register const uint8_t *s2 = (const uint8_t *)_str2;
     uint8_t c1;
     uint8_t c2;
 

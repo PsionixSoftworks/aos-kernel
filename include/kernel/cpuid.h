@@ -112,7 +112,7 @@ enum cpuid_features                                     // These flags vary by m
 
 /* Function Templates */
 extern uint32_t cpuid(void);                            // CPUID?
-extern uint32_t cpuid_string(uint32_t, uint32_t *);     // The name of the CPU? (see above)
+extern uint32_t cpuid_string(uint32_t _code, uint32_t *_location);     // The name of the CPU? (see above)
 extern char * cpuid_is_supported(void);                 // Checks if this CPU supports CPUID
 
 #endif  // !_ADAMANTINE_CPUID_H

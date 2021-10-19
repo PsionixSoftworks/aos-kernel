@@ -49,15 +49,15 @@ isr_t interrupt_handlers[256];
 
 /* Handle fault/exception messages */
 static void
-fault_handler(registers_t regs)
+fault_handler(registers_t _regs)
 {
 	/* Make sure it's within the bounds of the ISR's (0-31) */
-	if (regs.int_no < 32)
+	if (_regs.int_no < 32)
 	{
-		tty_printf("%s, int_no: 0x%X.\n", exception_messages[regs.int_no], regs.int_no);
+		tty_printf("%s, int_no: 0x%X.\n", exception_messages[_regs.int_no], _regs.int_no);
 
 		/* Check if the exception is an errcode */
-		if (regs.err_code)
+		if (_regs.err_code)
 		{
 			/* If so, tell us */
 			tty_printf("ERROR_CODE: 0x%X.\n");

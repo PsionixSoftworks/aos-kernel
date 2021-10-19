@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <adamantine/tty.h>
-#include <kernel/drivers/keyboard.h>
+#include <drivers/keyboard.h>
 
 extern void backspace(char);
 

@@ -2,16 +2,16 @@
 
 /* Insert a backspace */
 inline size_t
-str_backspace(char *str, char c) 
+str_backspace(char *_str, char c) 
 {
-    size_t i = strlen(str);
+    size_t i = strlen(_str);
     i--;
     while (1) 
     {
         i--;
-        if (str[i] == c) 
+        if (_str[i] == c) 
         {
-            str[i + 1] = 0;
+            _str[i + 1] = 0;
             return (1);
         }
     }

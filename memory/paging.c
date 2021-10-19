@@ -24,33 +24,22 @@ extern heap_t *kheap;
 #define OFFSET_FROM_BIT(a)  (a % (8 * 4))
 
 static void
-set_frame(uint32_t frame_address)
+set_frame(uint32_t _frame_address)
 {
-    uint32_t frame = frame_address / 0x1000;
+    uint32_t frame = _frame_address / 0x1000;
     uint32_t idx = INDEX_FROM_BIT(frame);
     uint32_t off = OFFSET_FROM_BIT(frame);
     frames[idx] |= (0x1 << off);
 }
 
 static void
-clear_frame(uint32_t frame_address)
+clear_frame(uint32_t _frame_address)
 {
-    uint32_t frame = frame_address / 0x1000;
+    uint32_t frame = _frame_address / 0x1000;
     uint32_t idx = INDEX_FROM_BIT(frame);
     uint32_t off = OFFSET_FROM_BIT(frame);
     frames[idx] &= ~(0x1 << off);
 }
-
-/*
-static uint32_t
-test_frame(uint32_t frame_address)
-{
-    uint32_t frame = frame_address / 0x1000;
-    uint32_t idx = INDEX_FROM_BIT(frame);
-    uint32_t off = OFFSET_FROM_BIT(frame);
-    return (frames[idx] & (0x1 << off));
-}
-*/
 
 static uint32_t
 first_frame(void)
@@ -74,9 +63,9 @@ first_frame(void)
 }
 
 void
-alloc_frame(page_t *page, int is_kernel, int is_writable)
+alloc_frame(page_t *_page, int _is_kernel, int _is_writable)
 {
-    if (page->frame != 0)
+    if (_page->frame != 0)
     {
         return;
     }
@@ -88,25 +77,25 @@ alloc_frame(page_t *page, int is_kernel, int is_writable)
             tty_puts("No free frames!");
         }
         set_frame(idx * 0x1000);
-        page->present = 1;
-        page->rw = (is_writable) ? 1 : 0;
-        page->user = (is_kernel) ? 0 : 1;
-        page->frame = idx;
+        _page->present = 1;
+        _page->rw = (_is_writable) ? 1 : 0;
+        _page->user = (_is_kernel) ? 0 : 1;
+        _page->frame = idx;
     }
 }
 
 void
-free_frame(page_t *page)
+free_frame(page_t *_page)
 {
     uint32_t frame;
-    if (!(frame = page->frame))
+    if (!(frame = _page->frame))
     {
         return;
     }
     else
     {
         clear_frame(frame);
-        page->frame = 0x0;
+        _page->frame = 0x0;
     }
 }
 
@@ -147,10 +136,10 @@ paging_initialize(void)
 }
 
 void
-switch_page_directory(page_directory_t *dir)
+switch_page_directory(page_directory_t *_dir)
 {
-    current_directory = dir;
-    asm volatile("mov %0, %%cr3":: "r"(&dir->tables_physical));
+    current_directory = _dir;
+    asm volatile("mov %0, %%cr3":: "r"(&_dir->tables_physical));
     unsigned int cr0;
     asm volatile("mov %%cr0, %0": "=r"(cr0));
     cr0 |= 0x80000000;
@@ -158,21 +147,21 @@ switch_page_directory(page_directory_t *dir)
 }
 
 page_t *
-get_page(uint32_t address, int make, page_directory_t *dir)
+get_page(uint32_t _address, int _make, page_directory_t *_dir)
 {
-    address /= 0x1000;
-    uint32_t table_idx = address / 1024;
-    if (dir->tables[table_idx])
+    _address /= 0x1000;
+    uint32_t table_idx = _address / 1024;
+    if (_dir->tables[table_idx])
     {
-        return (&dir->tables[table_idx]->pages[address % 1024]);
+        return (&_dir->tables[table_idx]->pages[_address % 1024]);
     }
-    else if (make)
+    else if (_make)
     {
         uint32_t tmp;
-        dir->tables[table_idx] = (page_table_t *)kmalloc_ap(sizeof(page_table_t), &tmp);
-        memset(dir->tables[table_idx], 0, 0x1000);
-        dir->tables_physical[table_idx] = tmp | 0x7;
-        return (&dir->tables[table_idx]->pages[address % 1024]);
+        _dir->tables[table_idx] = (page_table_t *)kmalloc_ap(sizeof(page_table_t), &tmp);
+        memset(_dir->tables[table_idx], 0, 0x1000);
+        _dir->tables_physical[table_idx] = tmp | 0x7;
+        return (&dir->tables[table_idx]->pages[_address % 1024]);
     }
     else
     {
@@ -181,15 +170,15 @@ get_page(uint32_t address, int make, page_directory_t *dir)
 }
 
 void
-page_fault(registers_t regs)
+page_fault(registers_t _regs)
 {
     uint32_t faulting_address;
     asm volatile("mov %%cr2, %0" : "=r"(faulting_address));
 
-    int present     = !(regs.err_code & 0x1);
-    int rw          = regs.err_code & 0x2;
-    int us          = regs.err_code & 0x4;
-    int reserved    = regs.err_code & 0x8;
+    int present     = !(_regs.err_code & 0x1);
+    int rw          = _regs.err_code & 0x2;
+    int us          = _regs.err_code & 0x4;
+    int reserved    = _regs.err_code & 0x8;
     //int id          = regs.err_code & 0x10;
 
     tty_puts("Page fault! ( ");

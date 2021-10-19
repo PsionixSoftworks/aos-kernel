@@ -82,17 +82,17 @@ cpuid(void)
 
 /* Get the CPU string */
 inline uint32_t 
-cpuid_string(uint32_t code, uint32_t *Location) 
+cpuid_string(uint32_t _code, uint32_t *_location) 
 {
 	__asm__ volatile(
 		"cpuid":
-		"=a"(*Location), 
-		"=b"(*(Location + 0)), 
-		"=d"(*(Location + 1)), 
-		"=c"(*(Location + 2)):
-		"a"(code)
+		"=a"(*_location), 
+		"=b"(*(_location + 0)), 
+		"=d"(*(_location + 1)), 
+		"=c"(*(_location + 2)):
+		"a"(_code)
 	);
-	return ((uint32_t)Location[0]);
+	return ((uint32_t)_location[0]);
 }
 
 /* Get the CPU vendor string */

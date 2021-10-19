@@ -17,7 +17,7 @@
 #define GDT_USER_DATA			0b11110010              // User Mode Data needs to be at 0xF2
 #define GDT_GRANULARITY			0b11001111              // GDT Granularity needs to be at 0xCF
 
-#define MAX_GDT_ENTRIES         8192                    // The maximum number of GDT entries in the kernel
+#define MAX_GDT_ENTRIES         6                    // The maximum number of GDT entries in the kernel
 
 /* Define the types for the GDT */
 typedef struct gdt_entry_struct gdt_entry_t;            // The physical GDT type

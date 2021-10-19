@@ -3,52 +3,52 @@
 fs_node_t *fs_root = 0;
 
 uint32_t
-read_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer)
+read_fs(fs_node_t *_node, uint32_t _offset, uint32_t _size, uint8_t *_buffer)
 {
-	if (node->read != 0)
-		return node->read(node, offset, size, buffer);
+	if (_node->read != 0)
+		return _node->read(_node, _offset, _size, _buffer);
 	else
 		return 0;
 }
 
 uint32_t
-write_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer)
+write_fs(fs_node_t *_node, uint32_t _offset, uint32_t _size, uint8_t *_buffer)
 {
-	if (node->write != 0)
-		return node->write(node, offset, size, buffer);
+	if (_node->write != 0)
+		return _node->write(_node, _offset, _size, _buffer);
 	else
 		return 0;
 }
 
 void
-open_fs(fs_node_t *node, uint8_t read, uint8_t write)
+open_fs(fs_node_t *_node, uint8_t _read, uint8_t _write)
 {
 	// ^^ Unused parameters? Perhaps later on?
-	if (node->open != 0)
-		return node->open(node);
+	if (_node->open != 0)
+		return _node->open(_node);
 }
 
 void
-close_fs(fs_node_t *node)
+close_fs(fs_node_t *_node)
 {
-	if (node->close != 0)
-		return node->close(node);
+	if (_node->close != 0)
+		return _node->close(_node);
 }
 
 struct dirent *
-readdir_fs(fs_node_t *node, uint8_t index)
+readdir_fs(fs_node_t *_node, uint32_t _index)
 {
-	if ((node->flags & 0x7) == FS_DIRECTORY && node->readdir != 0)
-		return node->readdir(node, index);
+	if ((_node->flags & 0x7) == FS_DIRECTORY && _node->readdir != 0)
+		return _node->readdir(_node, _index);
 	else
 		return 0;
 }
 
 fs_node_t *
-finddir_fs(fs_node_t *node, char *name)
+finddir_fs(fs_node_t *_node, char *_name)
 {
-	if ((node->flags & 0x7) == FS_DIRECTORY && node->finddir != 0)
-		return node->finddir(node, name);
+	if ((_node->flags & 0x7) == FS_DIRECTORY && _node->finddir != 0)
+		return _node->finddir(_node, _name);
 	else
 		return 0;
 }

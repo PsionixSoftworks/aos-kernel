@@ -77,11 +77,12 @@ char key_buffer[256];
 void
 keyboard_callback(void)
 {
-	show_debug_info("Keyboard callback!");
+	
 }
 
 bool
 keyboard_initialize(void)
 {
 	i8042_keyboard_initialize(&keyboard_callback);
+	return false;
 }

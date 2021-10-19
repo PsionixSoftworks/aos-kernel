@@ -36,7 +36,7 @@ struct TTY
 };
 
 /* Function templates */
-__GLOBAL void tty_init(uint16_t *);	// Initialize the teletype text mode for the command line
+__GLOBAL void tty_initialize(uint16_t *);	// Initialize the teletype text mode for the command line
 __GLOBAL void tty_clear(void);	// Clears the screen
 __GLOBAL void tty_putchar(char);	// Put a character at the next position
 __GLOBAL void tty_puts(char *);	// Print a string

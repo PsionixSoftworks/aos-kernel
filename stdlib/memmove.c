@@ -2,10 +2,10 @@
 
 /* Move memory from one location to another */
 void *
-memmove(void *dest, const void *src, size_t n)
+memmove(void *_dest, const void *_src, size_t n)
 {
-    char *d = dest;
-    const char *s = src;
+    char *d = _dest;
+    const char *s = _src;
     
     if (d < s)
     {
@@ -23,5 +23,5 @@ memmove(void *dest, const void *src, size_t n)
             *lastd-- = *lasts--;
         }
     }
-    return (dest);
+    return (_dest);
 }

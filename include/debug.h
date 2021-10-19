@@ -8,6 +8,10 @@
 #define show_debug_info(msg)        tty_printf("[INFO]: %s\n", msg);
 #define show_debug_warning(msg)     tty_printf("[WARNING]: %s\n", msg);
 #define show_debug_error(msg)       tty_printf("[ERROR]: %s\n", msg);
+#else
+#define show_debug_info(msg)
+#define show_debug_warning(msg)
+#define show_debug_error(msg)
 #endif
 
 #endif

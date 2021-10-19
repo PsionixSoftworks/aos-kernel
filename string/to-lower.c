@@ -2,14 +2,14 @@
 
 /* Make all characters in a string lowercase */
 inline void 
-to_lower(char *str)
+to_lower(char *_str)
 {
-    while(*str != '\0')
+    while(*_str != '\0')
     {
-        if(*str >= 65 && *str <= 90)
+        if(*_str >= 65 && *_str <= 90)
         {
-            *str = *str + 32;
+            *_str = *_str + 32;
         }
-        str++;
+        _str++;
     }
 }

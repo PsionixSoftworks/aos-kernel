@@ -2,14 +2,14 @@
 
 /* Make all characters in a string uppercase */
 inline void
-to_upper(char *str)
+to_upper(char *_str)
 {
-    while (*str != '\0')
+    while (*_str != '\0')
     {
-        if (*str >= 0x61 && *str <= 0x7A)
+        if (*_str >= 0x61 && *_str <= 0x7A)
         {
-            *str = *str - 32;
+            *_str = *_str - 32;
         }
-        str++;
+        _str++;
     }
 }

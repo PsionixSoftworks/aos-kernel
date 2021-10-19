@@ -49,11 +49,11 @@ struct dirent
 
 extern fs_node_t *fs_root;
 
-uint32_t read_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer);
-uint32_t write_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer);
-void open_fs(fs_node_t *node, uint8_t read, uint8_t write);
-void close_fs(fs_node_t *node);
-struct dirent *readdir_fs(fs_node_t *node, uint32_t index);
-fs_node_t *finddir_fs(fs_node_t *node, char *name);
+uint32_t read_fs(fs_node_t *_node, uint32_t _offset, uint32_t _size, uint8_t *_buffer);
+uint32_t write_fs(fs_node_t *_node, uint32_t _offset, uint32_t _size, uint8_t *_buffer);
+void open_fs(fs_node_t *_node, uint8_t _read, uint8_t _write);
+void close_fs(fs_node_t *_node);
+struct dirent *readdir_fs(fs_node_t *_node, uint32_t _index);
+fs_node_t *finddir_fs(fs_node_t *_node, char *_name);
 
 #endif

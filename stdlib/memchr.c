@@ -4,9 +4,9 @@
 
 /* Locate a character within a block of memory */
 void *
-memchr(register const void *str, int c, size_t n)
+memchr(register const void *_str, int c, size_t n)
 {
-    const uint8_t *source = (const uint8_t *)str;
+    const uint8_t *source = (const uint8_t *)_str;
 
     while (n-- > 0)
     {

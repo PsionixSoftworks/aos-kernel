@@ -35,9 +35,9 @@ static tty_t tty;										// Declare the teletype
 
 /* Initialize the teletype */
 void
-tty_init(uint16_t *mode)
+tty_initialize(uint16_t *_mode)
 {
-	tty.mode_addr = (uint16_t *)mode;					// The VGA address to display information to (Text Mode | Graphic Mode)
+	tty.mode_addr = (uint16_t *)_mode;					// The VGA address to display information to (Text Mode | Graphic Mode)
 	tty.background_color = SYSTEM_COLOR_BLACK;			// Default terminal background color
 	tty.foreground_color = SYSTEM_COLOR_GRAY;			// Default terminal foreground color
 	tty.x = 0;											// Default starting position (x)
@@ -103,27 +103,27 @@ tty_putchar(char c)
 
 /* Print a string */
 void
-tty_puts(char *string)
+tty_puts(char *_string)
 {
 	/* Get the length of the string to print */
-	for (size_t i = 0; i < strlen(string); ++i)
+	for (size_t i = 0; i < strlen(_string); ++i)
 	{
 		/* Print the string one character at a time */
-		tty_putchar(string[i]);
+		tty_putchar(_string[i]);
 	}
 }
 
 /* Print a formatted string */
 void
-tty_printf(const char *restrict format, ...)
+tty_printf(const char *restrict _format, ...)
 {
 	va_list ap;
-	va_start(ap, format);
-	for (size_t i = 0; i < strlen(format); ++i)
+	va_start(ap, _format);
+	for (size_t i = 0; i < strlen(_format); ++i)
 	{
-		if (format[i] == '%')
+		if (_format[i] == '%')
 		{
-			switch (format[i + 1])
+			switch (_format[i + 1])
 			{
 				case 's': {								// For strings
 					char *__input = va_arg(ap, char *);
@@ -180,7 +180,7 @@ tty_printf(const char *restrict format, ...)
 		}
 		else
 		{
-			tty_putchar(format[i]);
+			tty_putchar(_format[i]);
 		}
 	}
 	va_end(ap);
@@ -254,24 +254,24 @@ tty_cursor_get_pos(void)
 
 /* Set the terminal background color */
 void
-tty_set_background(uint8_t color)
+tty_set_background(uint8_t _color)
 {
-	tty.background_color = color;
+	tty.background_color = _color;
 }
 
 /* Set the terminal foreground color (text) */
 void
-tty_set_foreground(uint8_t color)
+tty_set_foreground(uint8_t _color)
 {
-	tty.foreground_color = color;
+	tty.foreground_color = _color;
 }
 
 /* Set background and foreground colors */
 void
-tty_set_colors(uint8_t bg, uint8_t fg)
+tty_set_colors(uint8_t _bg, uint8_t _fg)
 {
-	tty_set_background(bg);
-	tty_set_foreground(fg);
+	tty_set_background(_bg);
+	tty_set_foreground(_fg);
 }
 
 // Get the terminal background color
@@ -308,19 +308,19 @@ tty_scroll(void)
 }
 
 void
-panic(const char *message, const char *file, uint32_t line)
+panic(const char *_message, const char *_file, uint32_t _line)
 {
 	__asm__ volatile ( "cli" );
 
-	tty_printf("PANIC(%s) at %s:%d\n", message, file, line);
+	tty_printf("PANIC(%s) at %s:%d\n", _message, _file, _line);
 	for (;;);
 }
 
 void
-panic_assert(const char *file, uint32_t line, const char *desc)
+panic_assert(const char *_file, uint32_t _line, const char *_desc)
 {
 	__asm__ volatile ( "cli" );
 
-	tty_printf("ASSERTION-FAILED(%s) at %s: Line %d\n", desc, file, line);
+	tty_printf("ASSERTION-FAILED(%s) at %s: Line %d\n", _desc, _file, _line);
 	for (;;);
 }
