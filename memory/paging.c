@@ -161,7 +161,7 @@ get_page(uint32_t _address, int _make, page_directory_t *_dir)
         _dir->tables[table_idx] = (page_table_t *)kmalloc_ap(sizeof(page_table_t), &tmp);
         memset(_dir->tables[table_idx], 0, 0x1000);
         _dir->tables_physical[table_idx] = tmp | 0x7;
-        return (&dir->tables[table_idx]->pages[_address % 1024]);
+        return (&_dir->tables[table_idx]->pages[_address % 1024]);
     }
     else
     {
