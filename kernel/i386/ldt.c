@@ -10,7 +10,7 @@ static inline void ldt_set_gate(uint32_t, uint8_t, uint8_t);
 
 /* Initialize the Local Descriptor Table */
 void
-ldt_init(void)
+ldt_initialize(void)
 {
     ldt_ptr.limit = sizeof(ldt_entry_t) - 1;            // Get the size of the LDT (2 for now)
     ldt_ptr.base = (uint32_t)&ldt_entries;              // Get the base of the LDT

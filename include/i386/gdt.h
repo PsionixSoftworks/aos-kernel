@@ -42,6 +42,6 @@ struct gdt_ptr_struct
 } __packed;
 
 /* Function Templates */
-__GLOBAL KERNEL_API void gdt_init(void);                             // Initialize the Global Descriptor Table
+__GLOBAL KERNEL_API void gdt_initialize(void);                             // Initialize the Global Descriptor Table
 
 #endif  // !_ADAMANTINE_GDT_H

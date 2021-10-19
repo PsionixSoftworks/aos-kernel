@@ -29,7 +29,7 @@ struct idt_ptr_struct
 } __packed;
 
 /* Function Templates */
-__GLOBAL KERNEL_API void idt_init(void);         // Initialize the Interrupt Descriptor Table
+__GLOBAL KERNEL_API void idt_initialize(void);   // Initialize the Interrupt Descriptor Table
 __GLOBAL KERNEL_API void isr0(void);             // Interrupt Service Routine 0, [Division By Zero]
 __GLOBAL KERNEL_API void isr1(void);             // Interrupt Service Routine 1, [Debug Exception]
 __GLOBAL KERNEL_API void isr2(void);             // Interrupt Service Routine 2, [Non-Maskable Interrupt]

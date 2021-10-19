@@ -26,7 +26,7 @@ extern void tss_flush(void);
 
 /* Initialize the Global Descriptot Table */
 void
-gdt_init(void)
+gdt_initialize(void)
 {    
     gdt_ptr.limit = (sizeof(gdt_entry_t) * MAX_GDT_ENTRIES) - 1;    // Get the size of the GDT (technically 5)
     gdt_ptr.base = (uint32_t)&gdt_entries;                          // Get the base of the GDT

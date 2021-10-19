@@ -13,7 +13,7 @@ static inline void idt_set_gate(uint8_t, uint32_t, uint16_t, uint8_t);
 
 /* Initialize the Interrupt Descriptor Table */
 void
-idt_init(void)
+idt_initialize(void)
 {
     idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;      // Get the size of the IDT (255)
     idt_ptr.base = (uint32_t)&idt_entries;              // Get the base of the IDT

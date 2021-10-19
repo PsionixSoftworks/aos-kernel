@@ -25,7 +25,7 @@
 #include <termios.h>
 
 /* 
- * TODO: FINISH FIXING ALL PARAMETERS WITH AN "_" IN FRONT OF THE VARIABLE NAMES...
+ * 
  * TODO: FINISH UPDATING ALL FUNCTIONS WITH THE "_init" SUFFIX TO "_initialize."y
  */
 
@@ -36,9 +36,9 @@ extern isr_t interrupt_handlers[MAX_INTERRUPTS];		// The interrupt handler (defi
 static inline void
 descriptor_tables_initialize(void)
 {
-	gdt_init();											// Defined in "gdt.c"
-	ldt_init();											// Defined in "ldt.c"
-	idt_init();											// Defined in "idt.c"
+	gdt_initialize();											// Defined in "gdt.c"
+	ldt_initialize();											// Defined in "ldt.c"
+	idt_initialize();											// Defined in "idt.c"
 
 	memset(&interrupt_handlers, 0, sizeof(isr_t) * 256);	// Clear the address of the interrupt handlers to zero
 	show_debug_info("Descriptor tables are initialized!");
