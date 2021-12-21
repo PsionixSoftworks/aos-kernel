@@ -19,6 +19,8 @@
 #include <adamantine/adamantine-x64.h>					// This is unusable right now...
 #endif	// !__AOS64__
 
+#include <sys/types.h>
+
 /* Only use this when you include this file and need common macros. Otherwise just leave it. */
 #ifdef ADAMANTINE_MACROS
 /* Include common macros */

@@ -1,13 +1,9 @@
 #ifndef _ADAMANTINE_LDT_H
 #define _ADAMANTINE_LDT_H
 
-#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
-
 #include <compiler.h>
-#include <common.h>
+#include <macros.h>
 #include <stdint.h>
-#include <adamantine/aos-defs.h>
-#include <kernel/kernel.h>
 
 /* Define the types for the LDT */
 typedef struct ldt_entry_struct ldt_entry_t;                // The physical LDT type

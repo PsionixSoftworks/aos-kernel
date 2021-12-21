@@ -7,9 +7,8 @@
 
 #define _USES_MACROS
 
-#include <common.h>
 #include <adamantine/aos-defs.h>
-#include <kernel/kernel.h>
+#include <macros.h>
 
 typedef struct {
 	uint8_t					locked;

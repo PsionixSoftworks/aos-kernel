@@ -1,12 +1,12 @@
 #ifndef _ADAMANTINE_IDT_H
 #define _ADAMANTINE_IDT_H
 
-#define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
-
-#include <common.h>
+#include <kernel/irq.h>
+#include <compiler.h>
+#include <macros.h>
 #include <stdint.h>
-#include <adamantine/aos-defs.h>
-#include <kernel/kernel.h>
+
+#define IRQS_ENABLED    are_interrupts_enabled()
 
 typedef struct idt_entry_struct idt_entry_t;            // The physical IDT type
 typedef struct idt_ptr_struct idt_ptr_t;                // The ptr to the end-start of the IDT
@@ -78,7 +78,5 @@ __GLOBAL KERNEL_API void irq12(void);            // Interrupt Request 12, [PS/2 
 __GLOBAL KERNEL_API void irq13(void);            // Interrupt Request 13, [Coprocessor]
 __GLOBAL KERNEL_API void irq14(void);            // Interrupt Request 14, [Primary IDE Controller (HDD)]
 __GLOBAL KERNEL_API void irq15(void);            // Interrupt Request 15, [Secondary IDE Controller (DD)]
-
-#define IRQS_ENABLED        1                                       // Defined for "ioctrl.h"
 
 #endif

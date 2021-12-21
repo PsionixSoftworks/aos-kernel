@@ -19,4 +19,12 @@
 #define MAX_NAME_LENGTH         32
 #endif
 
+#if !defined(KERNEL_API)
+#if !defined(KERNEL_CDECL)
+#define KERNEL_API      
+#else
+#define KERNEL_API      __cdecl__
+#endif
+#endif
+
 #endif

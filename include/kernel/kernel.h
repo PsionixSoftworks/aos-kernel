@@ -15,9 +15,8 @@
 
 #define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
-#include <common.h>
+#include <adamantine/adamantine.h>
 #include <system/types.h>
-#include <stdint.h>
 
 #include <compiler.h>
 

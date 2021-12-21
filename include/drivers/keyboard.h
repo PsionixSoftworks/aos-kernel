@@ -3,11 +3,14 @@
 
 #include <drivers/keys.h>
 #include <drivers/i8042.h>
-#include <common.h>
-#include <adamantine/aos-defs.h>
-#include <kernel/kernel.h>
+#include <macros.h>
 
-#define MAX_KEYS			256							                    // Max number of keybinds (shouldn't exceed 256)
+#if !defined(__cplusplus)
+#include <stdbool.h>
+#endif
+
+#define MAX_KEYS			            256							// Max number of keybinds (shouldn't exceed 256)
+#define KEYBOARD_CONTROLLER_STATUS_OK   0x55
 
 /* Function Templates */
 __GLOBAL KERNEL_API bool keyboard_initialize(void);		            // Initalize the keyboard driver

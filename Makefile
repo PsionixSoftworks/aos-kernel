@@ -35,14 +35,17 @@ STDLIB_PATH			:= 	stdlib
 STDIO_PATH			:= 	stdio
 MATH_PATH			:= 	math
 STRING_PATH			:= 	string
+SYSTEM_PATH			:= 	system
 
-ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.S \
+ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.asm \
 						$(ASSEMB_PATH)/interrupt.asm \
 						$(ASSEMB_PATH)/cpuid.asm 
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/vga.c \
 						$(DRIVER_PATH)/i8042.c \
 						$(DRIVER_PATH)/tty.c \
+						$(DRIVER_PATH)/device.c \
+						$(DRIVER_PATH)/driver.c \
 						$(KERNEL_PATH)/i386/gdt.c \
 						$(KERNEL_PATH)/i386/ldt.c \
 						$(KERNEL_PATH)/i386/idt.c \
@@ -51,7 +54,6 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(MEMORY_PATH)/ordered-array.c \
 						$(MEMORY_PATH)/paging.c \
 						$(KERNEL_PATH)/cpu.c \
-						$(DRIVER_PATH)/driver.c \
 						$(DRIVER_PATH)/keyboard.c \
 						$(KERNEL_PATH)/mutex.c \
 						$(KERNEL_PATH)/assert.c \
@@ -81,7 +83,8 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(STRING_PATH)/strtok.c \
 						$(STRING_PATH)/strchr.c \
 						$(STRING_PATH)/append.c \
-						$(KERNEL_PATH)/procmgr.c
+						$(KERNEL_PATH)/procmgr.c \
+						$(SYSTEM_PATH)/portio.c
 # Put all input files here separated by a '\':
 OUTPUT_FILES 		:= 	boot.o	\
 						cpuid.o \
@@ -90,11 +93,12 @@ OUTPUT_FILES 		:= 	boot.o	\
 						main.o \
 						i8042.o \
 						tty.o \
+						device.o \
+						driver.o \
 						cpu.o \
 						mutex.o \
 						assert.o \
 						task.o \
-						driver.o \
 						keyboard.o \
 						vga.o \
 						mem-util.o \
@@ -130,7 +134,8 @@ OUTPUT_FILES 		:= 	boot.o	\
 						strtok.o \
 						strchr.o \
 						append.o \
-						procmgr.o
+						procmgr.o \
+						portio.o
 
 # Compile all of the files into the iso:
 .PHONY: all
@@ -139,7 +144,7 @@ all: bootloader kernel linker iso
 
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
-	$(ASM) $(ASSEMB_PATH)/boot/boot.S -o boot.o
+	$(NASM) $(ASSEMB_PATH)/boot/boot.asm -o boot.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm -o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm -o cpuid.o
 	$(NASM) $(ASSEMB_PATH)/math.asm -o math.o
@@ -147,11 +152,12 @@ bootloader: $(ASM_FILES_IN)
 # Compile the kernel files:
 kernel: $(C_FILES_IN)
 	$(CC) $(INIT_PATH)/main.c -o main.o $(C_FLAGS)
-	$(CC) $(DRIVER_PATH)/driver.c -o driver.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/tty.c -o tty.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/keyboard.c -o keyboard.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/vga.c -o vga.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/i8042.c -o i8042.o $(C_FLAGS)
+	$(CC) $(DRIVER_PATH)/device.c -o device.o $(C_FLAGS)
+	$(CC) $(DRIVER_PATH)/driver.c -o driver.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/irq.c -o irq.o $(C_FLAGS)
@@ -190,6 +196,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(STRING_PATH)/strchr.c -o strchr.o $(C_FLAGS)
 	$(CC) $(STRING_PATH)/append.c -o append.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/procmgr.c -o procmgr.o $(C_FLAGS)
+	$(CC) $(SYSTEM_PATH)/portio.c -o portio.o $(C_FLAGS)
 
 # Link all input files into one file:
 linker: linker.ld $(OUTPUT_FILES)

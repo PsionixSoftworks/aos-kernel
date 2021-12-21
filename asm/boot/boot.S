@@ -35,3 +35,10 @@ system_restart_safe:
 
     mov $0xFE, %al
     out %al, $0x64
+
+.globl tss_install
+tss_install: 
+    mov $0x2B, %ax
+
+    ltr %ax
+    ret

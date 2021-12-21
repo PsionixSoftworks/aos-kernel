@@ -15,74 +15,22 @@
 
 // Include files go here:
 #include <stdint.h>
+#include <macros.h>
 
-/* Write to an 8-bit port */
-static inline void
-outb(uint16_t port, uint8_t value)
-{
-	__asm__ volatile ("outb %0, %1" : : "a"(value), "Nd"(port));
-}
+#define outb(_port, _value)		__outb(_port, _value)
+#define outw(_port, _value)		__outw(_port, _value)
+#define outl(_port, _value)		__outl(_port, _value)
+#define inb(_port)				__inb(_port)
+#define inw(_port)				__inw(_port)
+#define inl(_port)				__inl(_port)
+#define io_wait(void)			__io_wait()
 
-/* Write to a 16-bit port */
-static inline void
-outw(uint16_t port, uint16_t value)
-{
-	__asm__ volatile ("outw %0, %1" : : "a"(value), "Nd"(port));
-}
+__GLOBAL KERNEL_API void 		__outb(uint16_t _port, uint8_t _value);
+__GLOBAL KERNEL_API void 		__outw(uint16_t _port, uint16_t _value);
+__GLOBAL KERNEL_API void 		__outl(uint16_t _port, uint32_t _value);
+__GLOBAL KERNEL_API uint8_t 	__inb(uint16_t _port);
+__GLOBAL KERNEL_API uint16_t 	__inw(uint16_t _port);
+__GLOBAL KERNEL_API uint32_t 	__inl(uint16_t _port);
+__GLOBAL KERNEL_API void 		__io_wait(void);
 
-/* Write to a 32-bit port */
-static inline void
-outl(uint16_t port, uint32_t value)
-{
-	__asm__ volatile ("outl %0, %1" : : "a"(value), "Nd"(port));
-}
-
-/* Read from an 8-bit port */
-static inline uint8_t
-inb(uint16_t port)
-{
-	uint8_t value = 0;
-	__asm__ volatile ("inb %1, %0" : "=a"(value) : "dN"(port));
-
-	return (value);
-}
-
-/* Read from a 16-bit port */
-static inline uint16_t
-inw(uint16_t port) 
-{
-	uint16_t value = 0;
-	__asm__ volatile ("inw %1, %0" : "=a" (value) : "dN" (port));
-
-	return (value);
-}
-
-/* Read from a 32-bit port */
-static inline uint32_t
-inl(uint16_t port)
-{
-	uint32_t value = 0;
-	__asm__ volatile ("inl %1, %0" : "=a"(value) : "dN"(port));
-
-	return (value);
-}
-
-/* Check if IRQ's are enabled (defined in "idt.h") */
-#ifndef IRQS_ENABLED
-
-/* Wait on an IO port */
-static inline void 
-io_wait(void) 
-{
-	__asm__ volatile ( 	"JMP 1f\n\t" 
-						"1:JMP 2f\n\t" 
-						"2:" );
-}
-#else
-static inline void
-io_wait(void)
-{
-	__asm__ volatile ( 	"outb %%al, $0x80" : : "a"(0) );
-}
-#endif	// !IRQS_ENABLED
 #endif	// !_ADAMANTINE_IOCTRL_H

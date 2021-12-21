@@ -38,7 +38,7 @@ char *exception_messages[MAX_INTERRUPTS] =
 	"AOS_INTERRUPT Raised! : [Reserved Interrupt Exception]",			// int $0x0F
 	"AOS_INTERRUPT Raised! : [Math Fault Exception]",					// int $0x10
 	"AOS_INTERRUPT Raised! : [Alignment Check Exception]",				// int $0x11
-	"AOS_INTERRUPT Raised! : [Machine Check Exception]",				// int $0x12
+	"AOS_INTERRUPT Raised! : [Machine Check Exception]",				// int $0x12	- Expand on...
 	"AOS_INTERRUPT Raised! : [SIMD Floating-Point Exception]",			// int $0x13
 	"AOS_INTERRUPT Raised! : [Virtualization Exception]",				// int $0x14
 	"AOS_INTERRUPT Raised! : [Control Protection Exception]",			// int $0x15

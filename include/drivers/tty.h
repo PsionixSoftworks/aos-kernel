@@ -1,87 +1,75 @@
 #ifndef _KERNEL_DRIVER_TTY_H
 #define _KERNEL_DRIVER_TTY_H
 
-#include <timers.h>
+#include <adamantine/adamantine.h>
+#include <drivers/vga.h>
+#include <macros.h>
 
-#define CONSOLE_MINOR       0
-#define LOG_MINOR           15
-#define RS232_MINOR         16
-#define TTYPX_MINOR         128
-#define PTYPX_MINOR         192
+#define TTY_VIDEO_MODE      vga_mode.VGA_TEXT_MODE_COLOR
+#define TTY_DISPLAY_WIDTH   VGA_WIDTH
+#define TTY_DISPLAY_HEIGHT  VGA_HEIGHT
 
-#define LINEWRAP            1
+/* Macros for the Text Mode cursor */
+#define CURSOR_CMD		0x03D4										// Cursor Command
+#define CURSOR_DATA		0x03D5										// Cursor Data
 
-#define TTY_IN_BYTES        256
-#define TAB_SIZE            8
-#define TAB_MASK            7
+/* Define macros for the Text Mode cusror */
+#if defined(CURSOR_TYPE) && (CURSOR_TYPE == 0)						// This will make a block cursor, all others will be an underline (for now).
+#define CURSOR_START	0xE											// Top=14
+#define CURSOR_END		0xF											// Bottom=15
+#else
+#define CURSOR_START	0x0											// Top=0
+#define CURSOR_END		0xF											// Bottom=15
+#endif
 
-#define ESC                 '\33'
+struct s_tty_in {
+    char(*k_getc)(void);
+    char *(*k_gets)(void);
+};
+typedef struct s_tty_in in_t;
 
-#define O_NOCTTY            00400
-#define O_NONBLOCK          04000
+struct s_tty_out {
+    void(*k_putc)(char c);
+    void(*k_puts)(char *str, size_t len);
+    void(*k_print)(char *str);
+    void(*k_printf)(const char *restrict fmt, ...);
+};
+typedef struct s_tty_out out_t;
 
-struct tty;
-typedef _PROTO(int (*devfun_t), (struct tty *tty_ptr, int try_only));
-typedef _PROTO(void (*devfunarg_t), (struct tty *tty_ptr, int c));
+struct s_tty {
+    uint16_t *mode_addr;
+    uint32_t tty_rows;
+    uint32_t tty_cols;
+    uint8_t tty_backcol;
+    uint8_t tty_forecol;
+    uint8_t tty_cursor_x;
+    uint8_t tty_cursor_y;
 
-typedef struct tty
-{
-    int tty_events;
-    int tty_index;
-    int tty_minor;
+    in_t in;
+    out_t out;
+};
 
-    uint16_t *tty_inhead;
-    uint16_t *tty_intail;
-    int tty_incount;
-    int tty_eotct;
-    devfun_t tty_devread;
-    devfun_t tty_icancel;
-    int tty_min;
-    timer_t tty_timer;
+static struct s_tty system;
 
-    devfun_t tty_devwrite;
-    devfunarg_t tty_echo;
-    devfun_t tty_ocancel;
-    devfun_t tty_break;
+__GLOBAL KERNEL_API void k_tty_initialize(uint16_t *mode);
+__GLOBAL KERNEL_API void k_tty_clear(void);
+__GLOBAL KERNEL_API void k_tty_putc(char c);
+__GLOBAL KERNEL_API void k_tty_puts(char *str);
+__GLOBAL KERNEL_API void k_tty_printf(const char *restrict fmt, ...);
+__GLOBAL KERNEL_API void k_tty_println(void);
+__GLOBAL KERNEL_API void k_tty_cursor_enable(uint8_t start, uint8_t end);
+__GLOBAL KERNEL_API void k_tty_cursor_disable(void);
+__GLOBAL KERNEL_API void k_tty_cursor_update(void);
+__GLOBAL KERNEL_API void k_tty_cursor_set_pos(uint8_t x, uint8_t y);
+__GLOBAL KERNEL_API uint16_t k_tty_cursor_get_pos(void);
+__GLOBAL KERNEL_API void k_tty_set_background(uint8_t _color);
+__GLOBAL KERNEL_API void k_tty_set_foreground(uint8_t _color);
+__GLOBAL KERNEL_API void k_tty_set_colors(uint8_t _bg, uint8_t _fg);
+__GLOBAL KERNEL_API uint8_t k_tty_get_background(void);
+__GLOBAL KERNEL_API uint8_t k_tty_get_foreground(void);
+__GLOBAL KERNEL_API void k_tty_scroll(void);
 
-    int tty_position;
-    char tty_reprint;
-    char tty_escaped;
-    char tty_inhibited;
-    char tty_pgrp;
-    char tty_openct;
-
-    char tty_inrepcode;
-    char tty_inrevived;
-    char tty_incaller;
-    char tty_inproc;
-    vir_bytes tty_in_vir;
-    int tty_inleft;
-    int tty_incum;
-    char tty_outrepcode;
-    char tty_outrevived;
-    char tty_outcaller;
-    char tty_outproc;
-    vir_bytes tty_out_vir;
-    int tty_outleft;
-    int tty_outcum;
-    char tty_iocaller;
-    char tty_ioproc;
-    int tty_ioreq;
-    vir_bytes tty_iovir;
-
-    int tty_select_ops;
-    int tty_select_proc;
-
-    devfun_t tty_ioctl;
-    devfun_t tty_close;
-    void *tty_priv;
-    struct termios tty_termios;
-    struct winsize tty_winsize;
-
-    uint16_t tty_inbuf[TTY_IN_BYTES];
-} tty_t;
-
-//extern tty_t tty_table[NR_CONS + NR_RS_LINES + NR_PTYS];
+__GLOBAL KERNEL_API void panic(const char *_message, const char *_file, uint32_t _line);
+__GLOBAL KERNEL_API void panic_assert(const char *_file, uint32_t _line, const char *_desc);
 
 #endif

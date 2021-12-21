@@ -22,9 +22,8 @@
 #ifndef _ADAMANTINE_MEMORY_UTIL_H
 #define _ADAMANTINE_MEMORY_UTIL_H
 
-#include <common.h>
-#include <kernel/kernel.h>
 #include <memory/ordered-array.h>
+#include <macros.h>
 #include <stdint.h>
 
 #define KHEAP_START			0xC0000000

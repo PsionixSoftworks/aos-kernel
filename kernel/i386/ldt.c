@@ -16,7 +16,7 @@ ldt_initialize(void)
     ldt_ptr.base = (uint32_t)&ldt_entries;              // Get the base of the LDT
 
     /* Tell the LDT how to work */
-    ldt_set_gate(0, 2, 0x0A);                           // I'm honestly surprised these don't fault.
+    ldt_set_gate(0, 2, 0x0A);
 
     /* Load the LDT into memory */
     __asm__ volatile ("lldt (%0)" : : "m"(ldt_ptr));

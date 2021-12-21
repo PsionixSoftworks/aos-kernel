@@ -1,13 +1,18 @@
 #include <i386/gdt.h>
+#include <kernel/version.h>
+#if (KERNEL_VERSION_NUMBER <= 40)
 #include <adamantine/tty.h>
-#include <i386/tss.h>
-#include <stddef.h>
-#include <kernel/irq.h>
+#else
+#include <drivers/tty.h>
+#endif
 
+#include <kernel/irq.h>
 #include <i386/ldt.h>
+#include <i386/tss.h>
+#include <debug.h>
 
 /* Define the GDT enties and the pointer to the GDT */
-gdt_entry_t gdt_entries[5];
+gdt_entry_t gdt_entries[MAX_GDT_ENTRIES];
 gdt_ptr_t gdt_ptr;
 tss_t tss_entry;
 
@@ -22,7 +27,7 @@ static inline void gdt_set_tss_segment(void);           // TSS Segment
 static inline void gdt_install(void);
 static inline void tss_install(void);
 
-extern void tss_flush(void);
+extern void tss_install(void);
 
 /* Initialize the Global Descriptot Table */
 void
@@ -58,13 +63,15 @@ gdt_install(void)
             ljmp $0x08, $flush  \n \
             flush: "
     );
+    
+    show_debug_info("GDT is installed!");
 }
 
-static inline void
+/*static inline void
 tss_install(void)
 {
 	__asm__ volatile ("ltr (%0)" : : "m"(tss_entry));
-}
+}*/
 
 void
 set_kernel_stack(uint32_t stack)
@@ -137,6 +144,7 @@ gdt_set_tss_segment(void)
 {
     uint32_t base = (uint32_t)&tss_entry;
     uint32_t limit = base + sizeof(tss_entry);
+    
     gdt_entries[5].base_low     = base;
     gdt_entries[5].base_middle  = base;
     gdt_entries[5].base_high    = base;

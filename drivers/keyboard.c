@@ -74,7 +74,21 @@ static const char keys_caps[MAX_KEYS] =
 
 char key_buffer[256];
 
-void
+static inline uint8_t
+ps2_controller_test(void)
+{
+	outb(I8042_COMMAND_WRITE, 0xAA);
+	return inb(I8042_DATA_BYTE);
+}
+
+static inline bool
+ps2_port_success(void)
+{
+	outb(I8042_COMMAND_WRITE, 0xAB);
+	return (inb(I8042_DATA_BYTE) == 0x00);
+}
+
+__LOCAL KERNEL_API void
 keyboard_callback(void)
 {
 	
@@ -83,6 +97,25 @@ keyboard_callback(void)
 bool
 keyboard_initialize(void)
 {
-	i8042_keyboard_initialize(&keyboard_callback);
+	if ((ps2_controller_test() == KEYBOARD_CONTROLLER_STATUS_OK) && (ps2_port_success()))
+	{
+	#if defined(__DEBUG__) && __DEBUG__ == 1
+		show_debug_info("Keyboard Controller initialized!");
+	#endif
+		register_interrupt_handler(IRQ1, &keyboard_callback);
+		return true;
+	}
 	return false;
+}
+
+int
+keyboard_acknowledge(void)
+{
+
+}
+
+unsigned char
+keyboard_read_scancode(void)
+{
+	
 }

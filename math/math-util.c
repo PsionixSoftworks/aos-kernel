@@ -1,9 +1,9 @@
 #include <math/math-util.h>
 
 /* Call external references */
-extern double __cos(double);                            // Call cosine function (defined in "math.asm")
-extern double __sin(double);                            // Call sine function (defined in "math.asm")
-extern double __tan(double);                            // Call tangent function (defined in "math.asm")
+extern double _cos(double);                            // Call cosine function (defined in "math.asm")
+extern double _sin(double);                            // Call sine function (defined in "math.asm")
+extern double _tan(double);                            // Call tangent function (defined in "math.asm")
 
 /* The absolute value of x */
 inline uint32_t
@@ -48,7 +48,7 @@ inline double
 cos(double x)
 {
     /* Adjacent / Hypotenuse */
-    double value = __cos(x);
+    double value = _cos(x);
     return (value);
 }
 
@@ -56,7 +56,7 @@ cos(double x)
 inline double
 sin(double x)
 {
-    double value = __sin(x);
+    double value = _sin(x);
     return (value);
 }
 
@@ -64,7 +64,7 @@ sin(double x)
 inline double
 tan(double x)
 {
-    double value = __tan(x);
+    double value = _tan(x);
     return (value);
 }
 
