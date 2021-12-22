@@ -11,8 +11,90 @@ static struct node *head       = NULL;
 static struct node *current    = NULL;
 static int index = 0;
 
+static inline void __list_print(void);
+static inline void __list_insert_at(int key, int data);
+static inline struct node *__list_delete_first(void);
+static inline bool __list_is_empty(void);
+static inline int __list_length(void);
+static inline struct node *__list_find(int key);
+static inline struct node *__list_delete(int key);
+static inline void __list_sort(void);
+static inline void __list_reverse(struct node **head_ref);
+
+void
+linked_list_add(int data)
+{
+    __list_insert_at(index++, data);
+}
+
+void
+linked_list_set(int pos, int data)
+{
+    __list_insert_at(pos, data);
+}
+
+struct node *
+linked_list_remove(void)
+{
+    __list_delete_first();
+}
+
+struct node *
+linked_list_remove_at(int pos)
+{
+    __list_delete(pos);
+}
+
+bool
+linked_list_empty(void)
+{
+    bool result;
+    result = __list_is_empty();
+    return result;
+}
+
+size_t
+linked_list_size(void)
+{
+    size_t result;
+    result = __list_length();
+    return result;
+}
+
+int
+linked_list_find(int pos)
+{
+    struct node *result;
+    result = __list_find(pos);
+    return result->data;
+}
+
+void
+linked_list_sort(void)
+{
+    __list_sort();
+}
+
+void
+linked_list_reverse(struct node **head_ref)
+{
+    __list_reverse(head_ref);
+}
+
+void
+linked_list_to_string(void)
+{
+    __list_print();
+}
+
+struct node *
+linked_list_get_head(void)
+{
+    return &head;
+}
+
 static inline void
-print_list(void)
+__list_print(void)
 {
     struct node *ptr = head;
     k_tty_printf("\n[ ");
@@ -27,7 +109,7 @@ print_list(void)
 }
 
 static inline void
-insert_at(int key, int data)
+__list_insert_at(int key, int data)
 {
     struct node *link = (struct node *)kmalloc(sizeof(struct node));
 
@@ -39,22 +121,22 @@ insert_at(int key, int data)
     head = link;
 }
 
-struct node *
-delete_first(void)
+static inline struct node *
+__list_delete_first(void)
 {
     struct node *tmp = head;
     head = head->next;
     return tmp;
 }
 
-bool
-is_empty(void)
+static inline bool
+__list_is_empty(void)
 {
     return head == NULL;
 }
 
-int
-length(void)
+static inline int
+__list_length(void)
 {
     int len = 0;
     struct node *current;
@@ -66,8 +148,8 @@ length(void)
     return len;
 }
 
-struct node *
-find(int key)
+static inline struct node *
+__list_find(int key)
 {
     struct node *current = head;
 
@@ -84,8 +166,8 @@ find(int key)
     return current;
 }
 
-struct node *
-delete(int key)
+static inline struct node *
+__list_delete(int key)
 {
     struct node *current = head;
     struct node *previous = NULL;
@@ -111,14 +193,14 @@ delete(int key)
     return current;
 }
 
-void
-sort(void)
+static inline void
+__list_sort(void)
 {
     int i, j, k, tmpkey, tmpdata;
     struct node *current;
     struct node *next;
 
-    int size = length();
+    int size = __list_length();
     k = size;
 
     for (i = 0; i < size - 1; i++, k--)
@@ -145,8 +227,8 @@ sort(void)
     }
 }
 
-void
-reverse(struct node **head_ref)
+static inline void
+__list_reverse(struct node **head_ref)
 {
     struct node *prev = NULL;
     struct node *current = *head_ref;
@@ -161,76 +243,4 @@ reverse(struct node **head_ref)
     }
 
     *head_ref = prev;
-}
-
-void
-linked_list_add(int data)
-{
-    insert_at(index++, data);
-}
-
-void
-linked_list_set(int pos, int data)
-{
-    insert_at(pos, data);
-}
-
-struct node *
-linked_list_remove(void)
-{
-    delete_first();
-}
-
-struct node *
-linked_list_remove_at(int pos)
-{
-    delete(pos);
-}
-
-bool
-linked_list_empty(void)
-{
-    bool result;
-    result = is_empty();
-    return result;
-}
-
-size_t
-linked_list_size(void)
-{
-    size_t result;
-    result = length();
-    return result;
-}
-
-int
-linked_list_find(int pos)
-{
-    struct node *result;
-    result = find(pos);
-    return result->data;
-}
-
-void
-linked_list_sort(void)
-{
-    sort();
-}
-
-void
-linked_list_reverse(struct node **head_ref)
-{
-    reverse(head_ref);
-}
-
-void
-linked_list_to_string(void)
-{
-    print_list();
-}
-
-struct node *
-linked_list_get_head(void)
-{
-    return &head;
 }
