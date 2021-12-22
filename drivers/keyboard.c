@@ -161,13 +161,13 @@ keyboard_callback(void)
 			if (!sft_down)
 			{
 				c = keys_normal[(unsigned char)sc];
-				unsigned char str[2] = {c, '\0'};
+				char str[2] = {c, '\0'};
 				tty_puts(str);
 			}
 			else
 			{
 				c = keys_caps[(unsigned char)sc];
-				unsigned char str[2] = {c, '\0'};
+				char str[2] = {c, '\0'};
 				tty_puts(str);
 			}
 		}

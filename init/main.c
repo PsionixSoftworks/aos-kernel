@@ -65,6 +65,8 @@
 #include <timers.h>
 #include <unistd.h>
 
+#include <memory/linked-list.h>
+
 #ifndef CHECK_FLAG
 #define CHECK_FLAG(_flags, _bit)	((_flags) & 1 << (_bit))
 #endif
@@ -124,6 +126,4 @@ k_main(unsigned long magic, unsigned long addr)
 
 	if (CHECK_FLAG(info->flags, BOOT_DEVICE))
 		show_debug_info("Boot device is valid!");
-	
-	tty_printf("Okay, begin typing below:\n");
 }

@@ -1,4 +1,5 @@
 #include <drivers/i8042.h>
+#include <drivers/driver.h>
 #include <system/portio.h>
 
 static inline unsigned char

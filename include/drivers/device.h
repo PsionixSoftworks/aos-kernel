@@ -11,6 +11,9 @@
 #define DEVICE_TYPE_DATA_DISK   0x04
 #define DEVICE_TYPE_PCI_BUS     0x05
 
+typedef struct device device_t;
+typedef int(*devops_t)(int);
+
 struct driver;
 
 struct device {
@@ -21,8 +24,5 @@ struct device {
     int(*destroy)(int);
     int(*install)(int);
 };
-
-typedef struct device device_t;
-uint32_t device_init(device_t *dev, char *name);
 
 #endif

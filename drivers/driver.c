@@ -1,7 +1,7 @@
-#include <adamantine/adamantine.h>
 #include <drivers/driver.h>
-#include <memory/memory-util.h>
 #include <drivers/device.h>
+#include <adamantine/adamantine.h>
+#include <memory/memory-util.h>
 #include <system/portio.h>
 #include <adamantine/tty.h>
 
@@ -9,8 +9,4 @@
 #include <sys/types.h>
 #endif
 
-void *
-device_driver_setup(int (*config_func)(void), int flags)
-{
-    config_func();
-}
+

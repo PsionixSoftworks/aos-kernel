@@ -53,6 +53,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(MEMORY_PATH)/mem-util.c \
 						$(MEMORY_PATH)/ordered-array.c \
 						$(MEMORY_PATH)/paging.c \
+						$(MEMORY_PATH)/linked-list.c \
 						$(KERNEL_PATH)/cpu.c \
 						$(DRIVER_PATH)/keyboard.c \
 						$(KERNEL_PATH)/mutex.c \
@@ -111,6 +112,7 @@ OUTPUT_FILES 		:= 	boot.o	\
 						ldt.o \
 						idt.o \
 						paging.o \
+						linked-list.o \
 						ordered-array.o \
 						itoa.o \
 						free.o \
@@ -173,6 +175,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(KERNEL_PATH)/i386/ldt.c -o ldt.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/i386/idt.c -o idt.o $(C_FLAGS)
 	$(CC) $(MEMORY_PATH)/paging.c -o paging.o $(C_FLAGS)
+	$(CC) $(MEMORY_PATH)/linked-list.c -o linked-list.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/itoa.c -o itoa.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/free.c -o free.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/malloc.c -o malloc.o $(C_FLAGS)

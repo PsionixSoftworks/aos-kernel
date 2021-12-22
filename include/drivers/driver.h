@@ -20,7 +20,4 @@ struct driver {
 };
 typedef struct driver driver_t;
 
-__GLOBAL KERNEL_API int driver_config(void);        // Setup in main.c.
-__GLOBAL KERNEL_API void *device_driver_setup(int (*config_func)(void), int flags);
-
 #endif

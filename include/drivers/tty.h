@@ -56,7 +56,7 @@ __GLOBAL KERNEL_API void k_tty_initialize(uint16_t *mode);
 __GLOBAL KERNEL_API void k_tty_clear(void);
 __GLOBAL KERNEL_API void k_tty_putc(char c);
 __GLOBAL KERNEL_API void k_tty_puts(char *str);
-__GLOBAL KERNEL_API void k_tty_printf(const char *restrict fmt, ...);
+__GLOBAL KERNEL_API void k_tty_printf(const char *restrict, ...);
 __GLOBAL KERNEL_API void k_tty_println(void);
 __GLOBAL KERNEL_API void k_tty_cursor_enable(uint8_t start, uint8_t end);
 __GLOBAL KERNEL_API void k_tty_cursor_disable(void);

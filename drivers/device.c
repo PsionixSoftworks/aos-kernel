@@ -3,13 +3,10 @@
 #include <adamantine/tty.h>
 #include <string.h>
 
-static volatile uint32_t index = 10;
-static volatile uint32_t offset = 0;
+static device_t *dev;
 
-uint32_t
-device_init(device_t *dev, char *name)
+devops_t
+device_create(int _id)
 {
-     
-
-    return 0;
+    
 }
