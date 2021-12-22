@@ -22,6 +22,8 @@
 #define CURSOR_END		0xF											// Bottom=15
 #endif
 
+typedef unsigned short *vBuff_t;
+
 struct s_tty_in {
     char(*k_getc)(void);
     char *(*k_gets)(void);
@@ -38,6 +40,7 @@ typedef struct s_tty_out out_t;
 
 struct s_tty {
     uint16_t *mode_addr;
+    vBuff_t vBuff;
     uint32_t tty_rows;
     uint32_t tty_cols;
     uint8_t tty_backcol;
@@ -48,8 +51,6 @@ struct s_tty {
     in_t in;
     out_t out;
 };
-
-static struct s_tty system;
 
 __GLOBAL KERNEL_API void k_tty_initialize(uint16_t *mode);
 __GLOBAL KERNEL_API void k_tty_clear(void);

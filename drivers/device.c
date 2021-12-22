@@ -9,7 +9,7 @@ static volatile uint32_t offset = 0;
 uint32_t
 device_init(device_t *dev, char *name)
 {
-    
+     
 
     return 0;
 }

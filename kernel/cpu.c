@@ -14,11 +14,13 @@
 #include <kernel/cpuid.h>
 #include <adamantine/aos-defs.h>
 #include <adamantine/tty.h>
+#include <kernel/kernel.h>
 #include <stdbool.h>
 
 /* Grab external references */
 extern uint32_t cpuid_supported(void);					// Checks if CPUID is supported
 extern uint32_t cpuid_get_property(uint32_t);			// Gets CPUID properties?
+extern system_info_t *system_info;						// Defined in init/main.c
 
 /* Initialize the CPU */
 void
@@ -101,6 +103,8 @@ cpu_vendor_string(void)
 {
 	static char Str[16];
 	cpuid_string(0x00000000, (uint32_t *)(Str));
+	system_info->cpu_name = Str;
+
 	return (Str);
 }
 

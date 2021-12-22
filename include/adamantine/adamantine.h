@@ -22,7 +22,7 @@
 #include <sys/types.h>
 
 /* Only use this when you include this file and need common macros. Otherwise just leave it. */
-#ifdef ADAMANTINE_MACROS
+#ifndef ADAMANTINE_MACROS
 /* Include common macros */
 #include <adamantine/aos-defs.h>
 #endif	// !ADAMANTINE_MACROS
@@ -33,7 +33,7 @@
 #endif	// !__ADAMANTINE__
 
 /* Check if we want to use Centrix API from the CentrixOS line of operating systems */
-#if defined( USING_CENTRIX_CORE )   					// Here's a hint: We're not... Yet...
+#if defined( USE_CENTRIX_CORE )   					// Here's a hint: We're not... Yet...
 #include <centrix/centrix-core.h>
 #include <centrix/centrix.h>
 #endif	// !USING_CENTRIX_CORE

@@ -10,43 +10,73 @@
 #include <drivers/tty.h>
 #endif
 
-#include <adamantine/aos-defs.h>
+#include <adamantine/adamantine.h>
+#include <adamantine/aos-bool.h>
 #include <adamantine/aos-int.h>
 #include <adamantine/aos-string.h>
-#include <drivers/vga.h>
-#include <drivers/keyboard.h>
-#include <memory/memory-util.h>
-#include <memory/paging.h>
-#include <kernel/kernel.h>
-#include <kernel/irq.h>
-#include <kernel/pit.h>
-#include <kernel/cpu.h>
-#include <i386/gdt.h>
-#include <i386/ldt.h>
-#include <i386/idt.h>
-#include <compiler.h>
-#include <macros.h>
-#include <task.h>
-
+#include <adamantine/config.h>
+#include <adamantine/input.h>
+#include <adamantine/mutex.h>
 #include <drivers/device.h>
 #include <drivers/driver.h>
-
+#include <drivers/i8042.h>
+#include <drivers/keyboard.h>
+#include <drivers/keys.h>
+#include <drivers/vga.h>
+#include <filesystem/fs.h>
+#include <filesystem/initrd.h>
+#include <i386/gdt.h>
+#include <i386/idt.h>
+#include <i386/ldt.h>
+#include <i386/tss.h>
+#include <kernel/cpu.h>
+#include <kernel/cpuid.h>
+#include <kernel/irq.h>
+#include <kernel/isr.h>
+#include <kernel/kernel.h>
+#include <kernel/pic.h>
+#include <kernel/pit.h>
+#include <kernel/procmgr.h>
 #include <math/math-util.h>
-#include <termios.h>
-
+#include <math/simple-math.h>
+#include <memory/memory-util.h>
+#include <memory/ordered-array.h>
+#include <memory/paging.h>
+#include <system/portio.h>
+#include <system/types.h>
+#include <ansi.h>
+#include <aos-base.h>
+#include <assert.h>
+#include <compiler.h>
+#include <config.h>
+#include <errno.h>
+#include <iso646.h>
+#include <limits.h>
+#include <macros.h>
 #include <multiboot.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+#include <task.h>
+#include <termios.h>
+#include <timers.h>
+#include <unistd.h>
 
-/* 
- * 
- * TODO: FINISH UPDATING ALL FUNCTIONS WITH THE "_init" SUFFIX TO "_initialize."y
- */
+#ifndef CHECK_FLAG
+#define CHECK_FLAG(_flags, _bit)	((_flags) & 1 << (_bit))
+#endif
+
+#define BOOT_DEVICE					0x01
 
 /* External references */
 extern isr_t interrupt_handlers[MAX_INTERRUPTS];		// The interrupt handler (defined in "isr.c")
-extern void set_kernel_stack(uint32_t stack);
-extern void tty_printf(const char *restrict fmt, ...);
+extern void set_kernel_stack(uint32_t _stack);
+extern void tty_printf(const char *restrict _fmt, ...);
 
-driver_t *drv_test;
+system_info_t *system_info;								// Used to retrieve information about the system it is running on. Used throughout the kernel.
 
 /* Initialize the GDT, LDT, and IDT */
 static inline void
@@ -63,31 +93,37 @@ descriptor_tables_initialize(void)
 __GLOBAL kernel_t
 k_main(unsigned long magic, unsigned long addr)
 {
+	/* Setup text mode */
 	k_tty_initialize((uint16_t *)VGA_TEXT_MODE_COLOR);
 	k_tty_set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_YELLOW);
 	k_tty_cursor_enable(CURSOR_START, CURSOR_END);
 	k_tty_clear();
 
+	/* Put the GRUB multiboot functionality to use */
 	multiboot_info_t *info;
+
+	/* Check if the magic number is valid. */
 	if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
 	{
-		tty_printf("[Error]: Multiboot magic number is invalid [at 0x%X]!\n", magic);
+		/* If not, print an error message */
+		show_debug_error("Multiboot magic number is invalid!\n");
 		return;
 	}
 
+	/* Initialize the system */
 	descriptor_tables_initialize();
 	paging_initialize();
 
 	keyboard_initialize();
 	pit_initialize(50);
+	
+	cpu_init();
 
+	/* If all went well, assign the address to the info struct */
 	info = (multiboot_info_t *)addr;
-	tty_printf("Flags: 0x%X\n", info->flags);
-}
 
-int
-driver_config(void)
-{
-	drv_test->name[MAX_NAME_LENGTH] = "Test Driver";
-	drv_test->id = 0;
+	if (CHECK_FLAG(info->flags, BOOT_DEVICE))
+		show_debug_info("Boot device is valid!");
+	
+	tty_printf("Okay, begin typing below:\n");
 }

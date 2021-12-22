@@ -131,7 +131,7 @@ paging_initialize(void)
 
     kheap = create_heap(KHEAP_START, KHEAP_START + KHEAP_INITIAL_SIZE, 0xCFFFF000, 0, 0);
 #ifdef __DEBUG__
-    tty_puts("[INFO]: Paging is initialized!\n");
+    k_tty_puts("[INFO]: Paging is initialized!\n");
 #endif
 }
 

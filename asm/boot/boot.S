@@ -21,6 +21,8 @@ stack_top:
 .type _start, @function
 _start:
     mov $stack_top, %esp
+    pushl %ebx
+    pushl %eax
     call k_main
 1:  hlt
     jmp 1b

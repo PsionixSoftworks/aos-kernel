@@ -22,6 +22,13 @@
 #define SYSTEM_FLAG                 0x02
 #define COMMAND_DATA                0x03
 
+extern void system_restart_safe(void);
+
+__LOCAL KERNEL_API void keyboard_callback(void);
+static bool ctl_down = false;
+static bool alt_down = false;
+static bool del_down = false;
+
 // Define for normal keys:
 static const char keys_normal[MAX_KEYS] = 
 {
@@ -77,45 +84,76 @@ char key_buffer[256];
 static inline uint8_t
 ps2_controller_test(void)
 {
-	outb(I8042_COMMAND_WRITE, 0xAA);
-	return inb(I8042_DATA_BYTE);
+	outb(I8042_COMMAND, 0xAA);
+	return inb(I8042_DATA);
 }
 
 static inline bool
 ps2_port_success(void)
 {
-	outb(I8042_COMMAND_WRITE, 0xAB);
-	return (inb(I8042_DATA_BYTE) == 0x00);
-}
-
-__LOCAL KERNEL_API void
-keyboard_callback(void)
-{
-	
+	outb(I8042_COMMAND, 0xAB);
+	return (inb(I8042_DATA) == 0x00);
 }
 
 bool
 keyboard_initialize(void)
 {
-	if ((ps2_controller_test() == KEYBOARD_CONTROLLER_STATUS_OK) && (ps2_port_success()))
-	{
-	#if defined(__DEBUG__) && __DEBUG__ == 1
-		show_debug_info("Keyboard Controller initialized!");
-	#endif
-		register_interrupt_handler(IRQ1, &keyboard_callback);
-		return true;
-	}
-	return false;
+	memset(key_buffer, 0, sizeof(char) * 40);
+	register_interrupt_handler(IRQ1, (isr_t)&keyboard_callback);
+	return true;
 }
 
 int
 keyboard_acknowledge(void)
 {
-
+	return 0;
 }
 
 unsigned char
 keyboard_read_scancode(void)
 {
-	
+	uint8_t status;
+	unsigned char c;
+
+	status = i8042_read_status_register();
+	c = 0;
+
+	if ((status & 0x01) == 1)
+		c = i8042_read_data();
+	return c;
+}
+
+__LOCAL KERNEL_API void
+keyboard_callback(void)
+{
+	static unsigned char sc;
+	sc = keyboard_read_scancode();
+
+	if (sc != KEYBOARD_KEY_DOWN_NONE)
+	{
+		if (sc == KEYBOARD_KEY_DOWN_CONTROL)
+            ctl_down = true;
+        else if (sc == KEYBOARD_KEY_UP_CONTROL)
+            ctl_down = false;
+
+		if (sc == KEYBOARD_KEY_DOWN_ALT)
+			alt_down = true;
+		else if (sc == KEYBOARD_KEY_UP_ALT)
+			alt_down = false;
+
+		if (sc == KEYBOARD_KEY_DOWN_DELETE)
+			del_down = true;
+		else if (sc == KEYBOARD_KEY_UP_DELETE)
+			del_down = false;
+
+		if ((ctl_down) && (alt_down) && (del_down))
+			system_restart_safe();
+		else
+		{
+			unsigned char c;
+			c = keys_normal[(unsigned int)sc];
+			char str[2] = {c, '\0'};
+			tty_puts(str);			
+		}
+	}
 }

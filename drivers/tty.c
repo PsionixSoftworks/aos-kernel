@@ -16,9 +16,6 @@
 #include <termios.h>
 
 /* Declare static variables */
-static const size_t TERMINAL_WIDTH		= 80;			// Weren't these defined
-static const size_t TERMINAL_HEIGHT		= 25;			// somewhere else???
-static inline void tty_scroll(void);					// The teletype scroll function
 static struct s_tty tty;										// Declare the teletype
 
 /* Define carriage return (CR | 0xD) as a function macro */
@@ -35,13 +32,13 @@ static struct s_tty tty;										// Declare the teletype
 void
 k_tty_initialize(uint16_t *_mode)
 {
-	tty.mode_addr = (uint16_t *)_mode;				// The VGA address to display information to (Text Mode | Graphic Mode)
+	tty.vBuff = (vBuff_t)_mode;						// The VGA address to display information to (Text Mode | Graphic Mode)
 	tty.tty_backcol = SYSTEM_COLOR_BLACK;			// Default terminal background color
 	tty.tty_forecol = SYSTEM_COLOR_GRAY;			// Default terminal foreground color
 	tty.tty_cursor_x = 0;							// Default starting position (x)
 	tty.tty_cursor_y = 0;							// Default starting position (y)
 
-	tty_clear();									// Clear the screen
+	k_tty_clear();									// Clear the screen
 }
 
 /* Clear the screen */
@@ -52,7 +49,7 @@ k_tty_clear(void)
 	uint8_t color = tty.tty_forecol | tty.tty_backcol << 4;
 	for (size_t i = 0; i < TTY_DISPLAY_WIDTH * TTY_DISPLAY_HEIGHT; ++i)
 	{
-		tty.mode_addr[i] = ' ' | color << 8;			// Set the terminal colors
+		tty.vBuff[i] = ' ' | color << 8;			// Set the terminal colors
 		tty.tty_cursor_x = 0;							// Reset the x position of the cursor
 		tty.tty_cursor_y = 0;							// Reset the y position of the cursor
 	}
@@ -87,12 +84,12 @@ k_tty_putc(char c)
 		if (tty.tty_cursor_x > 14)
 		{
 			tty.tty_cursor_x--;
-			tty.mode_addr[tty.tty_cursor_y * TTY_DISPLAY_WIDTH + tty.tty_cursor_x] = ' ' | color << 8;
+			tty.vBuff[tty.tty_cursor_y * TTY_DISPLAY_WIDTH + tty.tty_cursor_x] = ' ' | color << 8;
 		}
 	}
 	else
 	{
-		tty.mode_addr[tty.tty_cursor_y * TTY_DISPLAY_WIDTH + tty.tty_cursor_x] = c | color << 8;
+		tty.vBuff[tty.tty_cursor_y * TTY_DISPLAY_WIDTH + tty.tty_cursor_x] = c | color << 8;
 		tty.tty_cursor_x++;
 	}
 	k_tty_cursor_update();								// Automatically update the terminal cursor to the teletype x and y positions
@@ -107,7 +104,7 @@ k_tty_puts(char *_string)
 	for (size_t i = 0; i < strlen(_string); ++i)
 	{
 		/* Print the string one character at a time */
-		tty_putchar(_string[i]);
+		k_tty_putc(_string[i]);
 	}
 }
 
@@ -188,7 +185,7 @@ k_tty_printf(const char *restrict _format, ...)
 void
 k_tty_println(void)
 {
-	tty_putchar('\n');
+	k_tty_putc('\n');
 }
 
 /* Enable Text Mode Cursor */
@@ -291,15 +288,15 @@ void
 k_tty_scroll(void)
 {
 	uint8_t color = tty.tty_forecol | tty.tty_backcol << 4;
-	if (tty.tty_cursor_y >= TERMINAL_HEIGHT)
+	if (tty.tty_cursor_y >= TTY_DISPLAY_HEIGHT)
 	{
 		for (size_t i = 0; i < (TTY_DISPLAY_WIDTH - 1) * TTY_DISPLAY_WIDTH; i++)
 		{
-			tty.mode_addr[i] = tty.mode_addr[i + TTY_DISPLAY_WIDTH];
+			tty.vBuff[i] = tty.vBuff[i + TTY_DISPLAY_WIDTH];
 		}
 		for (size_t i = (TTY_DISPLAY_HEIGHT - 1) * TTY_DISPLAY_WIDTH; i < (TTY_DISPLAY_WIDTH * TTY_DISPLAY_HEIGHT); ++i)
 		{
-			tty.mode_addr[i] = color << 8;
+			tty.vBuff[i] = color << 8;
 		}
 		tty.tty_cursor_y = TTY_DISPLAY_HEIGHT - 1;
 	}
@@ -310,7 +307,7 @@ panic(const char *_message, const char *_file, uint32_t _line)
 {
 	__asm__ volatile ( "cli" );
 
-	tty_printf("PANIC(%s) at %s:%d\n", _message, _file, _line);
+	k_tty_printf("PANIC(%s) at %s:%d\n", _message, _file, _line);
 	for (;;);
 }
 
@@ -319,11 +316,12 @@ panic_assert(const char *_file, uint32_t _line, const char *_desc)
 {
 	__asm__ volatile ( "cli" );
 
-	tty_printf("ASSERTION-FAILED(%s) at %s: Line %d\n", _desc, _file, _line);
+	k_tty_printf("ASSERTION-FAILED(%s) at %s: Line %d\n", _desc, _file, _line);
 	for (;;);
 }
 
 /** Beyond this line is for backwards compatability only. Use for Kernel Version 40 and under */
+//#if (KERNEL_VERSION_NUMBER <= 40)
 void
 tty_initialize(uint16_t *mode)
 {
@@ -379,7 +377,14 @@ tty_printf(const char *restrict _format, ...)
 					continue;
 				}
 				case 'd': {								// For decimal (numbers; only supprts int for now)
-					unsigned long __input = va_arg(ap, unsigned long);
+					int __input = va_arg(ap, int);
+					char buffer[16];
+					k_tty_puts(itoa(__input, buffer, 10));
+					i++;
+					continue;
+				}
+				case 'u': {
+					unsigned int __input = va_arg(ap, int);
 					char buffer[16];
 					k_tty_puts(itoa(__input, buffer, 10));
 					i++;
@@ -485,3 +490,4 @@ tty_get_foreground(void)
 {
 	return k_tty_get_foreground();
 }
+//#endif

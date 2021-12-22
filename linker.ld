@@ -6,7 +6,7 @@ SECTIONS
 	. = 1M;
 	.text BLOCK(4K) : ALIGN(4K)
 	{
-		*(.multiboot)
+		KEEP(*(.multiboot))
 		*(.text)
 	}
 	.data BLOCK(4K) : ALIGN(4K)
