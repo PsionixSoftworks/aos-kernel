@@ -28,6 +28,7 @@ __LOCAL KERNEL_API void keyboard_callback(void);
 static bool ctl_down = false;
 static bool alt_down = false;
 static bool del_down = false;
+static bool sft_down = false;
 
 // Define for normal keys:
 static const char keys_normal[MAX_KEYS] = 
@@ -146,14 +147,29 @@ keyboard_callback(void)
 		else if (sc == KEYBOARD_KEY_UP_DELETE)
 			del_down = false;
 
+		if ((sc == KEYBOARD_KEY_DOWN_LEFT_SHIFT) || (sc == KEYBOARD_KEY_DOWN_RIGHT_SHIFT))
+			sft_down = true;
+		else if ((sc == KEYBOARD_KEY_UP_LEFT_SHIFT) || (sc == KEYBOARD_KEY_UP_RIGHT_SHIFT))
+			sft_down = false;
+
 		if ((ctl_down) && (alt_down) && (del_down))
 			system_restart_safe();
 		else
 		{
-			unsigned char c;
-			c = keys_normal[(unsigned int)sc];
-			char str[2] = {c, '\0'};
-			tty_puts(str);			
+			unsigned char c = 0;
+
+			if (!sft_down)
+			{
+				c = keys_normal[(unsigned char)sc];
+				unsigned char str[2] = {c, '\0'};
+				tty_puts(str);
+			}
+			else
+			{
+				c = keys_caps[(unsigned char)sc];
+				unsigned char str[2] = {c, '\0'};
+				tty_puts(str);
+			}
 		}
 	}
 }
