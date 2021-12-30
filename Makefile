@@ -29,6 +29,7 @@ ASSEMB_PATH			:= 	asm
 INIT_PATH			:=	init
 KERNEL_PATH			:= 	kernel
 DRIVER_PATH			:= 	drivers
+FILESYSTEM_PATH		:= 	filesystem
 MEMORY_PATH			:= 	memory
 SYSTEM_PATH			:= 	system
 STDLIB_PATH			:= 	stdlib
@@ -37,7 +38,7 @@ MATH_PATH			:= 	math
 STRING_PATH			:= 	string
 SYSTEM_PATH			:= 	system
 
-ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.asm \
+ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.S \
 						$(ASSEMB_PATH)/interrupt.asm \
 						$(ASSEMB_PATH)/cpuid.asm 
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
@@ -46,6 +47,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/tty.c \
 						$(DRIVER_PATH)/device.c \
 						$(DRIVER_PATH)/driver.c \
+						$(FILESYSTEM_PATH)/vfs.c \
 						$(KERNEL_PATH)/i386/gdt.c \
 						$(KERNEL_PATH)/i386/ldt.c \
 						$(KERNEL_PATH)/i386/idt.c \
@@ -96,6 +98,7 @@ OUTPUT_FILES 		:= 	boot.o	\
 						tty.o \
 						device.o \
 						driver.o \
+						vfs.o \
 						cpu.o \
 						mutex.o \
 						assert.o \
@@ -160,6 +163,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(DRIVER_PATH)/i8042.c -o i8042.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/device.c -o device.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/driver.c -o driver.o $(C_FLAGS)
+	$(CC) $(FILESYSTEM_PATH)/vfs.c -o vfs.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/irq.c -o irq.o $(C_FLAGS)

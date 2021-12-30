@@ -1,6 +1,0 @@
-#ifndef _ADAMANTINE_FILESYSTEM_H
-#define _ADAMANTINE_FILESYSTEM_H
-
-
-
-#endif

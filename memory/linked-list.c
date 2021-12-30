@@ -8,7 +8,6 @@ struct node
 };
 
 static struct node *head       = NULL;
-static struct node *current    = NULL;
 static int index = 0;
 
 static inline void __list_print(void);
@@ -36,13 +35,13 @@ linked_list_set(int pos, int data)
 struct node *
 linked_list_remove(void)
 {
-    __list_delete_first();
+    return __list_delete_first();
 }
 
 struct node *
 linked_list_remove_at(int pos)
 {
-    __list_delete(pos);
+    return __list_delete(pos);
 }
 
 bool
@@ -90,7 +89,7 @@ linked_list_to_string(void)
 struct node *
 linked_list_get_head(void)
 {
-    return &head;
+    return head;
 }
 
 static inline void

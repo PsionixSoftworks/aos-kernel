@@ -1,3 +1,5 @@
+#define __DEBUG__   1
+
 #include <i386/gdt.h>
 #include <kernel/version.h>
 #if (KERNEL_VERSION_NUMBER <= 40)

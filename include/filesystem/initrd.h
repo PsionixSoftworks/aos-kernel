@@ -1,7 +1,7 @@
 #ifndef _ADAMANTINE_INITRD_H
 #define _ADAMANTINE_INITRD_H
 
-#include "fs.h"
+#include "vfs.h"
 
 typedef struct
 {

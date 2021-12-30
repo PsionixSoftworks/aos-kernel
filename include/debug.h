@@ -16,9 +16,9 @@
 #define show_debug_warning(msg)     k_tty_printf("[WARNING]: %s\n", msg);
 #define show_debug_error(msg)       k_tty_printf("[ERROR]: %s\n", msg);
 #else
-#define show_debug_info(msg)        msg
-#define show_debug_warning(msg)     msg
-#define show_debug_error(msg)       msg
+#define show_debug_info(msg)        
+#define show_debug_warning(msg)     
+#define show_debug_error(msg)       
 #endif
 
 #endif

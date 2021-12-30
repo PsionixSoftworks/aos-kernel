@@ -81,7 +81,7 @@ k_tty_putc(char c)
 	}
 	else if (c == 0x08)				// Backspace
 	{
-		if (tty.tty_cursor_x > 14)
+		if (tty.tty_cursor_x > 0)
 		{
 			tty.tty_cursor_x--;
 			tty.vBuff[tty.tty_cursor_y * TTY_DISPLAY_WIDTH + tty.tty_cursor_x] = ' ' | color << 8;
@@ -140,8 +140,15 @@ k_tty_printf(const char *restrict _format, ...)
 					continue;
 				}
 				case 'd': {								// For decimal (numbers; only supprts int for now)
-					unsigned long __input = va_arg(ap, unsigned long);
+					int __input = va_arg(ap, int);
 					char buffer[16];
+					k_tty_puts(itoa(__input, buffer, 10));
+					i++;
+					continue;
+				}
+				case 'u': {
+					unsigned int __input = va_arg(ap, unsigned int);
+					char buffer[256];
 					k_tty_puts(itoa(__input, buffer, 10));
 					i++;
 					continue;

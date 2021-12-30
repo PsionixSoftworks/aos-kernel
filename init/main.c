@@ -23,7 +23,7 @@
 #include <drivers/keyboard.h>
 #include <drivers/keys.h>
 #include <drivers/vga.h>
-#include <filesystem/fs.h>
+#include <filesystem/vfs.h>
 #include <filesystem/initrd.h>
 #include <i386/gdt.h>
 #include <i386/idt.h>
@@ -71,13 +71,18 @@
 #define CHECK_FLAG(_flags, _bit)	((_flags) & 1 << (_bit))
 #endif
 
-#define BOOT_DEVICE					0x01
+#define ASSIGN_ADDR(x, y)			(y = (multiboot_info_t *)x)
+
+#define MEM_INFO					0x00
+#define BOOT_INFO					0x01
 
 /* External references */
 extern isr_t interrupt_handlers[MAX_INTERRUPTS];		// The interrupt handler (defined in "isr.c")
 extern void set_kernel_stack(uint32_t _stack);
 extern void tty_printf(const char *restrict _fmt, ...);
 
+/* Put the GRUB multiboot functionality to use */
+multiboot_info_t *info;
 system_info_t *system_info;								// Used to retrieve information about the system it is running on. Used throughout the kernel.
 
 /* Initialize the GDT, LDT, and IDT */
@@ -97,12 +102,9 @@ k_main(unsigned long magic, unsigned long addr)
 {
 	/* Setup text mode */
 	k_tty_initialize((uint16_t *)VGA_TEXT_MODE_COLOR);
-	k_tty_set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_YELLOW);
+	k_tty_set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
 	k_tty_cursor_enable(CURSOR_START, CURSOR_END);
 	k_tty_clear();
-
-	/* Put the GRUB multiboot functionality to use */
-	multiboot_info_t *info;
 
 	/* Check if the magic number is valid. */
 	if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
@@ -122,8 +124,10 @@ k_main(unsigned long magic, unsigned long addr)
 	cpu_init();
 
 	/* If all went well, assign the address to the info struct */
-	info = (multiboot_info_t *)addr;
+	ASSIGN_ADDR(addr + 0xC0000000, info);
 
-	if (CHECK_FLAG(info->flags, BOOT_DEVICE))
+	if (CHECK_FLAG(info->flags, BOOT_INFO))
 		show_debug_info("Boot device is valid!");
+	if (CHECK_FLAG(info->flags, MEM_INFO))
+		k_tty_printf("[INFO]: Memory Lower: %dKB\nMemory Upper: %dKB\n", (unsigned)info->mem_lower, (unsigned)info->mem_upper);
 }

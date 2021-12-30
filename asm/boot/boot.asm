@@ -1,7 +1,15 @@
+[BITS 32]
+
+%ifdef __ELF__
+%define AOUT_KLUDGE     0
+%else
+%define AOUT_KLUDGE     1 << 16
+%endif
+
 MBALIGN         equ 1 << 0
 MEMINFO         equ 1 << 1
 VIDINFO         equ 1 << 2
-FLAGS           equ MBALIGN | MEMINFO ;| VIDINFO
+FLAGS           equ MBALIGN | MEMINFO | VIDINFO ;| AOUT_KLUDGE
 MAGIC           equ 0x1BADB002
 CHECKSUM        equ -(MAGIC + FLAGS)
 
@@ -12,7 +20,7 @@ align 4
         dd CHECKSUM
         dd 0, 0, 0, 0, 0
         dd 0
-        dd 1280, 720, 32
+        dd 1024, 768, 32
 
 section .bss
 align 16
