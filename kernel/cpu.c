@@ -10,12 +10,15 @@
  *
  */
 
+#define __DEBUG__		1
+
 #include <kernel/cpu.h>
 #include <kernel/cpuid.h>
 #include <adamantine/aos-defs.h>
 #include <adamantine/tty.h>
 #include <kernel/kernel.h>
 #include <stdbool.h>
+#include <debug.h>
 
 /* Grab external references */
 extern uint32_t cpuid_supported(void);					// Checks if CPUID is supported
@@ -29,10 +32,9 @@ cpu_init(void)
 	bool is_supported = (cpuid_supported() > 0);		// Check if CPUID is supported with this CPU
 	if (!is_supported)									// If not, return breaking flow
 		return;
-	tty_puts("[INFO]: CPU is initialized!\n");			// TODO: Change these to the message dispatcher...
-	tty_puts("[INFO]: CPU Manufacturer: ");				// TODO: Change these to the message dispatcher...
-	tty_puts(cpu_vendor_string());						// TODO: Change these to the message dispatcher...
-	tty_puts("\n");										// TODO: Change these to the message dispatcher...
+	show_debug_info("CPU is initialized!");				// TODO: Change these to the message dispatcher...
+	show_debug_info("%s%s", "CPU Manufacturer: ", 		// TODO: Change these to the message dispatcher...
+							cpu_vendor_string());
 }
 
 /* Halt the CPU */
@@ -114,6 +116,6 @@ cpu_check_is_supported(void)
 {
 	bool result = cpuid_supported();
 	if (result == false)
-		tty_puts("[ERROR]: CPUID is not supported!\n");
+		show_debug_error("CPUID is not supported!");
 	return (result);
 }

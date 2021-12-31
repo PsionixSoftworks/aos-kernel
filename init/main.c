@@ -63,7 +63,6 @@
 #include <task.h>
 #include <termios.h>
 #include <timers.h>
-#include <unistd.h>
 
 #include <memory/linked-list.h>
 
@@ -102,7 +101,7 @@ k_main(unsigned long magic, unsigned long addr)
 {
 	/* Setup text mode */
 	k_tty_initialize((uint16_t *)VGA_TEXT_MODE_COLOR);
-	k_tty_set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_LT_GREEN);
+	k_tty_set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_GRAY);
 	k_tty_cursor_enable(CURSOR_START, CURSOR_END);
 	k_tty_clear();
 
@@ -124,10 +123,14 @@ k_main(unsigned long magic, unsigned long addr)
 	cpu_init();
 
 	/* If all went well, assign the address to the info struct */
-	ASSIGN_ADDR(addr + 0xC0000000, info);
+	ASSIGN_ADDR(addr, info);
 
 	if (CHECK_FLAG(info->flags, BOOT_INFO))
 		show_debug_info("Boot device is valid!");
-	if (CHECK_FLAG(info->flags, MEM_INFO))
-		k_tty_printf("[INFO]: Memory Lower: %dKB\nMemory Upper: %dKB\n", (unsigned)info->mem_lower, (unsigned)info->mem_upper);
+	
+	struct device *dev;
+	dev = (struct device *)kmalloc(sizeof(struct device));
+
+	fs_initialize();
+	fs_mount("$0://root", dev);
 }

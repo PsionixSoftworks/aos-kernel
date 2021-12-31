@@ -86,4 +86,6 @@
 #define ESTALE          80
 #define EREMOTE         81
 
+#define MAX_ERRNO       4095
+
 #endif

@@ -34,37 +34,34 @@ ceil(double x)
 }
 
 /* Get the (other) sign of x (-1, 0, 1) */
-inline uint32_t
+inline int32_t
 sign(double x)
 {
-    if (x < 0) {x = -1;}
-    if (x > 0) {x = 1;}
-
-    return (x);
+    return ((x < 0 ? -1 : 0) | (x > 0 ? 1 : 0));
 }
 
 /* Get the cosine of x */
-inline double
-cos(double x)
+inline float
+cos(float x)
 {
     /* Adjacent / Hypotenuse */
-    double value = _cos(x);
+    float value = _cos(x);
     return (value);
 }
 
 /* get the sin of x */
-inline double
-sin(double x)
+inline float
+sin(float x)
 {
-    double value = _sin(x);
+    float value = _sin(x);
     return (value);
 }
 
 /* Get the tangent of x */
-inline double
-tan(double x)
+inline float
+tan(float x)
 {
-    double value = _tan(x);
+    float value = _tan(x);
     return (value);
 }
 

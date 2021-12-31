@@ -12,6 +12,7 @@
 #define _AOS_DEFS_H
 
 #include <stdint.h>
+#include <errno.h>
 
 /* Check if 'BOOLEAN_OPS' is defined elsewhere */
 #ifndef BOOLEAN_OPS
@@ -44,6 +45,12 @@
 #endif	// !SUCCESS
 #endif	// !NULL
 #endif	// !ADAMANTINE_MACROS
+
+#ifndef ERR
+#define ERR     ((void *)-EINVAL)
+#endif
+
+#define CHECK_ERR(_x)   _x == ERR
 
 /* Define a quick way to use 'extern "C"' on C++ files */
 #ifdef __cplusplus

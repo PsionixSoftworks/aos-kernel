@@ -1,4 +1,6 @@
 #include <string.h>
+#include <stdint.h>
+#include <math/math-util.h>
 
 /* Compare two strings */
 int
@@ -15,9 +17,9 @@ strcmp(const char *_str1, const char *_str2)
         c2 = (uint8_t) *s2++;
         if (c1 == '\0')
         {
-            return (c1 - c2);
+            return sign(c1 - c2);
         }
     } while (c1 == c2);
     
-    return (c1 - c2);
+    return sign(c1 - c2);
 }

@@ -1,15 +1,9 @@
 [BITS 32]
 
-%ifdef __ELF__
-%define AOUT_KLUDGE     0
-%else
-%define AOUT_KLUDGE     1 << 16
-%endif
-
 MBALIGN         equ 1 << 0
 MEMINFO         equ 1 << 1
 VIDINFO         equ 1 << 2
-FLAGS           equ MBALIGN | MEMINFO | VIDINFO ;| AOUT_KLUDGE
+FLAGS           equ MBALIGN | MEMINFO ;| VIDINFO
 MAGIC           equ 0x1BADB002
 CHECKSUM        equ -(MAGIC + FLAGS)
 

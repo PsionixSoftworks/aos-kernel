@@ -17,8 +17,8 @@
 
 #include <adamantine/adamantine.h>
 #include <system/types.h>
-
 #include <compiler.h>
+#include <errno.h>
 
 #if !defined(KERNEL_API)
 #if !defined(KERNEL_CDECL)
@@ -27,6 +27,9 @@
 #define KERNEL_API      __cdecl__
 #endif
 #endif
+
+#define IS_ERR_VALUE(x)     ((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+#define IS_ERR(x)           IS_ERR_VALUE((unsigned long)x)
 
 /* Define the system info struct */
 typedef struct aos_system_information

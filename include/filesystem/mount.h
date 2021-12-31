@@ -16,18 +16,6 @@ struct mount {
     struct device *device;
 };
 
-extern struct filesystem *fs_mount(struct device *_device);
-
-/* When valid, should return 0. Otherwise returns -19 */
-static inline int
-verify_mount_point(void)
-{
-    struct filesystem *fs = NULL;
-
-    fs = fs_mount(fs_dev);
-    if (fs == NULL)
-        return -ENODEV;
-    return 0;
-}
+extern int fs_mount(char *_path, struct device *_device);
 
 #endif

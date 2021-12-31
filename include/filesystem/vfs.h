@@ -33,11 +33,14 @@ struct file {
 
 struct fs_ops {
     unsigned long reentrant;
+    char *fsname;
 
     int (*open)(struct file *_fd, char *_name);
     int (*close)(struct file *_fd);
     int (*read)(struct file *_fd, void *_data, size_t _size, off_t _pos);
     int (*write)(struct file *_fd, void *_data, size_t _size, off_t _pos);
+
+    struct filesystem *(*mount)(struct device *);
 };
 
 extern int fs_initialize(void);
@@ -47,5 +50,6 @@ extern struct file *open(const char *_path, int _flags);
 extern int close(struct file *_fd);
 extern ssize_t read(struct file *_fd, void *_buffer, size_t _buffer_size);
 extern ssize_t write(struct file *_fd, const void *_data, size_t _data_size);
+extern int fs_mount(char *_path, struct device *_device);
 
 #endif
