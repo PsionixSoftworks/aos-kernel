@@ -1,9 +1,9 @@
-    .set ALIGN,     1 << 0
-    .set MEMINFO,   1 << 1
-    .set VIDINFO,   1 << 2
-    .set FLAGS,     ALIGN | MEMINFO /* | VIDINFO*/
-    .set MAGIC,     MB_HEADER_MAGIC
-    .set CHECKSUM,  -(MAGIC + FLAGS)
+.set ALIGN,     1 << 0
+.set MEMINFO,   1 << 1
+.set VIDINFO,   1 << 2
+.set FLAGS,     ALIGN | MEMINFO /* | VIDINFO*/
+.set MAGIC,     MB_HEADER_MAGIC
+.set CHECKSUM,  -(MAGIC + FLAGS)
 
 .section .multiboot
 .align 4

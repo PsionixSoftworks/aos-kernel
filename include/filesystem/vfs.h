@@ -1,55 +1,55 @@
-#ifndef _ADAMANTINE_VIRTUAL_FILESYSTEM_H
-#define _ADAMANTINE_VIRTUAL_FILESYSTEM_H
+#ifndef _VFS_H
+#define _VFS_H
 
-#include <drivers/device.h>
 #include <system/types.h>
-#include <errno.h>
-#include <macros.h>
 
-#define MAX_MOUNTS          256
-#define BLOCK_SIZE          512
-#define BLOCKS_PER_SECTOR   8
+#define FS_FILE         0x01
+#define FS_DIRECTORY    0x02
+#define FS_CHARDEVICE   0x03
+#define FS_BLOCKDEVICE  0x04
+#define FS_PIPE         0x05
+#define FS_SYMLINK      0x06
+#define FS_MOUNTPOINT   0x08
 
-struct filesystem;
-struct file;
-struct fs_ops;
+struct fs_node;
 
-struct filesystem {
-    char name[MAX_NAME_LENGTH];
-    struct fs_ops *ops;
-    struct filesystem *next;
+typedef uint32_t (*read_type_t)(struct fs_node *, uint32_t, uint32_t, uint8_t *);
+typedef uint32_t (*write_type_t)(struct fs_node *,uint32_t, uint32_t, uint8_t *);
+typedef void (*open_type_t)(struct fs_node *);
+typedef void (*close_type_t)(struct fs_node *);
+typedef struct dirent *(*readdir_type_t)(struct fs_node *, uint32_t);
+typedef struct fs_node *(*finddir_type_t)(struct fs_node *, char *name);
+
+typedef struct fs_node {
+    char name[128];
+    uint32_t mask;
+    uint32_t uid;
+    uint32_t gid;
+    uint32_t flags;
+    uint32_t inode;
+    uint32_t length;
+    uint32_t impl;
+    read_type_t read;
+    write_type_t write;
+    open_type_t open;
+    close_type_t close;
+    readdir_type_t readdir;
+    finddir_type_t finddir;
+    struct fs_node *ptr;
+} fs_node_t;
+
+struct dirent {
+    char name[128];
+    uint32_t ino;
 };
 
-struct file {
-    int flags;
-    int mode;
-    uid_t owner;
-    gid_t group;
-    off_t pos;
-    void *data;
-    char *path;
-    char chbuffer;
-};
+extern fs_node_t *fs_root;
 
-struct fs_ops {
-    unsigned long reentrant;
-    char *fsname;
-
-    int (*open)(struct file *_fd, char *_name);
-    int (*close)(struct file *_fd);
-    int (*read)(struct file *_fd, void *_data, size_t _size, off_t _pos);
-    int (*write)(struct file *_fd, void *_data, size_t _size, off_t _pos);
-
-    struct filesystem *(*mount)(struct device *);
-};
-
-extern int fs_initialize(void);
-extern void file_seek(struct file *_file, int _pos);
-extern struct filesystem *filesystem_register(char *name, struct fs_ops *ops);
-extern struct file *open(const char *_path, int _flags);
-extern int close(struct file *_fd);
-extern ssize_t read(struct file *_fd, void *_buffer, size_t _buffer_size);
-extern ssize_t write(struct file *_fd, const void *_data, size_t _data_size);
-extern int fs_mount(char *_path, struct device *_device);
+uint32_t read_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer);
+uint32_t write_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer);
+void open_fs(fs_node_t *node, uint8_t read, uint8_t write);
+void close_fs(fs_node_t *node);
+struct dirent *readdir_fs(fs_node_t *node, uint32_t index);
+fs_node_t *finddir_fs(fs_node_t *node, char *name);
 
 #endif

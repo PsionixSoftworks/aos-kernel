@@ -24,7 +24,6 @@
 #include <drivers/keys.h>
 #include <drivers/vga.h>
 #include <filesystem/vfs.h>
-#include <filesystem/initrd.h>
 #include <i386/gdt.h>
 #include <i386/idt.h>
 #include <i386/ldt.h>
@@ -127,10 +126,4 @@ k_main(unsigned long magic, unsigned long addr)
 
 	if (CHECK_FLAG(info->flags, BOOT_INFO))
 		show_debug_info("Boot device is valid!");
-	
-	struct device *dev;
-	dev = (struct device *)kmalloc(sizeof(struct device));
-
-	fs_initialize();
-	fs_mount("$0://root", dev);
 }

@@ -1,19 +1,19 @@
-#ifndef _ADAMANTINE_INITRD_H
-#define _ADAMANTINE_INITRD_H
+#ifndef _INITRD_H
+#define _INITRD_H
 
-#include "vfs.h"
+#include <filesystem/vfs.h>
 
-typedef struct
-{
-	uint32_t nfiles;		// Number of files in the ramdisk.
+typedef struct {
+    uint32_t nfiles;
 } initrd_header_t;
 
-typedef struct
-{
-	uint8_t magic;
-	int8_t name[64];
-	uint32_t offset;
-	uint32_t length;
+typedef struct {
+    uint8_t magic;
+    int8_t name[64];
+    uint32_t offset;
+    uint32_t length;
 } initrd_file_header_t;
+
+fs_node_t *initrd_initialize(uint32_t location);
 
 #endif

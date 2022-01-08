@@ -48,6 +48,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/device.c \
 						$(DRIVER_PATH)/driver.c \
 						$(FILESYSTEM_PATH)/vfs.c \
+						$(FILESYSTEM_PATH)/initrd.c \
 						$(KERNEL_PATH)/i386/gdt.c \
 						$(KERNEL_PATH)/i386/ldt.c \
 						$(KERNEL_PATH)/i386/idt.c \
@@ -99,6 +100,7 @@ OUTPUT_FILES 		:= 	boot.o	\
 						device.o \
 						driver.o \
 						vfs.o \
+						initrd.o \
 						cpu.o \
 						mutex.o \
 						assert.o \
@@ -164,6 +166,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(DRIVER_PATH)/device.c -o device.o $(C_FLAGS)
 	$(CC) $(DRIVER_PATH)/driver.c -o driver.o $(C_FLAGS)
 	$(CC) $(FILESYSTEM_PATH)/vfs.c -o vfs.o $(C_FLAGS)
+	$(CC) $(FILESYSTEM_PATH)/initrd.c -o initrd.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/cpu.c -o cpu.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/mutex.c -o mutex.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/irq.c -o irq.o $(C_FLAGS)
