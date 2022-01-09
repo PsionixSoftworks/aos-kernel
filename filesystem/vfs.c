@@ -1,4 +1,5 @@
 #include <filesystem/vfs.h>
+#include <kernel/rtc.h>
 
 fs_node_t *fs_root = 0;
 

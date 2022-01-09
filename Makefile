@@ -58,6 +58,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(MEMORY_PATH)/paging.c \
 						$(MEMORY_PATH)/linked-list.c \
 						$(KERNEL_PATH)/cpu.c \
+						$(KERNEL_PATH)/rtc.c \
 						$(DRIVER_PATH)/keyboard.c \
 						$(KERNEL_PATH)/mutex.c \
 						$(KERNEL_PATH)/assert.c \
@@ -116,6 +117,7 @@ OUTPUT_FILES 		:= 	boot.o	\
 						gdt.o \
 						ldt.o \
 						idt.o \
+						rtc.o \
 						paging.o \
 						linked-list.o \
 						ordered-array.o \
@@ -175,6 +177,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(KERNEL_PATH)/pit.c -o pit.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/assert.c -o assert.o $(C_FLAGS)
 	$(CC) $(KERNEL_PATH)/task.c -o task.o $(C_FLAGS)
+	$(CC) $(KERNEL_PATH)/rtc.c -o rtc.o $(C_FLAGS)
 	$(CC) $(MATH_PATH)/math-util.c -o math-util.o $(C_FLAGS)
 	$(CC) $(MEMORY_PATH)/mem-util.c -o mem-util.o $(C_FLAGS)
 	$(CC) $(MEMORY_PATH)/ordered-array.c -o ordered-array.o $(C_FLAGS)

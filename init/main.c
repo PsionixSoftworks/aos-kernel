@@ -35,6 +35,7 @@
 #include <kernel/kernel.h>
 #include <kernel/pic.h>
 #include <kernel/pit.h>
+#include <kernel/rtc.h>
 #include <kernel/procmgr.h>
 #include <math/math-util.h>
 #include <math/simple-math.h>

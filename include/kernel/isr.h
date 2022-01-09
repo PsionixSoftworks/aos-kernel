@@ -15,6 +15,7 @@
 
 #define KERNEL_ONLY                                     // CAN ONLY BE ACCESSED IN KERNEL MODE!
 
+#include <kernel/irq.h>
 #include <stdint.h>
 
 /* Set the maximum number of interrupts we can use */
@@ -22,7 +23,7 @@
 
 /* Manually trigger an interrupt */
 #ifndef intn
-#define intn(n) __asm__ ("int $" #n);
+#define intn(n) __asm__ ("int $"#n);
 #endif
 
 /* Define the register struct. They contain assembly registers in C */
