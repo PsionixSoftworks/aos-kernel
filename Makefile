@@ -40,7 +40,8 @@ SYSTEM_PATH			:= 	system
 
 ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.S \
 						$(ASSEMB_PATH)/interrupt.asm \
-						$(ASSEMB_PATH)/cpuid.asm 
+						$(ASSEMB_PATH)/cpuid.asm \
+						$(ASSEMB_PATH)/math.asm
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/vga.c \
 						$(DRIVER_PATH)/i8042.c \
@@ -68,6 +69,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(KERNEL_PATH)/pic.c \
 						$(STDLIB_PATH)/itoa.c \
 						$(STDLIB_PATH)/free.c \
+						$(STDLIB_PATH)/ftoa.c \
 						$(STDLIB_PATH)/malloc.c \
 						$(STDLIB_PATH)/memchr.c \
 						$(STDLIB_PATH)/memcmp.c \
@@ -123,6 +125,7 @@ OUTPUT_FILES 		:= 	boot.o	\
 						ordered-array.o \
 						itoa.o \
 						free.o \
+						ftoa.o \
 						malloc.o \
 						memchr.o \
 						memcmp.o \
@@ -188,6 +191,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(MEMORY_PATH)/linked-list.c -o linked-list.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/itoa.c -o itoa.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/free.c -o free.o $(C_FLAGS)
+	$(CC) $(STDLIB_PATH)/ftoa.c -o ftoa.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/malloc.c -o malloc.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/memchr.c -o memchr.o $(C_FLAGS)
 	$(CC) $(STDLIB_PATH)/memcmp.c -o memcmp.o $(C_FLAGS)

@@ -41,27 +41,27 @@ sign(double x)
 }
 
 /* Get the cosine of x */
-inline float
-cos(float x)
+inline double
+cos(double x)
 {
     /* Adjacent / Hypotenuse */
-    float value = _cos(x);
+    double value = _cos(x);
     return (value);
 }
 
 /* get the sin of x */
-inline float
-sin(float x)
+inline double
+sin(double x)
 {
-    float value = _sin(x);
+    double value = _sin(x);
     return (value);
 }
 
 /* Get the tangent of x */
-inline float
-tan(float x)
+inline double
+tan(double x)
 {
-    float value = _tan(x);
+    double value = _tan(x);
     return (value);
 }
 

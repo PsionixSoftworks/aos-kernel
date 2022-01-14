@@ -118,7 +118,7 @@ k_main(unsigned long magic, unsigned long addr)
 	paging_initialize();
 
 	keyboard_initialize();
-	pit_initialize(50);
+	pit_initialize(60);
 	
 	cpu_init();
 

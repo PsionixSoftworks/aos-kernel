@@ -15,6 +15,7 @@ extern char *strchr(const char *str, int c);
 extern int strcmp(const char *str1, const char *str2);
 extern char *strcpy(char *dest, char *src);
 extern char *itoa(int value, char *str, int base);
+extern void ftoa(double n, char *res, int after);
 extern void to_lower(char *str);
 extern void to_upper(char *str);
 extern void append(char s[], char n);
