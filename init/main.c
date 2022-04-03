@@ -60,7 +60,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include <task.h>
 #include <termios.h>
 #include <timers.h>
 
@@ -110,7 +109,7 @@ k_main(void)
 	paging_initialize();
 
 	keyboard_initialize();
-	pit_initialize(50);
+	pit_initialize(60);
 	
 	cpu_init();
 }

@@ -48,6 +48,27 @@ static const char *month_names[12] = {
 uint32_t tick = 0;
 
 static void
+update_clock(void)
+{
+	char *h, *m, *s;
+	char bh[64], bm[64], bs[64];
+	h = itoa(hour, bh, 10);
+	m = itoa(minute, bm, 10);
+	s = itoa(second, bs, 10);		
+
+	long irq = irq_disable();
+	
+	k_tty_printf("Current Time: ");
+	if (hour < 10)		k_tty_printf("0%d:", hour); else k_tty_printf("%d:", hour);
+	if (minute < 10)	k_tty_printf("0%d:", minute); else k_tty_printf("%d:", minute);
+	if (second < 10)	k_tty_printf("0%d - ", second); else k_tty_printf("%d - ", second);
+
+	k_tty_printf("%s %d, %d\n", month_names[month - 1], day, year);
+	read_rtc();
+	irq_restore(irq);
+}
+
+static void
 play_sound(uint32_t _nfreq)
 {
 	uint32_t div;

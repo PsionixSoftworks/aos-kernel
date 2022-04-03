@@ -21,9 +21,9 @@ EXTERN uint32_t floor(double x);				// Round down
 EXTERN uint32_t round(double x);				// Round closest
 EXTERN uint32_t ceil(double x);					// Round up
 EXTERN int32_t sign(double x);					// Get the sign (-1, 0, or 1) of x
-EXTERN float sin(float x);					// Get the sine of x
-EXTERN float cos(float x);					// Get the cosine of x
-EXTERN float tan(float x);					// Get the tangent of x
+EXTERN double sin(double x);					// Get the sine of x
+EXTERN double cos(double x);					// Get the cosine of x
+EXTERN double tan(double x);					// Get the tangent of x
 EXTERN double log(double x);					// Not yet implemented...
 EXTERN double log10(double x);					// Not yet implemented...
 EXTERN double exp(double x);					// Not yet implemented...
