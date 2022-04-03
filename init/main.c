@@ -97,21 +97,13 @@ descriptor_tables_initialize(void)
 }
 
 __GLOBAL kernel_t
-k_main(unsigned long magic, unsigned long addr)
+k_main(void)
 {
 	/* Setup text mode */
 	k_tty_initialize((uint16_t *)VGA_TEXT_MODE_COLOR);
 	k_tty_set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_GRAY);
 	k_tty_cursor_enable(CURSOR_START, CURSOR_END);
 	k_tty_clear();
-
-	/* Check if the magic number is valid. */
-	if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
-	{
-		/* If not, print an error message */
-		show_debug_error("Multiboot magic number is invalid!\n");
-		return;
-	}
 
 	/* Initialize the system */
 	descriptor_tables_initialize();
@@ -121,10 +113,4 @@ k_main(unsigned long magic, unsigned long addr)
 	pit_initialize(50);
 	
 	cpu_init();
-
-	/* If all went well, assign the address to the info struct */
-	ASSIGN_ADDR(addr, info);
-
-	if (CHECK_FLAG(info->flags, BOOT_INFO))
-		show_debug_info("Boot device is valid!");
 }

@@ -36,6 +36,8 @@
 #define IRQ14		46									// Interrupt Request 14, [Primary IDE Controller (HDD)]
 #define IRQ15		47									// Interrupt Request 15, [Secondary IDE Controller (DD)]
 
+struct irq_t;
+
 /* Function Templates */
 extern bool are_interrupts_enabled(void);				// Checks if interrupts are enabled?
 extern unsigned long irq_disable(void);					// Disables IRQ's temporarily?

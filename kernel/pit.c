@@ -84,7 +84,7 @@ timer_callback(registers_t _regs)
 	/* Make sure we're not getting an error code */
 	if (!_regs.err_code)
 	{
-		char *h, *m, *s;
+		/*char *h, *m, *s;
 		char bh[64], bm[64], bs[64];
 		h = itoa(hour, bh, 10);
 		m = itoa(minute, bm, 10);
@@ -99,7 +99,7 @@ timer_callback(registers_t _regs)
 
 		k_tty_printf("%s %d, %d\n", month_names[month - 1], day, year);
 		read_rtc();
-		irq_restore(irq);
+		irq_restore(irq);*/
 	}
 }
 

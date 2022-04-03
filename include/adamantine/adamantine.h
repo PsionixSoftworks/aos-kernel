@@ -38,6 +38,12 @@
 #include <centrix/centrix.h>
 #endif	// !USING_CENTRIX_CORE
 
+#if defined(USE_COMMON_HEADERS)
+#include <stdint.h>
+#include <compiler.h>
+#include <common.h>
+#endif
+
 #ifndef MAX_NAME_LENGHT
 #define MAX_NAME_LENGTH     32
 #endif
@@ -48,4 +54,5 @@
 #ifdef KERNEL_VERSION_NUMBER				
 #define K_VERSION	KERNEL_VERSION_NUMBER	        // Short-hand version of 'KERNEL_VERSION_NUMBER'
 #endif	// !KERNEL_VERSION_NUMBER
+
 #endif	// !ADAMANTINE

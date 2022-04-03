@@ -18,7 +18,15 @@
 #include <adamantine/adamantine.h>
 #include <system/types.h>
 #include <compiler.h>
-#include <errno.h>
+#include <errno.h>                  // Once the decision is made whether or not this OS is POSIX compliant,
+                                    // it will become crucial to either define the remaining errno's or define
+                                    // a proprietary system for error code handling.
+
+#ifndef AOS_BIT_MASK
+#define AOS_BIT_MASK    (0xFF >> 16) | 0x20;
+#else
+#define AOS_BIT_MASK
+#endif
 
 #if !defined(KERNEL_API)
 #if !defined(KERNEL_CDECL)
@@ -30,6 +38,15 @@
 
 #define IS_ERR_VALUE(x)     ((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
 #define IS_ERR(x)           IS_ERR_VALUE((unsigned long)x)
+
+struct kconfig
+{
+    char *kernel_signature;
+    const char *product_key;
+    const char *computer_name;
+
+    
+};
 
 /* Define the system info struct */
 typedef struct aos_system_information
@@ -50,5 +67,7 @@ typedef struct aos_system_information
     /* Other Info */
     //time_t                  up_time;                    // The time since the computer was turned on.
 } system_info_t;
+
+void kconfig_defaults(struct kconfig *) __section(".text");
 
 #endif	// !_ADAMANTINE_KERNEL_H

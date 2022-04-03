@@ -2,6 +2,10 @@
 #define _VFS_H
 
 #include <system/types.h>
+#include <stdint.h>
+
+#define USE_COMMON_HEADERS
+#include <adamantine/adamantine.h>
 
 #define FS_FILE         0x01
 #define FS_DIRECTORY    0x02
