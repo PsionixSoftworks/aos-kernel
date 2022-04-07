@@ -28,3 +28,8 @@ copy_page_physical:
     popf
     pop ebx
     ret
+
+[GLOBAL read_eip]
+read_eip:
+    pop eax
+    jmp eax

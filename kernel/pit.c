@@ -52,13 +52,13 @@ update_clock(void)
 {
 	long irq = irq_disable();
 	
-	P_VGA vga = k_tty_get_vgahandle();
-	vga->printf("Current Time: ");
-	if (hour < 10)		vga->printf("0%d:", hour); else vga->printf("%d:", hour);
-	if (minute < 10)	vga->printf("0%d:", minute); else vga->printf("%d:", minute);
-	if (second < 10)	vga->printf("0%d - ", second); else vga->printf("%d - ", second);
+	//P_VGA vga = k_tty_get_vgahandle();
+	k_tty_printf("Current Time: ");
+	if (hour < 10)		k_tty_printf("0%d:", hour); else k_tty_printf("%d:", hour);
+	if (minute < 10)	k_tty_printf("0%d:", minute); else k_tty_printf("%d:", minute);
+	if (second < 10)	k_tty_printf("0%d - ", second); else k_tty_printf("%d - ", second);
 
-	vga->printf("%s %d, %d\n", month_names[month - 1], day, year);
+	k_tty_printf("%s %d, %d\n", month_names[month - 1], day, year);
 	read_rtc();
 	irq_restore(irq);
 }
@@ -92,14 +92,14 @@ pit_beep_stop(void)
 	outb(0x61, tmp);
 }
 
-/* The tbool interrupts_enabled = are_interrupts_enabled();
-		imer callback function */
 static void
 timer_callback(registers_t _regs)
 {
 	/* Make sure we're not getting an error code */
 	if (!_regs.err_code)
 	{
+		tick++;
+		task_switch();
 		//update_clock();
 	}
 }

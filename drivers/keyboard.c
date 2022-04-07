@@ -165,13 +165,13 @@ keyboard_callback(void)
 			{
 				c = keys_normal[(unsigned char)sc];
 				char str[2] = {c, '\0'};
-				k_tty_get_vgahandle()->puts(str);
+				k_tty_putc(str);
 			}
 			else
 			{
 				c = keys_caps[(unsigned char)sc];
 				char str[2] = {c, '\0'};
-				k_tty_get_vgahandle()->puts(str);
+				k_tty_putc(str);
 			}
 		}
 	}

@@ -101,32 +101,33 @@ descriptor_tables_initialize(void)
 #endif
 }
 
-EXTERN P_VGA vga;
+uint32_t stack_pointer;
 
-static uint32_t stack_pointer;
 __GLOBAL kernel_t
 k_main(uint32_t _esp)
 {
 	stack_pointer = _esp;
-	
-	tty_setup();
-	
-	/* Setup text mode */
-	vga->init(VGA_ADDRESS);
-	vga->set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_GRAY);
-	vga->cursor_enable();
-	vga->clear();
+
+	k_tty_initialize(VGA_ADDRESS);
+	k_tty_set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_GRAY);
+	k_tty_cursor_enable(CURSOR_START, CURSOR_END);
+	k_tty_clear();
 
 	/* Initialize the system */
 	descriptor_tables_initialize();
 	paging_initialize();
 
+	k_tty_printf("Testing...\n");
+
+	initialize_tasking();
+	int ret = fork();
+
+	k_tty_printf("fork() returned 0x%X, and getpid() returned 0x%X\n", ret, getpid());
+
 	keyboard_initialize();
 	pit_initialize(50);
 
 	cpu_init();
-
-	vga->printf("Starting AdamantineOS...\n");
 
 	//set_kernel_stack(stack_pointer);
 	//switch_to_user_mode();			// <-- Has to be fixed
@@ -149,9 +150,9 @@ print_verbose_message(const char *_Message, const int _Severity)
 {
 	uint8_t termColor[] = { SYSTEM_COLOR_LT_GREEN, SYSTEM_COLOR_YELLOW, SYSTEM_COLOR_RED };
 	
-	vga->set_foreground(termColor[_Severity]);
-	vga->printf("%s: %s\n", convert_severity_to_str(_Severity), _Message);
-	vga->set_foreground(SYSTEM_COLOR_GRAY);
+	k_tty_set_foreground(termColor[_Severity]);
+	k_tty_printf("%s: %s\n", convert_severity_to_str(_Severity), _Message);
+	k_tty_set_foreground(SYSTEM_COLOR_GRAY);
 #if !defined(_DISABLE_DISPATCH_LOG)
 	// Save the dispatched message to a file using the filesystem (WIP).
 #endif

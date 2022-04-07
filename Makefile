@@ -38,7 +38,7 @@ MATH_PATH			:= 	math
 STRING_PATH			:= 	string
 SYSTEM_PATH			:= 	system
 
-ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.S \
+ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.asm \
 						$(ASSEMB_PATH)/interrupt.asm \
 						$(ASSEMB_PATH)/cpuid.asm \
 						$(ASSEMB_PATH)/math.asm \
@@ -158,7 +158,7 @@ all: bootloader kernel linker iso
 
 # Compile the bootloader files:
 bootloader: $(ASM_FILES_IN)
-	$(ASM) $(ASSEMB_PATH)/boot/boot.S -o boot.o
+	$(NASM) $(ASSEMB_PATH)/boot/boot.asm -o boot.o
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm -o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm -o cpuid.o
 	$(NASM) $(ASSEMB_PATH)/math.asm -o math.o

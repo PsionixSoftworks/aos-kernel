@@ -14,51 +14,31 @@
 #include <assert.h>
 
 #include <termios.h>
-#include <memory/memory-util.h>
-#include <math/math-util.h>
 
-#define TAB_SIZE	5
+/* Declare static variables */
+static struct s_tty tty;										// Declare the teletype
 
-static uint32_t x, y;
-P_TTY tty;
-P_VGA vga;
+/* Define carriage return (CR | 0xD) as a function macro */
+#define CR	tty.tty_cursor_x=0;
 
-void
-tty_setup(void)
-{
-	vga->init			= k_tty_initialize;
-	vga->clear			= k_tty_clear;
-	vga->putc			= k_tty_putc;
-	vga->puts			= k_tty_puts;
-	vga->printf			= k_tty_printf;
-	vga->cursor_enable	= k_tty_cursor_enable;
-	vga->cursor_disable	= k_tty_cursor_disable;
-	vga->cursor_update	= k_tty_cursor_update;
-	vga->cursor_set_pos	= k_tty_cursor_set_pos;
-	vga->cursor_get_pos	= k_tty_cursor_get_pos;
-	vga->set_background	= k_tty_set_background;
-	vga->set_foreground = k_tty_set_foreground;
-	vga->set_colors		= k_tty_set_colors;
-	vga->get_background	= k_tty_get_background;
-	vga->get_foreground	= k_tty_get_foreground;
-	vga->scroll			= k_tty_scroll;
-}
+/* Define newline (NL/LF | 0xA) as a function macro */
+#define NL	tty.tty_cursor_x=0;	\
+			tty.tty_cursor_y++;
 
-P_VGA
-k_tty_get_vgahandle(void)
-{
-	return (vga);
-}
+/* Define tab (TAB | 0x9) as a function macro */
+#define TAB	tty.tty_cursor_x=(tty.tty_cursor_x+5)-1;
 
 /* Initialize the teletype */
 void
-k_tty_initialize(uint32_t _mode)
+k_tty_initialize(uint16_t *_mode)
 {
-	vga->buffer = (uint16_t *)_mode;
-	vga->length = 0;
+	tty.vBuff = (vBuff_t)_mode;						// The VGA address to display information to (Text Mode | Graphic Mode)
+	tty.tty_backcol = SYSTEM_COLOR_BLACK;			// Default terminal background color
+	tty.tty_forecol = SYSTEM_COLOR_GRAY;			// Default terminal foreground color
+	tty.tty_cursor_x = 0;							// Default starting position (x)
+	tty.tty_cursor_y = 0;							// Default starting position (y)
 
-	tty->background_color = SYSTEM_COLOR_BLACK;
-	tty->foreground_color = SYSTEM_COLOR_GRAY;
+	k_tty_clear();									// Clear the screen
 }
 
 /* Clear the screen */
@@ -66,13 +46,12 @@ void
 k_tty_clear(void)
 {
 	/* Declare the colors of the terminl */
-	uint8_t color = tty->foreground_color | tty->background_color << 4;
-	for (size_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; ++i)
+	uint8_t color = tty.tty_forecol | tty.tty_backcol << 4;
+	for (size_t i = 0; i < TTY_DISPLAY_WIDTH * TTY_DISPLAY_HEIGHT; ++i)
 	{
-		vga->buffer[i] = (' ' | (color << 8));			// Set the terminal colors
-		tty->pos = 0;
-		x = 0;
-		y = 0;
+		tty.vBuff[i] = ' ' | color << 8;			// Set the terminal colors
+		tty.tty_cursor_x = 0;							// Reset the x position of the cursor
+		tty.tty_cursor_y = 0;							// Reset the y position of the cursor
 	}
 }
 
@@ -81,35 +60,37 @@ void
 k_tty_putc(char c)
 {
 	/* Setup the current color (overrides only the next character attributes on screen) */
-	uint8_t color = tty->foreground_color | tty->background_color << 4;
+	uint8_t color = tty.tty_forecol | tty.tty_backcol << 4;
 
 	/* These will likely be removed/updated... */
+	if (tty.tty_cursor_x >= TTY_DISPLAY_WIDTH)	// Defined as 80...
+	{
+		NL;
+	}
 	if (c == 0x0A)					// Newline Character
 	{
-		x = 0;
-		y++;
-		tty->pos = y * VGA_WIDTH + x;
+		NL;
+	}
+	else if (c == 0x0D)				// Carriage Return
+	{
+		CR;
 	}
 	else if (c == 0x09)				// Tab Character
 	{
-		tty->pos = (x + TAB_SIZE) - 1;
+		TAB;
 	}
 	else if (c == 0x08)				// Backspace
 	{
-		if (x > 0)
+		if (tty.tty_cursor_x > 0)
 		{
-			x--;
-			tty->pos--;
-			vga->length--;
-			vga->buffer[tty->pos] = ' ' | color << 8;
+			tty.tty_cursor_x--;
+			tty.vBuff[tty.tty_cursor_y * TTY_DISPLAY_WIDTH + tty.tty_cursor_x] = ' ' | color << 8;
 		}
 	}
 	else
 	{
-		vga->buffer[tty->pos] = c | color << 8;
-		vga->length++;
-		tty->pos++;
-		x++;
+		tty.vBuff[tty.tty_cursor_y * TTY_DISPLAY_WIDTH + tty.tty_cursor_x] = c | color << 8;
+		tty.tty_cursor_x++;
 	}
 	k_tty_cursor_update();								// Automatically update the terminal cursor to the teletype x and y positions
 	k_tty_scroll();										// Auto scroll the terminal when text reaches end of line
@@ -216,21 +197,13 @@ k_tty_println(void)
 
 /* Enable Text Mode Cursor */
 void
-k_tty_cursor_enable(void)
+k_tty_cursor_enable(uint8_t a, uint8_t b)
 {
-#if defined(CURSOR_TYPE) && (CURSOR_TYPE == 1)
 	outb(CURSOR_CMD, 0x0A);
-	outb(CURSOR_DATA, (inb(CURSOR_DATA) & 0xC0) | 0);
+	outb(CURSOR_DATA, (inb(CURSOR_DATA) & 0xC0) | a);
 
 	outb(CURSOR_CMD, 0x0B);
-	outb(CURSOR_DATA, (inb(CURSOR_DATA) & 0xE0) | 15);
-#else
-	outb(CURSOR_CMD, 0x0A);
-	outb(CURSOR_DATA, (inb(CURSOR_DATA) & 0xC0) | 14);
-
-	outb(CURSOR_CMD, 0x0B);
-	outb(CURSOR_DATA, (inb(CURSOR_DATA) & 0xE0) | 15);
-#endif
+	outb(CURSOR_DATA, (inb(CURSOR_DATA) & 0xE0) | b);
 }
 
 /* Disable Text Mode Cursor */
@@ -245,7 +218,7 @@ k_tty_cursor_disable(void)
 void
 k_tty_cursor_update(void)
 {
-	uint16_t pos = tty->pos;
+	uint16_t pos = tty.tty_cursor_y * TTY_DISPLAY_WIDTH + tty.tty_cursor_x;
 
 	outb(CURSOR_CMD, 0x0F);
 	outb(CURSOR_DATA, (uint8_t)(pos & 0xFF));
@@ -257,14 +230,15 @@ k_tty_cursor_update(void)
 void
 k_tty_cursor_set_pos(uint8_t x, uint8_t y)
 {
-	uint16_t pos = y * VGA_WIDTH + x;
+	uint16_t pos = y * TTY_DISPLAY_WIDTH + x;
 
 	outb(CURSOR_CMD, 0x0F);
 	outb(CURSOR_DATA, (uint8_t)(pos & 0xFF));
 	outb(CURSOR_CMD, 0x0E);
 	outb(CURSOR_DATA, (uint8_t)((pos >> 8) & 0xFF));
 
-	tty->pos = pos;
+	tty.tty_cursor_x = x;
+	tty.tty_cursor_y = y;
 }
 
 /* Get the cursor position */
@@ -284,14 +258,14 @@ k_tty_cursor_get_pos(void)
 void
 k_tty_set_background(uint8_t _color)
 {
-	tty->background_color = _color;
+	tty.tty_backcol = _color;
 }
 
 /* Set the terminal foreground color (text) */
 void
 k_tty_set_foreground(uint8_t _color)
 {
-	tty->foreground_color = _color;
+	tty.tty_forecol = _color;
 }
 
 /* Set background and foreground colors */
@@ -306,34 +280,33 @@ k_tty_set_colors(uint8_t _bg, uint8_t _fg)
 uint8_t
 k_tty_get_background(void)
 {
-	return tty->background_color;
+	return tty.tty_backcol;
 }
 
 // Get the terminal foreground color (text)
 uint8_t
 k_tty_get_foreground(void)
 {
-	return tty->foreground_color;
+	return tty.tty_forecol;
 }
 
 /* Tell the terminal to scroll when it reaches the end of the line */
 void
 k_tty_scroll(void)
 {
-	uint8_t color = tty->foreground_color | tty->background_color << 4;
-	if (y >= VGA_HEIGHT)
+	uint8_t color = tty.tty_forecol | tty.tty_backcol << 4;
+	if (tty.tty_cursor_y >= TTY_DISPLAY_HEIGHT)
 	{
-		for (size_t i = 0; i < (VGA_WIDTH - 1) * VGA_HEIGHT; i++)
+		for (size_t i = 0; i < (TTY_DISPLAY_WIDTH - 1) * TTY_DISPLAY_WIDTH; i++)
 		{
-			vga->buffer[i] = vga->buffer[i + VGA_WIDTH];
+			tty.vBuff[i] = tty.vBuff[i + TTY_DISPLAY_WIDTH];
 		}
-		for (size_t i = (VGA_HEIGHT - 1) * VGA_WIDTH; i < (VGA_WIDTH * VGA_HEIGHT); ++i)
+		for (size_t i = (TTY_DISPLAY_HEIGHT - 1) * TTY_DISPLAY_WIDTH; i < (TTY_DISPLAY_WIDTH * TTY_DISPLAY_HEIGHT); ++i)
 		{
-			vga->buffer[i] = color << 8;
+			tty.vBuff[i] = color << 8;
 		}
-		y = VGA_HEIGHT - 1;
+		tty.tty_cursor_y = TTY_DISPLAY_HEIGHT - 1;
 	}
-	tty->pos = y * VGA_WIDTH + x;
 }
 
 void
@@ -357,9 +330,9 @@ panic_assert(const char *_file, uint32_t _line, const char *_desc)
 /** Beyond this line is for backwards compatability only. Use for Kernel Version 40 and under */
 //#if (KERNEL_VERSION_NUMBER <= 40)
 void
-tty_initialize(uint32_t _mode)
+tty_initialize(uint16_t *mode)
 {
-	k_tty_initialize(_mode);
+	k_tty_initialize(mode);
 }
 
 void
@@ -466,9 +439,9 @@ tty_println(void)
 }
 
 void
-tty_cursor_enable(void)
+tty_cursor_enable(uint8_t start, uint8_t end)
 {
-	k_tty_cursor_enable();
+	k_tty_cursor_enable(start, end);
 }
 
 void
