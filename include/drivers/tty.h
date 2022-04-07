@@ -22,43 +22,21 @@
 #define CURSOR_END		0xF											// Bottom=15
 #endif
 
-typedef unsigned short *vBuff_t;
+typedef struct {
+    uint8_t background_color;
+    uint8_t foreground_color;
+    uint32_t pos;
+} TTY, *P_TTY;
 
-struct s_tty_in {
-    char(*k_getc)(void);
-    char *(*k_gets)(void);
-};
-typedef struct s_tty_in in_t;
-
-struct s_tty_out {
-    void(*k_putc)(char c);
-    void(*k_puts)(char *str, size_t len);
-    void(*k_print)(char *str);
-    void(*k_printf)(const char *restrict fmt, ...);
-};
-typedef struct s_tty_out out_t;
-
-struct s_tty {
-    uint16_t *mode_addr;
-    vBuff_t vBuff;
-    uint32_t tty_rows;
-    uint32_t tty_cols;
-    uint8_t tty_backcol;
-    uint8_t tty_forecol;
-    uint8_t tty_cursor_x;
-    uint8_t tty_cursor_y;
-
-    in_t in;
-    out_t out;
-};
-
-__GLOBAL KERNEL_API void k_tty_initialize(uint16_t *mode);
+__GLOBAL KERNEL_API void tty_setup(void);
+__GLOBAL KERNEL_API P_VGA k_tty_get_vgahandle(void);
+__GLOBAL KERNEL_API void k_tty_initialize(uint32_t _mode);
 __GLOBAL KERNEL_API void k_tty_clear(void);
 __GLOBAL KERNEL_API void k_tty_putc(char c);
 __GLOBAL KERNEL_API void k_tty_puts(char *str);
 __GLOBAL KERNEL_API void k_tty_printf(const char *restrict, ...);
 __GLOBAL KERNEL_API void k_tty_println(void);
-__GLOBAL KERNEL_API void k_tty_cursor_enable(uint8_t start, uint8_t end);
+__GLOBAL KERNEL_API void k_tty_cursor_enable(void);
 __GLOBAL KERNEL_API void k_tty_cursor_disable(void);
 __GLOBAL KERNEL_API void k_tty_cursor_update(void);
 __GLOBAL KERNEL_API void k_tty_cursor_set_pos(uint8_t x, uint8_t y);

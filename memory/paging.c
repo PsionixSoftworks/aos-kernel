@@ -19,6 +19,7 @@ uint32_t nframes;
 // Defined in mem-util.c:
 extern uint32_t placement_address;
 extern heap_t *kheap;
+extern void copy_page_physical(page_table_t *, page_table_t *);
 
 #define INDEX_FROM_BIT(a)   (a / (8 * 4))
 #define OFFSET_FROM_BIT(a)  (a % (8 * 4))
@@ -107,9 +108,11 @@ paging_initialize(void)
     frames = (uint32_t *)kmalloc(INDEX_FROM_BIT(nframes));
     memset(frames, 0, INDEX_FROM_BIT(nframes));
 
+    uint32_t phys;
     kernel_directory = (page_directory_t *)kmalloc_a(sizeof(page_directory_t));
     memset(kernel_directory, 0, sizeof(page_directory_t));
-    current_directory = kernel_directory;
+    kernel_directory->physical_address = (uint32_t)kernel_directory->tables_physical;
+    //current_directory = kernel_directory;
 
     uint32_t i = 0;
     for (i = KHEAP_START; i < KHEAP_START + KHEAP_INITIAL_SIZE; i += 0x1000)
@@ -124,12 +127,15 @@ paging_initialize(void)
 
     for (i = KHEAP_START; i < KHEAP_START + KHEAP_INITIAL_SIZE; i += 0x1000)
         alloc_frame(get_page(i, 1, kernel_directory), 0, 0);
-
+        
     register_interrupt_handler(14, page_fault);
 
     switch_page_directory(kernel_directory);
 
     kheap = create_heap(KHEAP_START, KHEAP_START + KHEAP_INITIAL_SIZE, 0xCFFFF000, 0, 0);
+
+    current_directory = clone_directory(kernel_directory);
+    switch_page_directory(current_directory);
 #ifdef __DEBUG__
     k_tty_puts("[INFO]: Paging is initialized!\n");
 #endif
@@ -139,7 +145,7 @@ void
 switch_page_directory(page_directory_t *_dir)
 {
     current_directory = _dir;
-    asm volatile("mov %0, %%cr3":: "r"(&_dir->tables_physical));
+    asm volatile("mov %0, %%cr3":: "r"(_dir->physical_address));
     unsigned int cr0;
     asm volatile("mov %%cr0, %0": "=r"(cr0));
     cr0 |= 0x80000000;
@@ -192,4 +198,59 @@ page_fault(registers_t _regs)
     tty_puts("\n");
 
     PANIC("Page fault");
+}
+
+static page_table_t *
+clone_table(page_table_t *src, uint32_t *phys_addr)
+{
+    page_table_t *table = (page_table_t *)kmalloc_ap(sizeof(page_table_t), phys_addr);
+    memset(table, 0, sizeof(page_directory_t));
+
+    int i;
+    for (i = 0; i < 1024; i++)
+    {
+        if (!src->pages[i].frame)
+            continue;
+        
+        alloc_frame(&table->pages[i], 0, 0);
+        if (src->pages[i].present)  table->pages[i].present = 1;
+        if (src->pages[i].rw)       table->pages[i].rw      = 1;
+        if (src->pages[i].user)     table->pages[i].user    = 1;
+        if (src->pages[i].accessed) table->pages[i].accessed= 1;
+        if (src->pages[i].dirty)    table->pages[i].dirty   = 1;
+        copy_page_physical(src->pages[i].frame * 0x1000, table->pages[i].frame * 0x1000);
+    }
+    return table;
+}
+
+page_directory_t *
+clone_directory(page_directory_t *src)
+{
+    uint32_t phys;
+
+    page_directory_t *dir = (page_directory_t *)kmalloc_ap(sizeof(page_directory_t), &phys);
+    memset(dir, 0, sizeof(page_directory_t));
+
+    uint32_t offset = (uint32_t)dir->tables_physical - (uint32_t)dir;
+    dir->physical_address = phys + offset;
+
+    int i;
+    for (i = 0; i < 1024; i++)
+    {
+        if (!src->tables[i])
+            continue;
+        
+        if (kernel_directory->tables[i] == src->tables[i])
+        {
+            dir->tables[i] = src->tables[i];
+            dir->tables_physical[i] = src->tables_physical[i];
+        }
+        else
+        {
+            uint32_t phys;
+            dir->tables[i] = clone_table(src->tables[i], &phys);
+            dir->tables_physical[i] = phys | 0x07;
+        }
+    }
+    return dir;
 }

@@ -30,13 +30,13 @@ struct TTY
 };
 
 /* Function templates */
-__GLOBAL KERNEL_API void tty_initialize(uint16_t *);				// Initialize the teletype text mode for the command line
+__GLOBAL KERNEL_API void tty_initialize(uint32_t);					// Initialize the teletype text mode for the command line
 __GLOBAL KERNEL_API void tty_clear(void);							// Clears the screen
-__GLOBAL KERNEL_API void tty_putchar(char c);							// Put a character at the next position
-__GLOBAL KERNEL_API void tty_puts(char *str);							// Print a string
+__GLOBAL KERNEL_API void tty_putchar(char c);						// Put a character at the next position
+__GLOBAL KERNEL_API void tty_puts(char *str);						// Print a string
 __GLOBAL KERNEL_API void tty_printf(const char *__restrict, ...);	// Print a formatted string
 __GLOBAL KERNEL_API void tty_println(void);							// Print a newline
-__GLOBAL KERNEL_API void tty_cursor_enable(uint8_t, uint8_t);		// Enable Text Mode cursor
+__GLOBAL KERNEL_API void tty_cursor_enable(void);					// Enable Text Mode cursor
 __GLOBAL KERNEL_API void tty_cursor_disable(void);					// Disable Text Mode cursor
 __GLOBAL KERNEL_API void tty_cursor_update(void);					// Update the cursor position internally
 __GLOBAL KERNEL_API void tty_cursor_set_pos(uint8_t, uint8_t);		// Manually set the  cursor position

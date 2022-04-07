@@ -41,7 +41,8 @@ SYSTEM_PATH			:= 	system
 ASM_FILES_IN		:=	$(ASSEMB_PATH)/boot/boot.S \
 						$(ASSEMB_PATH)/interrupt.asm \
 						$(ASSEMB_PATH)/cpuid.asm \
-						$(ASSEMB_PATH)/math.asm
+						$(ASSEMB_PATH)/math.asm \
+						$(ASSEMB_PATH)/process.asm
 C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/vga.c \
 						$(DRIVER_PATH)/i8042.c \
@@ -97,6 +98,7 @@ OUTPUT_FILES 		:= 	boot.o	\
 						cpuid.o \
 						interrupt.o \
 						math.o \
+						process.o \
 						main.o \
 						i8042.o \
 						tty.o \
@@ -160,6 +162,7 @@ bootloader: $(ASM_FILES_IN)
 	$(NASM) $(ASSEMB_PATH)/interrupt.asm -o interrupt.o
 	$(NASM)	$(ASSEMB_PATH)/cpuid.asm -o cpuid.o
 	$(NASM) $(ASSEMB_PATH)/math.asm -o math.o
+	$(NASM) $(ASSEMB_PATH)/process.asm -o process.o
 
 # Compile the kernel files:
 kernel: $(C_FILES_IN)

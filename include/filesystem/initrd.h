@@ -9,7 +9,7 @@ typedef struct {
 
 typedef struct {
     uint8_t magic;
-    int8_t name[64];
+    char name[64];
     uint32_t offset;
     uint32_t length;
 } initrd_file_header_t;

@@ -33,6 +33,6 @@ typedef struct tss_entry_s
    uint32_t ldt;        // Unused. (Or is it...?)
    uint16_t trap;
    uint16_t iomap_base;
-} tss_t __packed;
+} __attribute__((packed)) tss_t;
 
 #endif

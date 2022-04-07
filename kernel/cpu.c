@@ -33,9 +33,9 @@ cpu_init(void)
 	if (!is_supported)									// If not, return breaking flow
 		return;
 #if defined(VERBOSE_FLAGS)
-	show_debug_info("CPU is initialized!");				// TODO: Change these to the message dispatcher...
-	show_debug_info("%s%s", "CPU Manufacturer: ", 		// TODO: Change these to the message dispatcher...
-							cpu_vendor_string());
+	print_verbose_message("CPU is initialized!", INFO);				// TODO: Change these to the message dispatcher...
+	print_verbose_message("%s%s", "CPU Manufacturer: ", 		// TODO: Change these to the message dispatcher...
+							cpu_vendor_string(), INFO);
 #endif
 }
 
@@ -118,6 +118,6 @@ cpu_check_is_supported(void)
 {
 	bool result = cpuid_supported();
 	if (result == false)
-		show_debug_error("CPUID is not supported!");
+		print_verbose_message("CPUID is not supported!", WARNING);
 	return (result);
 }

@@ -17,7 +17,7 @@
 #include <kernel/irq.h>
 #include <kernel/cpu.h>
 #include <kernel/rtc.h>
-#include <adamantine/tty.h>
+#include <drivers/tty.h>
 #include <system/portio.h>
 #include <string.h>
 #include <debug.h>
@@ -50,20 +50,15 @@ uint32_t tick = 0;
 static void
 update_clock(void)
 {
-	char *h, *m, *s;
-	char bh[64], bm[64], bs[64];
-	h = itoa(hour, bh, 10);
-	m = itoa(minute, bm, 10);
-	s = itoa(second, bs, 10);		
-
 	long irq = irq_disable();
 	
-	k_tty_printf("Current Time: ");
-	if (hour < 10)		k_tty_printf("0%d:", hour); else k_tty_printf("%d:", hour);
-	if (minute < 10)	k_tty_printf("0%d:", minute); else k_tty_printf("%d:", minute);
-	if (second < 10)	k_tty_printf("0%d - ", second); else k_tty_printf("%d - ", second);
+	P_VGA vga = k_tty_get_vgahandle();
+	vga->printf("Current Time: ");
+	if (hour < 10)		vga->printf("0%d:", hour); else vga->printf("%d:", hour);
+	if (minute < 10)	vga->printf("0%d:", minute); else vga->printf("%d:", minute);
+	if (second < 10)	vga->printf("0%d - ", second); else vga->printf("%d - ", second);
 
-	k_tty_printf("%s %d, %d\n", month_names[month - 1], day, year);
+	vga->printf("%s %d, %d\n", month_names[month - 1], day, year);
 	read_rtc();
 	irq_restore(irq);
 }
@@ -105,22 +100,7 @@ timer_callback(registers_t _regs)
 	/* Make sure we're not getting an error code */
 	if (!_regs.err_code)
 	{
-		/*char *h, *m, *s;
-		char bh[64], bm[64], bs[64];
-		h = itoa(hour, bh, 10);
-		m = itoa(minute, bm, 10);
-		s = itoa(second, bs, 10);		
-
-		long irq = irq_disable();
-		
-		k_tty_printf("Current Time: ");
-		if (hour < 10)		k_tty_printf("0%d:", hour); else k_tty_printf("%d:", hour);
-		if (minute < 10)	k_tty_printf("0%d:", minute); else k_tty_printf("%d:", minute);
-		if (second < 10)	k_tty_printf("0%d - ", second); else k_tty_printf("%d - ", second);
-
-		k_tty_printf("%s %d, %d\n", month_names[month - 1], day, year);
-		read_rtc();
-		irq_restore(irq);*/
+		//update_clock();
 	}
 }
 
@@ -139,6 +119,6 @@ pit_initialize(uint32_t _freq)
 	outb(PIT_CHANNEL_0, l);
 	outb(PIT_CHANNEL_0, h);
 #if defined(VERBOSE_FLAGS)
-	show_debug_info("PIT is initialized!");
+	print_verbose_message("PIT is initialized!", INFO);
 #endif
 }

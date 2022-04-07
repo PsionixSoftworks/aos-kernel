@@ -101,6 +101,9 @@ keyboard_initialize(void)
 {
 	memset(key_buffer, 0, sizeof(char) * 40);
 	register_interrupt_handler(IRQ1, (isr_t)&keyboard_callback);
+#if defined(VERBOSE_FLAGS) && (VERBOSE_FLAGS == 1)
+	print_verbose_message("Keyboard driver installed and initialized.", INFO);
+#endif
 	return true;
 }
 
@@ -162,13 +165,13 @@ keyboard_callback(void)
 			{
 				c = keys_normal[(unsigned char)sc];
 				char str[2] = {c, '\0'};
-				tty_puts(str);
+				k_tty_get_vgahandle()->puts(str);
 			}
 			else
 			{
 				c = keys_caps[(unsigned char)sc];
 				char str[2] = {c, '\0'};
-				tty_puts(str);
+				k_tty_get_vgahandle()->puts(str);
 			}
 		}
 	}

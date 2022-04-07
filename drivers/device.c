@@ -15,8 +15,9 @@ device_initialize(void)
 {
     memset(block_devices, 0, sizeof(block_devices));
     memset(other_devices, 0, sizeof(other_devices));
-    
-    show_debug_info("Device subsystem is initialized.");
+#if defined(VERBOSE_FLAGS) && (VERBOSE_FLAGS == 1)
+    print_verbose_message("Device subsystem is initialized.", INFO);
+#endif
 }
 
 void
