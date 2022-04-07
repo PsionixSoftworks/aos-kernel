@@ -11,7 +11,7 @@
 
 #include <iso646.h>
 
-#if defined(__DEBUG__) && __DEBUG__ == 1
+#if defined(__DEBUG__) and (__DEBUG__ == 1)
 #define show_debug_info(...)        k_tty_set_foreground(SYSTEM_COLOR_LT_GREEN);    \
                                     k_tty_printf("[INFO]: ");                       \
                                     k_tty_printf( __VA_ARGS__ );                    \

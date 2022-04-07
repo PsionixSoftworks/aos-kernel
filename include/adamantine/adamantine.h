@@ -48,11 +48,15 @@
 #define MAX_NAME_LENGTH     32
 #endif
 
-#define AOS_MOD(...)                                // AOS Module. For future use.
+#define AOS_MODULE(...)                             // AOS Module. For future use.
 
 /* Check if the kernel version is defined */
 #ifdef KERNEL_VERSION_NUMBER				
 #define K_VERSION	KERNEL_VERSION_NUMBER	        // Short-hand version of 'KERNEL_VERSION_NUMBER'
 #endif	// !KERNEL_VERSION_NUMBER
+
+#define MAKEBYTE(x)                 ((unsigned char)x)
+#define MAKEWORD(x)                 ((unsigned short)x)
+#define MAKEDWORD(x)                ((unsigned long)x##L)
 
 #endif	// !ADAMANTINE

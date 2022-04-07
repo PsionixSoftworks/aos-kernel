@@ -17,9 +17,9 @@ align 4
         dd 1024, 768, 32
 
 section .bss
-align 16
+;align 16
 stack_bottom:
-resb 16384
+resb 32768
 stack_top:
 
 section .text
@@ -28,8 +28,8 @@ extern k_main
 global _start:function (_start.end - _start)
 _start:
         mov esp, stack_top
-        push ebx
-        push eax
+        push esp
+        
         call k_main
 .hang:  hlt
         jmp .hang

@@ -63,7 +63,18 @@
 #include <termios.h>
 #include <timers.h>
 
+#include <kernel/task.h>
+
 #include <memory/linked-list.h>
+
+#include <servers/fs/const.h>
+#include <servers/fs/buf.h>
+
+#define INFO		0
+#define WARNING		1
+#define ERROR		2
+
+static inline void PrintMessage(const char *_Msg, const int _Severity);
 
 #ifndef CHECK_FLAG
 #define CHECK_FLAG(_flags, _bit)	((_flags) & 1 << (_bit))
@@ -80,7 +91,6 @@ extern void set_kernel_stack(uint32_t _stack);
 extern void tty_printf(const char *restrict _fmt, ...);
 
 /* Put the GRUB multiboot functionality to use */
-multiboot_info_t *info;
 system_info_t *system_info;								// Used to retrieve information about the system it is running on. Used throughout the kernel.
 
 /* Initialize the GDT, LDT, and IDT */
@@ -92,12 +102,18 @@ descriptor_tables_initialize(void)
 	idt_initialize();											// Defined in "idt.c"
 
 	memset(&interrupt_handlers, 0, sizeof(isr_t) * 256);		// Clear the address of the interrupt handlers to zero
-	show_debug_info("Descriptor tables are initialized!");
+	
+#if defined(VERBOSE_FLAGS)
+	PrintMessage("Descriptor Tables have been initialized.", INFO);
+#endif
 }
 
+static uint32_t stack_pointer;
 __GLOBAL kernel_t
-k_main(void)
+k_main(uint32_t _esp)
 {
+	stack_pointer = _esp;
+
 	/* Setup text mode */
 	k_tty_initialize((uint16_t *)VGA_TEXT_MODE_COLOR);
 	k_tty_set_colors(SYSTEM_COLOR_BLACK, SYSTEM_COLOR_GRAY);
@@ -109,7 +125,32 @@ k_main(void)
 	paging_initialize();
 
 	keyboard_initialize();
-	pit_initialize(60);
-	
+	pit_initialize(50);
+
 	cpu_init();
+}
+
+static inline const char *
+convert_severity_to_str(const int _Severity)
+{
+	if (_Severity == 0)
+		return "[INFO]";
+	if (_Severity == 1)
+		return "[WARNING]";
+	if (_Severity == 2)
+		return "[ERROR]";
+	return "[INFO]";
+}
+
+static inline void
+PrintMessage(const char *_Message, const int _Severity)
+{
+	uint8_t termColor[] = { SYSTEM_COLOR_LT_GREEN, SYSTEM_COLOR_YELLOW, SYSTEM_COLOR_RED };
+	
+	k_tty_set_foreground(termColor[_Severity]);
+	k_tty_printf("%s: %s\n", convert_severity_to_str(_Severity), _Message);
+	k_tty_set_foreground(SYSTEM_COLOR_GRAY);
+#if !defined(_DISABLE_DISPATCH_LOG)
+	// Save the dispatched message to a file using the filesystem (WIP).
+#endif
 }

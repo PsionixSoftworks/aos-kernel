@@ -51,6 +51,10 @@ enum vga_color
     SYSTEM_COLOR_WHITE,         // 0x0F | 15
 };
 
+typedef struct {
+    uint16_t *buffer;
+} VGA, *VGA_PTR;
+
 /* Define the VESA VBE info struct for GFX mode */
 struct vbe_info_structure {
     char                    signature[4];

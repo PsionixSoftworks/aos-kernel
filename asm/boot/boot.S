@@ -2,7 +2,7 @@
 .set MEMINFO,   1 << 1
 .set VIDINFO,   1 << 2
 .set FLAGS,     ALIGN | MEMINFO /* | VIDINFO*/
-.set MAGIC,     MB_HEADER_MAGIC
+.set MAGIC,     0x1BADB002
 .set CHECKSUM,  -(MAGIC + FLAGS)
 
 .section .multiboot
@@ -22,8 +22,7 @@ stack_top:
 .type _start, @function
 _start:
     mov $stack_top, %esp
-    pushl %ebx
-    pushl %eax
+    pushl %esp
     call k_main
 1:  hlt
     jmp 1b
@@ -38,10 +37,3 @@ system_restart_safe:
 
     mov $0xFE, %al
     out %al, $0x64
-
-.globl tss_install
-tss_install: 
-    mov $0x2B, %ax
-
-    ltr %ax
-    ret

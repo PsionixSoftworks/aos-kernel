@@ -138,6 +138,7 @@ pit_initialize(uint32_t _freq)
 
 	outb(PIT_CHANNEL_0, l);
 	outb(PIT_CHANNEL_0, h);
-	
+#if defined(VERBOSE_FLAGS)
 	show_debug_info("PIT is initialized!");
+#endif
 }

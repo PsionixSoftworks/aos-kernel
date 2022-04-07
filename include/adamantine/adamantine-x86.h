@@ -13,6 +13,7 @@
 #define _ADAMANTINE_X86_H
 
 #include <kernel/version.h>
+#include <aos-base.h>
 
 /* Define 'INFINITY' as the maximum 32-bit value */
 #ifndef INFINITY

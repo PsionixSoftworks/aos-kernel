@@ -4,7 +4,7 @@
 #include <adamantine/aos-int.h>
 #include <compiler.h>
 
-struct tss_entry_struct
+typedef struct tss_entry_s
 {
    uint32_t prev_tss;   // The previous TSS - if we used hardware task switching this would form a linked list.
    uint32_t esp0;       // The stack pointer to load when we change to kernel mode.
@@ -30,10 +30,9 @@ struct tss_entry_struct
    uint32_t ds;         // The value to load into DS when we change to kernel mode.
    uint32_t fs;         // The value to load into FS when we change to kernel mode.
    uint32_t gs;         // The value to load into GS when we change to kernel mode.
-   uint32_t ldt;        // Unused...
+   uint32_t ldt;        // Unused. (Or is it...?)
    uint16_t trap;
    uint16_t iomap_base;
-} __packed;
-typedef struct tss_entry_struct tss_t;
+} tss_t __packed;
 
 #endif

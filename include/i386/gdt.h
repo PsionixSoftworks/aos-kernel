@@ -41,5 +41,6 @@ struct gdt_ptr_struct
 
 /* Function Templates */
 __GLOBAL KERNEL_API void gdt_initialize(void);                             // Initialize the Global Descriptor Table
+__GLOBAL KERNEL_API void set_segment_desc_gate(uint32_t _idx, uint32_t _base, uint32_t _limit, uint8_t _access, uint8_t _gran);
 
 #endif  // !_ADAMANTINE_GDT_H

@@ -13,6 +13,8 @@
 #include <i386/tss.h>
 #include <debug.h>
 
+#define GDT_GRAN        0b11001111
+
 /* Define the GDT enties and the pointer to the GDT */
 gdt_entry_t gdt_entries[MAX_GDT_ENTRIES];
 gdt_ptr_t gdt_ptr;
@@ -24,12 +26,12 @@ static inline void gdt_set_kernel_code_segment(void);   // Kernel Code Segment
 static inline void gdt_set_kernel_data_segment(void);   // Kernel Data Segment
 static inline void gdt_set_user_code_segment(void);     // User Code Segment
 static inline void gdt_set_user_data_segment(void);     // User Data Segment
-static inline void gdt_set_tss_segment(void);           // TSS Segment
+static inline void gdt_set_tss_segment(uint32_t _idx, uint16_t ss0, uint32_t esp0);           // TSS Segment
 
 static inline void gdt_install(void);
 static inline void tss_install(void);
 
-extern void tss_install(void);
+//extern void tss_install(void);
 
 /* Initialize the Global Descriptot Table */
 void
@@ -44,7 +46,7 @@ gdt_initialize(void)
     gdt_set_kernel_data_segment();
     gdt_set_user_code_segment();
     gdt_set_user_data_segment();
-    gdt_set_tss_segment();
+    gdt_set_tss_segment(5, 0x10, 0x00);
 
     gdt_install();
     tss_install();
@@ -65,15 +67,13 @@ gdt_install(void)
             ljmp $0x08, $flush  \n \
             flush: "
     );
-    
-    show_debug_info("GDT is installed!");
 }
 
-/*static inline void
+static inline void
 tss_install(void)
 {
-	__asm__ volatile ("ltr (%0)" : : "m"(tss_entry));
-}*/
+	__asm__ volatile ("ltr %w0" : : "q" (0x2B));
+}
 
 void
 set_kernel_stack(uint32_t stack)
@@ -81,84 +81,104 @@ set_kernel_stack(uint32_t stack)
 	tss_entry.esp0 = stack;
 }
 
+void 
+set_segment_desc_gate(uint32_t _idx, uint32_t _base, uint32_t _limit, uint8_t _access, uint8_t _gran)
+{
+    gdt_entries[_idx].base_low      = (_base & 0xFFFF);
+    gdt_entries[_idx].base_middle   = (_base >> 16) & 0xFF;
+    gdt_entries[_idx].base_high     = (_base >> 24) & 0xFF;
+
+    gdt_entries[_idx].limit_low     = (_limit & 0xFFFF);
+    gdt_entries[_idx].granularity   = (_limit >> 16) & 0x0F;
+
+    gdt_entries[_idx].granularity   |= _gran & 0xF0;
+    gdt_entries[_idx].access        = _access;
+}
+
 /* MANDATORY Null Segment */
 static inline void
 gdt_set_null_segment(void)
 {
-    gdt_entries[0].base_low     = 0x00;
-    gdt_entries[0].base_middle  = 0x00;
-    gdt_entries[0].base_high    = 0x00;
-    gdt_entries[0].granularity  = 0x00;
-    gdt_entries[0].access       = 0x00;
-    gdt_entries[0].limit_low    = 0x00;
+    set_segment_desc_gate(
+        0, 
+        0x00000000, 
+        0x00000000, 
+        0x00, 
+        0b00000000
+    );
 }
 
 /* Kernel Code Segment */
 static inline void
 gdt_set_kernel_code_segment(void)
 {
-    gdt_entries[1].base_low     = 0x00;
-    gdt_entries[1].base_middle  = 0x00;
-    gdt_entries[1].base_high    = 0x00;
-    gdt_entries[1].granularity  = 0xCF;
-    gdt_entries[1].access       = 0x9A;
-    gdt_entries[1].limit_low    = 0xFFFF;
+    set_segment_desc_gate(
+        1, 
+        0x00000000, 
+        0xFFFFFFFF, 
+        0x9A, 
+        GDT_GRAN
+    );
 }
 
 /* Kernel Data Segment */
 static inline void
 gdt_set_kernel_data_segment(void)
 {
-    gdt_entries[2].base_low     = 0x00;
-    gdt_entries[2].base_middle  = 0x00;
-    gdt_entries[2].base_high    = 0x00;
-    gdt_entries[2].granularity  = 0xCF;
-    gdt_entries[2].access       = 0x92;
-    gdt_entries[2].limit_low    = 0xFFFF;
+    set_segment_desc_gate(
+        2, 
+        0x00000000,
+        0xFFFFFFFF,
+        0x92,
+        GDT_GRAN
+    );
 }
 
 /* User Code Segment */
 static inline void
 gdt_set_user_code_segment(void)
 {
-    gdt_entries[3].base_low     = 0x00;
-    gdt_entries[3].base_middle  = 0x00;
-    gdt_entries[3].base_high    = 0x00;
-    gdt_entries[3].granularity  = 0xCF;
-    gdt_entries[3].access       = 0xFA;
-    gdt_entries[3].limit_low    = 0xFFFF;
+    set_segment_desc_gate(
+        3,
+        0x00000000,
+        0xFFFFFFFF,
+        0xFA,
+        GDT_GRAN
+    );
 }
 
 /* User Data Segment */
 static inline void
 gdt_set_user_data_segment(void)
 {
-    gdt_entries[4].base_low     = 0x00;
-    gdt_entries[4].base_middle  = 0x00;
-    gdt_entries[4].base_high    = 0x00;
-    gdt_entries[4].granularity  = 0xCF;
-    gdt_entries[4].access       = 0xF2;
-    gdt_entries[4].limit_low    = 0xFFFF;
+    set_segment_desc_gate(
+        4,
+        0x00000000,
+        0xFFFFFFFF,
+        0xF2,
+        GDT_GRAN
+    );
 }
 
 static inline void
-gdt_set_tss_segment(void)
+gdt_set_tss_segment(uint32_t _idx, uint16_t ss0, uint32_t esp0)
 {
     uint32_t base = (uint32_t)&tss_entry;
     uint32_t limit = base + sizeof(tss_entry);
     
-    gdt_entries[5].base_low     = base;
-    gdt_entries[5].base_middle  = base;
-    gdt_entries[5].base_high    = base;
-    gdt_entries[5].granularity  = 0x00;
-    gdt_entries[5].access       = 0xE9;
-    gdt_entries[5].limit_low    = limit;
+    set_segment_desc_gate(
+        _idx,
+        base,
+        limit,
+        0xE9,
+        0x00
+    );
 
     memset(&tss_entry, 0, sizeof(tss_entry));
 
-    tss_entry.ss0   = 0x10;
-    tss_entry.esp0  = 0x00;
+    tss_entry.ss0   = ss0;
+    tss_entry.esp0  = esp0;
 
-    tss_entry.cs = 0x0b;
+    tss_entry.cs = 0x0B;
     tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs = 0x13;
 }

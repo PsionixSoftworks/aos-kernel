@@ -32,9 +32,11 @@ cpu_init(void)
 	bool is_supported = (cpuid_supported() > 0);		// Check if CPUID is supported with this CPU
 	if (!is_supported)									// If not, return breaking flow
 		return;
+#if defined(VERBOSE_FLAGS)
 	show_debug_info("CPU is initialized!");				// TODO: Change these to the message dispatcher...
 	show_debug_info("%s%s", "CPU Manufacturer: ", 		// TODO: Change these to the message dispatcher...
 							cpu_vendor_string());
+#endif
 }
 
 /* Halt the CPU */

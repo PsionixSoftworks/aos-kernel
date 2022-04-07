@@ -3,4 +3,6 @@
 
 #include <system/types.h>
 
+extern void switch_to_user_mode(void);
+
 #endif
