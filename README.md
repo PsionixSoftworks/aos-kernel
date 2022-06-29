@@ -17,7 +17,7 @@ Adamantine is a word for a nearly indestructable mythological material, usually 
 - You must abide by the terms of the license attached to this repo.
 
 # Current Issues
-- Switching to User Mode doesn't seem to work.
+- None
 
 # Current Objective
 Rework the kernel and organize things.
