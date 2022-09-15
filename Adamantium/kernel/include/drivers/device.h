@@ -22,6 +22,7 @@ enum device_type
     DT_MOUSE,
     DT_DISPLAY,
     DT_PCI,
+    DT_STORAGE,
 };
 
 enum io_type

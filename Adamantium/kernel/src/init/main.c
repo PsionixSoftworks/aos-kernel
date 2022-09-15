@@ -27,6 +27,7 @@
 #include <memory/memory-util.h>
 #include <memory/ordered-array.h>
 #include <memory/paging.h>
+#include <filesystem/vfs.h>
 #include <config.h>
 #include <stdint.h>
 #include <stdio.h>

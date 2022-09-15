@@ -1,8 +1,9 @@
 #ifndef _AOSFS_H
 #define _AOSFS_H
 
-#define ROOT        "$0://root/"
+#include <drivers/device.h>
+#include "vfs.h"
 
-
+extern void aosfs_mount_to_device(struct device* dev, struct fs* fsptr);
 
 #endif

@@ -49,6 +49,7 @@ C_FILES_IN			:=	$(INIT_PATH)/main.c \
 						$(DRIVER_PATH)/device.c \
 						$(DRIVER_PATH)/driver.c \
 						$(FILESYSTEM_PATH)/vfs.c \
+						$(FILESYSTEM_PATH)/aosfs.c \
 						$(FILESYSTEM_PATH)/initrd.c \
 						$(i386_PATH)/gdt.c \
 						$(i386_PATH)/ldt.c \
@@ -105,6 +106,7 @@ OUTPUT_FILES 		:= 	boot.o	\
 						device.o \
 						driver.o \
 						vfs.o \
+						aosfs.o \
 						initrd.o \
 						cpu.o \
 						mutex.o \
@@ -178,6 +180,7 @@ kernel: $(C_FILES_IN)
 	$(CC) $(DRIVER_PATH)/driver.c -o driver.o $(C_FLAGS)
 	$(CC) $(FILESYSTEM_PATH)/vfs.c -o vfs.o $(C_FLAGS)
 	$(CC) $(FILESYSTEM_PATH)/initrd.c -o initrd.o $(C_FLAGS)
+	$(CC) $(FILESYSTEM_PATH)/aosfs.c -o aosfs.o $(C_FLAGS)
 	$(CC) $(ADAMANTIUM_PATH)/cpu.c -o cpu.o $(C_FLAGS)
 	$(CC) $(ADAMANTIUM_PATH)/mutex.c -o mutex.o $(C_FLAGS)
 	$(CC) $(ADAMANTIUM_PATH)/irq.c -o irq.o $(C_FLAGS)
