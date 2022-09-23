@@ -21,7 +21,6 @@
 #include <kernel/pic.h>
 #include <kernel/pit.h>
 #include <kernel/rtc.h>
-#include <kernel/procmgr.h>
 #include <math/math-util.h>
 #include <math/simple-math.h>
 #include <memory/memory-util.h>
@@ -33,6 +32,10 @@
 #include <stdio.h>
 
 #include <multiboot.h>
+
+#include <drivers/device.h>
+
+#include <system/portio.h>
 
 #ifndef CHECK_FLAG
 #define CHECK_FLAG(_flags, _bit) 	((_flags)&1 << (_bit))
@@ -81,28 +84,42 @@ move_to_user_mode(void)
 
 multiboot_info_t* mbi;
 
+extern struct device tty_device;
+
 void
 k_main(unsigned long magic, unsigned long addr)
 {
-	tty_init((uint16_t*)VGA_ADDRESS);
-
-	tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
-	printf("[AOS_INFO]:!~ Starting AdamantiumOS - Version: v%s.\n", KERNEL_VERSION_STRING);
-
-	/* Since we're using GRUB as a bootloader for now, we need to verify the Magic Number is valid */
-	if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
+	if (tty_init((uint16_t*)VGA_ADDRESS) == DEVICE_SUCCESS)
 	{
-		tty_set_foreground(SYSTEM_COLOR_RED);
-		printf("[AOS_ERROR]:!~ Invalid magic number: 0x%X\n", magic);
-		return;
+		tty_set_foreground(SYSTEM_COLOR_LT_GREEN);
+		printf("[AOS_INFO]:!~ Starting AdamantiumOS - Version: v%s.\n", KERNEL_VERSION_STRING);
+
+		/* Since we're using GRUB as a bootloader for now, we need to verify the Magic Number is valid */
+		if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
+		{
+			tty_set_foreground(SYSTEM_COLOR_RED);
+			printf("[AOS_ERROR]:!~ Invalid magic number: 0x%X\n", magic);
+			return;
+		}
+
+		mbi = (multiboot_info_t*)addr;
+	#if defined(DEBUG_MODE) && defined(VERBOSE_MSG_FLAGS_ON)
+		printf("Multiboot Flags: 0x%X\n", mbi->flags);
+	#endif
+
+		descriptor_tables_init();
+		paging_initialize();
+
+		pit_initialize(50);
+		cpu_init();
+
+		/* Print all the details of the TTY device Driver */
+		printf("\n== Device Driver information for TTY ==\n");
+		printf("Device ID: %d\n", tty_device.device_id);
+		printf("Device Name: \"%s\"\n", tty_device.device_name);
+		printf("Device Type: %s\n", device_get_type_str(&tty_device));
+		printf("Device IO Type: %s\n", device_get_io_type_str(&tty_device));
+		printf("Device Port Address: 0x%X\n", device_get_port(&tty_device));
+		printf("This device is working properly.\n");
 	}
-
-	mbi = (multiboot_info_t*)addr;
-	printf("Multiboot Flags: 0x%X\n", mbi->flags);
-
-	descriptor_tables_init();
-	paging_initialize();
-
-	pit_initialize(50);
-	cpu_init();
 }

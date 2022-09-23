@@ -42,7 +42,7 @@
 #define ICW4_SFNM			0x10
 
 #define PIC_READ_IRR		0x0A
-#define PIC_READ_isr		0x0B
+#define PIC_READ_ISR		0x0B
 #endif
 
 /* Function Templates */

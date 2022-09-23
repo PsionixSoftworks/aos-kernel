@@ -2,6 +2,7 @@
 
 #define ROOT        "$0://root/"
 
+/*
 void
 aosfs_mount_to_device(struct device* dev, struct fs* fsptr)
 {
@@ -15,3 +16,4 @@ aosfs_mount_to_device(struct device* dev, struct fs* fsptr)
 	
 	
 }
+*/

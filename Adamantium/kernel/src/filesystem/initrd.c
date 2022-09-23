@@ -2,6 +2,7 @@
 #include <memory/memory-util.h>
 #include <string.h>
 
+/*
 initrd_header_t *initrd_header;
 initrd_file_header_t *file_headers;
 fs_node_t *initrd_root;
@@ -109,3 +110,4 @@ initrd_initialize(uint32_t location)
     }
     return initrd_root;
 }
+*/

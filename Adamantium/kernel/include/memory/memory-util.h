@@ -23,14 +23,15 @@
 #define _ADAMANTINE_MEMORY_UTIL_H
 
 #include <memory/ordered-array.h>
+#include <kernel/kernel.h>
 #include <macros.h>
 #include <stdint.h>
 
-#define KHEAP_START			0xC0000000
-#define KHEAP_INITIAL_SIZE	0x100000
+#define KHEAP_START			(HEAP_START_ADDR + HEAP_OFFSET)
+#define KHEAP_INITIAL_SIZE	0x400000
 #define HEAP_INDEX_SIZE		0x20000
-#define HEAP_MAGIC			0x123890AB
-#define HEAP_MIN_SIZE		0x70000
+#define HEAP_MAGIC			0x600DF00D
+#define HEAP_MIN_SIZE		0x10000
 
 /**
  * Size information for a hole/block

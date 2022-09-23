@@ -107,7 +107,7 @@ paging_initialize(void)
     frames = (uint32_t *)kmalloc(INDEX_FROM_BIT(nframes));
     memset(frames, 0, INDEX_FROM_BIT(nframes));
 
-    uint32_t phys;
+    //uint32_t phys;
     kernel_directory = (page_directory_t *)kmalloc_a(sizeof(page_directory_t));
     memset(kernel_directory, 0, sizeof(page_directory_t));
     kernel_directory->physical_address = (uint32_t)kernel_directory->tables_physical;
@@ -175,18 +175,18 @@ get_page(uint32_t _address, int _make, page_directory_t *_dir)
 }
 
 void
-page_fault(registers_t _regs)
+page_fault(registers_t _regs __unused)
 {
     uint32_t faulting_address;
     asm volatile("mov %%cr2, %0" : "=r"(faulting_address));
 
-    int present     = !(_regs.err_code & 0x1);
-    int rw          = _regs.err_code & 0x2;
-    int us          = _regs.err_code & 0x4;
-    int reserved    = _regs.err_code & 0x8;
+    //int present     = !(_regs.err_code & 0x1);
+    //int rw          = _regs.err_code & 0x2;
+    //int us          = _regs.err_code & 0x4;
+    //int reserved    = _regs.err_code & 0x8;
     //int id          = regs.err_code & 0x10;
-
-    /*tty_puts("Page fault! ( ");
+    /*
+    tty_puts("Page fault! ( ");
     if (present) {tty_puts("present ");}
     if (rw) {tty_puts("read-only ");}
     if (us) {tty_puts("user-mode ");}
@@ -194,8 +194,8 @@ page_fault(registers_t _regs)
     tty_puts(") at 0x");
     char buffer[64];
     tty_puts(itoa(faulting_address, buffer, 16));
-    tty_puts("\n");*/
-
+    tty_puts("\n");
+*/
     //PANIC("Page fault");
 }
 
@@ -217,7 +217,7 @@ clone_table(page_table_t *src, uint32_t *phys_addr)
         if (src->pages[i].user)     table->pages[i].user    = 1;
         if (src->pages[i].accessed) table->pages[i].accessed= 1;
         if (src->pages[i].dirty)    table->pages[i].dirty   = 1;
-        copy_page_physical(src->pages[i].frame * 0x1000, table->pages[i].frame * 0x1000);
+        copy_page_physical((page_table_t*)(src->pages[i].frame * 0x1000), (page_table_t*)(table->pages[i].frame * 0x1000));
     }
     return table;
 }

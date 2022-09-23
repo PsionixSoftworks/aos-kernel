@@ -41,8 +41,8 @@ typedef struct fs
     void*(*d_close)(char*, struct mount_point*);
 } vfs_t;
 
-void* fs_create(char* name, uint32_t where, struct device* dev, vfs_t* fsptr);
-void* fs_mount(coid* id, int addr, struct mount_point* mp);
+//void* fs_create(char* name, uint32_t where, struct device* dev, vfs_t* fsptr);
+//void* fs_mount(void* id, int addr, struct mount_point* mp);
 
 void* fs_file_open(char* filename, uint8_t mode, struct mount_point* mp);
 

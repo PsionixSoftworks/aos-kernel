@@ -14,6 +14,6 @@ typedef struct {
     uint32_t length;
 } initrd_file_header_t;
 
-fs_node_t *initrd_initialize(uint32_t location);
+//fs_node_t *initrd_initialize(uint32_t location);
 
 #endif

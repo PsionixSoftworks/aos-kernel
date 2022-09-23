@@ -10,7 +10,7 @@ struct tty {
     uint8_t height;
 };
 
-extern void tty_init(uint16_t* mode);
+extern uint8_t tty_init(uint16_t* mode);
 extern void tty_clear(void);
 extern void tty_set_background(uint8_t color);
 extern void tty_set_foreground(uint8_t color);

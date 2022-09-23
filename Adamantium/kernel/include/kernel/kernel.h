@@ -23,9 +23,9 @@
                                     // a proprietary system for error code handling.
 
 #ifndef AOS_BIT_MASK
-#define AOS_BIT_MASK    (0xFF >> 16) | 0x20;
+#define AOS_BIT_MASK(x)     (0x1C << (x))) & 0xFFFF;    // Limits this to 0xFFFF or zero.
 #else
-#define AOS_BIT_MASK
+#define AOS_BIT_MASK(x)
 #endif
 
 #if !defined(KERNEL_API)
@@ -39,13 +39,15 @@
 #define IS_ERR_VALUE(x)     ((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
 #define IS_ERR(x)           IS_ERR_VALUE((unsigned long)x)
 
+// We are writing a proprietary OS, as such, let's start the heap in a different location:
+#define HEAP_START_ADDR     0xA0000000
+#define HEAP_OFFSET         0x0F000000
+
 struct kconfig
 {
     char *kernel_signature;
     const char *product_key;
     const char *computer_name;
-
-    
 };
 
 /* Define the system info struct */
@@ -65,7 +67,8 @@ typedef struct aos_system_information
     uint8_t                 memory_speed;               // Not crucial, but memory speed in (Hz)
 
     /* Other Info */
-    //time_t                  up_time;                    // The time since the computer was turned on.
+    time_t                  up_time;                    // The time since the computer was turned on.
+    struct kconfig          *config;                    // System configuration.
 } system_info_t;
 
 void kconfig_defaults(struct kconfig *) __section(".text");

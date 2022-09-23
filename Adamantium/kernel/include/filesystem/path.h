@@ -3,8 +3,6 @@
 
 #include <memory/memory-util.h>
 
-extern struct mount_point;
-
 struct path_node
 {
 	char* name;

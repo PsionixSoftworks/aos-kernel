@@ -3,14 +3,10 @@
 
 #include <stdint.h>
 
-extern struct mount_point;
-
 struct mount_list
 {
 	struct mount_point* mp;
 	struct mount_list* next;
 };
-
-
 
 #endif

@@ -16,7 +16,7 @@ static inline void rtc_callback(void);
 void
 rtc_initialize(void)
 {
-    register_interrupt_handler(IRQ8, &rtc_callback);
+    register_interrupt_handler(IRQ8, (isr_t)&rtc_callback);
 }
 
 extern int
@@ -108,8 +108,8 @@ read_rtc(void)
         else
         {
             year += (CURRENT_YEAR / 100) * 100;
-            if (year < CURRENT_YEAR)
-                year += 100;
+            //if (year < CURRENT_YEAR)
+            //    year += 100;
         }
     }
 }
